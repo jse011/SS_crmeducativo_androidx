@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
 import com.consultoraestrategia.ss_crmeducativo.base.viewpager.ViewPagerItemListener;
+import com.consultoraestrategia.ss_crmeducativo.chatGrupal.ChatGrupalActivity;
 import com.consultoraestrategia.ss_crmeducativo.chats.adapters.groups.GroupAdapter;
 import com.consultoraestrategia.ss_crmeducativo.chats.entities.GroupUi;
 import com.consultoraestrategia.ss_crmeducativo.chats.presenter.ChatPresenter;
@@ -64,6 +65,24 @@ public class GroupsFragment extends Fragment implements GroupsView , ViewPagerIt
     public void clickChat(Object object) {
         if(object instanceof GroupUi){
             GroupUi groupUi=(GroupUi)object;
+            List<Long> docenteId = groupUi.getDocenteId();
+            int cargaAcademicaId = groupUi.getCargaAcademicaId();
+            int cargaCursoId = groupUi.getCargaCursoId();
+            String grupoEquipoId = groupUi.getGrupoEquipoId();
+            int personaId = groupUi.getIdSender();
+            switch (groupUi.getType()){
+                case ACADEMIC:
+                    ChatGrupalActivity.start(getContext(), personaId, cargaCursoId, cargaAcademicaId, grupoEquipoId, docenteId, ChatGrupalActivity.TIPO_CLASSROON, ChatGrupalActivity.NIVEL_GENERAL);
+                    break;
+                case COURSE:
+                    ChatGrupalActivity.start(getContext(), personaId, cargaCursoId, cargaAcademicaId, grupoEquipoId, docenteId, ChatGrupalActivity.TIPO_COURSE, ChatGrupalActivity.NIVEL_GENERAL);
+                    break;
+                default:
+                    ChatGrupalActivity.start(getContext(), personaId, cargaCursoId, cargaAcademicaId, grupoEquipoId, docenteId, ChatGrupalActivity.TIPO_TEAM, ChatGrupalActivity.NIVEL_GENERAL);
+                    break;
+            }
+
+            /*
             SendDataChatBundle sendDataChatBundle= new SendDataChatBundle();
             sendDataChatBundle.setSenderId(groupUi.getIdSender());
             sendDataChatBundle.setCargaAcademicaId(groupUi.getCargaAcademicaId());
@@ -83,7 +102,7 @@ public class GroupsFragment extends Fragment implements GroupsView , ViewPagerIt
                     break;
             }
             DialogFragmentChoosePerson dialog =DialogFragmentChoosePerson.newInstance(sendDataChatBundle.getBundle());
-            dialog.show(getFragmentManager(), TAG);
+            dialog.show(getFragmentManager(), TAG);*/
 
 //            Intent intent= new Intent(getContext(), PersonalChatActivity.class);
 //            intent.putExtras(sendDataChatBundle.getBundle());

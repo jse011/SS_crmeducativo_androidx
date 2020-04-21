@@ -6,7 +6,7 @@ import com.consultoraestrategia.ss_crmeducativo.main.entities.AnioAcademicoUi;
 import java.util.List;
 
 public interface SeleccionarAnioAcademicoView {
-    void setListAnioAcademico(List<AnioAcademicoUi> listAnioAcademico);
+    void setListAnioAcademico(List<Object> listAnioAcademico);
     void setPresenter(MainPresenter presenter);
     void hideProgress();
     void showProgress();

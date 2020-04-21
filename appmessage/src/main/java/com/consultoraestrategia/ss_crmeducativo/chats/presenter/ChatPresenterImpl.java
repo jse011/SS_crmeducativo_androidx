@@ -211,15 +211,15 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
         Log.d(TAG, "fragmentClassVisible "+fragmentClassVisible);
         fragmentClassVisible = aClass;
         if(view==null)return;
-        if(fragmentClassVisible == ChatsFragment.class)
-            view.hideButtonContact();
-
+        if(fragmentClassVisible == ChatsFragment.class){
+            // view.hideButtonContact();
+        }
         else if(fragmentClassVisible== GroupsFragment.class){
-            view.hideButtonContact();
+           // view.hideButtonContact();
             view.hideSearch();
         }
-        else
-            view.showButtonContact();
+        //else
+          //  view.showButtonContact();
     }
 
     @Override

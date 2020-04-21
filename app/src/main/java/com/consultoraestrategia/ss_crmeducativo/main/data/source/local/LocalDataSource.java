@@ -813,6 +813,7 @@ public class LocalDataSource implements MainDataSource {
             AnioAcademicoUi anioAcademicoUi = new AnioAcademicoUi();
             anioAcademicoUi.setAnioAcademicoId(anioAcademico.getIdAnioAcademico());
             anioAcademicoUi.setNombre(anioAcademico.getNombre());
+            anioAcademicoUi.setGeoreferencia(anioAcademico.getGeoreferenciaId());
             if(anioAcademico.getEstadoId()==AnioAcademico.ANIO_ACADEMICO_ACTIVO){
                 anioAcademicoUi.setVigente(true);
             }

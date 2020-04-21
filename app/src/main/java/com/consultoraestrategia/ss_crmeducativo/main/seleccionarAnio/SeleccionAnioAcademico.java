@@ -107,7 +107,7 @@ public class SeleccionAnioAcademico extends DialogFragment implements Selecciona
     }
 
     @Override
-    public void setListAnioAcademico(List<AnioAcademicoUi> listAnioAcademico) {
+    public void setListAnioAcademico(List<Object> listAnioAcademico) {
         anioAcadimicoAdapter.setList(listAnioAcademico);
     }
 

@@ -159,7 +159,7 @@
             app:backgroundTint="@color/md_green_900"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_message"
+            app:srcCompat="@drawable/ic_mensaje_chat"
             tools:ignore="VectorDrawableCompat" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

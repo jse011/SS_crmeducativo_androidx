@@ -303,24 +303,54 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         showDatosPersonalesUser(personaUi);
         empleadoId = personaUi.getEmpleadoId();
         if(view!=null)view.subscribeToTopic(personaUi.getPersonaId());
-        if(usuarioRolGeoReferenciaUiList!=null&&!usuarioRolGeoReferenciaUiList.isEmpty()){
-            usuarioRolGeoReferenciaUi = usuarioRolGeoReferenciaUiList.get(0);
-            georeferenciaId = usuarioRolGeoReferenciaUi.getGeoreferenciaId();
-            entidadId= usuarioRolGeoReferenciaUi.getEntidadId();
-        }
+        getUsuarioRolGeoReferencia();
 
         showLetraPerfil(personaUi.getApellidos(),personaUi.getNombre());
         showEntidad(usuarioRolGeoReferenciaUi.getNombreEntidad(), usuarioRolGeoReferenciaUi.getNombreGeoreferencia());
         //getHijosCallback();
         //getAccesoUIListCallback(idUsuario, false);
-        if(usuarioRolGeoReferenciaUiList.size()==1){
+       /* if(usuarioRolGeoReferenciaUiList.size()==1){
             if(view!=null)view.hideBtnEntidadSelect();
         }else {
             if(view!=null)view.showBtnEntidadSelect();
-        }
+        }*/
+        if(view!=null)view.hideBtnEntidadSelect();
         if(!successData){
             successData = succesData.execute();
             if(view!=null)view.showDialogFastData(anioAcademicoIdFinal, idUsuario);
+        }
+    }
+
+    private void getUsuarioRolGeoReferencia() {
+        if(usuarioRolGeoReferenciaUiList!=null&&!usuarioRolGeoReferenciaUiList.isEmpty()){
+
+            if(anioAcademicoUiList!=null){
+                AnioAcademicoUi anioAcademicoSelected = null;
+                for (AnioAcademicoUi anioAcademicoUi : anioAcademicoUiList){
+                    if(anioAcademicoUi.getAnioAcademicoId()==anioAcademicoIdFinal){
+                        anioAcademicoSelected = anioAcademicoUi;
+                    }
+                }
+
+                if(anioAcademicoSelected!=null){
+                    for (UsuarioRolGeoReferenciaUi usuarioRolUi : usuarioRolGeoReferenciaUiList){
+                        if(anioAcademicoSelected.getGeoreferencia() == usuarioRolUi.getGeoreferenciaId()){
+                            usuarioRolGeoReferenciaUi = usuarioRolUi;
+                            georeferenciaId = usuarioRolGeoReferenciaUi.getGeoreferenciaId();
+                            entidadId= usuarioRolGeoReferenciaUi.getEntidadId();
+                        }
+                    }
+                }
+            }
+
+
+
+            if(usuarioRolGeoReferenciaUi==null){
+                usuarioRolGeoReferenciaUi = usuarioRolGeoReferenciaUiList.get(0);
+                georeferenciaId = usuarioRolGeoReferenciaUi.getGeoreferenciaId();
+                entidadId= usuarioRolGeoReferenciaUi.getEntidadId();
+            }
+
         }
     }
 
@@ -882,10 +912,9 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
             }else {
                 anioAcademico.setToogle(false);
             }
-
-            Log.d(TAG,"Anio "+anioAcademico.getAnioAcademicoId()+" "+ anioAcademico.isToogle());
         }
-        if(seleccionarAnioAcademicoView!=null)seleccionarAnioAcademicoView.setListAnioAcademico(anioAcademicoUiList);
+        getUsuarioRolGeoReferencia();
+        showEntidad(usuarioRolGeoReferenciaUi.getNombreEntidad(), usuarioRolGeoReferenciaUi.getNombreGeoreferencia());
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -915,15 +944,32 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
                     anioAcademicoUiList.addAll(getAnioAcademicoList.execute(idUsuario));
                 }
 
+                getUsuarioRolGeoReferencia();
+                List<Object> anioColegioList = new ArrayList<>();
                 for (AnioAcademicoUi anioAcademicoUi : anioAcademicoUiList) {
+
+                    UsuarioRolGeoReferenciaUi usuarioRolGeoReferenciaUi = new UsuarioRolGeoReferenciaUi();
+                    usuarioRolGeoReferenciaUi.setNombreEntidad("Desconocido");
+                    usuarioRolGeoReferenciaUi.setNombreGeoreferencia("Desconocido");
+                    if(usuarioRolGeoReferenciaUiList!=null){
+                        for (UsuarioRolGeoReferenciaUi usuarioRolUi : usuarioRolGeoReferenciaUiList){
+                            if(anioAcademicoUi.getGeoreferencia() == usuarioRolUi.getGeoreferenciaId()){
+                                usuarioRolGeoReferenciaUi = usuarioRolUi;
+                            }
+                        }
+                    }
+
+                    anioColegioList.add(usuarioRolGeoReferenciaUi);
+
                     if (anioAcademicoUi.getAnioAcademicoId() == anioAcademicoIdFinal) {
                         anioAcademicoUi.setToogle(true);
                     }else {
                         anioAcademicoUi.setToogle(false);
                     }
-                }
 
-                if(seleccionarAnioAcademicoView!=null)seleccionarAnioAcademicoView.setListAnioAcademico(anioAcademicoUiList);
+                    anioColegioList.add(anioAcademicoUi);
+                }
+                if(seleccionarAnioAcademicoView!=null)seleccionarAnioAcademicoView.setListAnioAcademico(anioColegioList);
             }
         });
     }

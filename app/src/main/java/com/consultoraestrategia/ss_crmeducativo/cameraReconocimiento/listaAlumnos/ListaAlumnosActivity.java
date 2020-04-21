@@ -145,7 +145,7 @@ public class ListaAlumnosActivity extends BaseActivity<ListaAlumnosView, ListaAl
 
     @Override
     protected ProgressBar getProgressBar() {
-        return null;
+        return progressBar;
     }
 
     @Override

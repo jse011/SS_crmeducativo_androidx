@@ -106,7 +106,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:fab_size="normal"
-            app:srcCompat="@drawable/ic_message"
+            app:srcCompat="@drawable/ic_mensaje_chat"
             tools:ignore="VectorDrawableCompat" />
 
         <TextView

@@ -5,6 +5,7 @@ public class AnioAcademicoUi {
     private String nombre;
     private boolean vigente;
     private boolean toogle;
+    private int georeferencia;
 
     public int getAnioAcademicoId() {
         return anioAcademicoId;
@@ -41,5 +42,13 @@ public class AnioAcademicoUi {
     @Override
     public String toString() {
         return nombre ;
+    }
+
+    public void setGeoreferencia(int georeferencia) {
+        this.georeferencia = georeferencia;
+    }
+
+    public int getGeoreferencia() {
+        return georeferencia;
     }
 }

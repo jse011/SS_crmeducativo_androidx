@@ -52,6 +52,7 @@ public class ListaAlumnosPresenterImpl extends BasePresenterImpl<ListaAlumnosVie
     @Override
     public void onCreate() {
         super.onCreate();
+        hideProgress();
         personaUiList = getPersonas.execute(cargacursoId);
         for (PersonaUi personaUi : personaUiList){
             List<SentimientoUi> sentimientoUiList = getFotoPreferents.execute(personaUi.getPersonaId());
