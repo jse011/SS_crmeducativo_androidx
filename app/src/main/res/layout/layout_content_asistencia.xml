@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnReload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="reload"
+        android:visibility="gone" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <com.consultoraestrategia.ss_crmeducativo.domain.adapters.TableAsistenciaFixHeaders
+            android:id="@+id/tableTrimestreAsistencia"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen.layout.item.alumno.linear.width"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark">
+
+            <ListView
+                android:id="@+id/listMenuAsistencia"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMensajeGrupal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/dim_10dp"
+        android:src="@drawable/ic_team"
+        app:fabSize="mini"
+        tools:ignore="RtlCompat" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

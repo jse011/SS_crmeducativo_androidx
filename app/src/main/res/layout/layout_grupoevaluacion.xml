@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv_evaluacion_grupal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:yourapp="http://schemas.android.com/tools"
+    yourapp:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:divider="@null"
+    android:orientation="horizontal"
+    yourapp:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    yourapp:reverseLayout="true"
+    android:splitMotionEvents="false"/>
+
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="center_horizontal"
+android:background="@drawable/background_border">
+
+<TextView
+    android:layout_weight="1"
+    android:layout_height="match_parent"
+    android:text="S1"
+    android:padding="5dp"
+    android:textSize="11dp"
+    android:gravity="center"
+    android:background="@drawable/background_border_table"/>
+
+<TextView
+    android:layout_weight="1"
+    android:layout_height="match_parent"
+    android:text="30/Abril"
+    android:padding="5dp"
+    android:textSize="11dp"
+    android:gravity="center"
+    android:background="@drawable/background_border_table"/>
+
+<LinearLayout
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/background_border_table">
+    <TextView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:background="@drawable/ic_circle_green"/>
+
+</LinearLayout>
+
+</TableRow>

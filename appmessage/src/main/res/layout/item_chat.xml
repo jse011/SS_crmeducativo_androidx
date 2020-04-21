@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="5dp">
+
+<de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/image_rec"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:src="@drawable/pic" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/image_rec"
+        android:text="Vihaan"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp" />
+
+    <com.vanniktech.emoji.EmojiTextView
+        android:id="@+id/lastmsgchat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/image_rec"
+        android:text="hello"
+        android:textSize="14sp"
+        app:emojiSize="18dp" />
+
+<TextView
+    android:id="@+id/hour"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="15dp"
+    android:textColor="@color/md_grey_500"
+    android:text="5:30 PM"
+    android:textSize="12sp" />
+
+<!--
+
+-->
+    <TextView
+        android:id="@+id/unreadMessageCountTV"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_below="@id/hour"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/round_corner_green"
+        android:gravity="center"
+        android:minWidth="22dp"
+        android:text="1"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+<View
+    android:layout_width="match_parent"
+    android:layout_height="0.5dp"
+    android:background="#2faaaaaa"
+    android:layout_below="@id/image_rec"
+    android:layout_toEndOf="@id/image_rec"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    />
+
+</RelativeLayout>

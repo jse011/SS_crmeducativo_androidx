@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/text_alumn_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintBottom_toBottomOf="@+id/img_alumn_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_alumn_profile"
+        app:layout_constraintTop_toTopOf="@+id/img_alumn_profile" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_alumn_profile"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/badge_circle" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_puntos"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/til_nota"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_alumn_profile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_puntos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:hint="@string/fragment_eval_rubrica_bidimiensional_hint_puntos"
+            android:maxLines="1"
+            android:text="" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_nota"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/til_desempenio"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/til_puntos"
+        app:layout_constraintTop_toBottomOf="@+id/img_alumn_profile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_nota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:hint="@string/fragment_eval_rubrica_bidimiensional_hint_nota"
+            android:maxLines="1"
+            android:text="" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_desempenio"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/til_logro"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/til_nota"
+        app:layout_constraintTop_toBottomOf="@+id/img_alumn_profile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_desempenio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:hint="@string/fragment_eval_rubrica_bidimiensional_hint_desempenio"
+            android:maxLines="1"
+            android:text="" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_logro"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/til_desempenio"
+        app:layout_constraintTop_toBottomOf="@+id/img_alumn_profile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_logro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:hint="@string/fragment_eval_rubrica_bidimiensional_hint_logro"
+            android:maxLines="1"
+            android:text="" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.evrencoskun.tableview.TableView
+        android:id="@+id/table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:minHeight="100dp"
+        app:column_header_height="@dimen/global_tableview_cell_width"
+        app:layout_constraintBottom_toTopOf="@+id/includeFooter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_puntos"
+        app:row_header_width="96dp"
+        app:selected_color="@color/colorAccent"
+        app:shadow_color="@color/md_grey_50"
+        app:unselected_color="@color/white" />
+
+    <include
+        android:id="@+id/includeFooter"
+        layout="@layout/fragment_bttns_footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/text_table_title"
+        android:layout_width="@dimen/row_header_width"
+        android:layout_height="@dimen/rub_bid_header_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/md_blue_500"
+        android:gravity="center"
+        android:text="Alumnos"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_puntos" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

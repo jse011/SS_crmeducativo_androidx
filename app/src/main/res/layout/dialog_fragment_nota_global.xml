@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/dim_10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_border_bottom"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/imgProfileAlumnoAN"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_account_circle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtDatosAlumno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Nombre alumno" />
+            <!--android:textColor="#15e107" />-->
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_border_bottom_azul"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dim_10dp"
+        android:paddingRight="@dimen/dim_10dp"
+        android:paddingTop="@dimen/dim_10dp">
+
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:paddingLeft="@dimen/dim_10dp"
+            android:paddingRight="@dimen/dim_10dp"
+
+            android:text="Capacidad"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="AD"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:text="A"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dim_10dp"
+            android:paddingRight="@dimen/dim_10dp"
+            android:text="B"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dim_10dp"
+            android:paddingRight="@dimen/dim_10dp"
+            android:text="C"
+            android:textColor="@android:color/holo_blue_dark" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvnotasGlobales"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/dim_10dp"
+        android:paddingRight="@dimen/dim_10dp"
+
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cvSiguenteAlumno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Siguente"
+            android:textSize="@dimen/dim_10dp" />
+
+        <Button
+            android:id="@+id/btnGuardarNota"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:text="Ok"
+            android:textAllCaps="false" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_border_bottom_azul"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dim_10dp"
+        android:paddingRight="@dimen/dim_10dp"
+        android:paddingTop="@dimen/dim_10dp">
+
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:paddingLeft="@dimen/dim_10dp"
+            android:paddingRight="@dimen/dim_10dp"
+
+            android:text="Capacidad"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="AD"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:text="A"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dim_10dp"
+            android:paddingRight="@dimen/dim_10dp"
+            android:text="B"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dim_10dp"
+            android:paddingRight="@dimen/dim_10dp"
+            android:text="C"
+            android:textColor="@android:color/holo_blue_dark" />
+
+    </LinearLayout>
+
+</LinearLayout>

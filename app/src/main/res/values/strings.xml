@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <array name="tipoRecurso">
+        <item>--Seleccione--</item>
+        <item>Materiales</item>
+    </array>
+
+    <string-array name="tabsCursoAccion">
+        <item>.</item>
+        <item>opcion1</item>
+        <item>opcion2</item>
+        <item>opcion3</item>
+    </string-array>
+    <string-array name="spnIntencion">
+        <item>Mensaje</item>
+        <item>Observación</item>
+        <item>Recomendación</item>
+        <item>Incidencias</item>
+    </string-array>
+    <string-array name="spnMenuTarea">
+        <item>Editar</item>
+        <item>Eliminar</item>
+
+    </string-array>
+    <string-array name="evaluacionResultadoList">
+        <item>APMS Cantidad</item>
+        <item>APMS Regularidad y Equivalencia</item>
+        <item>APMS Gestión de datos e Incertidumbre</item>
+        <item>APMS Forma, movimiento y localización</item>
+    </string-array>
+    <string-array name="recomendaciones">
+        <item>--Seleccione Recomendacion--</item>
+        <item>Reforzamiento</item>
+        <item>Apoyo Famimilar</item>
+        <item>Chequeo Médico</item>
+        <item>Chequeo Nutricional</item>
+    </string-array>
+    <array name="spnNotas">
+        <item>--Seleccione Nota--</item>
+        <item>AD</item>
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </array>
+
+    <array name="selectorValores">
+        <item>AD</item>
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>C-</item>
+    </array>
+
+
+    <array name="justificacion">
+        <item>--Seleccione Justificacion--</item>
+        <item>Trafico</item>
+        <item>Trabajo</item>
+        <item>Enfermo</item>
+        <item>Otro..</item>
+    </array>
+
+
+    <array name="unidad">
+        <item>Algebra</item>
+    </array>
+
+    <string name="app_name">Docente Mentor 3.0</string>
+
+
+    <string name="login.progress.titulo">Iniciando</string>
+    <string name="title_activity_mensajes_mvp">Mensajes</string>
+    <string name="login.progress.message">Por favor, espere…</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="login.configurarion.success.title">Bienvenido %1$s</string>
+    <string name="login.configurarion.success.descripcion">Colegio: %1$s</string>
+    <string name="login.configurarion.error">Ocurrio un error: %1$s</string>
+    <string name="title_activity_lista">ListaActivity</string>
+    <string name="title_activity_list_cursos">ListCursosActivity</string>
+    <string name="tabsActivity.toolbar.nombreCurso">Nombre Curso</string>
+    <string name="tabsActivity.toolbar.periodoCurso">Periodo</string>
+    <string name="tabsActivity.toolbar.nombreDocente">Nombre Docente</string>
+    <string name="tabsActivity.toolbar.tareaPendiente">Tarea Pendiente</string>
+    <string name="ListaCurso.Header.nombresApellidosAlumnos">Nombres Apellidos</string>
+    <string name="ListaCurso.Header.myCorreo">myCorreo@gmail.com</string>
+    <string name="ListaCurso.menu.actualizar">Actualizar</string>
+    <string name="tabAlumno.errorMadre">No Registrada</string>
+    <string name="tabAlumno.errorPadre">No Registrado</string>
+    <string name="Registro_nullo">No Registrado</string>
+    <string name="contactos">Selecciona Contactos</string>
+
+    <string name="month_hint">Month (zero-indexed int)</string>
+    <string name="date_hint">Date (int)</string>
+    <string name="year_hint">Year (int)</string>
+    <string name="set">Set</string>
+
+    <string name="no_value">--</string>
+    <string name="calendar_date_picker_set">Set Date</string>
+    <string name="calendar_date_picker_result_values">Year: %1$s\nMonth: %2$s\nDay: %3$s</string>
+    <string name="radial_time_picker">Set Time</string>
+    <string name="radial_time_picker_result_value">%1$d:%2$d</string>
+    <string name="date_picker_set">Set Date</string>
+    <string name="date_picker_result_value">Year: %1$s\nMonth: %2$s\nDay: %3$s</string>
+    <string name="expiration_picker_set">Set Expiration</string>
+    <string name="expiration_picker_result_value">%1$s/%2$s</string>
+    <string name="hms_picker_set">Set HMS</string>
+    <string name="hms_picker_result_value_multiline">Hours: %1$s\nMinutes: %2$s\nSeconds: %3$s\nNegative : %4$b</string>
+    <string name="hms_picker_result_value_oneline">H:%1$s, M:%2$s, S:%3$s</string>
+    <string name="time_picker_set">Set Time</string>
+    <string name="time_picker_result_value">%1$s:%2$s</string>
+    <string name="timezone_picker_set">Set Time Zone</string>
+    <string name="recurrence_picker_set">Set Recurrence</string>
+    <string name="number_picker_set">Set Number</string>
+    <string name="number_picker_result_value">Number: %1$s\nDecimal: %2$s\nIs negative: %3$b\nFull number: %4$s</string>
+    <string name="colorprimary_text">Here is colorPrimary</string>
+
+    <string name="button_label_custom_ok">Okay</string>
+    <string name="button_label_custom_cancel">Nop</string>
+    <string name="dialog_dismissed">Dialog dismissed</string>
+    <string name="cerrar_sesi_n">Cerrar Sesión</string>
+    <string name="exportar_mensajes">Exportar Mensajes</string>
+    <string name="exportar_asistencias">Exportar Asistencias</string>
+    <string name="exportar_notas">Exportar Notas</string>
+    <string name="importar_calendario">Importar Calendario Periodo</string>
+    <string name="fragment.gruop.item.team.image.description">Imagen del grupo</string>
+    <string name="team.description.name">Imagen del equipo</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description_user_img">Member Image</string>
+    <string name="img_description_delete">Eliminar Miembro</string>
+    <string name="action_create_team">Crear Equipo</string>
+    <string name="action_create_teamlist">Finalizar</string>
+    <string name="create_team_msg_invalidad_name">Introduce un nombre válido</string>
+    <string name="create_team_msg_invalid_members_count">Agregar Integrantes al Equipo</string>
+    <string name="create_team_msg_invalidad_selected_image">Seleccionar una imagen por favor</string>
+    <string name="teamlist_msg_invalid_listname">Ingresar Nombre</string>
+    <string name="teamlist_msg_invalid_teamcount">Agregar 1 o más Equipos</string>
+    <string name="group_msg_error_loading_groups">Error Cargando Grupos</string>
+    <string name="create_team_txt_agrupation">Agrupar por</string>
+    <string name="teamlist_msg_invalid_listcantidad">Número de equipos no permitido</string>
+
+    <string name="evalIndividual">Eval. Individual</string>
+    <string name="evalGlobal">Eval. Individual</string>
+    <string name="mensaje">Enviar Mensaje</string>
+    <string name="title_activity_mpv">MpvActivity</string>
+    <string name="dni">DNI :</string>
+    <string name="title_activity_crear_rubros">crear Rubros</string>
+    <string name="activity_createteamlist_error_restoring_team">Error restaurando Equipo</string>
+    <string name="activity_teamlist_message_teamdeleted">Equipo eliminado</string>
+    <string name="activity_teamlist_message_teamdeleted_error">No se pudo eliminar al Equipo</string>
+    <string name="global_message_undo">Deshacer</string>
+    <string name="activity_teamlist_teamremoved">Equipo Eliminado</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="global_btn_text_finalizar">Finalizar</string>
+    <string name="global_btn_text_back">Atrás</string>
+    <string name="global_btn_text_next">Siguiente</string>
+    <string name="evaluacionindividual_msg_error_invalidnota">Nota inválida.</string>
+    <string name="accesos">Accesos</string>
+    <string name="title_activity_tareas_pendiente">TareasPendienteActivity</string>
+    <string name="title_activity_detalle_tarea">DetalleTareaActivity</string>
+    <string name="newTarea">Nueva Tarea</string>
+    <string name="ItemTareas.Tarea.FechaLimite">Sin límite de entrega</string>
+    <string name="ingrese_descripcion">Ingrese Descripción</string>
+    <string name="tareas.dialog.editar">Editando Tarea</string>
+
+    <string name="sesion_evaluacion_title">Alumnos </string>
+    <string name="sesion_evaluacion_grupo_title">Grupos </string>
+
+    <string name="sesion_evaluacion_grupo_message_grupo_no_asignado">Seleccione un grupo</string>
+    <string name="sesion_evaluacion_grupo_message_grupo_por_defecto">Lista de grupo por defecto</string>
+    <string name="sesion_evaluacion_agreagar_grupo_message_error_al_guardar_datos">Error al guardar los grupos</string>
+    <string name="sesion_evaluacion_grupo_tabla_sin_rubro">Agregue\nRubro Evaluación</string>
+    <string name="sesion_evaluacion_grupo_tabla_sin_grupos">Agregue\nGrupos de Evaluación</string>
+    <string name="sesion_evaluacion_grupo_tabla_sin_alumnos">No Existe\nAlumnos al Curso</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_rubrica">Título rubríca</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_alias">Descripción</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_competencias">Competencias</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_campoaccion">Campo Acción</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_tiponota">Nivel de Logro</string>
+    <string name="fragment_create_rubbid_firstheader_title">Categorías</string>
+    <string name="action_save">Guardar</string>
+    <string name="evaluacionindividual_mssg_lastalumn">No hay más alumnos para evaluar.</string>
+    <string name="evaluacionindividual_mssg_firsttalumn">Éste es el primer alumno de la lista.</string>
+    <string name="empty_data">Información no hay registros</string>
+    <string name="empty_list_destinos"><b>Información</b> \nNo se ha Encontrado Personas Para enviar el Mensaje</string>
+    <string name="empty_data2"> Información no hay registros</string>
+    <string name="empty_calendario">Seleccioné bimestre</string>
+    <string name="empty_aistencias"> No se generaron asistencias: Lista de alumnos vacia</string>
+    <string name="login_btn_ingresar">Ingresar</string>
+    <string name="login_username_hint">Usuario :</string>
+
+
+    <string name="login_error_saving_session">Error guardando la sesión</string>
+    <string name="createrubbid_error_getting_competencias">No se pudieron obtener las competencias</string>
+    <string name="createrubbid_error_competencias_empty">No hay competencias</string>
+    <string name="createrubbid_error_compos_accion_empty">No hay Campos Acción</string>
+    <string name="msg_crearRubroEvaluacion_selecionar_campotematico">Seleccione un Campo Tematico</string>
+    <string name="createrubbid_error_indicadores_empty">No hay indicadores</string>
+    <string name="createrubbid_error_getting_tiponota">Error obteniendo los tipos de notas.</string>
+    <string name="createrubbid_competencias_dialog_title">Seleccionar Competencias</string>
+
+    <string name="global_app_version_incompatible">Version de la app Incompatible.</string>
+    <string name="in_progress">En progreso…</string>
+    <string name="title_activity_detalle_mensaje">DetalleMensajeActivity</string>
+    <string name="textview">TextView</string>
+    <string name="createrubbid_tiponota_dialog_title">Seleccionar Tipo Nota</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_escala">Escala</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_tipoevaluacion">Tipo Evaluación</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_forma_evaluacion">Forma Evaluación</string>
+    <string name="fragment_rubrica_bidimensional_cabecera">Rúbrica</string>
+    <string name="fragment_rubrica_bidimensional_detalle">Criterios</string>
+    <string name="global_action_create">Crear</string>
+    <string name="global_action_update">Actualizar</string>
+    <string name="global_action_import">Importar</string>
+    <string name="fragment_rubrica_bidimiensional_message_hint_tiponivel">Nivel de Logro</string>
+    <string name="fragment_create_rubbid_title_tiponivel">Seleccionar Tipo Nivel</string>
+    <string name="global_message_sucess">Listo</string>
+    <string name="createrubbid_formaevaluacion_dialog_title">Forma Evaluación</string>
+    <string name="createrubbid_tipoevaluacion_dialog_title">Tipo Evaluación</string>
+    <string name="createrubbid_escalaevaluacion_dialog_title">Escala Evaluación</string>
+    <string name="createrubbid_error_rubricatitle_empty">Nombre de Rúbrica Vacío</string>
+    <string name="createrubbid_error_rubricaalias_empty">Rúbrica Alias Vacío</string>
+    <string name="createrubbid_error_tipoevaluacion_empty">Tipo Evaluación Vacio</string>
+    <string name="createrubbid_error_formaevaluacion_empty">Forma Evaluación Vacío</string>
+    <string name="createrubbid_error_tiponota_empty">Tipo Nota Vacío</string>
+    <string name="createrubbid_error_escalaevaluacion_empty">Escala Evaluación Vacío</string>
+    <string name="createrubbid_error_campoaccion_empty">Campo Acción Vacío</string>
+    <string name="createrubbid_error_tiponivel_empty">Tipo Nivel Vacío</string>
+    <string name="createrubbid_error_indicadores_notselected">No ha seleccionado indicadores</string>
+    <string name="createrubbid_error_tiponivel_valortiponotalist_empty">El tipo de Nivel no tiene Niveles Asociados</string>
+    <string name="createrubbid_error_peso_inidacadores">El peso de los inidicadores erroneos</string>
+    <string name="fragment_rubrica_bidimiensional_cell_desc">Cambiar Descripción</string>
+    <string name="fragment_rubrica_bidimiensional_cell_peso_indicador_desc">Cambiar Peso</string>
+    <string name="create_rubbid_cell_title">Indicador: %1$s\nNivel: %2$s</string>
+    <string name="create_rubbid_cell_indicador_peso_title">Categoría: %1$s</string>
+    <string name="fragment_rubrica_bidimensional_list">Rúbricas Bidimensionales</string>
+    <string name="fragment_eval_rubrica_bidimiensional_hint_rubro">Rúbrica</string>
+    <string name="fragment_eval_rubrica_bidimiensional_hint_puntos">Puntos</string>
+    <string name="fragment_eval_rubrica_bidimiensional_hint_nota">Nota</string>
+    <string name="fragment_eval_rubrica_bidimiensional_hint_desempenio">Desempeño</string>
+    <string name="fragment_eval_rubrica_bidimiensional_hint_logro">Logro</string>
+    <string name="eval_rub_bid_empty_alumnos">No hay alumnos</string>
+    <string name="todo">TODO</string>
+    <string name="title_activity_tipo_nota">TipoNotaActivity</string>
+    <string name="ver_rango">\n\nVer Rango</string>
+    <string name="ver_hoy">\n\nVer Hoy</string>
+    <string name="ListaCurso.menu.horario">Horario</string>
+    <string name="seleccionar_una_opci_n">Seleccionar una opción</string>
+    <string name="activity_create_rub_bid_name">Rúbrica</string>
+    <string name="activity_create_team_list">Lista de grupos</string>
+    <string name="activity_create_team">Equipo</string>
+    <string name="activity_create_team_create">Guardar</string>
+    <string name="activity_create_team_list_create">Guardar</string>
+
+    <string name="guardar">Guardar</string>
+    <string name="publicar">Publicar</string>
+    <string name="publi_save">Publicar y Guardar</string>
+    <string name="title_crear_rubro_competencia_activity">Rubro</string>
+    <string name="title_crear_tarea_activity">Tarea</string>
+    <string name="title_activity_rubrica_bidimencional_grupo">Evaluación rúbrica grupal</string>
+    <string name="title_activity_rubrica_evaluar_rubro">Evaluar eubro</string>
+    <string name="activity_asistencia_seccion_title">Asistencia sección</string>
+    <string name="activity_main_title">Cursos</string>
+    <string name="activity_evaluacion_resultado_title">Evaluación</string>
+    <string name="activity_tarea_title">Tarea</string>
+    <string name="activity_evaluacion_rubro_title">Evaluación rubro</string>
+    <string name="activity_evaluacion_rubro_bidmencional_title">Evaluación rubro</string>
+    <string name="title_activity_rubrica_bidimencional">Evaluación rúbrica</string>
+    <string name="activity_login_title">Iniciar Sesión</string>
+    <string name="activity_createteamlist_error_alumnos_sin_grupo">Algunos alumnos no pertenecen a un grupo.</string>
+
+
+    <string name="title_activity_seleccionar_competencias">Campos de acción</string>
+    <string name="fragment_competencias_base_title">Base</string>
+    <string name="fragment_competencias_transversales_title">Transv</string>
+    <string name="fragment_competencias_enfoque_title">Enfoque</string>
+    <string name="global_action_accept">OK</string>
+    <string name="global_action_back">Atras</string>
+    <string name="global_action_close">Cerrar</string>
+    <string name="title_activity_tipo_nota_lista_global">Nivel de Logro Global</string>
+    <string name="title_activity_tipo_nota_lista">Lista de Niveles de Logro</string>
+    <string name="global_action_search">Search</string>
+    <string name="anio_academico">Año Académico</string>
+    <string name="large_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="medium_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</string>
+
+
+    <string name="activity_evalaucion_bidimencional_indicador_detalle">No existe detalle</string>
+    <string name="activity_cancelar_seleccion_grupos">Seleccione un grupo</string>
+    <string name="menu_editar">Guardar</string>
+    <string name="datos_correctamente_validar">Complete los datos Correctamente</string>
+    <string name="datos_actualizado_correctamente">Datos Actualizados Correctamente!</string>
+    <string name="msg_servicio_offline">Conectándonos con nuestros satélites…</string>
+    <string name="msg_servicio_error"><b>Información</b>\n\nParece que no tienes acceso a Internet. Esta funcionalidad precisa de conexión la primera vez. Por favor, revisa tu conexión a Internet nuevamente.</string>
+    <string name="msg_espera"><b>Información</b>\n\n Esta funcionalidad puede tardar algunos segundos. Le rogamos que espere un momento.</string>
+    <string name="fragment_content_eval_titulo_rubro">Rubro</string>
+    <string name="fragment_crear_rubro_competencia_tiponota">Nivel de Logro</string>
+
+    <string name="navigation_view_programa_educativo">EDUCATIVO</string>
+    <string name="navigation_view_accesos">EVENTOS</string>
+    <string name="navigation_view_configuracion">CONFIGURACIÓN</string>
+
+    <string name="fragmento_lista_grupos_hint_titulo">Título de la lista de equipos</string>
+    <string name="fragmento_lista_grupos">Agregar un equipo</string>
+    <string name="msg_elimar_rubro">¿Estás seguro que desea eliminar, recuerde que si elimina se borrará todas sus calificaciones?</string>
+    <string name="msg_dilogo_cerrar_sesion_titulo">Cerrar Sesión</string>
+    <string name="msg_dilogo_cerrar_sesion_descripcion">¿Estás seguro de cerrar sesión, recuerde que si cierra la sesión los datos no exportados se perderan?</string>
+    <string name="msg_dilogo_cerrar_sesion_descripcion_two">Es seguro cerrar sesión</string>
+    <string name="empty_intenciones">Lista de intenciones vacías</string>
+    <string name="ImcompleteDataToCargaAcademica">Datos Faltantes para la carga Academica</string>
+    <string name="msg_dilogo_borrar_cache_titulo">Borrar Caché</string>
+    <string name="msg_dilogo_borrar_cache_descripcion">¿Estás seguro de borrar Caché, recuerde el borrar cahé no es particularmente eficiente y debe evitarse siempre que sea posible para evitar el aumento de los tiempos de carga.?</string>
+    <string name="title_activity_importar">Importación</string>
+    <string name="msg_actualizacion_rubro">Se detecto un cambio en la evaluación, pulse aquí para actualizar.</string>
+    <string name="msg_succes_actualizacion">Finalizo correctamente la importación.</string>
+    <string name="msg_actualizacion_sesion_aprendizaje">Se detecto un cambio en la sesión Aprendizaje , \npulse aquí para actualizar.</string>
+    <string name="msg_actualizacion_lista_equipo">Se detecto un cambio en la lista de tipo equipo, pulse aquí para actualizar.</string>
+    <string name="activity_seleccionar_rubro_ok">Aceptar</string>
+    <string name="activity_seleccionar_rubro_all">Selecionar Todo</string>
+    <string name="msg_seleccion_rubro_vacio">Por favor seleccione un rubro</string>
+    <string name="rubro_formula_hint">Rubro Formula</string>
+    <string name="crear_rubro_formula_removed">Rubro removido</string>
+    <string name="crear_rubro_formula_limite">Es necesario mantener un rubro</string>
+    <string name="unidad_aprend_change_ejecucion_titulo">¿Estás seguro de continuar?</string>
+    <string name="unidad_aprend_change_ejecucion_hecho">Volverá al estado programado, el cual significa que no hizo la sesión</string>
+    <string name="unidad_aprend_change_error_pendiente">No esposible retroceder a pendiente</string>
+    <string name="unidad_aprend_change_ejecucion_pendiente">La sesión pasará a un estado hecho que significa que lo ha realizado.</string>
+    <string name="msg_seleccionar_rubro">¿Seleccionar rubros, para crear una formula ?</string>
+    <string name="msg_calendarioPeriodo_desabilitado">El periodo no se encuentra vigente para la evaluación.</string>
+    <string name="mensaje.predeter.error">Debe Ingresar almenos un texto</string>
+    <string name="dialogPredeterminado.txtTipo">Monstrando los Mensajes de tipo :</string>
+    <string name="title_activity_tarea">Tarea</string>
+    <string name="title_activity_Prog_horario">Horario</string>
+    <string name="title_activity_asistencia">Asistencia </string>
+    <string name="fragment_jsutificacion_asis_msg_hint">Tipo de Justificacion</string>
+    <string name="title_activity_comportamiento">Comportamiento </string>
+    <string name="title_delete_comportamiento">¿Desea eliminar caso? </string>
+    <string name="empty_data_resultados_capacidad">No se a configurado los rubros de evaluacion para esta capacidad</string>
+    <string name="empty_data_resultados_competencia">No se a configurado los rubros de evaluacion para esta competencia</string>
+    <string name="empty_data_resultados_bimestre">No se a configurado los rubros de evaluacion para esta bimestre final</string>
+    <string name="text_empty_horario">No se encontro un horario registrado </string>
+    <string name="msg_validar_rubro">El rubro seleccionado no tiene evaluaciones, por favor seleccione otro rubro.</string>
+    <string name="msg_validar_ancla_evaluaciones">No se registraron resultados, anclaje inválido.</string>
+    <string name="msg_alumno_empty_comportamiento">Seleccione un alumno primero.</string>
+    <string name="msg_usuario_empty_comportamiento">Persona seleccionada sin usuario.</string>
+    <string name="msg_empty_comportamiento">No se encontro comportamientos registrados.</string>
+    <string name="msg_empty_tipo_comportamiento">Debe seleccionar un tipo</string>
+    <string name="msg_empty_alumno_comportamiento">Debe seleccionar un alumno</string>
+    <string name="title_delete_group">¿Desea eliminar grupo? </string>
+    <string name="title_anclar_resultados">¿Seguro que desea anclar todos los resultados? </string>
+    <string name="teamlist_msg_lista_vacia">No hay lista grupos</string>
+    <string name="teamlist_msg_lista_seleccionar_vacia">No hay lista de grupos que se puedan seleccionar</string>
+    <string name="title_activity_seleccionar_indicadores">Indicadores</string>
+    <string name="resultados_desabilitados">No se encuentra vigente el periodo para resultados </string>
+    <string name="cannot_open_file">No se puede abrir el archivo</string>
+    <string name="title_cerrar_curso">¿Seguro que desea cerrar el curso? </string>
+    <string name="global_update_alumnos">Actualizar Alumnos</string>
+    <string name="msg_update_alumno_contrato">Esta funcionalidad puede tardar algunos minutos. ¿Desea esperar?</string>
+    <string name="msg_empty_estilos_apre_generar">Creación inválida, no se encontraron estilos de aprendizaje</string>
+    <string name="global_update_foto_alumnos">Fotos de los Alumno</string>
+    <string name="title_activity_cambiar_fotos_alumnos">Fotos de Alumnos</string>
+    <string name="menu_accesos_nav">Accesos</string>
+    <string name="menu_progEdu_nav">Programa</string>
+    <string name="menu_config_nav">Ajustes</string>
+    <string name="msg_publicar_eval_rubro">¿Estas seguro de publicar todas las evaluaciones de esta rubrica?</string>
+    <string name="activity_estudiantes">Alumnos</string>
+    <string name="global_action_message">Mensajería</string>
+
+    <string name="title_calcular_notas" >¿Seguro que desea calcular todos los competencias?</string>
+    <string name="vista_previa" >Vista previa</string>
+    <string name="txt_notificacion_activado" >Desactivar las notificaciones del Docente Mentor</string>
+    <string name="txt_notificacion_desactivado">Activar las notificaciones del Docente Mentor</string>
+    <string name="txt_prog_horario_envio_desactivado">Definir el momento donde se enviaran los cambios que no se sincronizaron</string>
+    <string name="msg_start_rubro">¿Estás seguro que desea enviar todos sus cambios, recuerde que este proceso podría demorar algunos minutos?</string>
+    <string name="msg_stop_rubro">¿Estás seguro que desea cancelar el envío de sus cambios?</string>
+    <string name="msg_remplasar_data_rubro">Existen cambios pendientes a enviar que podrían ser remplazados, ¿estás seguro que desea actualizar?</string>
+    <string name="msg_unknow_internet_2">Por favor, revisa tu conexión a Internet.</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+</resources>

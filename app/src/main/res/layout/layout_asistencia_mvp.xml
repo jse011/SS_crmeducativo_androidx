@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/content_rangos" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:id="@+id/contentVacio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="50dp"
+                android:background="@drawable/background_border"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="30dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/dim_100dp"
+                    android:layout_height="@dimen/dim_100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/mantenimiento" />
+
+                <TextView
+                    android:id="@+id/txtVacio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="En proceso... \nCurso sin datos para asistencia"
+                    android:textColor="#f56560" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <com.consultoraestrategia.ss_crmeducativo.tablefixheaders.TableFixHeaders
+                    android:id="@+id/tfhAsistencia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff"
+                    android:visibility="visible" />
+
+
+            </LinearLayout>
+
+
+            <include layout="@layout/rv_calendario" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMensajeGrupal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_menu_send" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:layout_marginBottom="3dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="2dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:yourapp="http://schemas.android.com/tools"
+    app:cardCornerRadius="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <com.consultoraestrategia.ss_crmeducativo.util.CircularTextView
+                    android:id="@+id/txt_num_actividad"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="#00c4e2"
+                    android:textSize="16dp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_cabeceraAct"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:paddingTop="5dp"
+                    android:paddingRight="5dp">
+
+                    <TextView
+                        android:id="@+id/txt_actividad"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:text="Actividad de la sesión P ED"
+                        android:textSize="10dp"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:maxLines="2"/>
+
+                    <TextView
+                        android:id="@+id/txt_ver_detalle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:text="Ver detalle"
+                        android:textColor="#05a6d7"
+                        android:textSize="8dp"
+                        android:textStyle="bold" />
+
+                    <!--<RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:layout_marginTop="10dp"
+                        android:paddingRight="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:text="Ver detalle"
+                            android:textColor="#05a6d7"
+                            android:textSize="8dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>-->
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_tiempo_act"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="25 min."
+                        android:textSize="8dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/txt_tipo_act"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ejercicio"
+                        android:textSize="8dp"
+                        android:layout_marginTop="1dp"/>
+
+                    <TextView
+                        android:id="@+id/txt_secuencia_act"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Inicio"
+                        android:textSize="8dp"
+                        android:layout_marginTop="1dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_cabeceraActDet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/txt_actividad_det"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actividad de la sesión P ED"
+                    android:textSize="10dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/txt_ocultar_det"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="Ocultar Detalle"
+                    android:textColor="#05a6d7"
+                    android:textSize="8dp"
+                    android:textStyle="bold"
+                    android:paddingTop="5dp"/>
+
+                <!--<RelativeLayout
+                    android:id="@+id/btn_ocultarDet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:text="Ocultar Detalle"
+                        android:textColor="#05a6d7"
+                        android:textSize="8dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>-->
+
+                <LinearLayout
+                    android:id="@+id/lin_cabeceraActDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiempo"
+                            android:textSize="8dp"
+                            android:layout_marginTop="3dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tipo:"
+                            android:textSize="8dp"
+                            android:layout_marginTop="3dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Secuencia:"
+                            android:textSize="8dp"
+                            android:layout_marginTop="3dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txt_tiempo_act_det"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="25 min."
+                            android:textSize="8dp"
+                            android:layout_marginTop="3dp"/>
+
+                        <TextView
+                            android:id="@+id/txt_tipo_act_det"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ejercicio"
+                            android:textSize="8dp"
+                            android:layout_marginTop="3dp"/>
+
+                        <TextView
+                            android:id="@+id/txt_secuencia_act_det"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Inicio"
+                            android:textSize="8dp"
+                            android:layout_marginTop="3dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingRight="1dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:text="Pendiente"
+                    android:textColor="#34bf73"
+                    android:textSize="8dp" />
+
+                <TextView
+                    android:id="@+id/txt_cant_recursos"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_circle_unidades"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="#fff"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_actividad_Det"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txt_descripcion_act_det"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:text="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos espécimen."
+                android:textSize="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="5dp"
+                android:paddingBottom="5dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_act_recursos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.evrencoskun.tableview.TableView
+        android:id="@+id/table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/white"
+        android:minHeight="100dp"
+        android:visibility="visible"
+        app:column_header_height="@dimen/table_header_width_eval_session"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilTipoNivel"
+        app:layout_constraintVertical_bias="0.0"
+        app:row_header_width="@dimen/table_firstheader_width_eval_session"
+        app:selected_color="@color/colorAccent"
+        app:shadow_color="@color/md_grey_50"
+        app:unselected_color="@color/white">
+
+    </com.evrencoskun.tableview.TableView>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tilTipoNivel"
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:minHeight="60dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView63"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBuscarCampoAccionList"
+        tools:listitem="@layout/layout_item_tipo_nota_list"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="8dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/btnTipoNivel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView63"
+        app:layout_constraintStart_toStartOf="@+id/textView63"
+        app:layout_constraintTop_toBottomOf="@+id/textView63"
+        app:srcCompat="@drawable/ic_diagram"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/textView63"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="N. Logro"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCompetenciaList"
+        android:layout_marginRight="8dp" />
+
+
+    <include
+        android:id="@+id/include_firstcolumn"
+        layout="@layout/layout_createrubbid_firstcolumn"
+        android:layout_width="@dimen/table_firstheader_width_eval_session"
+        android:layout_height="@dimen/table_header_width_eval_session"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/table"
+        app:layout_constraintTop_toTopOf="@+id/table" />
+
+    <ImageButton
+        android:id="@+id/btnCompetenciaList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/background_color"
+        app:layout_constraintEnd_toStartOf="@+id/btnCampoAccionList"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_speedometer"
+        android:layout_marginRight="8dp"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/btnCampoAccionList"
+        style="@android:style/Widget.DeviceDefault.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/background_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_checklist"
+        android:layout_marginRight="8dp"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/btnBuscarCampoAccionList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/background_color"
+        app:layout_constraintBottom_toBottomOf="@+id/text_title_campoaccionlist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_search_book"
+        android:layout_marginLeft="8dp"
+        tools:ignore="VectorDrawableCompat" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

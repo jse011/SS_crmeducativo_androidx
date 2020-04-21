@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_white_1000">
+
+    <com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.adapter.TableViewEvaluacion
+        android:id="@+id/table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:minHeight="100dp"
+        app:column_header_height="@dimen/table_header_width_eval_session"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:row_header_width="@dimen/table_firstheader_width_eval_session"
+        app:shadow_color="@color/md_grey_50"
+        app:unselected_color="@color/white">
+
+    </com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.adapter.TableViewEvaluacion>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

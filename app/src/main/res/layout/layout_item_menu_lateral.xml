@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:diagonal="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="26dp"
+    android:layout_height="120dp"
+    android:orientation="vertical"
+    android:paddingTop="2dp">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="24dp"
+        android:layout_height="0dp"
+        android:src="@drawable/border_radius_left"
+        diagonal:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="0dp"
+        diagonal:layout_constraintLeft_toLeftOf="parent"
+        diagonal:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="0dp"
+        diagonal:layout_constraintRight_toRightOf="parent"
+        diagonal:layout_constraintVertical_bias="0.5"
+        diagonal:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:ellipsize="end"
+        android:gravity="bottom|center"
+        android:maxEms="8"
+        android:maxLines="1"
+        android:rotation="90"
+        android:text="TextView"
+        android:textSize="9dp"
+        diagonal:layout_constraintBottom_toBottomOf="parent"
+        diagonal:layout_constraintHorizontal_bias="0.0"
+        diagonal:layout_constraintLeft_toLeftOf="parent"
+        diagonal:layout_constraintRight_toRightOf="parent"
+        diagonal:layout_constraintTop_toTopOf="parent"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textColor="#fff"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

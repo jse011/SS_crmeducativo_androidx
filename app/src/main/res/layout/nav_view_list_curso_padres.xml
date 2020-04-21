@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/nav_header_list_cursos_padres" />
+
+        <LinearLayout
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_10dp"
+                android:layout_marginTop="@dimen/dim_10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/menu_nav_clases"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dim_10dp"
+                    android:drawableLeft="@drawable/ic_home"
+                    android:gravity="center|left"
+                    android:text="    Clases"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/menu_nav_calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dim_10dp"
+                    android:drawableLeft="@drawable/ic_event"
+                    android:gravity="center|left"
+                    android:text="    Cuenta Corriente"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/menu_nav_notifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dim_10dp"
+                    android:drawableLeft="@drawable/ic_notifications"
+                    android:gravity="center|left"
+                    android:text="    Notificaciones"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="#000" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dimen_15dp"
+                android:text="Cursos Inscritos" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvListaClasesDrawer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_15dp"
+                android:layout_marginTop="@dimen/dim_10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/menu_nav_ajustes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dim_10dp"
+                    android:drawableLeft="@drawable/ic_settings"
+                    android:gravity="center|left"
+                    android:text="    Ajustes"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/menu_nav_ayuda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dim_10dp"
+                    android:drawableLeft="@drawable/ic_help"
+                    android:gravity="center|left"
+                    android:text="    Ayuda"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="#000" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

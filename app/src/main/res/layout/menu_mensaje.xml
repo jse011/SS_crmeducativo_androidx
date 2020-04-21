@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout5"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_blue_dark"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <ImageButton
+        android:id="@+id/ibtn_salir"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back" />
+
+    <TextView
+        android:id="@+id/txtTituloAccion"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="start|center"
+        android:maxLines="1"
+        android:text="Acción"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ibtnVideo"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_movie_filter_black_24dp"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/ibtnAdjuntar"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/ic_attach_file_black_24dp"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/ibtnTexto"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:src="@drawable/ic_description_black_24dp"
+            android:visibility="gone" />
+
+
+        <ImageButton
+            android:id="@+id/ibtnEnviarMensaje"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_menu_send" />
+
+
+        <ImageButton
+            android:id="@+id/ibtnMenuMensaje"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_more_point" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

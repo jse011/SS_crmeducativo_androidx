@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="2dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginTop="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="6dp">
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/TextAppearance.Compat.Notification.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:text="view_behavior"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            android:textColor="@color/md_grey_700"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/txt_cant_rubro"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/ic_circle_unidades"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#fff"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="14dp"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/md_light_blue_400"
+            android:paddingBottom="2dp"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textStyle="bold"
+            android:text="MÁS"
+            android:textSize="12dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp" />
+
+
+        <ImageButton
+            android:id="@+id/btn_addrubro"
+            android:visibility="visible"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:textColor="@color/white"
+            android:src="@drawable/ic_add_class"
+            android:background="@drawable/circled_rounded"
+            app:layout_constraintLeft_toRightOf="@+id/txt_cant_rubro"
+            android:layout_marginLeft="14dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="0dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            android:layout_marginTop="6dp" />
+
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/btn_addrubro"-->
+        <!--android:visibility="visible"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:src="@drawable/ic_add_class"-->
+        <!--android:background="@drawable/circled_rounded"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/txt_cant_rubro"-->
+        <!--android:layout_marginLeft="0dp"-->
+
+        <!--android:layout_marginRight="8dp"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--app:layout_constraintRight_toLeftOf="@+id/more" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.cardview.widget.CardView>
+
+
+

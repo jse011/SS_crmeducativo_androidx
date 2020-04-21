@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="@dimen/table_body_width_asistencia"
+    android:layout_height="@dimen/table_body_height_asistencia"
+    android:background="@drawable/background_border_asistencia"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgTipoNota"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:text="-"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/txtHoraAsistencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Hora"
+        android:textAlignment="center"
+        android:textSize="9dp"
+        android:textStyle="bold" />
+
+</LinearLayout>

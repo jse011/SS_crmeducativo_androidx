@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contentNotaAlumno"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+
+    <TextView
+        android:id="@+id/txtIdEvalcap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="#002aff"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <EditText
+
+        android:id="@+id/txtNotaEvalCap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:maxLength="5"
+        android:text="0"
+        android:textSize="9dp"
+        android:visibility="gone" />
+
+    <TextView
+
+        android:id="@+id/txtShowNotaEvalCap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="-"
+        android:visibility="visible" />
+
+
+
+
+</LinearLayout>

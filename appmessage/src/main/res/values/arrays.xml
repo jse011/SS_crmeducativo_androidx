@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activity_splash_progress_messages_array">
+        <item>Conectándonos con nuestros satélites…</item>
+        <item>Rayos! Hemos detectado una conexión lenta…</item>
+        <item>No se preocupe, ¡aceleraremos su conexión!</item>
+        <item>Moviéndose más rápido que la velocidad de la luz…</item>
+        <item>Distorsionando el continuo espacio-tiempo…</item>
+        <item>Hey! Conexión exitosa!</item>
+        <item>Parece que finalmente pudimos conectarnos con nuestro servidor…</item>
+        <item>¡Conexión Segura!</item>
+        <item>Ahora sincronizaremos nuestra base de datos</item>
+        <item>Sólo un par de segundos más…</item>
+    </string-array>
+</resources>

@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="6dp"
+    app:cardCornerRadius="8dp"
+    app:elevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/md_orange_900"
+        android:orientation="vertical">
+
+        <TabHost
+            android:id="@+id/tab_host"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cabecera"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/md_white_1000" />
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/tab_two_container"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/md_grey_200">
+
+                        <TableLayout
+                            android:id="@+id/simpleTableLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="#394349"
+                            android:stretchColumns="*"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/view"> <!-- stretch the second column of the layout-->
+
+                            <!-- first row of the table layout-->
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+                                <!-- first element of the row-->
+                                <ImageView
+                                    android:id="@+id/btn_cal_borrar"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="match_parent"
+                                    android:paddingTop="6dp"
+                                    android:paddingBottom="6dp"
+                                    app:srcCompat="@drawable/ic_backspace"
+                                    tools:ignore="VectorDrawableCompat" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_1"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="1"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_2"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="2"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_3"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="3"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+                                <!-- first element of the row-->
+                                <ImageView
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="match_parent"
+                                    android:paddingTop="6dp"
+                                    android:paddingBottom="6dp" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_4"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="4"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_5"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="5"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_6"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="6"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+                                <!-- first element of the row-->
+                                <ImageView
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="match_parent" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_7"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="7"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_8"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="8"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_9"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="9"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content">
+                                <!-- first element of the row-->
+                                <ImageView
+                                    android:id="@+id/btn_cal_aceptar"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="match_parent"
+                                    android:paddingTop="6dp"
+                                    android:paddingBottom="6dp"
+                                    app:srcCompat="@drawable/ic_success"
+                                    tools:ignore="VectorDrawableCompat" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_punto"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="."
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/btn_cal_0"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="6dp"
+                                    android:text="0"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textColor="@color/white" />
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/btn_cal_espacio"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:layout_width="0dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginEnd="8dp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:srcCompat="@drawable/ic_space_bar_01"
+                                        tools:ignore="VectorDrawableCompat" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TextView
+                            android:id="@+id/txt_cal_valor_asignado"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:maxLength="6"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat"
+                            android:textSize="36sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/view"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.23000002"
+                            tools:text="124" />
+
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="1dp"
+                            android:layout_height="1dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.4"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/tab_one_container"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/md_grey_200">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rc_precision"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:itemCount="16"
+                            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            tools:listitem="@layout/item_directo_presicion"
+                            tools:orientation="vertical"
+                            tools:scrollbars="horizontal"
+                            tools:spanCount="4" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </FrameLayout>
+
+
+
+            </LinearLayout>
+
+        </TabHost>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_home"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_back_white" />
+
+            <TextView
+                android:id="@+id/txt_rubro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@color/md_white_1000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/img_home"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="REUTILIZA CODIGO" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cabecera"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:background="@color/md_white_1000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <TextView
+                android:id="@+id/txt_descrip_nota"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Esta en proceso"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_cuadro_color" />
+
+            <TextView
+                android:id="@+id/txt_cuadro_color"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:background="@color/md_orange_900"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_nota_asignada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="100"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_cuadro_color"
+                app:layout_constraintEnd_toEndOf="@+id/txt_cuadro_color"
+                app:layout_constraintStart_toStartOf="@+id/txt_cuadro_color"
+                app:layout_constraintTop_toTopOf="@+id/txt_cuadro_color" />
+
+            <TextView
+                android:id="@+id/txt_rango_nota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[ 0.0 - 10.0>"
+                app:layout_constraintEnd_toEndOf="@+id/txt_descrip_nota"
+                app:layout_constraintStart_toStartOf="@+id/txt_descrip_nota"
+                app:layout_constraintTop_toBottomOf="@+id/txt_descrip_nota" />
+
+            <TextView
+                android:id="@+id/txt_selector_nota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_nota"
+                app:layout_constraintEnd_toEndOf="@+id/img_nota"
+                app:layout_constraintStart_toStartOf="@+id/img_nota"
+                app:layout_constraintTop_toTopOf="@+id/img_nota"
+                tools:text="C++" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_nota"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_cuadro_color"
+                app:layout_constraintStart_toEndOf="@+id/txt_cuadro_color"
+                app:srcCompat="@drawable/ic_sad"
+                tools:ignore="VectorDrawableCompat" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+

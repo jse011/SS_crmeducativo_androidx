@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:fitsSystemWindows="true"
+tools:context="com.consultoraestrategia.ss_crmeducativo.chats.view.ChatsActivity">
+
+<!--<include layout="@layout/content_main" />-->
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:showIn="@layout/activity_chats"
+        tools:context=".MainActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|snap"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="#fff"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/filter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:menu_animationDelayPerItem="55"
+            app:menu_backgroundColor="@android:color/transparent"
+            app:menu_buttonSpacing="0dp"
+            app:menu_colorNormal="?attr/colorAccent"
+            app:menu_colorPressed="?attr/colorAccent"
+            app:menu_colorRipple="#99d4d4d4"
+            app:menu_fab_label="Filtros"
+            app:menu_fab_size="normal"
+            app:menu_icon="@drawable/filter"
+            app:menu_labels_colorNormal="#333"
+            app:menu_labels_colorPressed="#444"
+            app:menu_labels_colorRipple="#66efecec"
+            app:menu_labels_cornerRadius="3dp"
+            app:menu_labels_ellipsize="none"
+            app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+            app:menu_labels_margin="0dp"
+            app:menu_labels_maxLines="-1"
+            app:menu_labels_padding="8dp"
+            app:menu_labels_position="left"
+            app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+            app:menu_labels_showShadow="true"
+            app:menu_labels_singleLine="false"
+            app:menu_labels_textColor="#f2f1f1"
+            app:menu_labels_textSize="15sp"
+            app:menu_openDirection="up"
+            app:menu_shadowColor="#99d4d4d4"
+            app:menu_shadowRadius="1dp"
+            app:menu_shadowXOffset="1dp"
+            app:menu_shadowYOffset="1dp"
+            app:menu_showShadow="true">
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/executive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/employee"
+                app:fab_label="Directivos"
+                app:fab_size="mini"
+                app:fab_colorNormal="?attr/colorAccent"
+                app:fab_colorPressed="?attr/colorAccent"
+                app:fab_shadowColor="#99d4d4d4"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/student"
+                app:fab_label="Estudiantes"
+                app:fab_size="mini"
+                app:fab_colorNormal="?attr/colorAccent"
+                app:fab_colorPressed="?attr/colorAccent"
+                app:fab_shadowColor="#99d4d4d4"/>
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/professor"
+                app:fab_label="Docentes"
+                app:fab_size="mini"
+                app:fab_colorNormal="?attr/colorAccent"
+                app:fab_colorPressed="?attr/colorAccent"
+                app:fab_shadowColor="#99d4d4d4"/>
+
+
+        </com.github.clans.fab.FloatingActionMenu>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <io.codetail.widget.RevealFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/layout_appbar_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="#fff"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <EditText
+                        android:id="@+id/editText_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="Buscar ..."
+                        android:maxLines="1"
+                        android:textColor="@color/md_black_1000"
+                        android:textColorHint="#B4666666" />
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/dropshadow" />
+        </LinearLayout>
+    </io.codetail.widget.RevealFrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

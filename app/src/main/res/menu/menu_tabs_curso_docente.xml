@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.view.activities.TabsCursoDocenteActivity">
+
+    <item
+        android:id="@+id/action_exportar_notas"
+        android:orderInCategory="100"
+        android:title="@string/exportar_notas"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_exportar_asistencias"
+        android:orderInCategory="100"
+        android:title="@string/exportar_asistencias"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_exportar_mnesaje"
+        android:orderInCategory="100"
+        android:title="@string/exportar_mensajes"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mensajes"
+        android:orderInCategory="100"
+        android:title="@string/exportar_mensajes"
+        app:showAsAction="never" />
+
+</menu>

@@ -1,0 +1,356 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.consultoraestrategia.ss_crmeducativo">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <application
+        android:name=".CMRE"
+        android:allowBackup="false"
+        android:allowClearUserData="true"
+        android:icon="@mipmap/ic_launcher_v2"
+        android:roundIcon="@mipmap/ic_launcher_circle"
+        android:supportsRtl="true"
+        android:testOnly="false"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup"
+        tools:targetApi="n">
+
+        <activity android:name=".comportamiento.comportamientoAlumno.ComportamientoAlumnoActivity"
+            android:label=""
+            android:launchMode="singleTop"
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="stateHidden"
+            >
+
+        </activity>
+        <activity android:name=".graficos.DesempenoActivity" />
+        <activity android:name=".graficos.OthersActivity" />
+
+        <activity
+            android:theme="@style/SplashTheme"
+            android:name=".main.ui.MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:theme="@style/SplashThemeAppMessenger"
+            android:name=".splashAppMessenger.ScremSplash"
+            android:label="Messenger Académico"
+            android:icon="@drawable/ic_messenger"
+            android:roundIcon="@drawable/ic_messenger">
+            <intent-filter>
+                <action android:name="com.example.singhkshitiz.letschat_TARGET_NOTIFICATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+
+        <activity
+            android:name=".tabsCursoDocente.view.activities.TabsCursoDocenteActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".main.ui.MainActivity" />
+        <activity
+            android:name=".tabsSesiones.view.TabsSesionesActivityV2"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".tabsCursoDocente.view.activities.TabsCursoDocenteActivity" />
+
+        <service android:name=".services.notification.MyFirebaseMessagingService"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service android:name=".services.notification.MyFirebaseInstanceIDService" />
+        <!--
+     Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo_consultoraa" />
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="id_de_canal_de_notificacion_predeterminado" />
+
+        <activity
+            android:name=".createTeam.ui.CreateTeamActivity"
+            android:label="@string/activity_create_team"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".createTeamList.ui.CreateTeamListActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
+        <activity
+            android:name=".createTeamList.ui.CreateTeamListActivity"
+            android:label="@string/activity_create_team_list"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".cuentaCorriente.ui.CuentaCorrienteActivity"
+            android:label="Cuenta Corriente" />
+        <activity
+            android:name=".tabUnidad.view.UnidadActivity"
+            android:launchMode="singleTop"
+            android:label="Unidad Activity" />
+        <activity
+            android:name=".login.Login"
+            android:label="@string/activity_login_title"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".createRubricaBidimensional.CreateRubBidActivity"
+            android:label="@string/activity_create_rub_bid_name"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <!--android:screenOrientation="portrait"-->
+
+        <service
+            android:name=".syncJobs.MyJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".bandeja_mvp.detalle_mensaje.DetalleMensajeActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_detalle_mensaje" />
+        <activity
+            android:name=".tipoNota.TipoNotaActivity"
+            android:label="@string/title_activity_tipo_nota"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".tipoNota.crearTipoNota.ui.CrearTipoNotaActivity" />
+        <activity
+            android:name=".evaluacionBidimencional.individual.ui.EvaluacionBimencionalActividad"
+            android:label="@string/title_activity_rubrica_bidimencional"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".evaluacionBidimencional.grupal.ui.EvaluacionBimencionalGrupalActividad"
+            android:label="@string/title_activity_rubrica_bidimencional_grupo"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".rubroEvaluacion.crearRubroFormula.CrearRubroFormulaActivity"
+            android:label="@string/title_activity_rubro_formula"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".tabsCursoDocente.view.activities.TabsCursoDocenteActivity" />
+        <activity
+            android:name=".evaluacion_resultado.ui.EvaluacionResultadoActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".tabsCursoDocente.view.activities.TabsCursoDocenteActivity" />
+        <activity
+            android:name=".createRubricaBidimensional.seleccionarCompetencias.SeleccionarCompetenciasActivity"
+            android:label="@string/title_activity_seleccionar_indicadores"
+            android:parentActivityName=".createRubricaBidimensional.CreateRubBidActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.CreateRubBidActivity" />
+        </activity>
+        <activity
+            android:name=".createRubricaBidimensional.selecionarTipoNota.view.TipoNotaListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_tipo_nota_lista" />
+        <activity
+            android:name=".createRubricaBidimensional.selecionarCampoAccion.BuscarCamposAccionActivity"
+            android:label="@string/title_activity_seleccionar_competencias"
+            android:parentActivityName=".createRubricaBidimensional.CreateRubBidActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.CreateRubBidActivity" />
+        </activity>
+        <activity
+            android:name=".rubroEvaluacion.evaluacionFormula.view.EvaluacionFormulaActivity"
+            android:label="Evaluación Rubro Formula"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".tabsCursoDocente.view.activities.TabsCursoDocenteActivity" />
+        <activity android:name=".rubroEvaluacion.tipoNotaLista.TipoNotaListActivity" />
+
+        <service
+            android:name=".services.daemon.ui.ExportarIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".services.importar.ui.ImportarJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".services.loginService.ui.LoginJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".rubricasBidimensionales.abstracto.editarRubricasBid.EditarRubricasBidActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".rubroEvaluacion.main.plantilla.editarRubro.EditarRubrosActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".sendMessage.sendMessageRubro.ui.SendMessageRubroActivity"
+            android:theme="@style/AppTheme.NoActionBar"/> <!-- <service -->
+        <!-- android:name=".services.daemon.ui.CRMEService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"></service> -->
+        <receiver
+            android:name=".services.broadcastReciver.Monitor"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.media.VOLUME_CHANGED_ACTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".services.importarActividad.ui.ImportarActivity"
+            android:label="@string/title_activity_importar"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".evaluacion_sesionPrincipal.contenedor.EvaluacionContainerActivity"
+            android:label="@string/activity_evaluacion_rubro_title"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".rubroEvaluacion.selecionarRubros.SeleccionarRubrosActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".sendMessage.sendMessageIndividual.ui.SendMessageNormalActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".sendMessage.sendMessageTarea.ui.SendMessageTareaActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".mensajePredeterminado.createMensajePredeterminado.ui.CreateMensPredeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".tareas_mvp.crearTarea.contenerdor.CrearTareaContenedorActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_tarea" />
+        <activity
+            android:name=".programahorario.complejo.ui.ProgramaHorarioComplejoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_Prog_horario"
+            android:launchMode="singleTop"
+            android:parentActivityName=".main.ui.MainActivity" />
+        <activity
+            android:name=".programahorario.simple.ui.ProgramaHorarioSimpleActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_Prog_horario"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".main.ui.MainActivity" />
+
+        <service android:name=".services.syncIntentService.ComplejoSyncIntenService"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <service android:name=".services.syncIntentService.SimpleSyncIntenService" />
+
+        <service android:name=".services.syncIntentService.ContratoAlumnoSyncIntenService" />
+
+        <activity
+            android:name=".CrearRubroCompetencia.cabecera.ui.CrearRubroCabeceraActividad"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_crear_rubros" />
+        <activity
+            android:name=".asistenciaAlumnos.curso.asistenciaPorDia.ui.AsistenciaActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_asistencia"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity android:name=".cambiarFotoAlumno.ui.CambiarFotoAlumnoActivity"
+            android:label="@string/title_activity_cambiar_fotos_alumnos"/>
+
+        <activity android:name=".CrearRubroCompetencia.selecionarTipoNota.view.TipoNotaListActivity" />
+
+
+        <provider
+            android:name=".repositorio.provider.GenericFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+        </provider>
+
+        <receiver android:name=".main.dialogAlarma.AlertReceiver"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".tareas_mvp.crearTarea.ui.CrearTareasActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
+            android:label=" " />
+        <activity android:name=".login2.principal.Login2Activity"
+            android:label="@string/activity_login_title"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".login2.service2.ServicesActivity" />
+        <activity android:name=".cameraReconocimiento.camera.CameraReconocimientoActivity" />
+        <activity android:name=".login2.fastData.FastData"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".eventos.EventosActivty"
+            android:label="Agenda"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".crearEvento.CrearEventoActivity"
+            android:label=" "
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".cameraReconocimiento.preview.PreviewActivity" />
+        <activity android:name=".cameraReconocimiento.listaAlumnos.ListaAlumnosActivity"
+            android:label="Reconocimiento"/>
+
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="face" />
+
+    </application>
+</manifest>

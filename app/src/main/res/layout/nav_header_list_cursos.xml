@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/side_nav_bar"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:id="@+id/contentHeaderDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/side_nav_bar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/ic_account_circle" />
+
+            <ImageView
+
+                android:id="@+id/imgProfile3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_account_circle" />
+
+            <ImageView
+                android:id="@+id/imgProfile2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="@dimen/dimen_15dp"
+                android:layout_toLeftOf="@+id/imgProfile3"
+                android:layout_toStartOf="@+id/imgProfile3"
+                android:src="@drawable/ic_account_circle" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtNombreApellidoUser"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:text="@string/ListaCurso.Header.nombresApellidosAlumnos" />
+
+        <TextView
+            android:id="@+id/txtEmailUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ListaCurso.Header.myCorreo" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spnPrograma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:theme="@style/mySpinnerItemStyleLight" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

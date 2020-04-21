@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+
+        android:enabled="true">
+
+        <group
+
+            android:enabled="true">
+
+            <item
+                android:id="@+id/asistencia"
+                android:icon="@drawable/ic_list"
+                android:title="Asistencia" />
+
+            <item
+                android:id="@+id/mensajeria"
+                android:icon="@drawable/ic_mail"
+                android:title="Mensaje" />
+
+        </group>
+
+
+    </group>
+
+
+</menu>

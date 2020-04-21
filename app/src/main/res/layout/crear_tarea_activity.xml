@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:elevation="0dp">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/md_white_1000"
+            android:theme="@style/ToolbarTarea"
+            app:titleTextColor="#6B6A6A" >
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-8dp"
+        android:background="#FFFFFF"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <EditText
+                android:id="@+id/txtdescriocion"
+                style="@style/Widget.AppCompat.AutoCompleteTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="Detalle"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView24"
+                app:layout_constraintTop_toBottomOf="@+id/txtTitulo"
+                tools:text="Review market research " />
+
+            <EditText
+                android:id="@+id/txtTitulo"
+                style="@style/RecipientEditTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:hint="Título tarea"
+                android:imeOptions="normal"
+                android:inputType="textMultiLine|textCapWords|textCapSentences"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="" />
+
+
+            <ImageButton
+                android:id="@+id/btnSelectFecha"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="24dp"
+                android:src="@drawable/ic_date_tarea"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_fecha"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_fecha" />
+
+            <ImageButton
+                android:id="@+id/btnSelectHora"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="24dp"
+                android:src="@drawable/ic_time_tarea"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_hora"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_hora" />
+
+            <ImageView
+                android:id="@+id/imageView24"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTitulo"
+                app:srcCompat="@drawable/ic_format_align"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:id="@+id/img_vinculo"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:padding="3dp"
+                app:layout_constraintStart_toEndOf="@+id/img_documento"
+                app:layout_constraintTop_toBottomOf="@+id/textView55"
+                app:srcCompat="@drawable/ic_link_tarea"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:id="@+id/img_imagen"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:padding="3dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView55"
+                app:srcCompat="@drawable/ic_add_multimedia_tarea"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:id="@+id/img_documento"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:padding="3dp"
+                app:layout_constraintStart_toEndOf="@+id/img_imagen"
+                app:layout_constraintTop_toBottomOf="@+id/textView55"
+                app:srcCompat="@drawable/ic_add_file_tarea"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:id="@+id/img_close_fecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_fecha"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_fecha"
+                app:srcCompat="@drawable/ic_close_tarea"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:id="@+id/img_close_hora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_hora"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_hora"
+                app:srcCompat="@drawable/ic_close_tarea"
+                tools:ignore="VectorDrawableCompat" />
+
+            <TextView
+                android:id="@+id/txt_fecha"
+                style="@style/RecipientEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Tarea sin fecha"
+                android:longClickable="false"
+                app:layout_constraintEnd_toStartOf="@+id/img_close_fecha"
+                app:layout_constraintStart_toEndOf="@+id/btnSelectFecha"
+                app:layout_constraintTop_toBottomOf="@+id/txtdescriocion"
+                tools:text="Miercoles 25 del 2017" />
+
+            <TextView
+                android:id="@+id/txt_hora"
+                style="@style/RecipientEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="Tarea sin hora"
+                android:longClickable="false"
+                app:layout_constraintEnd_toStartOf="@+id/img_close_hora"
+                app:layout_constraintStart_toEndOf="@+id/btnSelectFecha"
+                app:layout_constraintTop_toBottomOf="@+id/txt_fecha"
+                tools:text="18:00 a.m" />
+
+            <TextView
+                android:id="@+id/textView55"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="Materiales"
+                android:textColor="#6B6A6A"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_hora" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rc_materiales"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="32dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_vinculo" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

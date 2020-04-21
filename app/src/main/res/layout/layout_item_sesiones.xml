@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardv_sesiones"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/parentPanelSesiones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp">
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--contenedor de fecha y sesiones-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/border_rigth">
+
+                <LinearLayout
+                    android:id="@+id/contFecha"
+                    android:layout_width="50dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/ic_calendar_red"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtMes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|top"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:shadowColor="#fff"
+                        android:text="Mes"
+                        android:textAlignment="center"
+                        android:textColor="#fff"
+                        android:textSize="12dp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/txtDia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="15"
+                        android:textColor="#000"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/txtNombreDia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dia"
+                        android:textAlignment="center"
+                        android:textColor="#000"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/contSession"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Sesion"
+                        android:textColor="#000"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/txtNroSesion"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_circle_red"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                        android:textColor="#fff"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="4"
+                android:background="@drawable/border_rigth"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_tituloSesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="t: titulo Sesion"
+                    android:textColor="#00d724"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_contenidoSesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ct: titulo Sesion"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_tareasSesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tareas: "
+                    android:textColor="#d40000"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="2dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Horas"
+                    android:textAlignment="center"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_cantHorasSesion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_estadoSesion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Reprogramado"
+                    android:textAlignment="center"
+                    android:textColor="#d40000"
+
+                    android:textSize="11dp" />
+
+            </LinearLayout>
+
+        </TableRow>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

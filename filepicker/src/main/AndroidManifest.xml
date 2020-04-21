@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="droidninja.filepicker">
+
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <uses-feature android:name="android.hardware.microphone" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+
+        <activity
+            android:name=".FilePickerActivity"
+            android:configChanges="orientation|screenSize"/>
+
+        <activity android:name=".MediaDetailsActivity"
+            android:configChanges="orientation|screenSize"/>
+
+        <activity android:name="com.whatsappcamera.MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.whatsappcamera.PhotoVideoRedirectActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.whatsappcamera.WhatsappCameraActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <provider
+            android:name=".utils.FilePickerProvider"
+            android:authorities="${applicationId}.droidninja.filepicker.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+    </application>
+
+</manifest>

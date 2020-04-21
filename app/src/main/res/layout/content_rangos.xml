@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contentFechaInicio"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/txtFechaInicio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:hint="Fecha Inicio" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <ImageButton
+        android:id="@+id/ibtnFechaInicio"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_date_black" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contentFechaFinal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/txtFechaFinal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false"
+            android:hint="Fecha Final" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <ImageButton
+        android:id="@+id/ibtnFechaFinal"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_date_black" />
+
+    <ImageButton
+        android:id="@+id/ibtnBuscar"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="@dimen/dimen_5dp"
+        android:src="@drawable/ic_find" />
+
+</LinearLayout>

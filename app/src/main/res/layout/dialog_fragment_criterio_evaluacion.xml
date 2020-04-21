@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="10dp"
+    android:background="@color/white">
+
+
+    <TextView
+        android:id="@+id/txt_Titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Editar Criterio de Evaluación"
+        android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtCriterioEvaluacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-2dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="text|textMultiLine"
+        app:layout_constraintLeft_toLeftOf="@+id/txt_Titulo"
+        app:layout_constraintTop_toBottomOf="@+id/txt_TipoNota" />
+
+    <Button
+        android:id="@+id/btn_cancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txtCriterioEvaluacion"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:id="@+id/btn_aceptar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aceptar"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_cancelar"
+        android:layout_marginBottom="0dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="@+id/btn_cancelar"
+        android:layout_marginTop="0dp"
+        app:layout_constraintRight_toLeftOf="@+id/btn_cancelar"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/txt_TipoNota"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="1dp"
+        android:text="Criterio Evaluacion"
+        android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_Titulo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

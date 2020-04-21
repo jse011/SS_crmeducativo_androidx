@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingEnd="24dp"
+    android:paddingStart="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:drawableEnd="@drawable/ic_happy"
+        android:text="Felicitaciones porque ha mejorado en el orden de su desarrollo de los problemas" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:drawableEnd="@drawable/ic_happy_2"
+        android:text="Es muy rápido para resolver" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:drawableEnd="@drawable/ic_sad"
+        android:text="Debe practicar más secuencia..." />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:drawableEnd="@drawable/ic_confused"
+        android:text="Pide ayuda con frecuencia" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilOtherComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtOtherComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Otro Comentario" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</LinearLayout>

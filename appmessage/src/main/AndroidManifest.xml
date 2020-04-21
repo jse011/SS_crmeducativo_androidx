@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.consultoraestrategia.ss_crmeducativo.appmessage">
+
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application>
+        <activity android:name="com.consultoraestrategia.ss_crmeducativo.personalChat.view.PersonalChatActivity" />
+        <activity android:name="com.consultoraestrategia.ss_crmeducativo.chatJse.ChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeChat"/>
+        <activity android:name="com.consultoraestrategia.ss_crmeducativo.chats.contacs.searchContacs.SearchContacsActivity" />
+        <activity android:name="com.consultoraestrategia.ss_crmeducativo.chats.view.ChatsActivity"
+            android:theme="@style/AppThemeChat"
+            android:label="Messenger Académico"/>
+        <activity android:name="com.consultoraestrategia.ss_crmeducativo.chatGrupal.ChatGrupalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeChat"/>
+        <activity android:name="com.consultoraestrategia.ss_crmeducativo.previewCamera.CameraPreviewCamera"
+            android:theme="@style/AppThemeChat"/>
+    </application>
+
+</manifest>

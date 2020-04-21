@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textView63"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="N. Logro"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tilTipoNota" />
+
+        <ImageView
+            android:id="@+id/btnTipoNota"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="2dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="@+id/textView63"
+            app:layout_constraintHorizontal_bias="0.724"
+            app:layout_constraintStart_toStartOf="@+id/textView63"
+            app:layout_constraintTop_toBottomOf="@+id/textView63"
+            app:srcCompat="@drawable/ic_diagram" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilRubrica"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtRubrica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="@string/fragment_rubrica_bidimiensional_message_hint_rubrica"
+                android:text="" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAlias"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtAlias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="@string/fragment_rubrica_bidimiensional_message_hint_alias"
+                android:text=""
+                android:visibility="gone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTipoEvaluacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/btnTipoEvaluacion"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilRubrica"
+            android:layout_marginLeft="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTipoEvaluacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="textNoSuggestions"
+                android:hint="@string/fragment_rubrica_bidimiensional_message_hint_tipoevaluacion" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/btnTipoEvaluacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tilTipoEvaluacion"
+            app:layout_constraintEnd_toStartOf="@+id/gdl_mid"
+            app:layout_constraintTop_toTopOf="@+id/tilTipoEvaluacion"
+            app:srcCompat="@drawable/ic_more_point"
+            android:layout_marginRight="8dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFormaEvaluacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/btnFormaEvaluacion"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/gdl_mid"
+            app:layout_constraintTop_toBottomOf="@+id/tilRubrica"
+            android:layout_marginLeft="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtFormaEvaluacion"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:focusable="false"
+                android:hint="@string/fragment_rubrica_bidimiensional_message_hint_forma_evaluacion" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/btnFormaEvaluacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tilFormaEvaluacion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tilFormaEvaluacion"
+            app:srcCompat="@drawable/ic_more_point"
+            android:layout_marginRight="8dp"
+            tools:ignore="VectorDrawableCompat" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tilTipoNota"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:minHeight="60dp"
+            app:layout_constraintEnd_toStartOf="@+id/textView63"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilTipoEvaluacion"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="8dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEscala"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/btnEscala"
+            tools:layout_editor_absoluteY="200dp"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtEscala"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/fragment_rubrica_bidimiensional_message_hint_escala"
+                android:visibility="gone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/btnEscala"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tilEscala"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tilEscala"
+            app:srcCompat="@drawable/ic_more_point"
+            android:visibility="gone"
+            tools:ignore="VectorDrawableCompat"
+            android:layout_marginRight="8dp" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gdl_mid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/text_title_competencialist"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/fragment_rubrica_bidimiensional_message_hint_competencias"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+        <ImageButton
+            android:id="@+id/btnCompetenciaList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_title_competencialist"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_title_competencialist"
+            app:srcCompat="@drawable/ic_more_point"
+            android:visibility="invisible"
+            tools:ignore="VectorDrawableCompat"
+            android:layout_marginRight="8dp" />
+
+        <TextView
+            android:id="@+id/text_competencialist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnCompetenciaList" />
+
+
+        <TextView
+            android:id="@+id/text_title_campoaccionlist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/fragment_rubrica_bidimiensional_message_hint_campoaccion"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_competencialist" />
+
+        <ImageButton
+            android:id="@+id/btnCampoAccionList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_title_campoaccionlist"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_title_campoaccionlist"
+            app:srcCompat="@drawable/ic_more_point"
+            android:visibility="invisible"
+            android:layout_marginRight="8dp"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:id="@+id/text_campoaccionlist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnCampoAccionList" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/md_grey_500"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilTipoNota" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

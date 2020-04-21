@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="16dp"
+    app:elevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/root"
+        android:background="@color/white">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/bttn_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <LinearLayout
+                android:id="@+id/temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/img_indicador"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_sub_indicador"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_sub_indicador"
+                        app:srcCompat="@drawable/ic_speedometer"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/txt_competencia"
+                        style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="24dp"
+                        android:textColor="#6B6A6A"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Resuelve problemas de cantidad de manera autóma.." />
+
+                    <TextView
+                        android:id="@+id/txt_capacidad"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="24dp"
+                        android:text="Traduce comprueba una expreción numérica utilizado material..."
+                        android:textColor="#6B6A6A"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_competencia" />
+
+                    <TextView
+                        android:id="@+id/textView155"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="-"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_sub_indicador" />
+
+                    <TextView
+                        android:id="@+id/text_sub_indicador"
+                        style="@style/RecipientEditTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:textColor="#6B6A6A"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/img_indicador"
+                        app:layout_constraintTop_toBottomOf="@+id/conten_desempenio"
+                        tools:text="Establece Relaciones" />
+
+                    <TextView
+                        android:id="@+id/text_ti_indicador"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="24dp"
+                        android:textColor="#6B6A6A"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView155"
+                        app:layout_constraintTop_toBottomOf="@+id/text_sub_indicador"
+                        tools:text="Titulo: Establece relaciones entre datos" />
+
+                    <TextView
+                        android:id="@+id/textView57"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:text="-"
+                        android:textColor="#6B6A6A"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_ti_indicador" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/conten_desempenio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_capacidad">
+
+                        <TextView
+                            android:id="@+id/textView65"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/ic_circle_edit_rubrica"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView64"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView64" />
+
+
+                        <TextView
+                            android:id="@+id/textView64"
+                            style="@style/RecipientEditTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="8dp"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:longClickable="false"
+                            android:text="Desempeño"
+                            android:textAppearance="@style/TextAppearance.AppCompat"
+                            android:textColor="#6B6A6A"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView65"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txt_vermas_desem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ver más"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="@+id/txt_desempenio"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_desempenio" />
+
+                        <com.consultoraestrategia.ss_crmeducativo.lib.justify.JustifiedTextView
+                            android:id="@+id/txt_desempenio"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Comprueba una expresión numérica utilizando material concreto y imagnes así como figuras. Se ..."
+                            android:textColor="#6B6A6A"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView64" />
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView65"
+                            app:layout_constraintEnd_toEndOf="@+id/textView65"
+                            app:layout_constraintStart_toStartOf="@+id/textView65"
+                            app:layout_constraintTop_toTopOf="@+id/textView65"
+                            app:srcCompat="@drawable/ic_desempenio"
+                            tools:ignore="VectorDrawableCompat" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/text_descripcion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.75"
+                        app:layout_constraintStart_toEndOf="@+id/textView57"
+                        app:layout_constraintTop_toBottomOf="@+id/text_ti_indicador"
+                        tools:text="Descripción: No tiene detalle" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@color/md_grey_400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/content1">
+
+
+                    <TextView
+                        android:id="@+id/txtTitle"
+                        style="@style/RecipientEditTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:text="Establece relaciones"
+                        android:textAppearance="@style/TextAppearance.AppCompat"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView24"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+                        app:srcCompat="@drawable/ic_format_align"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/txt_sub_title"
+                        style="@style/Widget.AppCompat.AutoCompleteTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@null"
+                        android:clickable="false"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Sin descripción"
+                        android:longClickable="false"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView24"
+                        app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+                        tools:text="" />
+
+                    <TextView
+                        android:id="@+id/textView60"
+                        style="@style/RecipientEditTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:clickable="false"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:hint="Campos de acción"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:textAppearance="@style/TextAppearance.AppCompat"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_sub_title" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rc_campos_accion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView60"
+                        tools:itemCount="2" />
+
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@color/md_grey_400"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rc_campos_accion" />
+
+                    <TextView
+                        android:id="@+id/tipoNota"
+                        style="@style/RecipientEditTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:longClickable="false"
+                        android:text="Nivel de logro"
+                        android:textAppearance="@style/TextAppearance.AppCompat"
+                        android:textColor="#6B6A6A"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/imageView32"
+                        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cons_tipo_nota"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tipoNota">
+
+                        <TextView
+                            android:id="@+id/txt_titulo_tiponota"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_marginTop="4dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textSize="16sp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toStartOf="@+id/txt_escala"
+                            app:layout_constraintStart_toEndOf="@+id/imageView25"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="4 Niveles de logro - Letra" />
+
+                        <TextView
+                            android:id="@+id/txt_escala"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textAlignment="viewStart"
+                            android:textSize="14sp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toStartOf="@+id/btn_info_tipo_nota"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Vigesimal" />
+
+                        <TextView
+                            android:id="@+id/img_valor_numerico"
+                            android:layout_width="50dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/ic_valor_numerico"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/txt_descripcion_escala"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/img_selector_numerico"
+                            android:layout_width="40dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/ic_selector_numerico"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/txt_descripcion_escala"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tilTipoNota"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toStartOf="@+id/txt_descripcion_escala"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/txt_titulo_tipo_nota"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_titulo_tipo_nota" />
+
+                        <ImageView
+                            android:id="@+id/imageView25"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="4dp"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_arrow_crear_rubrica" />
+
+                        <TextView
+                            android:id="@+id/txt_rango_escala"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="viewStart"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toStartOf="@+id/btn_info_tipo_nota"
+                            app:layout_constraintStart_toStartOf="@+id/txt_escala"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_escala"
+                            tools:text="(0.00- 20.0)" />
+
+                        <ImageView
+                            android:id="@+id/btn_info_tipo_nota"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:paddingStart="0dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="8dp"
+                            android:paddingBottom="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_ayudar" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <TextView
+                        android:id="@+id/txt_titulo_criterio_eval"
+                        style="@style/RecipientEditTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="Criterios de evaluación"
+                        android:longClickable="false"
+                        android:textAppearance="@style/TextAppearance.AppCompat"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cons_tipo_nota" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_criterio_eval"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp"
+                        app:cardBackgroundColor="@color/md_grey_200"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_titulo_criterio_eval">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0.5dp"
+                            app:cardBackgroundColor="@color/md_white_1000"
+                            app:cardCornerRadius="8dp"
+                            app:cardElevation="0dp">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/grid_selector"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="visible"
+                                tools:itemCount="2" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <ImageView
+                        android:id="@+id/imageView32"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view3"
+                        app:srcCompat="@drawable/ic_crecimiento" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/bttn_back"
+            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:text="Regresar"
+            android:textColor="@color/md_blue_500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+
+

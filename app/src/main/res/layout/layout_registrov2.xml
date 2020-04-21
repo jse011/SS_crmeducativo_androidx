@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/md_white_1000">
+
+            <LinearLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/background_border_registro"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/txt_titulo_registro"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="Nombres y Apellidos"
+                        android:textSize="10dp"
+                        android:textColor="#000000"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PRECION LEXICA"
+                            android:textSize="10dp"
+                            android:textColor="#000000"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lee 40 palabras por minuto."
+                            android:textSize="10dp"
+                            android:textColor="#000000"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_tableregistro"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_nombres"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:splitMotionEvents="false"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_asistencia"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:splitMotionEvents="false"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen.layout.item.alumno.linear.width"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/rvPeriodo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.consultoraestrategia.ss_crmeducativo.lib.FloatingActionsMenu.FloatingActionsMenu
+        android:id="@+id/menu_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        fab:fab_addButtonColorNormal="?attr/colorPrimary"
+        fab:fab_addButtonSize="mini"
+        fab:fab_labelStyle="@style/Etiquetas"
+        fab:fab_labelsPosition="left">
+
+        <com.consultoraestrategia.ss_crmeducativo.lib.FloatingActionsMenu.FloatingActionButton
+            android:id="@+id/btn_agregarRubro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="?attr/colorPrimary"
+            fab:fab_icon="@drawable/ic_test"
+            fab:fab_size="mini"
+            fab:fab_title="Nuevo Rubro Evaluacion" />
+
+        <com.consultoraestrategia.ss_crmeducativo.lib.FloatingActionsMenu.FloatingActionButton
+            android:id="@+id/btn_agregarAlumno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="?attr/colorPrimary"
+            fab:fab_icon="@drawable/ic_teamwork"
+            fab:fab_size="mini"
+            fab:fab_title="Nuevo Alumno" />
+
+    </com.consultoraestrategia.ss_crmeducativo.lib.FloatingActionsMenu.FloatingActionsMenu>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

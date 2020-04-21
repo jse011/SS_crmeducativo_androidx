@@ -1,0 +1,7 @@
+package com.consultoraestrategia.ss_crmeducativo.comportamiento.comportamientoAlumno.presenter;
+
+import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenter;
+import com.consultoraestrategia.ss_crmeducativo.comportamiento.comportamientoAlumno.ComportamientoAlumnoview;
+
+public interface ComportamientoAlumnoPresenter extends BasePresenter <ComportamientoAlumnoview>{
+}

@@ -1,0 +1,8 @@
+package com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.infoRubricaBidimensional;
+
+import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentPresenter;
+import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.infoRubricaBidimensional.ui.InfoRubricaBidimensionalView;
+
+public interface InfoRubricaBidimensionalPresent extends BaseFragmentPresenter<InfoRubricaBidimensionalView> {
+    void onClickSave();
+}

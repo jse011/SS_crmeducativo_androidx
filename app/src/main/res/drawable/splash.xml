@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/md_light_blue_400"/>
+    <item>
+        <!--<bitmap
+            android:antialias="true"
+            android:gravity="top|center_horizontal"
+            android:src="@drawable/pantalla_carga"/>-->
+        <bitmap android:src="@drawable/logo_consultoraa"
+            android:gravity="center"/>
+    </item>
+</layer-list>

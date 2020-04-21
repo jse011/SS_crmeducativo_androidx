@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+
+        android:enabled="true">
+
+        <item
+            android:id="@+id/action_asistio"
+            android:icon="@drawable/ic_circle_green"
+            android:title="Asistio" />
+        <item
+            android:id="@+id/action_falta"
+            android:icon="@drawable/ic_circle_red"
+            android:title="falta" />
+
+        <item
+            android:id="@+id/action_justificada"
+            android:icon="@drawable/ic_warning"
+            android:title="Justificada" />
+        <item
+            android:id="@+id/action_tarde"
+            android:icon="@drawable/ic_cross_out"
+            android:title="falta" />
+
+
+    </group>
+
+
+</menu>

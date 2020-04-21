@@ -1,0 +1,22 @@
+package com.consultoraestrategia.ss_crmeducativo.tipoNotaLista.entities;
+
+public class PrecisionUi {
+    private String contenido;
+    private String contornoColor;
+
+    public String getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+
+    public String getContornoColor() {
+        return contornoColor;
+    }
+
+    public void setContornoColor(String contornoColor) {
+        this.contornoColor = contornoColor;
+    }
+}

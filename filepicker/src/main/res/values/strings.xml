@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name_filepicker">filepicker</string>
+    <string name="action_settings">Configuración</string>
+    <string name="all_files">Archivos</string>
+    <string name="all_images">Imagenes</string>
+    <string name="all_photos">Fotos</string>
+    <string name="all_videos">Videos</string>
+    <string name="attachments_num">%d</string>
+    <string name="attachments_title_text">(%d/%d)</string>
+    <string name="done">Guardar</string>
+    <string name="excel_title">XLS</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="images">Imagenes</string>
+    <string name="no_camera_exists">No existe ninguna aplicación para la camara!</string>
+    <string name="no_files_found">No se encontraron archivos</string>
+    <string name="pdf_title">PDF</string>
+    <string name="permission_filepicker_rationale">Se necesita permiso de almacenamiento para acceder a los archivos.</string>
+    <string name="ppt_title">PPT</string>
+    <string name="select_doc_text">Seleccionar un documento</string>
+    <string name="select_photo_text">Seleccionar un medio</string>
+    <string name="txt_title">TXT</string>
+    <string name="videos">Videos</string>
+    <string name="word_title">DOC</string>
+
+    <string name="file_limit_size_upload_format">El archivo debe pesar menos que %MB</string>
+</resources>

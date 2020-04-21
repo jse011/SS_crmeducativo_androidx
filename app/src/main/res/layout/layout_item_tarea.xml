@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardv_sesiones"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:layout_width="100dp"
+    android:layout_height="80dp"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_margin="5dp"
+    android:layout_marginBottom="5dp"
+    app:cardCornerRadius="3dp">
+
+    <LinearLayout
+        android:id="@+id/contItemView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/lin_titulo_sesion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/background_border_bottom_cian"
+                android:orientation="horizontal"
+                android:paddingBottom="6dp"
+                android:paddingTop="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tarea "
+                    android:textColor="#000"
+                    android:textSize="10dp"/>
+                <TextView
+                    android:id="@+id/txt_num_sesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/dimen_15dp"
+                    android:text="1"
+                    android:textColor="#000"
+                    android:textSize="10dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_tiempo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:text="105"
+                    android:textColor="#05a6d7"
+                    android:textStyle="bold"
+                    android:textSize="10dp"/>
+
+                <TextView
+                    android:id="@+id/txt_tiempo_medida"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:text="min"
+                    android:textColor="#05a6d7"
+                    android:textSize="8dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_titulo_sesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:text="Que apredamos en matematicas?"
+                android:textSize="9dp"
+                android:ellipsize="marquee"
+                android:maxLines="3"/>
+
+            <TextView
+                android:id="@+id/txt_fecha_sesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="12/05/2017"
+                android:textSize="7dp"
+                android:paddingBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/cant_Recursos"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_circle_unidades"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="#fff"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

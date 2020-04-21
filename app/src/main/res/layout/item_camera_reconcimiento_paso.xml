@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_paso1"
+    android:layout_width="40dp"
+    android:layout_height="50dp"
+    android:layout_marginStart="8dp"
+    android:textColor="@color/md_black_1000" >
+
+    <TextView
+        android:id="@+id/paso"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/circle_border_camera_reconosimiento"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="1"
+        android:textColor="@color/md_black_1000" >
+
+    </TextView>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_paso"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

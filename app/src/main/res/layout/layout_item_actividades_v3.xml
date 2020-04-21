@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:yourapp="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginBottom="2dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="3dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lin_actividad_Det"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/textView62"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:background="@color/color_sesion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_num_actividad" />
+
+        <TextView
+            android:id="@+id/textView59"
+            android:layout_width="0dp"
+            android:layout_height="0.25dp"
+            android:layout_marginEnd="8dp"
+            android:background="#e0e0e0"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/cabecera"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_secuencia_act_det" />
+
+        <TextView
+            android:id="@+id/txt_actividad_det"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Actividad de la sesión Actividad de la sesión "
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_num_actividad"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_num_actividad"
+            android:layout_width="55dp"
+            android:layout_height="0dp"
+            android:background="@color/color_sesion"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_secuencia_act_det"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_tiempo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/color_sesion"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cabecera"
+            yourapp:text="25" />
+
+        <TextView
+            android:id="@+id/textView61"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="min"
+            android:textColor="@color/color_sesion"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@+id/txt_tiempo"
+            app:layout_constraintStart_toStartOf="@+id/txt_tiempo"
+            app:layout_constraintTop_toBottomOf="@+id/txt_tiempo" />
+
+
+        <TextView
+            android:id="@+id/txt_tiempo_act_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:textSize="@dimen/dim_10sp"
+            app:layout_constraintStart_toEndOf="@+id/txt_num_actividad"
+            app:layout_constraintTop_toBottomOf="@+id/txt_actividad_det"
+            yourapp:text="25 min" />
+
+        <TextView
+            android:id="@+id/txt_tipo_act_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="2dp"
+            android:textSize="@dimen/dim_10sp"
+            app:layout_constraintStart_toEndOf="@+id/txt_secuencia_act_det"
+            app:layout_constraintTop_toTopOf="@+id/txt_secuencia_act_det"
+            yourapp:text="- Ejercicio" />
+
+        <TextView
+            android:id="@+id/txt_secuencia_act_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textSize="@dimen/dim_10sp"
+            app:layout_constraintStart_toEndOf="@+id/txt_tiempo_act_det"
+            app:layout_constraintTop_toTopOf="@+id/txt_tiempo_act_det"
+            yourapp:text="- Inicio" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cabecera"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/txt_tiempo"
+            app:layout_constraintTop_toTopOf="@+id/txt_tipo_act_det">
+
+            <ImageView
+                android:id="@+id/Checked_validacion"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ic_reloj"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/txt_validacion"
+                app:layout_constraintStart_toStartOf="@+id/txt_validacion"
+                app:layout_constraintTop_toBottomOf="@+id/txt_validacion" />
+
+            <ImageView
+                android:id="@+id/img_check"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/ic_check"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/Checked_validacion"
+                app:layout_constraintEnd_toStartOf="@+id/img_secuencia"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_validacion" />
+
+            <ImageView
+                android:id="@+id/img_secuencia"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_desarrollo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/img_check"
+                app:layout_constraintTop_toBottomOf="@+id/txt_secuencia" />
+
+            <TextView
+                android:id="@+id/txt_validacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/md_blue_500"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/img_check"
+                app:layout_constraintTop_toTopOf="parent"
+                yourapp:text="Pendiente" />
+
+            <TextView
+                android:id="@+id/txt_secuencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/img_secuencia"
+                app:layout_constraintStart_toStartOf="@+id/img_secuencia"
+                app:layout_constraintTop_toTopOf="parent"
+                yourapp:text="Desarrollo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_act_recursos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingBottom="8dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_descripcion_act_det"
+            yourapp:itemCount="2"
+            yourapp:listitem="@layout/layout_item_sub_recursos" />
+
+        <com.consultoraestrategia.ss_crmeducativo.lib.justify.JustifiedTextView
+            android:id="@+id/txt_descripcion_act_det"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView85"
+            yourapp:text="Titulo" />
+
+        <TextView
+            android:id="@+id/textView85"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintTop_toBottomOf="@+id/textView59"
+            yourapp:layout_editor_absoluteX="135dp" />
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:paddingBottom="5dp">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rv_act_recursos"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+
+        <!--</LinearLayout>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

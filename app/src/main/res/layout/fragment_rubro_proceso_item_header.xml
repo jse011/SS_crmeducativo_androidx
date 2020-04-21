@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="@dimen/table_header_width"
+    android:layout_height="@dimen/table_header_height"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="4"
+        android:text="Examen #1"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.Compat.Notification.Info" />
+
+    <TextView
+        android:id="@+id/txtSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:gravity="bottom"
+        android:maxLines="3"
+        android:text="May 2. \n100pts\n63.3%"
+        android:textAppearance="@style/TextAppearance.Compat.Notification.Info"
+        android:textColor="@color/colorPrimary"
+        android:visibility="gone" />
+</LinearLayout>

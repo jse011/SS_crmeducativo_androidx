@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:diagonal="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_blue_dark">
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="140dp"
+        android:layout_height="120dp"
+        android:gravity="bottom|center"
+        android:rotation="90"
+        android:text="TextView"
+        android:textSize="9dp" />
+
+</LinearLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:diagonal="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/root"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@android:color/holo_blue_dark">-->
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/textTitle"-->
+    <!--android:layout_width="140dp"-->
+    <!--android:layout_height="120dp"-->
+    <!--android:gravity="bottom|center"-->
+    <!--android:rotation="90"-->
+    <!--android:text="TextView"-->
+    <!--android:textSize="9dp" />-->
+    <!--</LinearLayout>-->
+

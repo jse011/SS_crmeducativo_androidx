@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_clases"
+            android:icon="@drawable/ic_home"
+            android:title="Clases" />
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/ic_event"
+            android:title="Calendario" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notifications"
+            android:title="Notificaciones" />
+
+    </group>
+
+    <item android:title="Cursos Inscritos">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_circle"
+                android:title="Clase 1" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_circle"
+                android:title="Clase 2" />
+        </menu>
+    </item>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_settings"
+                android:title="Ajustes" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help"
+                android:title="Ayuda" />
+
+        </menu>
+
+
+    </item>
+
+</menu>

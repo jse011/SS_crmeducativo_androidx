@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarThumbVertical="@android:color/holo_blue_dark"
+        android:scrollbars="vertical">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabMensajeGrupal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/dim_10dp"
+            android:src="@drawable/ic_team"
+            app:fabSize="mini"
+            tools:ignore="RtlCompat" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/contentVacio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="50dp"
+                android:background="@drawable/background_border"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/dim_20dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/dim_100dp"
+                    android:layout_height="@dimen/dim_100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/mantenimiento" />
+
+                <TextView
+                    android:id="@+id/txtVacio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="En proceso... \nCurso sin registro de notas"
+                    android:textColor="#f56560" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contentEvaluacionTable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <com.consultoraestrategia.ss_crmeducativo.domain.adapters.TableFixHeaders
+                    android:id="@+id/tableTrimestre"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+
+                <LinearLayout
+                    android:layout_width="@dimen/dimen.layout.item.alumno.linear.width"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_blue_dark">
+
+                    <ListView
+                        android:id="@+id/listMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/holo_blue_dark" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>
+

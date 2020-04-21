@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contentVacio"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_marginBottom="6dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/background_border"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/rec_Menu"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/txtTitle">
+
+    <ImageView
+        android:layout_width="@dimen/dim_100dp"
+        android:layout_height="@dimen/dim_100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/mantenimiento" />
+
+    <TextView
+        android:id="@+id/txtVacio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Imposible Enviar Mensaje \n\nCLICK PARA REGRESAR O PRESIONE RETROCEDER"
+        android:textColor="#f56560" />
+
+</LinearLayout>

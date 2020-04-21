@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_refrescar"
+        android:icon="@drawable/ic_refresh2"
+        android:orderInCategory="100"
+        android:title="@string/global_action_create"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_update"
+        android:orderInCategory="100"
+        android:title="@string/global_action_import"
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/menu_update_alumnos"
+        android:orderInCategory="100"
+        android:title="@string/global_update_alumnos"
+        app:showAsAction="never"
+        android:visible="true"/>
+
+    <item
+        android:id="@+id/menu_update_foto_alumnos"
+        android:orderInCategory="100"
+        android:title="@string/global_update_foto_alumnos"
+        app:showAsAction="never"
+        android:visible="true"/>
+
+</menu>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardviewTareasDetalles"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_margin="@dimen/dim_10dp"
+    android:layout_marginBottom="5dp"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+
+        android:id="@+id/contItemView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TableRow
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_border_bottom"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/txtNroTarea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:padding="@dimen/dim_10dp"
+                android:src="@drawable/ic_tarea_black_24dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtNombreCreador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/dimen_15dp"
+                    android:text="Nombre Anunciante"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/txtFechaCreacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_15dp"
+                    android:text="Fecha " />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:gravity="center"
+                android:paddingLeft="@dimen/dimen_15dp"
+                android:paddingRight="@dimen/dim_10dp"
+                android:text="No Entregada"
+                android:textAlignment="center" />
+
+        </TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:paddingLeft="@dimen/dim_10dp"
+
+            android:text="Limite Entrega: 14 mar 17:00" />
+
+        <TextView
+            android:id="@+id/txtTituloTarea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:paddingLeft="@dimen/dim_10dp"
+            android:text="Titulo de tarea"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/txtContenidoTarea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:paddingLeft="@dimen/dim_10dp"
+            android:paddingRight="@dimen/dim_10dp"
+            android:text="@string/common_google_play_services_unknown_issue"
+            android:textColor="#000" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Abrir" />
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
+
+
+
+

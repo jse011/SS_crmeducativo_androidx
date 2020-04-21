@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <com.github.vipulasri.timelineview.TimelineView
+        android:id="@+id/timeline"
+        android:layout_width="23dp"
+        android:layout_height="match_parent"
+        app:markerSize="20dp"
+        app:lineWidth="2dp"
+        app:linePadding="5dp"
+        app:lineStyle="normal"
+        app:markerInCenter="true"
+        app:marker="@drawable/marker_accent"
+        app:startLineColor="@color/grey_400"
+        app:endLineColor="@color/grey_400"/>
+
+    <TextView
+        android:id="@+id/indicador"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:gravity="center|left"
+        android:textColor="@color/md_grey_700"
+        android:textSize="12sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_marginLeft="8dp"
+        tools:text="Demuestra autoestima para desarrollar los pasos." />
+
+    <TextView
+        android:id="@+id/instrumento"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="middle"
+        android:textColor="@color/md_grey_700"
+        android:textSize="12sp"
+        tools:text="instrumento" />
+
+    <TextView
+        android:id="@+id/tecnica"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="middle"
+        android:textColor="@color/md_grey_700"
+        android:textSize="12sp"
+        tools:text="tecnicas" />
+
+</LinearLayout>

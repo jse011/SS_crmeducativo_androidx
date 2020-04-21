@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="Horario" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCursoHorario"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".15"
+            android:background="@color/white" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".9"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnTurnoManana"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/background_border_bottom_azul"
+                    android:drawableLeft="@drawable/ic_horario_maniana"
+                    android:padding="@dimen/dimen_5dp"
+                    android:text="Mañana"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary" />
+
+                <Button
+                    android:id="@+id/btnTurnoTarde"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@drawable/ic_horario_tar"
+                    android:padding="@dimen/dimen_5dp"
+                    android:text="Turno Tarde"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtFirtsNombreHorario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="2dp"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
+                android:text="Lunes , Viernes"
+                android:textColor="#fff"
+
+                android:textStyle="bold|italic" />
+
+            <com.consultoraestrategia.ss_crmeducativo.tablefixheaders.TableFixHeaders
+                android:id="@+id/tfhHorario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:id="@+id/txtSecondNombreHorario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:padding="10dp"
+                android:text="Martes, Miercoles, Jueves"
+                android:textColor="#fff"
+                android:textStyle="bold|italic" />
+
+            <com.consultoraestrategia.ss_crmeducativo.tablefixheaders.TableFixHeaders
+                android:id="@+id/tfhHorario2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="center_horizontal"
+android:background="@drawable/background_border">
+
+<TextView
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:text="Sesión"
+    android:textStyle="bold"
+    android:textColor="#020202"
+    android:padding="5dp"
+    android:gravity="center"
+    android:textSize="12dp"
+    android:background="@drawable/background_border_table"/>
+<TextView
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:text="Fecha"
+    android:textStyle="bold"
+    android:textColor="#020202"
+    android:padding="5dp"
+    android:gravity="center"
+    android:textSize="12dp"
+    android:background="@drawable/background_border_table"/>
+<TextView
+    android:layout_weight="1"
+    android:layout_height="wrap_content"
+    android:text="Asistencia"
+    android:textStyle="bold"
+    android:textColor="#020202"
+    android:padding="5dp"
+    android:gravity="center"
+    android:textSize="12dp"
+    android:background="@drawable/background_border_table"/>
+
+</TableRow>

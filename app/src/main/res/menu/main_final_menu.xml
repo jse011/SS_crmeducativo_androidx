@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_horario"
+        android:icon="@drawable/ic_calendario_main_3"
+        android:orderInCategory="100"
+        android:title="@string/ListaCurso.menu.horario"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_agenda"
+        android:icon="@drawable/ic_document_message"
+        android:orderInCategory="100"
+        android:title="Agenda"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_refrescar"
+        android:icon="@drawable/ic_refresh_menu"
+        android:orderInCategory="100"
+        android:title="Actualizar"/>
+
+    <item
+        android:id="@+id/action_cursos"
+        android:visible="false"
+        android:icon="@drawable/ic_list_number_ligth"
+        android:orderInCategory="100"
+        android:title=""
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_asistencia_grado"
+        android:icon="@drawable/ic_asistencia_grado_ligth"
+        android:orderInCategory="100"
+        android:title=""
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never"
+        android:visible="false"/>
+    <item
+        android:id="@+id/update_calendario"
+        android:orderInCategory="100"
+        android:title="@string/importar_calendario"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_salir"
+        android:orderInCategory="100"
+        android:title="@string/cerrar_sesi_n"
+        app:showAsAction="never" />
+</menu>

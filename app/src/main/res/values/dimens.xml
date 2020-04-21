@@ -1,0 +1,148 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="carview_header_height">140dp</dimen>
+    <dimen name="app_bar_height">160dp</dimen>
+    <dimen name="app_bar_height_dim_calendar">250dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="dim_10dp">10dp</dimen>
+    <dimen name="dim_20dp">20dp</dimen>
+    <dimen name="dim_100dp">100dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="table_width">30dp</dimen>
+    <dimen name="table_width_1">110dp</dimen>
+    <dimen name="table_width_custom">200dp</dimen>
+    <dimen name="table_width_1_3">80dp</dimen>
+    <dimen name="table_width_1_5">60dp</dimen>
+    <dimen name="table_width_1_7">45dp</dimen>
+    <dimen name="table_height">70dp</dimen>
+    <dimen name="table_height_asistencia">65dp</dimen>
+    <dimen name="table_height_asistencia_1">60dp</dimen>
+    <dimen name="table_height_1">70dp</dimen>
+    <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_15dp">15dp</dimen>
+    <dimen name="dimen.layout.item.alumno.imageview">48dp</dimen>
+    <dimen name="dimen.layout.item.alumno.text">9dp</dimen>
+    <dimen name="dimen.layout.item.alumno.linear.width">30dp</dimen>
+    <dimen name="dimen.layout.item.alumno.linear.height">100dp</dimen>
+    <dimen name="text_11sp">11sp</dimen>
+    <dimen name="dimen_5dp">5dp</dimen>
+    <dimen name="text_13sp">13sp</dimen>
+
+    <dimen name="material_drawer_account_header_height">168dp</dimen>
+    <dimen name="material_drawer_account_header_height_compact">72dp</dimen>
+    <dimen name="material_drawer_account_header_horizontal_top">16dp</dimen>
+    <dimen name="material_drawer_account_header_horizontal_bottom">4dp</dimen>
+    <dimen name="material_drawer_account_header_selected">64dp</dimen>
+    <dimen name="material_drawer_account_header_secondary">40dp</dimen>
+    <dimen name="material_drawer_account_header_compact">56dp</dimen>
+    <dimen name="material_drawer_account_header_text">14sp</dimen>
+    <dimen name="material_drawer_account_header_dropdown">12dp</dimen>
+    <dimen name="material_drawer_account_header_dropdown_padding">5dp</dimen>
+    <dimen name="material_drawer_account_header_dropdown_margin_bottom">14dp</dimen>
+    <!-- General vertical padding values / 24dp for tablets -->
+    <dimen name="material_drawer_vertical_padding">16dp</dimen>
+
+    <dimen name="material_drawer_width">320dp</dimen>
+    <!-- Definition for the Drawer Slider margin right -->
+    <dimen name="material_drawer_margin">0dp</dimen>
+    <!-- General padding value -->
+    <dimen name="material_drawer_padding">8dp</dimen>
+
+    <dimen name="dialog_profile_width">272dp</dimen>
+    <dimen name="dialog_profile_height">272dp</dimen>
+    <dimen name="header_collapsing_size">320dp</dimen>
+    <dimen name="spacingremove">0dp</dimen>
+    <dimen name="dim_10sp">10sp</dimen>
+
+
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_mini">40dp</dimen>
+    <dimen name="fab_icon_size">24dp</dimen>
+    <dimen name="fab_plus_icon_size">14dp</dimen>
+    <dimen name="fab_plus_icon_stroke">2dp</dimen>
+    <dimen name="fab_shadow_offset">3dp</dimen>
+    <dimen name="fab_shadow_radius">9dp</dimen>
+    <dimen name="fab_stroke_width">1dp</dimen>
+    <dimen name="fab_actions_spacing">16dp</dimen>
+    <dimen name="fab_labels_margin">8dp</dimen>
+
+    <dimen name="delete_container">72dp</dimen>
+    <dimen name="table_firstheader_width">144dp</dimen>
+    <dimen name="table_firstheader_height">72dp</dimen>
+    <dimen name="table_header_width">72dp</dimen>
+    <dimen name="table_header_height">72dp</dimen>
+
+    <dimen name="table_body_height">72dp</dimen>
+    <dimen name="table_body_width">72dp</dimen>
+
+    <dimen name="rub_bid_firstheader_width">112dp</dimen>
+    <dimen name="rub_bid_firstheader_height">72dp</dimen>
+
+    <dimen name="rub_bid_body_height">72dp</dimen>
+    <dimen name="rub_bid_body_width">72dp</dimen>
+    <dimen name="create_rubbid_item_width">96dp</dimen>
+    <dimen name="create_rubbid_item_height">72dp</dimen>
+
+    <dimen name="table_firstheader_height_eval_session">0dp</dimen>
+    <dimen name="table_header_height_eval_session">0dp</dimen>
+    <dimen name="table_firstheader_width_eval_session">120dp</dimen>
+    <dimen name="table_header_width_eval_session">45dp</dimen>
+    <dimen name="table_fooder_width_eval_session">70dp</dimen>
+    <dimen name="table_fooder_height_eval_session">50dp</dimen>
+
+    <dimen name="table_body_height_eval_session">45dp</dimen>
+    <dimen name="table_body_width_eval_session">45dp</dimen>
+    <dimen name="table_body_height_eval_bidimencional">55dp</dimen>
+
+    <dimen name="dialog_rubroEvaluacion_edit_height">260dp</dimen>
+
+    <dimen name="rub_bid_header_width">64dp</dimen>
+    <dimen name="rub_bid_header_height">64dp</dimen>
+    <dimen name="global_tableview_cell_height">64dp</dimen>
+    <dimen name="global_tableview_cell_width">64dp</dimen>
+    <dimen name="row_header_width">72dp</dimen>
+    <dimen name="dim_3dp">3dp</dimen>
+    <dimen name="row_header_picture_width">144dp</dimen>
+
+    <dimen name="table_header_height_asistencia">60dp</dimen>
+    <dimen name="table_header_width_asistencia">50dp</dimen>
+    <dimen name="table_body_height_asistencia">50dp</dimen>
+    <dimen name="table_body_width_asistencia">50dp</dimen>
+
+
+    <dimen name="table_header_width_horario">25dp</dimen>
+    <dimen name="table_header_height_horario">25dp</dimen>
+    <dimen name="table_body_height_horario">25dp</dimen>
+    <dimen name="table_body_width_horario">25dp</dimen>
+    <dimen name="table_firstheader_width_horario">85dp</dimen>
+    <dimen name="table_firstheader_height_horario">30dp</dimen>
+    <dimen name="width_tab_cal_periodo">25dp</dimen>
+    <dimen name="margin_rigth_fragment_cal_periodo">25dp</dimen>
+    <dimen name="height_tab_cal_periodo">100dp</dimen>
+
+    <dimen name="item_programa_horario_height">40dp</dimen>
+    <dimen name="tabla_horario_column_header_height">25dp</dimen>
+    <dimen name="tabla_horario_column_header_width">80dp</dimen>
+
+    <dimen name="table_header_corner_evaluacion_resultado_width">120dp</dimen>
+    <dimen name="table_header_corner_evaluacion_resultado_height">45dp</dimen>
+    <dimen name="table_col_evaluacion_resultado_height">45dp</dimen>
+    <dimen name="table_colnf_evaluacion_resultado_width">45dp</dimen>
+    <dimen name="table_col_rubro_evaluacion_resultado_width">90dp</dimen>
+
+    <dimen name="table_header_corner_asistenicia_width">130dp</dimen>
+    <dimen name="table_col_vt_asist_alumno_width">70dp</dimen>
+    <dimen name="app_bar_height_comportamiento">200dp</dimen>
+
+    <dimen name="spot_size">10dp</dimen>
+    <dimen name="table_header_crear_rubrica" >160dp</dimen>
+
+
+</resources>

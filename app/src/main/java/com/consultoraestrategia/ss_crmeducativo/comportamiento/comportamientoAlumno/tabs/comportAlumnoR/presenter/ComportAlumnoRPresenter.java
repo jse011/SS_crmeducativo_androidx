@@ -1,0 +1,7 @@
+package com.consultoraestrategia.ss_crmeducativo.comportamiento.comportamientoAlumno.tabs.comportAlumnoR.presenter;
+
+import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentPresenter;
+import com.consultoraestrategia.ss_crmeducativo.comportamiento.comportamientoAlumno.tabs.comportAlumnoR.ui.ComportAlumnoRview;
+
+public interface ComportAlumnoRPresenter extends BaseFragmentPresenter<ComportAlumnoRview> {
+}

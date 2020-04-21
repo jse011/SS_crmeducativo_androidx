@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:padding="10dp"
+    android:background="@color/md_red_500">
+
+    <ImageView
+        android:id="@+id/remove_del_view"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/emoji_ios_1f1f9_1f1e9"
+        tools:ignore="ContentDescription" />
+
+</RelativeLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/contentItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_border_bottom_plomo"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_5dp">
+
+        <TextView
+            android:id="@+id/txtInicialName"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_circle_big"
+            android:gravity="center"
+            android:text="R"
+            android:textColor="#fff" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtRemitente"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dim_3dp"
+                android:text="Titulo"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDestinatario"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dim_3dp"
+                android:text="Para"
+
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtAsuntoMensaje"
+
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dim_3dp"
+                android:text="Asunto"
+                tools:ignore="SmallSp" />
+
+            <TextView
+
+                android:id="@+id/txtDescripcionMensaje"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="@dimen/dim_3dp"
+                android:text="Descripcion"
+                tools:ignore="SmallSp" />
+
+        </LinearLayout>
+
+        <TextView
+
+            android:id="@+id/txtFechaMensaje"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 jul"
+            android:textColor="#007acc"
+            tools:ignore="SmallSp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

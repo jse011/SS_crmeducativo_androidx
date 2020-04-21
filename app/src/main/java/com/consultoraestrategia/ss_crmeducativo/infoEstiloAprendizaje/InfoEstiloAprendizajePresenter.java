@@ -1,0 +1,7 @@
+package com.consultoraestrategia.ss_crmeducativo.infoEstiloAprendizaje;
+
+import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentPresenter;
+import com.consultoraestrategia.ss_crmeducativo.infoEstiloAprendizaje.ui.InfoEstiloAprendizajeView;
+
+public interface InfoEstiloAprendizajePresenter extends BaseFragmentPresenter<InfoEstiloAprendizajeView> {
+}

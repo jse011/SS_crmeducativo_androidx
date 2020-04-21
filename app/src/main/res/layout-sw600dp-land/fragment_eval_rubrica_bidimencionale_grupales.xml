@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/root"
+        android:layout_height="match_parent"
+        android:background="@color/md_white_1000">
+
+        <ImageView
+            android:id="@+id/btn_publicar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_clear"
+            app:layout_constraintEnd_toStartOf="@+id/img_eval_rubrica_help"
+            app:srcCompat="@drawable/ic_tarea_publicada"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:id="@+id/text_alumn_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/btn_change"
+            app:layout_constraintStart_toEndOf="@+id/img_alumn_profile"
+            app:layout_constraintTop_toTopOf="@+id/img_alumn_profile" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_alumn_profile"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/badge_circle" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_puntos"
+            android:layout_width="90dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/til_logro"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/til_nota"
+            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/til_logro">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_puntos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:hint="@string/fragment_eval_rubrica_bidimiensional_hint_puntos"
+                android:maxLines="1"
+                android:text=""
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nota"
+            android:layout_width="90dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/til_logro"
+            app:layout_constraintEnd_toStartOf="@+id/til_desempenio"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/til_puntos"
+            app:layout_constraintTop_toTopOf="@+id/til_logro">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_nota"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:hint="@string/fragment_eval_rubrica_bidimiensional_hint_nota"
+                android:maxLines="1"
+                android:text=""
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_desempenio"
+            android:layout_width="94dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/til_logro"
+            app:layout_constraintEnd_toStartOf="@+id/til_logro"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/til_nota"
+            app:layout_constraintTop_toTopOf="@+id/til_logro">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_desempenio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:hint="@string/fragment_eval_rubrica_bidimiensional_hint_desempenio"
+                android:maxLines="1"
+                android:text=""
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_logro"
+            android:layout_width="138dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/til_desempenio"
+            app:layout_constraintTop_toBottomOf="@+id/img_alumn_profile">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_logro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:hint="@string/fragment_eval_rubrica_bidimiensional_hint_logro"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <include
+            android:id="@+id/includeFooter"
+            layout="@layout/fragment_bttns_footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_contador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp"
+            android:text="1/1"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="24dp" />
+
+        <TextView
+            android:id="@+id/text_alumn_lastname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/text_alumn_name"
+            app:layout_constraintStart_toEndOf="@+id/img_alumn_profile"
+            app:layout_constraintTop_toBottomOf="@+id/text_alumn_name" />
+
+        <ImageView
+            android:id="@+id/btn_change"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_alumn_lastname"
+            app:layout_constraintEnd_toStartOf="@+id/btn_clear"
+            app:layout_constraintTop_toTopOf="@+id/text_alumn_name"
+            app:srcCompat="@drawable/ic_eeye"
+            tools:ignore="VectorDrawableCompat" />
+
+        <ImageView
+            android:id="@+id/btn_clear"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_change"
+            app:layout_constraintEnd_toStartOf="@+id/btn_publicar"
+            app:srcCompat="@drawable/ic_escoba"
+            tools:ignore="VectorDrawableCompat" />
+
+        <ImageView
+            android:id="@+id/img_eval_rubrica_help"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_help_dos_black"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_publicar"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.adapter.TableViewEvaluacion
+            android:id="@+id/table"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:minHeight="100dp"
+            app:column_header_height="@dimen/table_header_width_eval_session"
+            app:layout_constraintBottom_toTopOf="@+id/includeFooter"
+            app:layout_constraintEnd_toStartOf="@+id/textView130"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_nota"
+            app:row_header_width="@dimen/table_firstheader_width_eval_session"
+            app:shadow_color="@color/md_grey_50"
+            app:unselected_color="@color/white">
+
+        </com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.adapter.TableViewEvaluacion>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/includeFooter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView130"
+            app:layout_constraintTop_toBottomOf="@+id/til_desempenio">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <TextView
+                    android:id="@+id/textView66"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Comentarios"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView15"
+                    app:layout_constraintStart_toEndOf="@+id/imageView15"
+                    app:layout_constraintTop_toTopOf="@+id/imageView15" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_comentario"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView66">
+
+                    <ImageView
+                        android:id="@+id/btnEnviar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.333"
+                        app:srcCompat="@drawable/ic_menu_send_blue"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <EditText
+                        android:id="@+id/inputComentario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="#00FFFFFF"
+                        android:hint="Agregar un comentario"
+                        android:maxHeight="50dp"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnEnviar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/imageView15"
+                    android:layout_width="25dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_comentario"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:id="@+id/textView132"
+                    android:layout_width="0dp"
+                    android:layout_height="0.5dp"
+                    android:background="@color/md_grey_400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/content_comentario" />
+
+                <TextView
+                    android:id="@+id/textView136"
+                    android:layout_width="0dp"
+                    android:layout_height="0.5dp"
+                    android:background="@color/md_grey_400"
+                    app:layout_constraintBottom_toTopOf="@+id/rec_rubro_archivo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycomentarios"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView132">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <Button
+                    android:id="@+id/btn_add_evidencias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:cropToPadding="true"
+                    android:drawableStart="@drawable/ic_camara_evidencia"
+                    android:text="  Evidencias"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:theme="@style/AppTheme.NoActionBar.DroppyMenu"
+                    app:backgroundTint="@color/md_white_1000"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycomentarios"
+                    tools:ignore="VectorDrawableCompat" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rec_rubro_archivo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_add_evidencias" />
+
+                <ImageView
+                    android:id="@+id/btnMsgPre"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/content_comentario"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/email" />
+
+
+                <FrameLayout
+                    android:id="@+id/cont_archivo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rec_rubro_archivo">
+
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="textView66,imageView15,content_comentario,recycomentarios,btn_add_evidencias,rec_rubro_archivo,textView132,textView136,temp" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/textView130"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

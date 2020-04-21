@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_create_rubro_evaluation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/txt_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/txt_tipoFormula"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:text="Tipo Fórmula"-->
+    <!--android:textSize="12dp"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/spi_tipo_formula"-->
+    <!--app:layout_constraintHorizontal_bias="1.0"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/spi_tipo_formula"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />-->
+
+    <!--<Spinner-->
+    <!--android:id="@+id/spi_tipo_formula"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="0dp"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"-->
+    <!--app:layout_constraintHorizontal_bias="1.0"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/textInputLayout3"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/txt_tipoFormula" />-->
+
+
+    <TextView
+        android:id="@+id/textinputdescripcion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Tipo de Selector"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/spi_tipo_escala_evaluacion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        android:layout_marginLeft="8dp"></TextView>
+
+    <Spinner
+
+        android:id="@+id/spi_tipo_selector"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/spi_tipo_escala_evaluacion"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textinputdescripcion"></Spinner>
+
+    <!--<Spinner-->
+    <!--android:id="@+id/spi_tipo_formula"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="0dp"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"-->
+    <!--app:layout_constraintHorizontal_bias="1.0"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/textInputLayout3"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/txt_tipoFormula" />-->
+
+
+    <TextView
+        android:id="@+id/txt_tipoNota"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Escala Evaluación"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/spi_tipo_escala_evaluacion"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        android:layout_marginRight="8dp" />
+
+
+    <Spinner
+        android:id="@+id/spi_tipo_escala_evaluacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spi_tipo_selector"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tipoNota"
+        android:layout_marginRight="8dp" />
+
+
+    <TextView
+        android:id="@+id/txt_tipoValorDe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Valor Defecto"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/spi_tipo_escala_evaluacion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spi_tipo_selector"
+        android:layout_marginLeft="8dp" />
+
+
+    <Spinner
+        android:id="@+id/spi_tipo_n2ota"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/txt_tipoValorDe"
+        app:layout_constraintStart_toStartOf="@+id/txt_tipoValorDe"
+        app:layout_constraintTop_toBottomOf="@+id/txt_tipoValorDe" />
+
+
+    <TextView
+        android:id="@+id/txt_intervalo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
+        android:text="Intervalo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_tipoValorDe"
+        app:layout_constraintTop_toBottomOf="@+id/spi_tipo_escala_evaluacion" />
+
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toStartOf="@+id/txt_intervalo"
+        app:layout_constraintTop_toBottomOf="@+id/txt_intervalo" />
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/txt_tipoFormula"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:text="Tipo Fórmula"-->
+    <!--android:textSize="12dp"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/spi_tipo_formula"-->
+    <!--app:layout_constraintHorizontal_bias="1.0"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/spi_tipo_formula"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />-->
+
+    <!--<Spinner-->
+    <!--android:id="@+id/spi_tipo_formula"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="0dp"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"-->
+    <!--app:layout_constraintHorizontal_bias="1.0"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/textInputLayout3"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/txt_tipoFormula" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/txt_tipoRedondeado"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="0dp"-->
+    <!--android:layout_marginLeft="0dp"-->
+    <!--android:layout_marginRight="8dp"-->
+    <!--android:layout_marginStart="0dp"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:text="Valor Redondeado"-->
+    <!--android:textSize="12dp"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/spi_valor_redondeo"-->
+    <!--app:layout_constraintHorizontal_bias="0.0"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/spi_valor_redondeo"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/spi_tipo_nota" />-->
+
+    <!--<Spinner-->
+    <!--android:id="@+id/spi_valor_redondeo"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginRight="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.0"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/spi_tipo_nota"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/txt_tipoRedondeado" />-->
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/txt_escala_evaluacion"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="0dp"-->
+    <!--android:layout_marginStart="0dp"-->
+    <!--android:layout_marginTop="0dp"-->
+    <!--android:text="Escala Evaluación"-->
+    <!--android:textSize="12dp"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/spi_tipo_formula"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/spi_tipo_formula"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/spi_tipo_formula" />-->
+
+    <!--<Spinner-->
+    <!--android:id="@+id/spi_escala_evaluacion"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/txt_escala_evaluacion"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/txt_escala_evaluacion"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/txt_escala_evaluacion" />-->
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView8"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="16dp"-->
+    <!--android:text="Rubros Asociados"-->
+    <!--android:textSize="12dp"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/spi_escala_evaluacion" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView11"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="24dp"-->
+    <!--android:layout_marginRight="8dp"-->
+    <!--android:layout_marginTop="0dp"-->
+    <!--android:text="Peso"-->
+    <!--android:textSize="12dp"-->
+    <!--android:visibility="gone"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/textView8"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/textView8" />-->
+
+
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/recyclerView"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/textView11" />-->
+
+    <!--<View-->
+    <!--android:id="@+id/view6"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_marginEnd="0dp"-->
+    <!--android:layout_marginStart="0dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--android:background="@color/md_grey_600"-->
+    <!--android:visibility="gone"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/recyclerView"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/recyclerView"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/recyclerView" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textviewTotalPeso"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="24dp"-->
+    <!--android:layout_marginRight="24dp"-->
+    <!--android:layout_marginTop="0dp"-->
+    <!--android:text=""-->
+    <!--android:textStyle="bold"-->
+    <!--app:layout_constraintEnd_toEndOf="@+id/view6"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/view6" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

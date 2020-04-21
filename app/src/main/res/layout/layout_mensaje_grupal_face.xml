@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_dark"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ibtnVolver"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:src="@drawable/ic_arrow_back"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTituloAccion"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:ellipsize="end"
+                    android:gravity="start|center"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    tools:text="Mensaje Notas Rubro" />
+
+            </LinearLayout>
+
+
+            <ImageButton
+                android:id="@+id/ibtnEnviarMensaje"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:src="@drawable/ic_menu_send"
+                tools:ignore="ContentDescription" />
+
+            <ImageButton
+                android:id="@+id/ibtnMenu"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_show_menu_white"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/contentCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_border_bottom_plomo"
+                android:gravity="bottom|center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="¿Este Mensaje Necesita una Respuesta?..."
+                    tools:ignore="HardcodedText" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cbRespuesta"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:checked="true" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/contentIntencion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Intención"
+                        tools:ignore="HardcodedText" />
+
+                    <Spinner
+                        android:id="@+id/spnIntencion"
+                        style="@style/Base.Widget.AppCompat.Spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3" />
+
+                    <ImageButton
+
+                        android:id="@+id/btnTalento"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_find"
+                        android:visibility="gone"
+                        tools:ignore="ContentDescription" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTalento"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:visibility="gone" />
+
+                <View
+                    android:id="@+id/view9"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/background_border_bottom_plomo" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/txtAsunto"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_border_bottom_plomo"
+                        android:hint="Escriba el asunto:"
+                        android:padding="@dimen/dim_10dp"
+                        tools:ignore="HardcodedText" />
+
+                    <ImageButton
+                        android:id="@+id/btnShowMessagePredeter"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_message" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/txtDescripcionMensaje"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_10dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/background_border_bottom_plomo"
+                    android:gravity="top"
+                    android:hint="Escriba el contenido del mensaje"
+                    android:inputType="textMultiLine"
+                    android:maxLines="6"
+                    android:minLines="3"
+                    android:paddingLeft="@dimen/dim_10dp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/txtAdjuntIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@drawable/background_border_bottom_plomo"
+                    android:drawableStart="@drawable/ic_adjuntar"
+                    android:drawableLeft="@drawable/ic_adjuntar"
+                    android:padding="@dimen/dim_10dp"
+                    android:text="  Se adjuntara Imagen de la Rúbrica"
+                    android:textSize="10sp"
+                    tools:ignore="HardcodedText,SmallSp" />
+
+                <LinearLayout
+                    android:id="@+id/lyContentRVPersonasPadre"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_border_bottom_plomo"
+                    android:orientation="vertical">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="2dp">
+
+                        <TextView
+                            android:id="@+id/txtParaFinal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:drawableBottom="@drawable/ic_expand_more"
+                            android:gravity="center"
+                            android:text="Para :"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="HardcodedText" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/txtPersonaPadresList"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="9"
+                            android:background="@color/white"
+                            android:hint="Agregar Padre"
+                            android:padding="@dimen/dim_10dp"
+                            app:layout_constraintEnd_toStartOf="@+id/txtCountRestPadres"
+                            app:layout_constraintStart_toEndOf="@+id/txtParaFinal"
+                            app:layout_constraintTop_toBottomOf="@+id/rvPersonasPadresDestino"
+                            tools:ignore="HardcodedText" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+
+                            android:id="@+id/rvPersonasPadresDestino"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toStartOf="@+id/txtCountRestPadres"
+                            app:layout_constraintStart_toEndOf="@+id/txtParaFinal"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txtCountRestPadres"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:drawableBottom="@drawable/ic_expand_more"
+                            android:gravity="center"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="+5" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lyContentRVPersonasHijos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/background_border_bottom_plomo"
+                    android:orientation="horizontal"
+                    android:padding="2dp"
+                    android:visibility="gone">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textView99"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="CC :\nHijos"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="HardcodedText" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/txtPersonaHijosList"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="9"
+                            android:background="@color/white"
+                            android:hint="Agregar Alumno"
+                            android:padding="@dimen/dim_10dp"
+                            app:layout_constraintEnd_toStartOf="@+id/txtCountRestHijos"
+                            app:layout_constraintStart_toEndOf="@+id/textView99"
+                            app:layout_constraintTop_toBottomOf="@+id/rvPersonasHijosDestino"
+                            tools:ignore="HardcodedText" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvPersonasHijosDestino"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toStartOf="@+id/txtCountRestHijos"
+                            app:layout_constraintStart_toEndOf="@+id/textView99"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/txtCountRestHijos"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="0.15"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@+id/txtPersonaHijosList"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="+5" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
