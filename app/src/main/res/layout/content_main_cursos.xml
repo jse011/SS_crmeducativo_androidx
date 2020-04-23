@@ -149,18 +149,28 @@
             app:layout_constraintStart_toStartOf="@+id/rvListaClases"
             app:layout_constraintTop_toTopOf="@+id/include2" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <androidx.cardview.widget.CardView
             android:id="@+id/btn_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
             android:clickable="true"
-            app:backgroundTint="@color/md_green_900"
+            app:cardCornerRadius="45dp"
+            app:cardBackgroundColor="@color/md_green_900"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_mensaje_chat"
-            tools:ignore="VectorDrawableCompat" />
+            tools:ignore="VectorDrawableCompat">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/icon_animed"
+                android:layout_margin="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </com.airbnb.lottie.LottieAnimationView>
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

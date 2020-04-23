@@ -2,6 +2,7 @@ package com.consultoraestrategia.ss_crmeducativo.login2.service2;
 
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenter;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarUi;
+import com.consultoraestrategia.ss_crmeducativo.login2.entities.CalendarioPeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioUi;
 
 public interface ServicesPresenter extends BasePresenter<ServicesView> {
@@ -28,4 +29,6 @@ public interface ServicesPresenter extends BasePresenter<ServicesView> {
     void onSelectedCancelarTimePicker();
 
     void onViewClickedCardProgEnvio();
+
+    void onClicAnioCalendario(CalendarioPeriodoUi calendarioPeriodoUi);
 }

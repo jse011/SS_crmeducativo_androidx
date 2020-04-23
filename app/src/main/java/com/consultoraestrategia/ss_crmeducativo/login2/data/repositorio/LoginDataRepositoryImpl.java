@@ -893,7 +893,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
     }
 
     @Override
-    public List<ProgramaEducativoUi> getCursosAnioPrograma(int usuarioId, int anioAcademicoId) {
+    public List<ProgramaEducativoUi> getCursosAnioPrograma(int usuarioId, int anioAcademicoId, int calendarioPeriodoId, int programaEducativoId) {
         List<ProgramaEducativoUi> programaEducativoUiList = new ArrayList<>();
         UsuarioRolGeoreferencia rolGeoreferencia = SQLite.select()
                 .from(UsuarioRolGeoreferencia.class)
@@ -966,77 +966,87 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             planCursoIdList.add(itemCargaCursos.getPlanCursoId());
         }
         Log.d(TAG, "planCursoIdList: " + planCursoIdList);
-        List<ProgramasEducativo> programasEducativoList = SQLite.select()
-                .from(ProgramasEducativo.class)
-                .innerJoin(PlanEstudios.class)
-                .on(ProgramasEducativo_Table.programaEduId.withTable()
-                        .eq(PlanEstudios_Table.programaEduId.withTable()))
-                .innerJoin(PlanCursos.class)
-                .on(PlanEstudios_Table.planEstudiosId.withTable()
-                        .eq(PlanCursos_Table.planEstudiosId.withTable()))
-                .where(PlanCursos_Table.planCursoId.withTable()
-                        .in(planCursoIdList))
-                .and(ProgramasEducativo_Table.estadoId.withTable().eq(37))
-                .groupBy(ProgramasEducativo_Table.programaEduId.withTable())
-                .queryList();
-
-
+        List<ProgramasEducativo> programasEducativoList = new ArrayList<>();
+        if(programaEducativoId!=0){
+            programasEducativoList = SQLite.select()
+                    .from(ProgramasEducativo.class)
+                    .where(ProgramasEducativo_Table.programaEduId.eq(programaEducativoId))
+                    .queryList();
+        }else {
+            programasEducativoList = SQLite.select()
+                    .from(ProgramasEducativo.class)
+                    .innerJoin(PlanEstudios.class)
+                    .on(ProgramasEducativo_Table.programaEduId.withTable()
+                            .eq(PlanEstudios_Table.programaEduId.withTable()))
+                    .innerJoin(PlanCursos.class)
+                    .on(PlanEstudios_Table.planEstudiosId.withTable()
+                            .eq(PlanCursos_Table.planEstudiosId.withTable()))
+                    .where(PlanCursos_Table.planCursoId.withTable()
+                            .in(planCursoIdList))
+                    .and(ProgramasEducativo_Table.estadoId.withTable().eq(37))
+                    .groupBy(ProgramasEducativo_Table.programaEduId.withTable())
+                    .queryList();
+        }
 
         for (ProgramasEducativo programasEducativo: programasEducativoList){
+            if(calendarioPeriodoId==0){
+                //#region get calendarioPerio
+                List<CalendarioPeriodo> calendarioPeriodoList = SQLite.select(Utils.f_allcolumnTable(CalendarioPeriodo_Table.ALL_COLUMN_PROPERTIES))
+                        .from(CalendarioPeriodo.class)
+                        .innerJoin(CalendarioAcademico.class)
+                        .on(CalendarioPeriodo_Table.calendarioAcademicoId.withTable()
+                                .eq(CalendarioAcademico_Table.calendarioAcademicoId.withTable()))
+                        .innerJoin(AnioAcademico.class)
+                        .on(CalendarioAcademico_Table.idAnioAcademico.withTable()
+                                .eq(AnioAcademico_Table.idAnioAcademico.withTable()))
+                        .where(AnioAcademico_Table.idAnioAcademico.withTable().eq(anioAcademicoId))
+                        .and(CalendarioAcademico_Table.programaEduId.withTable().eq(programasEducativo.getProgramaEduId()))
+                        .queryList();
 
-            List<CalendarioPeriodo> calendarioPeriodoList = SQLite.select(Utils.f_allcolumnTable(CalendarioPeriodo_Table.ALL_COLUMN_PROPERTIES))
-                    .from(CalendarioPeriodo.class)
-                    .innerJoin(CalendarioAcademico.class)
-                    .on(CalendarioPeriodo_Table.calendarioAcademicoId.withTable()
-                            .eq(CalendarioAcademico_Table.calendarioAcademicoId.withTable()))
-                    .innerJoin(AnioAcademico.class)
-                    .on(CalendarioAcademico_Table.idAnioAcademico.withTable()
-                            .eq(AnioAcademico_Table.idAnioAcademico.withTable()))
-                    .where(AnioAcademico_Table.idAnioAcademico.withTable().eq(anioAcademicoId))
-                    .and(CalendarioAcademico_Table.programaEduId.withTable().eq(programasEducativo.getProgramaEduId()))
-                    .queryList();
-
-            Collections.sort(calendarioPeriodoList, new Comparator<CalendarioPeriodo>() {
-                public int compare(CalendarioPeriodo o1, CalendarioPeriodo o2) {
-                    return new Date(o2.getFechaFin()).compareTo(new Date(o1.getFechaFin()));
-                }
-            });
-
-            int calendarioPeriodoId = 0;
-            //#region Buscar calendario periodo con el estado vigente
-            for (CalendarioPeriodo item_CalendarioPeriodo : calendarioPeriodoList){
-                if (item_CalendarioPeriodo.getEstadoId() == CalendarioPeriodo.CALENDARIO_PERIODO_VIGENTE) {
-                    calendarioPeriodoId = item_CalendarioPeriodo.getCalendarioPeriodoId();
-                    break;
-                }
-            }
-            //#endregion
-
-            int size = calendarioPeriodoList.size();
-
-            if (size > 0 && calendarioPeriodoId == 0)
-            {
-                //#region Buscar el calendario en el estado creado proximo a estar vigente
-                int count = 0;
-                calendarioPeriodoId = calendarioPeriodoList.get(0).getCalendarioPeriodoId();
-                for (CalendarioPeriodo item_CalendarioPeriodo : calendarioPeriodoList) {
-                    if (item_CalendarioPeriodo.getEstadoId() == CalendarioPeriodo.CALENDARIO_PERIODO_CREADO)
-                    {
-                        calendarioPeriodoId = item_CalendarioPeriodo.getCalendarioPeriodoId();
-                        if (count != 0 &&
-                                calendarioPeriodoList.get(count - 1).getEstadoId() == CalendarioPeriodo.CALENDARIO_PERIODO_CERRADO)
-                        {
-                            calendarioPeriodoId = calendarioPeriodoList.get(count - 1).getCalendarioPeriodoId();
-                            break;
-                        }
+                Collections.sort(calendarioPeriodoList, new Comparator<CalendarioPeriodo>() {
+                    public int compare(CalendarioPeriodo o1, CalendarioPeriodo o2) {
+                        return new Date(o2.getFechaFin()).compareTo(new Date(o1.getFechaFin()));
                     }
+                });
 
-                    count++;
+                calendarioPeriodoId = 0;
+                //#region Buscar calendario periodo con el estado vigente
+                for (CalendarioPeriodo item_CalendarioPeriodo : calendarioPeriodoList){
+                    if (item_CalendarioPeriodo.getEstadoId() == CalendarioPeriodo.CALENDARIO_PERIODO_VIGENTE) {
+                        calendarioPeriodoId = item_CalendarioPeriodo.getCalendarioPeriodoId();
+                        break;
+                    }
                 }
                 //#endregion
+
+                int size = calendarioPeriodoList.size();
+
+                if (size > 0 && calendarioPeriodoId == 0)
+                {
+                    //#region Buscar el calendario en el estado creado proximo a estar vigente
+                    int count = 0;
+                    calendarioPeriodoId = calendarioPeriodoList.get(0).getCalendarioPeriodoId();
+                    for (CalendarioPeriodo item_CalendarioPeriodo : calendarioPeriodoList) {
+                        if (item_CalendarioPeriodo.getEstadoId() == CalendarioPeriodo.CALENDARIO_PERIODO_CREADO)
+                        {
+                            calendarioPeriodoId = item_CalendarioPeriodo.getCalendarioPeriodoId();
+                            if (count != 0 &&
+                                    calendarioPeriodoList.get(count - 1).getEstadoId() == CalendarioPeriodo.CALENDARIO_PERIODO_CERRADO)
+                            {
+                                calendarioPeriodoId = calendarioPeriodoList.get(count - 1).getCalendarioPeriodoId();
+                                break;
+                            }
+                        }
+
+                        count++;
+                    }
+                    //#endregion
+                }
+                //#endregion
+
+                if (calendarioPeriodoId == 0) continue;
             }
 
-            if (calendarioPeriodoId == 0) continue;
 
             Tipos tipos = SQLite.select()
                     .from(Tipos.class)
@@ -1848,6 +1858,41 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
     }
 
     @Override
+    public List<CalendarioPeriodoUi> getListCalendarioAcademico(int anioAcademicoId, int programaEducativoId) {
+        List<CalendarioPeriodo> calendarioPeriodos =  SQLite.select()
+                .from(CalendarioPeriodo.class)
+                .innerJoin(CalendarioAcademico.class)
+                .on(CalendarioPeriodo_Table.calendarioAcademicoId.withTable().eq(CalendarioAcademico_Table.calendarioAcademicoId.withTable()))
+                .where(CalendarioAcademico_Table.idAnioAcademico.withTable().eq(anioAcademicoId))
+                .and(CalendarioAcademico_Table.programaEduId.withTable().eq(programaEducativoId))
+                .queryList();
+
+        Collections.sort(calendarioPeriodos, new Comparator<CalendarioPeriodo>() {
+            public int compare(CalendarioPeriodo o1, CalendarioPeriodo o2) {
+                return new Date(o2.getFechaFin()).compareTo(new Date(o1.getFechaFin()));
+            }
+        });
+
+        List<CalendarioPeriodoUi> calendarioPeriodoUiList = new ArrayList<>();
+        for (CalendarioPeriodo calendarioPeriodo : calendarioPeriodos){
+            Tipos tipos = SQLite.select()
+                    .from(Tipos.class)
+                    .where(Tipos_Table.tipoId.eq(calendarioPeriodo.getTipoId()))
+                    .querySingle();
+
+            CalendarioPeriodoUi calendarioPeriodoUi = new CalendarioPeriodoUi();
+            calendarioPeriodoUi.setCalendarioId(calendarioPeriodo.getCalendarioPeriodoId());
+            calendarioPeriodoUi.setNombre(tipos!=null?tipos.getNombre():"desconocido");
+            calendarioPeriodoUi.setFechaFin(calendarioPeriodo.getFechaFin());
+            calendarioPeriodoUi.setFechaInicio(calendarioPeriodo.getFechaInicio());
+            calendarioPeriodoUiList.add(calendarioPeriodoUi);
+
+
+        }
+        return calendarioPeriodoUiList;
+    }
+
+    @Override
     public CalendarioPeriodoUi getCalendarioPeriodo(int calendarioPeriodoId) {
         CalendarioPeriodoUi calendarioPeriodoUi = new CalendarioPeriodoUi();
         Tipos calendarioPeriodo = SQLite.select()
@@ -2317,7 +2362,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
 
         ActualizarUi actualizarTipoNota = null;
         for (ActualizarUi itemActualizarUi : programaEducativoUi.getActualizarUiList()){
-            if(itemActualizarUi.isEncoloa()&&itemActualizarUi.getTipo()== ActualizarTipoUi.TipoNota){
+            if(/*itemActualizarUi.isEncoloa()&&*/itemActualizarUi.getTipo()== ActualizarTipoUi.TipoNota){
                 actualizarTipoNota = itemActualizarUi;
                 break;
             }

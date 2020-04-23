@@ -40,8 +40,10 @@ import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
 import com.consultoraestrategia.ss_crmeducativo.login2.adapter.AdapterServicioEnvio;
 import com.consultoraestrategia.ss_crmeducativo.login2.adapter.AdapterServicioRecibir;
+import com.consultoraestrategia.ss_crmeducativo.login2.adapter.AnioCalendarioAdapter;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
+import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeridoList;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetListActualizar;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetListServicioEnvio;
@@ -51,7 +53,9 @@ import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.servidorDa
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.servidorData.SaveDatosServidor;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.AlarmaUi;
+import com.consultoraestrategia.ss_crmeducativo.login2.entities.CalendarioPeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioUi;
+import com.consultoraestrategia.ss_crmeducativo.login2.fastData.FastData;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
 
 import java.util.Calendar;
@@ -61,7 +65,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresenter> implements ServicesView, CompoundButton.OnCheckedChangeListener, AdapterServicioRecibir.ActualizarListener, AdapterServicioEnvio.EnviarListener {
+public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresenter> implements ServicesView, CompoundButton.OnCheckedChangeListener, AdapterServicioRecibir.ActualizarListener, AdapterServicioEnvio.EnviarListener, AnioCalendarioAdapter.Listener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -97,8 +101,14 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     NestedScrollView nestedScrollView;
     @BindView(R.id.card_prog_envio)
     CardView cardProgEnvio;
+    @BindView(R.id.rc_anio_calendario)
+    RecyclerView rcAnioCalendario;
+    @BindView(R.id.cont_anio_acdemico)
+    CardView contAnioAcdemico;
+
 
     private ObjectAnimator animationBtnRevisionDatos;
+    private AnioCalendarioAdapter anioAcademicoAdapter;
 
     public static Intent start(Context context, int usuarioId, int empleadoId, int programaEducativoId, int cargaCursoId, int calendarioPeriodoId, int idGeoreferenciaId, int idEntidad, int silaboId, int idCurso, int cargaAcademica, int anioAcademicoId, boolean cursoComplejo) {
         CRMBundle crmBundle = new CRMBundle();
@@ -144,7 +154,8 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
                 new GetDatosServidor(service2Repositorio),
                 new SaveDatosServidor(service2Repositorio),
                 new SavePlanificarSinck(service2Repositorio),
-                new GetPlanificarSinck(service2Repositorio));
+                new GetPlanificarSinck(service2Repositorio),
+                new GetCalendarioPeridoList(service2Repositorio));
     }
 
     @Override
@@ -192,6 +203,12 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
         rcServicioEnvio.setAdapter(adapterEnvio);
         rcServicioEnvio.setNestedScrollingEnabled(false);
         ((SimpleItemAnimator) rcServicioEnvio.getItemAnimator()).setSupportsChangeAnimations(false);
+
+        rcAnioCalendario.setLayoutManager(new LinearLayoutManager(this));
+        anioAcademicoAdapter = new AnioCalendarioAdapter(this);
+        rcAnioCalendario.setAdapter(anioAcademicoAdapter);
+        rcAnioCalendario.setNestedScrollingEnabled(false);
+        ((SimpleItemAnimator) rcServicioEnvio.getItemAnimator()).setSupportsChangeAnimations(false);
     }
 
     private void setupCheckListener() {
@@ -233,8 +250,6 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     public void showListServicioActualizar(List<ActualizarUi> actualizarUiList) {
         if (contActualizar.getVisibility() != View.VISIBLE)
             contActualizar.setVisibility(View.VISIBLE);
-        if (txtActualizar.getVisibility() != View.VISIBLE)
-            txtActualizar.setVisibility(View.VISIBLE);
 
         adapterActualizar.setList(actualizarUiList);
     }
@@ -346,7 +361,6 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     @Override
     public void hideServicioActualizar() {
         contActualizar.setVisibility(View.GONE);
-        txtActualizar.setVisibility(View.GONE);
     }
 
     @Override
@@ -421,6 +435,22 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     @Override
     public void finishActivity() {
         finish();
+    }
+
+    @Override
+    public void showListAnioCalendario(List<CalendarioPeriodoUi> calendarioPeriodoUiList) {
+        contAnioAcdemico.setVisibility(View.VISIBLE);
+        anioAcademicoAdapter.setList(calendarioPeriodoUiList);
+    }
+
+    @Override
+    public void hideListAnioCalendario() {
+        contAnioAcdemico.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showFastData(int usuarioId, int anioAcademicoId, int calendarioId, int programaEducativoId) {
+        FastData.start(this, anioAcademicoId, usuarioId, calendarioId,programaEducativoId);
     }
 
 
@@ -584,5 +614,10 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
                 });
         androidx.appcompat.app.AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onClickAnioCalendario(CalendarioPeriodoUi calendarioPeriodoUi) {
+        presenter.onClicAnioCalendario(calendarioPeriodoUi);
     }
 }

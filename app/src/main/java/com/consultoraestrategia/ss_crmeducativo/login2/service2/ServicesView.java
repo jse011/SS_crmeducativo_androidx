@@ -3,6 +3,7 @@ package com.consultoraestrategia.ss_crmeducativo.login2.service2;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseView;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.AlarmaUi;
+import com.consultoraestrategia.ss_crmeducativo.login2.entities.CalendarioPeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioUi;
 
 import java.util.List;
@@ -53,4 +54,10 @@ public interface ServicesView extends BaseView<ServicesPresenter> {
     void changeSelectedProgramaHorario(boolean change);
 
     void finishActivity();
+
+    void showListAnioCalendario(List<CalendarioPeriodoUi> calendarioPeriodoUiList);
+
+    void hideListAnioCalendario();
+
+    void showFastData(int usuarioId, int anioAcademicoId, int calendarioId, int programaEducativoId);
 }

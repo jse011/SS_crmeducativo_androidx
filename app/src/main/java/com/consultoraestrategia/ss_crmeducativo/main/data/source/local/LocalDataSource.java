@@ -804,7 +804,17 @@ public class LocalDataSource implements MainDataSource {
 
         Collections.sort(anioAcademicoList, new Comparator<AnioAcademico>() {
             public int compare(AnioAcademico o1, AnioAcademico o2) {
-                return Utils.convertirfecha(o2.getFechaFin()).compareTo(Utils.convertirfecha(o1.getFechaFin()));
+
+                int sComp = Utils.convertirfecha(o2.getFechaFin()).compareTo(Utils.convertirfecha(o1.getFechaFin()));
+
+                if (sComp != 0) {
+                    return sComp;
+                }
+
+                Integer x1 = o1.getGeoreferenciaId();
+                Integer x2 = o2.getGeoreferenciaId();
+                return x1.compareTo(x2);
+
             }
         });
 

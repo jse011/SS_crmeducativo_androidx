@@ -30,6 +30,8 @@ public class FastDataPresenterImpl extends BasePresenterImpl<FastDataView> imple
     private GetDatosServidorTwo getDatosServidor;
     private RetrofitCancel retrofitCancel;
     private boolean messageError;
+    private int calendarioPerioId;
+    private int programaEducativoId;
 
     public FastDataPresenterImpl(UseCaseHandler handler, Resources res, GetDatosPreFastData getDatosPreFastData, GetDatosServidorTwo getDatosServidor) {
         super(handler, res);
@@ -43,6 +45,8 @@ public class FastDataPresenterImpl extends BasePresenterImpl<FastDataView> imple
         CRMBundle crmBundle = new CRMBundle(extras);
         anioAcademicoId = crmBundle.getAnioAcademico();
         usuarioId = crmBundle.getUsuarioId();
+        calendarioPerioId = crmBundle.getCalendarioPeriodoId();
+        programaEducativoId = crmBundle.getProgramaEducativoId();
     }
 
     @Override
@@ -54,7 +58,7 @@ public class FastDataPresenterImpl extends BasePresenterImpl<FastDataView> imple
     private void getInformacionPreFastData() {
         getTipos();
         this.programaEducativoUiList.clear();
-        GetDatosPreFastData.Response response = getDatosPreFastData.execute(new GetDatosPreFastData.Request(usuarioId, anioAcademicoId));
+        GetDatosPreFastData.Response response = getDatosPreFastData.execute(new GetDatosPreFastData.Request(usuarioId, anioAcademicoId, calendarioPerioId,programaEducativoId));
         this.programaEducativoUiList.addAll(response.getCursosUiList()!=null? response.getCursosUiList():  new ArrayList<ProgramaEducativoUi>());
 
         Log.d(getTag(), "response: " + this.programaEducativoUiList.size());

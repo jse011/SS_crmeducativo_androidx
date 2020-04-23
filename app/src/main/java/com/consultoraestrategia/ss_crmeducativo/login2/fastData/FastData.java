@@ -55,10 +55,12 @@ public class FastData extends BaseActivity<FastDataView, FastDataPresenter> impl
     private AlertDialog fragmentDialog;
 
 
-    public static void start(Context context, int anioAcademicoId, int usuarioId) {
+    public static void start(Context context, int anioAcademicoId, int usuarioId, int calendarioPeriodoId, int programaEducativoId) {
         CRMBundle crmBundle = new CRMBundle();
         crmBundle.setAnioAcademico(anioAcademicoId);
         crmBundle.setUsuarioId(usuarioId);
+        crmBundle.setCalendarioPeriodoId(calendarioPeriodoId);
+        crmBundle.setProgramaEducativoId(programaEducativoId);
         Intent intent = new Intent(context, FastData.class);
         intent.putExtras(crmBundle.instanceBundle());
         context.startActivity(intent);
@@ -70,7 +72,7 @@ public class FastData extends BaseActivity<FastDataView, FastDataPresenter> impl
     }
 
     private void setupAnimation() {
-        int numero = (int) (Math.random() * 4);
+        int numero = (int) (Math.random() * 6);
         switch (numero) {
             case 0:
                 progressInit.setBackgroundColor(Color.parseColor("#BCC3C6"));
@@ -87,6 +89,16 @@ public class FastData extends BaseActivity<FastDataView, FastDataPresenter> impl
             case 3:
                 progressInit.setBackgroundColor(Color.WHITE);
                 animationView.setAnimation("sheeploader.json");
+                //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
+                break;
+            case 4:
+                progressInit.setBackgroundColor(Color.BLACK);
+                animationView.setAnimation("hand_sanitizer.json");
+                //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
+                break;
+            case 5:
+                progressInit.setBackgroundColor(Color.BLACK);
+                animationView.setAnimation("sheep_drive_car.json");
                 //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
                 break;
         }

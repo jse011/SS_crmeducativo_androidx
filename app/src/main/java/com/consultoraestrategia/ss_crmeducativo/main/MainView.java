@@ -113,7 +113,7 @@ public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
 
     void showCambiarFotoAlumnoActivity(int idCargaCurso, int georeferenciaId, int entidadId);
 
-    void showActivityService2();
+    void showActivityService2(int idUsuario, int empleadoId, int anioAcademicoIdFinal, int idPrograma, int georeferenciaId, int entidadId);
 
     void hideProgressInit();
 

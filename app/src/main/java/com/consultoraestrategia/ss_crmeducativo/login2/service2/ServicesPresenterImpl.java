@@ -8,7 +8,7 @@ import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenterImpl;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
-import com.consultoraestrategia.ss_crmeducativo.entities.UnidadAprendizaje;
+import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeridoList;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetPlanificarSinck;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.SavePlanificarSinck;
@@ -66,11 +66,13 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
     private ServiceEnvioUi serviceEnviarUiSelected = null;
     private int horaTimePicker;
     private int minutoTimePicker;
+    private GetCalendarioPeridoList getCalendarioPeridoList;
+    private CalendarioPeriodoUi calendarioPeriodoUiVerificationSelect;
 
     public ServicesPresenterImpl(UseCaseHandler handler, Resources res,
                                  GetListActualizar getListServicioActualizar,
                                  GetListServicioEnvio getListServicioEnvio, GetCalendarioPeriodo getCalendarioPeriodo, GetDatosServidor getDatos, SaveDatosServidor saveDatosServidor,
-                                 SavePlanificarSinck savePlanificarSinck, GetPlanificarSinck getPlanificarSinck) {
+                                 SavePlanificarSinck savePlanificarSinck, GetPlanificarSinck getPlanificarSinck, GetCalendarioPeridoList getCalendarioPeridoList) {
         super(handler, res);
         this.getListServicioActualizar = getListServicioActualizar;
         this.getListServicioEnvio = getListServicioEnvio;
@@ -79,6 +81,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
         this.saveDatosServidor = saveDatosServidor;
         this.savePlanificarSinck = savePlanificarSinck;
         this.getPlanificarSinck = getPlanificarSinck;
+        this.getCalendarioPeridoList = getCalendarioPeridoList;
     }
 
     @Override
@@ -89,6 +92,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
             if(view!=null)view.showNombreCalendario(calendarioPeriodoUi.getNombre());
             getListServicioActualizar();
             showServicioActualizar();
+            hideListAnioCalendario();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -98,6 +102,8 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
         }else {
             if(view!=null)view.hideNombreCalendario();
             hideServicioActualizar();
+            List<CalendarioPeriodoUi> calendarioPeriodoUiList = getCalendarioPeridoList.execute(anioAcademicoId, programaEducativoId);
+            showListAnioCalendario(calendarioPeriodoUiList);
         }
 
         getListServicioEnvio();
@@ -107,6 +113,14 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
         setDescripcionNotificacion();
         setDescripcionProgramarHorarioEnvio();
 
+    }
+
+    private void showListAnioCalendario(List<CalendarioPeriodoUi> calendarioPeriodoUiList){
+        if(view!=null)view.showListAnioCalendario(calendarioPeriodoUiList);
+    }
+
+    private void hideListAnioCalendario(){
+        if(view!=null)view.hideListAnioCalendario();
     }
 
     private void hideServicioActualizar() {
@@ -399,6 +413,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
             if(view!=null)view.showMessage("Acción denegada, cancelar los envios pendientes");
         }else if(serviceEnviarPendiente(actualizarUi)){
             this.actualizarUiSelected = actualizarUi;
+            this.calendarioPeriodoUiVerificationSelect = null;
             if(view!=null)view.showMessageRevision();
         }else {
 
@@ -504,11 +519,9 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
 
     @Override
     public void onSelectedActualizarDatos() {
-        if(actualizarUiSelected==null){
-            if(view!=null)view.showMessage("Acción denegada");
-        }if(serviceEnviarActivo()){
+        if(serviceEnviarActivo()){
             if(view!=null)view.showMessage("Acción denegada, cancelar los envios de datos pendientes");
-        } else {
+        }else if(actualizarUiSelected!=null){
             if(actualizarUiSelected.isActivo()){
                 if(retrofitCancel!=null){
                     retrofitCancel.cancel();
@@ -535,6 +548,11 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
             }
 
             if(view!=null)view.updateListaActualizar(actualizarUiSelected);
+
+        }else if(calendarioPeriodoUiVerificationSelect !=null){
+            if(view!=null)view.showFastData(usuarioId, anioAcademicoId,calendarioPeriodoUiVerificationSelect.getCalendarioId(), programaEducativoId);
+        }else{
+            if(view!=null)view.showMessage("Acción denegada");
         }
     }
 
@@ -564,6 +582,17 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
             alarmaUi.setMinute(minutoTimePicker);
         }
         if(view!=null)view.showProgramaHorario(alarmaUi);
+    }
+
+    @Override
+    public void onClicAnioCalendario(CalendarioPeriodoUi calendarioPeriodoUi) {
+        if(!serviceEnvioUiList.isEmpty()){
+            if(view!=null)view.showMessageRevision();
+            this.calendarioPeriodoUiVerificationSelect = calendarioPeriodoUi;
+            this.actualizarUiSelected = null;
+        }else {
+            if(view!=null)view.showFastData(usuarioId, anioAcademicoId,calendarioPeriodoUi.getCalendarioId(), programaEducativoId);
+        }
     }
 
     @Override

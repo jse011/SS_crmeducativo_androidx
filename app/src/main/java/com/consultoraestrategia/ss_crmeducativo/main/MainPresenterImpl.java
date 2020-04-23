@@ -646,7 +646,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
         //if(programaEducativoUi!=null)if(view!=null)view.callSynckService(programaEducativoUi.getIdPrograma());
 
-        if(view!=null)view.showActivityService2();
+        if(programaEducativoUi!=null)if(view!=null)view.showActivityService2(idUsuario, empleadoId,anioAcademicoIdFinal, programaEducativoUi.getIdPrograma(), georeferenciaId, entidadId);
     }
 
     @Override

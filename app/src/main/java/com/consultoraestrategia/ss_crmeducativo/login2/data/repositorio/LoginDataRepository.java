@@ -34,7 +34,7 @@ public interface LoginDataRepository {
 
     String getNombreAnioActual(int anioAcademicoId);
 
-    List<ProgramaEducativoUi> getCursosAnioPrograma(int usuarioId, int anioAcademicoId);
+    List<ProgramaEducativoUi> getCursosAnioPrograma(int usuarioId, int anioAcademicoId, int calendarioPeriodoId, int programaEducativoId);
 
     RetrofitCancel saveDatosUnidades(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces);
 
@@ -117,5 +117,7 @@ public interface LoginDataRepository {
     void updateTimeSesionData(ActualizarUi actualizarUi);
 
     List<ServiceEnvioUi> getDataForSynck(int anioAcademicoId, int cargaCursoId, int calendarioPeriodoId, int silaboEventoId, int programaAcademicoId);
+
+    List<CalendarioPeriodoUi> getListCalendarioAcademico(int anioAcademicoId, int programaEducativoId);
 }
 

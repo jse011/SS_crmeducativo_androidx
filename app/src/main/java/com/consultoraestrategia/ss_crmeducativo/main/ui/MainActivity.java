@@ -1,5 +1,6 @@
 package com.consultoraestrategia.ss_crmeducativo.main.ui;
 
+import android.animation.ValueAnimator;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -250,6 +251,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     ConstraintLayout datePickerButton;
     @BindView(R.id.textView40)
     TextView textView40;
+    @BindView(R.id.icon_animed)
+    LottieAnimationView iconAnimed;
 
     private PeriodoAdapter periodoAdapter;
     private GradoHolder olHolder;
@@ -279,6 +282,13 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
         desbloqOrientation();
+        setupAnimed();
+    }
+
+    private void setupAnimed() {
+        iconAnimed.setAnimation("happy_chat_2.json");
+        iconAnimed.setRepeatCount(ValueAnimator.INFINITE);
+        iconAnimed.playAnimation();
     }
 
     @Override
@@ -1521,8 +1531,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    public void showActivityService2() {
-        Intent intent = new Intent(this, ServicesActivity.class);
+    public void showActivityService2(int idUsuario, int empleadoId, int anioAcademicoIdFinal, int idPrograma, int georeferenciaId, int entidadId) {
+        Intent intent = ServicesActivity.start(this, idUsuario, empleadoId, idPrograma, 0, 0, georeferenciaId, entidadId, 0, 0,0 , anioAcademicoIdFinal, false );
         startActivityForResult(intent, MainActivity.CHANGE_DATABASE_SERVICE2);
     }
 
@@ -1565,7 +1575,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void showDialogFastData(int anioAcademicoIdFinal, int idUsuario) {
         Log.d(TAG, "showDialogFastData");
-        FastData.start(this, anioAcademicoIdFinal, idUsuario);
+        FastData.start(this, anioAcademicoIdFinal, idUsuario, 0, 0);
     }
 
     @Override

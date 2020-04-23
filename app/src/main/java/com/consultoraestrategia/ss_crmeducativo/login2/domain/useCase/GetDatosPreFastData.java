@@ -16,17 +16,20 @@ public class GetDatosPreFastData {
     public Response execute(Request request){
         String nombreColegio = loginDataRepository.getNombreColegio(request.getUsuarioId());
         String anioActual = loginDataRepository.getNombreAnioActual(request.getAnioAcademicoId());
-        List<ProgramaEducativoUi> cursosUiList = loginDataRepository.getCursosAnioPrograma(request.getUsuarioId(),request.getAnioAcademicoId());
+        List<ProgramaEducativoUi> cursosUiList = loginDataRepository.getCursosAnioPrograma(request.getUsuarioId(),request.getAnioAcademicoId(), request.getCalendarioPeriodoId(), request.getProgramaEducativoId());
         return new Response(nombreColegio, anioActual, cursosUiList);
     }
 
     public static class Request{
         private int usuarioId;
         private int anioAcademicoId;
-
-        public Request(int usuarioId, int anioAcademicoId) {
+        private int calendarioPeriodoId;
+        private int programaEducativoId;
+        public Request(int usuarioId, int anioAcademicoId, int calendarioPeriodoId, int programaEducativoId) {
             this.usuarioId = usuarioId;
             this.anioAcademicoId = anioAcademicoId;
+            this.calendarioPeriodoId = calendarioPeriodoId;
+            this.programaEducativoId = programaEducativoId;
         }
 
         public int getUsuarioId() {
@@ -35,6 +38,14 @@ public class GetDatosPreFastData {
 
         public int getAnioAcademicoId() {
             return anioAcademicoId;
+        }
+
+        public int getCalendarioPeriodoId() {
+            return calendarioPeriodoId;
+        }
+
+        public int getProgramaEducativoId() {
+            return programaEducativoId;
         }
     }
 
