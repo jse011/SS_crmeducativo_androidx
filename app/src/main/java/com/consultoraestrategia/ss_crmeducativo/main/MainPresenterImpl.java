@@ -301,7 +301,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
     private void initMain() {
         getAniosAcademicos();
         getProgramaEducativosUIListCallback();
-        getCursosUIListCallback();
+
         showDatosPersonalesUser(personaUi);
         empleadoId = personaUi.getEmpleadoId();
         if(view!=null)view.subscribeToTopic(personaUi.getPersonaId());
@@ -320,6 +320,14 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         if(!successData){
             successData = succesData.execute();
             if(view!=null)view.showDialogFastData(anioAcademicoIdFinal, idUsuario);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getCursosUIListCallback();
+                }
+            },2000);
+        }else {
+            getCursosUIListCallback();
         }
     }
 

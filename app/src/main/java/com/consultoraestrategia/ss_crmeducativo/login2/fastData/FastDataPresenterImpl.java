@@ -153,7 +153,7 @@ public class FastDataPresenterImpl extends BasePresenterImpl<FastDataView> imple
 
     @Override
     protected String getTag() {
-        return null;
+        return "FastDataPresenterImpl";
     }
 
     @Override

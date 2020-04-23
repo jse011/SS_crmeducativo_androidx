@@ -63,6 +63,9 @@ public class FastData extends BaseActivity<FastDataView, FastDataPresenter> impl
         crmBundle.setProgramaEducativoId(programaEducativoId);
         Intent intent = new Intent(context, FastData.class);
         intent.putExtras(crmBundle.instanceBundle());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 
