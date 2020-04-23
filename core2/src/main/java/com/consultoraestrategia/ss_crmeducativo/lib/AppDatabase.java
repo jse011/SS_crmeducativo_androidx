@@ -29,7 +29,7 @@ import java.util.List;
 @Database(name = AppDatabase.NAME, version = AppDatabase.VERSION, insertConflict = ConflictAction.REPLACE)
 public class AppDatabase {
     public static final String NAME = "CRMEfinal";
-    public static final int VERSION = 11;//Pasar a la vercion 9
+    public static final int VERSION = 12;//Pasar a la vercion 9
 
     @Migration(version = 5, database = AppDatabase.class)
     public static class MigrationRubroEvaluacionProceso extends AlterTableMigration<RubroEvaluacionProcesoC> {

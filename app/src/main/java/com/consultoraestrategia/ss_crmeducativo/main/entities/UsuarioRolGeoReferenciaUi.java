@@ -72,4 +72,19 @@ public class UsuarioRolGeoReferenciaUi {
     public String getNombreGeoreferencia() {
         return nombreGeoreferencia;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UsuarioRolGeoReferenciaUi that = (UsuarioRolGeoReferenciaUi) o;
+
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

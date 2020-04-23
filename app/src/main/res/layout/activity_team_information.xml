@@ -28,7 +28,6 @@
                 android:id="@+id/imageProfile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/fondo_translucido"
                 android:scaleType="center"
                 android:contentDescription="@string/team.description.name" />
 

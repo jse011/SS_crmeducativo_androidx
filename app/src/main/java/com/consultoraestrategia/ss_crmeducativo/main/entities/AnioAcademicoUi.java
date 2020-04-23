@@ -51,4 +51,19 @@ public class AnioAcademicoUi {
     public int getGeoreferencia() {
         return georeferencia;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AnioAcademicoUi that = (AnioAcademicoUi) o;
+
+        return anioAcademicoId == that.anioAcademicoId;
+    }
+
+    @Override
+    public int hashCode() {
+        return anioAcademicoId;
+    }
 }

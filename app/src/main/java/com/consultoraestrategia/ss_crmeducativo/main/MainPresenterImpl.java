@@ -54,7 +54,9 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by kelvi on 20/02/2017.
@@ -945,7 +947,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
                 }
 
                 getUsuarioRolGeoReferencia();
-                List<Object> anioColegioList = new ArrayList<>();
+                Set<Object> anioColegioList = new LinkedHashSet<>();
                 for (AnioAcademicoUi anioAcademicoUi : anioAcademicoUiList) {
 
                     UsuarioRolGeoReferenciaUi usuarioRolGeoReferenciaUi = new UsuarioRolGeoReferenciaUi();
@@ -969,7 +971,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
                     anioColegioList.add(anioAcademicoUi);
                 }
-                if(seleccionarAnioAcademicoView!=null)seleccionarAnioAcademicoView.setListAnioAcademico(anioColegioList);
+                if(seleccionarAnioAcademicoView!=null)seleccionarAnioAcademicoView.setListAnioAcademico(new ArrayList<>(anioColegioList));
             }
         });
     }

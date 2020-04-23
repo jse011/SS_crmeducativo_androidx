@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="@dimen/dim_10dp"
-            android:src="@drawable/ic_team"
             app:fabSize="mini"
             tools:ignore="RtlCompat" />
 
