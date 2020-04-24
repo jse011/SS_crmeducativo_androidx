@@ -38,7 +38,6 @@
                 android:gravity="center"
                 android:paddingTop="4dp"
                 android:paddingBottom="0dp"
-                android:src="@drawable/ic_contact_picture"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

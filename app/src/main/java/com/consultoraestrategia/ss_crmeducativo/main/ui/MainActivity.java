@@ -71,7 +71,6 @@ import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
 import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentListener;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.ui.CambiarFotoAlumnoActivity;
-import com.consultoraestrategia.ss_crmeducativo.cameraReconocimiento.camera.CameraReconocimientoActivity;
 import com.consultoraestrategia.ss_crmeducativo.cameraReconocimiento.listaAlumnos.ListaAlumnosActivity;
 import com.consultoraestrategia.ss_crmeducativo.core2.application.Core2;
 import com.consultoraestrategia.ss_crmeducativo.core2.listener.Core2Listener;
@@ -1592,11 +1591,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void showCamaraReconocimientos(int idUsuario) {
-        Intent intent = new Intent(this, CameraReconocimientoActivity.class);
-        CRMBundle crmBundle = new CRMBundle(getIntent().getExtras());
-        crmBundle.setUsuarioId(idUsuario);
-        intent.putExtras(crmBundle.instanceBundle());
-        startActivity(intent);
+
     }
 
     @Override

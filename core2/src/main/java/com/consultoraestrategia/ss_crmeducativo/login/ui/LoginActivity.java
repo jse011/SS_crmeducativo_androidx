@@ -37,8 +37,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.asksira.loopingviewpager.LoopingPagerAdapter;
-import com.asksira.loopingviewpager.LoopingViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -48,15 +46,12 @@ import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
 import com.consultoraestrategia.ss_crmeducativo.login.LoginPresenter;
 import com.consultoraestrategia.ss_crmeducativo.login.LoginView;
 import com.consultoraestrategia.ss_crmeducativo.login.adapter.PersonaAdapter;
-import com.consultoraestrategia.ss_crmeducativo.login.adapter.TabProgressAdapter;
 import com.consultoraestrategia.ss_crmeducativo.login.entity.LoginProgressPagerUi;
 import com.consultoraestrategia.ss_crmeducativo.login.entity.PersonaUi;
 import com.consultoraestrategia.ss_crmeducativo.login.listener.PersonaListener;
 import com.consultoraestrategia.ss_crmeducativo.login.preferent.LoginPreferentRepository;
 import com.consultoraestrategia.ss_crmeducativo.login.preferent.LoginPreferentRepositoryImpl;
-import com.consultoraestrategia.ss_crmeducativo.login.tabProgress.CustomLoopingViewPager;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
-import com.rd.PageIndicatorView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -110,10 +105,6 @@ public abstract class LoginActivity extends BaseActivity<LoginView, LoginPresent
     Button btn_reiniciar;
     Button btn_cancelar;
 
-    PageIndicatorView pageIndicatorView;
-
-    protected CustomLoopingViewPager viewPagerPageProgress;
-
     protected ApiRetrofit apiRetrofit;
     private LoginPreferentRepository loginPreferentRepository;
     private PersonaAdapter usuarioAdapter;
@@ -125,7 +116,6 @@ public abstract class LoginActivity extends BaseActivity<LoginView, LoginPresent
     private ImageView imgBienvenidaInstitucion;
     private CircleImageView imgBienvenidaUserer;
     private Dialog dialogTimeOutConnection;
-    private LoopingPagerAdapter<LoginProgressPagerUi> viewpagerAdapter;
 
 
     @Override
@@ -186,9 +176,9 @@ public abstract class LoginActivity extends BaseActivity<LoginView, LoginPresent
         nombreUser = findViewById(R.id.nombre_user);
         imgBienvenidaInstitucion = findViewById(R.id.img_bienvenida_institucion);
         imgBienvenidaUserer = findViewById(R.id.img_bienvenida_userer);
-        viewPagerPageProgress = findViewById(R.id.view_pager_page_progress);
+        //viewPagerPageProgress = findViewById(R.id.view_pager_page_progress);
         btn_reiniciar = findViewById(R.id.btn_reiniciar);
-        pageIndicatorView = findViewById(R.id.pageIndicatorView);
+        //pageIndicatorView = findViewById(R.id.pageIndicatorView);
         btn_reiniciar.setOnClickListener(this);
         btn_cancelar = findViewById(R.id.btn_cancelar);
         btn_cancelar.setOnClickListener(this);
@@ -444,7 +434,7 @@ public abstract class LoginActivity extends BaseActivity<LoginView, LoginPresent
                     .load(Uri.parse("file:///android_asset/DownloadData2-min.gif"))
                     .apply(Utils.getGlideRequestOptions(R.drawable.ic_error_outline_black))
                     .into(imageLogoProgressPage);
-        viewPagerPageProgress.setVisibility(View.GONE);
+        //viewPagerPageProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -919,42 +909,23 @@ public abstract class LoginActivity extends BaseActivity<LoginView, LoginPresent
 
     @Override
     public void showViewPagerProgressPager(List<LoginProgressPagerUi> loginProgressPagerUiList) {
-        viewpagerAdapter = new TabProgressAdapter(this,loginProgressPagerUiList,false );
-        viewPagerPageProgress.setAdapter(viewpagerAdapter);
-        viewPagerPageProgress.setVisibility(View.VISIBLE);
-        imageLogoProgressPage.setImageDrawable(null);
-        imageLogoProgressPage.setVisibility(View.GONE);
-        viewPagerPageProgress.reset();
-        pageIndicatorView.setCount(loginProgressPagerUiList.size());
-        viewPagerPageProgress.setPagingEnabled(false);
-         // specify total count of indicators
-        viewPagerPageProgress.setIndicatorPageChangeListener(new LoopingViewPager.IndicatorPageChangeListener() {
-            @Override
-            public void onIndicatorProgress(int selectingPosition, float progress) {
-                pageIndicatorView.setProgress(selectingPosition, progress);
-            }
 
-            @Override
-            public void onIndicatorPageChange(int newIndicatorPosition) {
-                //pageIndicatorView.setSelection(newIndicatorPosition);
-            }
-        });
     }
 
     @Override
     public void hideViewPagerProgressPager() {
-        viewPagerPageProgress.setVisibility(View.GONE);
+        //viewPagerPageProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void changePagerProgressPager(final int posicion) {
-        Log.d(getTag(), "changePagerProgressPager: " + posicion);
+       /* Log.d(getTag(), "changePagerProgressPager: " + posicion);
         viewPagerPageProgress.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if(viewPagerPageProgress!=null)viewPagerPageProgress.setCurrentItem(posicion);
             }
-        },2000);
+        },2000);*/
     }
 
     @Override

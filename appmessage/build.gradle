@@ -49,7 +49,7 @@ dependencies {
     implementation "com.jakewharton:butterknife:$butterknife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
     implementation 'com.github.clans:fab:1.6.2'
-    implementation 'com.vanniktech:emoji-ios:0.5.1'
+    implementation 'com.vanniktech:emoji-google:0.6.0'
     implementation 'com.github.ozodrukh:CircularReveal:2.0.1'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.google.android:flexbox:1.0.0'

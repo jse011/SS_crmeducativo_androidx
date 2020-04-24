@@ -4,81 +4,551 @@
     android:layout_width="match_parent"
 
     android:layout_height="wrap_content">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textTitle"
-            style="@style/TextAppearance.AppCompat.Display1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:text="Habilidad"
-            android:textColor="@color/button_grey"
-            android:textStyle="bold" />
-
-
+    <!--
         <RelativeLayout
-            android:id="@+id/RelativeOne"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textTitle"
-            android:layout_marginTop="5dp">
+            android:layout_height="match_parent">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textTitle"
+                style="@style/TextAppearance.AppCompat.Display1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_toLeftOf="@+id/cardView"
-                android:layout_toStartOf="@+id/cardView"
+                android:text="Habilidad"
+                android:textColor="@color/button_grey"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:id="@+id/RelativeOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textTitle"
+                android:layout_marginTop="5dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toLeftOf="@+id/cardView"
+                    android:layout_toStartOf="@+id/cardView"
+                    android:background="@drawable/shappe">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp">
+
+                        <RelativeLayout
+                            android:id="@+id/frameLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:padding="4dp">
+
+
+                            <TextView
+                                android:id="@+id/icon"
+                                style="@style/TextAppearance.AppCompat.Display1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="80%"
+                                android:textColor="#0F000000" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+
+                            android:id="@+id/relativeLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_toEndOf="@+id/frameLayout"
+                            android:layout_toRightOf="@+id/frameLayout"
+                            android:paddingBottom="10dp">
+
+
+                            <TextView
+                                android:id="@+id/idStartedTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:maxLines="1"
+                                android:scrollHorizontally="true"
+                                android:text="1. Proyección ofensiva " />
+
+
+                            <ProgressBar
+                                android:id="@+id/horizontal_progress_bar"
+                                style="@style/CustomProgressBarHorizontalTwo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/idStartedTitle"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="2dp" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    style="@style/categoriesCardViewButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp">
+
+                        <RadioGroup
+                            android:id="@+id/idRadioGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true">
+
+                            <RadioButton
+                                android:id="@+id/radioButtonOne"
+                                android:checked="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:scaleX="0.80"
+                                android:scaleY="0.80"
+                                android:text="Global" />
+
+                            <RadioButton
+                                android:id="@+id/radioButtontwo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="24dp"
+                                android:scaleX="0.80"
+                                android:scaleY="0.80"
+                                android:text="Local" />
+                        </RadioGroup>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/RelativeOne"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@color/colorPrimary" />
+
+            <RelativeLayout
+                android:id="@+id/RelativeTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:id="@+id/idLinearLayoutOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnInicial"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:background="@drawable/shappe"
+                        android:text="Benjamín"
+                        android:textSize="12dp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnPrimaria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/shappe"
+                        android:text="Alevín"
+                        android:textSize="12dp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnSecundaria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/shappe"
+                        android:text="Infantil"
+                        android:textSize="12dp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnTodos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/shappe"
+                        android:text="Juvenil"
+                        android:textColor="#FFFF"
+                        android:backgroundTint="#55a3fc"
+                        android:textSize="12dp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/idLinearLayoutPrimaria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/idLinearLayoutOne"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <RelativeLayout
+                        android:layout_width="80dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/shappe">
+
+                        <TextView
+
+                            android:id="@+id/imdOne"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:text="Sub-17"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="80dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/md_light_green_100"
+                        android:background="@drawable/shappe">
+
+                        <TextView
+
+                            android:id="@+id/imdTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sub-18"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true" />
+
+
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="80dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/shappe"
+                     >
+
+                        <TextView
+                            android:id="@+id/imdThree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sub-19"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/viewtwo"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/RelativeTwo"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimary" />
+
+
+            <RelativeLayout
+                android:id="@+id/RelLineaLTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/viewtwo"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/shappe">
 
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shappe"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Sub-19"
+                        android:textColor="#2d991a"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Categoría"
+                        android:textColor="#48c631"
+                        android:textSize="10dp"
+                        android:layout_marginStart="5dp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="5dp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/linearLayout"
+                    android:layout_toRightOf="@+id/linearLayout"
+                    android:orientation="horizontal"
+                    android:padding="6dp">
+
+                    <TextView
+                        android:id="@+id/countProgress"
+
+                        style="@style/TextAppearance.AppCompat.Display1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        android:text="80%"
+                        android:textColor="#0F000000"
+                        android:textSize="25dp" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar2"
+                        style="@style/CustomProgressBarHorizontalTwo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:minHeight="20dip" />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/LinearBimestre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RelLineaLTwo"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/PrimerBimestreClick"
+                    android:layout_width="80dp"
+                    android:layout_height="27dp"
+                    android:background="@drawable/shappe"
+                   android:layout_weight="1"
+                    android:padding="5dp">
+
+                    <ProgressBar
+                        android:id="@+id/PrimerBimestre"
+                        style="@style/CustomProgressBarHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:minHeight="5dip" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/PrimerBimestre"
+                        android:layout_centerInParent="true"
+                        android:text="Bimestre I"
+                        android:textSize="8dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:id="@+id/SegundoBimestreClick"
+                    android:layout_width="80dp"
+                    android:layout_height="27dp"
+                    android:background="@drawable/shappe"
+                    android:padding="5dp">
+
+                    <ProgressBar
+                        android:id="@+id/SegundoBimestre"
+                        style="@style/CustomProgressBarHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:minHeight="5dip" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/SegundoBimestre"
+                        android:layout_centerInParent="true"
+                        android:text="Bimestre II"
+                        android:textSize="8dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/idChatData"
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:layout_below="@+id/LinearBimestre"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shappe">
+
+                <com.github.mikephil.charting.charts.RadarChart
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    />
+
+
+                <TextView
+                    android:id="@+id/morePrimerBimestre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@drawable/border_radius"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="ver"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/moreSegundoBimestre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/morePrimerBimestre"
+                    android:layout_alignStart="@+id/morePrimerBimestre"
+                    android:layout_below="@+id/morePrimerBimestre"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/border_radius_green"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="ver"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/idChatData"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="4dp">
+                    android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:id="@+id/frameLayout"
+                        android:id="@+id/header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:padding="4dp">
-
+                        android:gravity="center">
 
                         <TextView
-                            android:id="@+id/icon"
+                            android:id="@+id/textNumber"
                             style="@style/TextAppearance.AppCompat.Display1"
-                            android:layout_width="wrap_content"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:text="80%"
+                            android:gravity="center"
+                            android:text="1"
                             android:textColor="#0F000000" />
-
                     </RelativeLayout>
 
                     <RelativeLayout
-
-                        android:id="@+id/relativeLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_toEndOf="@+id/frameLayout"
-                        android:layout_toRightOf="@+id/frameLayout"
-                        android:paddingBottom="10dp">
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/header"
+                        android:layout_toRightOf="@+id/header"
+                        android:padding="2dp"
+                        android:paddingBottom="2dp">
 
 
                         <TextView
-                            android:id="@+id/idStartedTitle"
+                            android:id="@+id/textviewDetalle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="marquee"
@@ -87,758 +557,203 @@
                             android:marqueeRepeatLimit="marquee_forever"
                             android:maxLines="1"
                             android:scrollHorizontally="true"
-                            android:text="1. Proyección ofensiva " />
+                            android:text="Proyección ofensiva" />
 
 
                         <ProgressBar
-                            android:id="@+id/horizontal_progress_bar"
-                            style="@style/CustomProgressBarHorizontalTwo"
+                            android:id="@+id/horizontal_progress_barTr"
+                            style="@style/CustomProgressBarHorizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/idStartedTitle"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="2dp" />
+                            android:layout_below="@+id/textviewDetalle"
+                            android:layout_marginTop="2dp"
+                            android:progress="40" />
+
                     </RelativeLayout>
 
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                style="@style/categoriesCardViewButtons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true">
-
-
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp">
-
-                    <RadioGroup
-                        android:id="@+id/idRadioGroup"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true">
-
-                        <RadioButton
-                            android:id="@+id/radioButtonOne"
-                            android:checked="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            android:scaleX="0.80"
-                            android:scaleY="0.80"
-                            android:text="Global" />
-
-                        <RadioButton
-                            android:id="@+id/radioButtontwo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            android:scaleX="0.80"
-                            android:scaleY="0.80"
-                            android:text="Local" />
-                    </RadioGroup>
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-        </RelativeLayout>
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/RelativeOne"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="@color/colorPrimary" />
-
-        <RelativeLayout
-            android:id="@+id/RelativeTwo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp">
-
-            <LinearLayout
-                android:id="@+id/idLinearLayoutOne"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnInicial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:background="@drawable/shappe"
-                    android:text="Benjamín"
-                    android:textSize="12dp" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnPrimaria"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/shappe"
-                    android:text="Alevín"
-                    android:textSize="12dp" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnSecundaria"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/shappe"
-                    android:text="Infantil"
-                    android:textSize="12dp" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnTodos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/shappe"
-                    android:text="Juvenil"
-                    android:textColor="#FFFF"
-                    android:backgroundTint="#55a3fc"
-                    android:textSize="12dp"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/idLinearLayoutPrimaria"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/idLinearLayoutOne"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-                <RelativeLayout
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/shappe">
-
-                    <TextView
-
-                        android:id="@+id/imdOne"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:text="Sub-17"
-                        android:textStyle="bold" />
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:backgroundTint="@color/md_light_green_100"
-                    android:background="@drawable/shappe">
-
-                    <TextView
-
-                        android:id="@+id/imdTwo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sub-18"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true" />
-
-
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/shappe"
-                 >
-
-                    <TextView
-                        android:id="@+id/imdThree"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sub-19"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:textStyle="bold" />
-
-
-                </RelativeLayout>
-
-
-
-            </LinearLayout>
-        </RelativeLayout>
-
-        <View
-            android:id="@+id/viewtwo"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/RelativeTwo"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorPrimary" />
-
-
-        <RelativeLayout
-            android:id="@+id/RelLineaLTwo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/viewtwo"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/shappe">
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shappe"
-                android:orientation="vertical"
-                android:padding="4dp">
-
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Sub-19"
-                    android:textColor="#2d991a"
-                    android:layout_marginTop="5dp"
-                    android:textStyle="bold"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Categoría"
-                    android:textColor="#48c631"
-                    android:textSize="10dp"
-                    android:layout_marginStart="5dp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="5dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/linearLayout"
-                android:layout_toRightOf="@+id/linearLayout"
-                android:orientation="horizontal"
-                android:padding="6dp">
-
-                <TextView
-                    android:id="@+id/countProgress"
-
-                    style="@style/TextAppearance.AppCompat.Display1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp"
-                    android:text="80%"
-                    android:textColor="#0F000000"
-                    android:textSize="25dp" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar2"
-                    style="@style/CustomProgressBarHorizontalTwo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:minHeight="20dip" />
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/header2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textNumber2"
+                            style="@style/TextAppearance.AppCompat.Display1"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="2"
+                            android:textColor="#0F000000" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/header2"
+                        android:layout_toRightOf="@+id/header2"
+                        android:padding="2dp"
+                        android:paddingBottom="2dp">
+
+
+                        <TextView
+                            android:id="@+id/textviewDetalle2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:maxLines="1"
+                            android:scrollHorizontally="true"
+                            android:text="Agresividad ofensiva" />
+
+
+                        <ProgressBar
+                            android:id="@+id/horizontal_progress_barTr2"
+                            style="@style/CustomProgressBarHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textviewDetalle2"
+                            android:layout_marginTop="2dp"
+                            android:progress="60" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/header3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textNumber3"
+                            style="@style/TextAppearance.AppCompat.Display1"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="3"
+                            android:textColor="#0F000000" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/header3"
+                        android:layout_toRightOf="@+id/header3"
+                        android:padding="2dp"
+                        android:paddingBottom="2dp">
+
+
+                        <TextView
+                            android:id="@+id/textviewDetalle3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:maxLines="1"
+                            android:scrollHorizontally="true"
+                            android:text="Juego sin balón" />
+
+
+                        <ProgressBar
+                            android:id="@+id/horizontal_progress_barTr3"
+                            style="@style/CustomProgressBarHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textviewDetalle3"
+                            android:layout_marginTop="2dp"
+                            android:progress="60" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/header4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textNumber4"
+                            style="@style/TextAppearance.AppCompat.Display1"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="4"
+                            android:textColor="#0F000000" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/header4"
+                        android:layout_toRightOf="@+id/header4"
+                        android:padding="2dp"
+                        android:paddingBottom="2dp">
+
+
+                        <TextView
+                            android:id="@+id/textviewDetalle4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:maxLines="1"
+                            android:scrollHorizontally="true"
+                            android:text="Visión de juego" />
+
+
+                        <ProgressBar
+                            android:id="@+id/horizontal_progress_barTr4"
+                            style="@style/CustomProgressBarHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textviewDetalle4"
+                            android:layout_marginTop="2dp"
+                            android:progress="80" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+
             </LinearLayout>
-
-
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:id="@+id/LinearBimestre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/RelLineaLTwo"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/PrimerBimestreClick"
-                android:layout_width="80dp"
-                android:layout_height="27dp"
-                android:background="@drawable/shappe"
-               android:layout_weight="1"
-                android:padding="5dp">
-
-                <ProgressBar
-                    android:id="@+id/PrimerBimestre"
-                    style="@style/CustomProgressBarHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:minHeight="5dip" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/PrimerBimestre"
-                    android:layout_centerInParent="true"
-                    android:text="Bimestre I"
-                    android:textSize="8dp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_weight="1"
-                android:id="@+id/SegundoBimestreClick"
-                android:layout_width="80dp"
-                android:layout_height="27dp"
-                android:background="@drawable/shappe"
-                android:padding="5dp">
-
-                <ProgressBar
-                    android:id="@+id/SegundoBimestre"
-                    style="@style/CustomProgressBarHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:minHeight="5dip" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/SegundoBimestre"
-                    android:layout_centerInParent="true"
-                    android:text="Bimestre II"
-                    android:textSize="8dp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
-
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/tercerBimestreClick"-->
-                <!--android:layout_width="80dp"-->
-                <!--android:layout_height="27dp"-->
-                <!--android:background="@drawable/shappe"-->
-                <!--android:padding="5dp">-->
-
-                <!--<ProgressBar-->
-                    <!--android:id="@+id/TercerBimestre"-->
-                    <!--style="@style/CustomProgressBarHorizontal"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="2dp"-->
-                    <!--android:minHeight="5dip" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@+id/TercerBimestre"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:text="Bimestre III"-->
-                    <!--android:textSize="8dp"-->
-                    <!--android:textStyle="bold" />-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/cuartoBimestreClick"-->
-                <!--android:layout_width="80dp"-->
-                <!--android:layout_height="27dp"-->
-                <!--android:background="@drawable/shappe"-->
-                <!--android:padding="5dp">-->
-
-                <!--<ProgressBar-->
-                    <!--android:id="@+id/CuartoBimestre"-->
-                    <!--style="@style/CustomProgressBarHorizontal"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="2dp"-->
-                    <!--android:minHeight="5dip" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@+id/CuartoBimestre"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:text="Bimestre IV"-->
-                    <!--android:textSize="8dp"-->
-                    <!--android:textStyle="bold" />-->
-
-            <!--</RelativeLayout>-->
-
-
-        </LinearLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/idChatData"
-            android:layout_width="match_parent"
-            android:layout_height="360dp"
-            android:layout_below="@+id/LinearBimestre"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/shappe">
-
-            <com.github.mikephil.charting.charts.RadarChart
-                android:id="@+id/chart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                />
-
-
-            <TextView
-                android:id="@+id/morePrimerBimestre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="27dp"
-                android:background="@drawable/border_radius"
-                android:paddingBottom="2dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text="ver"
-                android:textColor="@color/white"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/moreSegundoBimestre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/morePrimerBimestre"
-                android:layout_alignStart="@+id/morePrimerBimestre"
-                android:layout_below="@+id/morePrimerBimestre"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/border_radius_green"
-                android:paddingBottom="2dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text="ver"
-                android:textColor="@color/white"
-                android:textSize="12dp" />
-
-            <!--<TextView-->
-                <!--android:id="@+id/moreTercerBimestre"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignLeft="@+id/moreSegundoBimestre"-->
-                <!--android:layout_alignStart="@+id/moreSegundoBimestre"-->
-                <!--android:layout_below="@+id/moreSegundoBimestre"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:background="@drawable/border_radius_orange"-->
-                <!--android:paddingBottom="2dp"-->
-                <!--android:paddingLeft="8dp"-->
-                <!--android:paddingRight="8dp"-->
-                <!--android:text="ver"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:textSize="12dp" />-->
-
-
-            <!--<TextView-->
-                <!--android:id="@+id/moreCuartoBimestre"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignLeft="@+id/moreTercerBimestre"-->
-                <!--android:layout_alignStart="@+id/moreTercerBimestre"-->
-                <!--android:layout_below="@+id/moreTercerBimestre"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:background="@drawable/border_radius_yellow"-->
-                <!--android:paddingBottom="2dp"-->
-                <!--android:paddingLeft="8dp"-->
-                <!--android:paddingRight="8dp"-->
-                <!--android:text="ver"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:textSize="12dp" />-->
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/idChatData"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
-                    android:id="@+id/header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textNumber"
-                        style="@style/TextAppearance.AppCompat.Display1"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="1"
-                        android:textColor="#0F000000" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/header"
-                    android:layout_toRightOf="@+id/header"
-                    android:padding="2dp"
-                    android:paddingBottom="2dp">
-
-
-                    <TextView
-                        android:id="@+id/textviewDetalle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:maxLines="1"
-                        android:scrollHorizontally="true"
-                        android:text="Proyección ofensiva" />
-
-
-                    <ProgressBar
-                        android:id="@+id/horizontal_progress_barTr"
-                        style="@style/CustomProgressBarHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textviewDetalle"
-                        android:layout_marginTop="2dp"
-                        android:progress="40" />
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
-                    android:id="@+id/header2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textNumber2"
-                        style="@style/TextAppearance.AppCompat.Display1"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="2"
-                        android:textColor="#0F000000" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/header2"
-                    android:layout_toRightOf="@+id/header2"
-                    android:padding="2dp"
-                    android:paddingBottom="2dp">
-
-
-                    <TextView
-                        android:id="@+id/textviewDetalle2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:maxLines="1"
-                        android:scrollHorizontally="true"
-                        android:text="Agresividad ofensiva" />
-
-
-                    <ProgressBar
-                        android:id="@+id/horizontal_progress_barTr2"
-                        style="@style/CustomProgressBarHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textviewDetalle2"
-                        android:layout_marginTop="2dp"
-                        android:progress="60" />
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
-                    android:id="@+id/header3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textNumber3"
-                        style="@style/TextAppearance.AppCompat.Display1"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="3"
-                        android:textColor="#0F000000" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/header3"
-                    android:layout_toRightOf="@+id/header3"
-                    android:padding="2dp"
-                    android:paddingBottom="2dp">
-
-
-                    <TextView
-                        android:id="@+id/textviewDetalle3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:maxLines="1"
-                        android:scrollHorizontally="true"
-                        android:text="Juego sin balón" />
-
-
-                    <ProgressBar
-                        android:id="@+id/horizontal_progress_barTr3"
-                        style="@style/CustomProgressBarHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textviewDetalle3"
-                        android:layout_marginTop="2dp"
-                        android:progress="60" />
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
-                    android:id="@+id/header4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textNumber4"
-                        style="@style/TextAppearance.AppCompat.Display1"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="4"
-                        android:textColor="#0F000000" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/header4"
-                    android:layout_toRightOf="@+id/header4"
-                    android:padding="2dp"
-                    android:paddingBottom="2dp">
-
-
-                    <TextView
-                        android:id="@+id/textviewDetalle4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:maxLines="1"
-                        android:scrollHorizontally="true"
-                        android:text="Visión de juego" />
-
-
-                    <ProgressBar
-                        android:id="@+id/horizontal_progress_barTr4"
-                        style="@style/CustomProgressBarHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textviewDetalle4"
-                        android:layout_marginTop="2dp"
-                        android:progress="80" />
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-
-
-        </LinearLayout>
-    </RelativeLayout>
+        </RelativeLayout>-->
 </ScrollView>

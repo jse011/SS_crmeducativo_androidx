@@ -211,7 +211,7 @@ public class NotificacionesBuilder {
     private void notificationWithIcon(NotificationCompat.Builder builder) {
         Person anupam = new Person.Builder()
                 .setName("Anupam")
-                .setIcon(IconCompat.createWithResource(context, R.drawable.emoji_ios_270d))
+                .setIcon(IconCompat.createWithResource(context, R.drawable.happy))
                 .setImportant(true)
                 .build();
 
@@ -255,7 +255,7 @@ public class NotificacionesBuilder {
 
         Person anupam = new Person.Builder()
                 .setName("Anupam")
-                .setIcon(IconCompat.createWithResource(context, R.drawable.emoji_ios_1f31d))
+                .setIcon(IconCompat.createWithResource(context, R.drawable.happy))
                 .setImportant(true)
                 .build();
 
@@ -320,7 +320,7 @@ public class NotificacionesBuilder {
 
         NotificationCompat.Action replyAction =
                 new NotificationCompat.Action.Builder(
-                        R.drawable.emoji_ios_1f1e6_1f1f1,
+                        R.drawable.happy,
                         "MARK READ",
                         pendingIntent)
                         .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)

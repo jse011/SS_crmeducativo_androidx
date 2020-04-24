@@ -72,7 +72,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.vanniktech.emoji.EmojiManager;
-import com.vanniktech.emoji.ios.IosEmojiProvider;
+import com.vanniktech.emoji.google.GoogleEmojiProvider;
 
 import java.io.Serializable;
 import java.util.List;
@@ -539,7 +539,7 @@ public class ChatsActivity extends BaseActivity<Chatview, ChatPresenter> impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EmojiManager.install(new IosEmojiProvider());
+        EmojiManager.install(new GoogleEmojiProvider());
     }
 
     @Override

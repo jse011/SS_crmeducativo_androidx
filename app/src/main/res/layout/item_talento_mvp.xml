@@ -5,7 +5,6 @@
     android:id="@+id/contenTalentoSelected"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/chip_background"
     android:orientation="vertical">
 
     <TextView
