@@ -10,7 +10,7 @@ import org.parceler.Parcel;
 public class NotaUi {
     public ValorTipoNotaUi valorTipoNotaUi;
 
-    public enum Tipo{ VALOR_NUMERO, SELECTOR_VALORES, NOTA_FINAL }
+    public enum Tipo{ VALOR_NUMERO, SELECTOR_VALORES, NOTA_FINAL, NOTA_FINAL_NUMERICO}
     public String id;
     public String nota;//nota
     public String escala;

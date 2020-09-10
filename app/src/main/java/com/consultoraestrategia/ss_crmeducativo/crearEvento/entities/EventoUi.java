@@ -1,5 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.crearEvento.entities;
 
+import java.util.List;
+
 public class EventoUi {
     private String id;
     private String nombre;
@@ -14,6 +16,9 @@ public class EventoUi {
     private int entidadId;
     private int georeferencia;
     private String path;
+    private List<AlumnoUi> listEnvio;
+    private int cargaCursoId;
+    private int cargaAcademicaId;
 
     public String getId() {
         return id;
@@ -101,5 +106,37 @@ public class EventoUi {
 
     public String getPath() {
         return path;
+    }
+
+    public void setListEnvio(List<AlumnoUi> listEnvio) {
+        this.listEnvio = listEnvio;
+    }
+
+    public List<AlumnoUi> getListEnvio() {
+        return listEnvio;
+    }
+
+    public void setCargaCursoId(int cargaCursoId) {
+        this.cargaCursoId = cargaCursoId;
+    }
+
+    public int getCargaCursoId() {
+        return cargaCursoId;
+    }
+
+    public void setCargaAcademicaId(int cargaAcademicaId) {
+        this.cargaAcademicaId = cargaAcademicaId;
+    }
+
+    public int getCargaAcademicaId() {
+        return cargaAcademicaId;
+    }
+
+    public void setNombreCalendario(String nombreCalendario) {
+        this.nombreCalendario = nombreCalendario;
+    }
+
+    public String getNombreCalendario() {
+        return nombreCalendario;
     }
 }

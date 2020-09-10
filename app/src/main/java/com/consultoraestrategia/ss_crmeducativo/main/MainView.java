@@ -127,9 +127,17 @@ public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
 
     void showCamaraReconocimientos(int idUsuario);
 
-    void showActivityAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId);
+    void showActivityAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId, int tutorCargaAdemicaId);
 
     void subscribeToTopic(int personaId);
 
     void showReconocimientoActivity(int cargaCursoId, int georeferenciaId, int entidadId);
+
+    void startCropImageActivity(String path);
+
+    void callSynckServiceFB();
+
+    void showBtnAgenda();
+
+    void hideBtnAgenda();
 }

@@ -75,7 +75,7 @@ public class ChatHolderGroup extends RecyclerView.ViewHolder {
                     }
                 }
                 title_img.setText(j);
-                title_img.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
+                title_img.setTextColor(Color.WHITE);
                 Drawable drawable = ContextCompat.getDrawable(itemView.getContext(), R.drawable.border_message);
                 try {
                     drawable.mutate().setColorFilter(Color.parseColor(chatUi.getColor()), PorterDuff.Mode.SRC_ATOP);

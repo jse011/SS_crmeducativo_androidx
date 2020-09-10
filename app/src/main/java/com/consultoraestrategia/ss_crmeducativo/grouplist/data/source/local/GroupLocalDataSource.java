@@ -210,7 +210,7 @@ public class GroupLocalDataSource implements GroupDataSource {
                         .querySingle();
                 if(rubroEvaluacionProceso == null) throw new Error("Rubro Evaluacion no Existe");
 
-                rubroEvaluacionProceso.setSyncFlag(RubroEvaluacionProcesoC.FLAG_UPDATED);
+                rubroEvaluacionProceso.setSyncFlag(RubroEvaluacionProcesoC.FLAG_ADDED);
                 rubroEvaluacionProceso.save();
 
                 List<EquipoC> equipos = SQLite.select()

@@ -121,7 +121,7 @@ public class SimpleSyncIntenService extends SyncIntenService {
     }
 
     public static void start(Context context, int programaEducativoId){
-        Data data = new Data.Builder()
+        /*Data data = new Data.Builder()
                 .putInt("iteraciones", 10)
                 .putInt("programaEducativoId", programaEducativoId)
                 .build();
@@ -134,7 +134,7 @@ public class SimpleSyncIntenService extends SyncIntenService {
                 NAME_SERVICE_SIMPLE,
                 ExistingWorkPolicy.APPEND,
                 oneTimeWorkRequest)
-                .enqueue();
+                .enqueue();*/
 
     }
 

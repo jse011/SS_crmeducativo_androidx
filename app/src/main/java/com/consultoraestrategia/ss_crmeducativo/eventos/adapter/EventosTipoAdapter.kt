@@ -33,8 +33,12 @@ class EventosTipoAdapter(val listener: (TiposEventosUi) -> Unit): RecyclerView.A
                     TiposUi.TAREAS->Pair(R.drawable.ic_tareas_white,"#E91E63")
                     TiposUi.CITAS->Pair(R.drawable.ic_calendar_day,"#00BCD4")
                     TiposUi.DEFAULT->Pair(R.drawable.ic_calendar_day,"#E91E63")
+                    TiposUi.AGENDA->Pair(R.drawable.ic_agenda_1,"#AD3FF8")
                     TiposUi.TODOS->Pair(R.drawable.ic_left_arrow,"#00BCD4")
-                }
+               else -> {
+                   Pair(R.drawable.ic_calendar_day,"#00BCD4")
+               }
+           }
 
             Glide.with(img_tipo)
                     .load(recurso)

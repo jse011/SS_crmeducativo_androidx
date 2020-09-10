@@ -1,5 +1,6 @@
 package com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.servidorData;
 
+import com.consultoraestrategia.ss_crmeducativo.login2.data.preferent.LoginPreferentRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.DatosProgressUi;
 import com.consultoraestrategia.ss_crmeducativo.services.usecase.login.UseCaseLoginSincrono;
@@ -8,12 +9,12 @@ import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 public class GetDatosInicioSesion implements UseCaseLoginSincrono<GetDatosInicioSesion.Request, GetDatosInicioSesion.Response> {
 
     private LoginDataRepository loginDataRepository;
+    private LoginPreferentRepository loginPreferentRepository;
 
-    public GetDatosInicioSesion(LoginDataRepository loginDataRepository) {
+    public GetDatosInicioSesion(LoginDataRepository loginDataRepository, LoginPreferentRepository loginPreferentRepository) {
         this.loginDataRepository = loginDataRepository;
+        this.loginPreferentRepository = loginPreferentRepository;
     }
-
-
 
     @Override
     public RetrofitCancel execute(Request request, final Callback<Response> callback) {
@@ -21,6 +22,7 @@ public class GetDatosInicioSesion implements UseCaseLoginSincrono<GetDatosInicio
             @Override
             public void onResponse(boolean success, DatosProgressUi value) {
                 if(success){
+                    loginPreferentRepository.saveFechaCambiosFirebase(value.getFechaServidor());
                     callback.onResponse(true, new Response(value.getAnioAcademicoId()));
                 }else {
                     callback.onResponse(false, null);

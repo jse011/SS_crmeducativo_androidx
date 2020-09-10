@@ -1,9 +1,11 @@
 package com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.principal.data.source.local;
 
+import android.text.TextUtils;
 import android.util.Log;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.TipoUi;
 import com.consultoraestrategia.ss_crmeducativo.dao.calendarioPeriodo.CalendarioPeriodoDao;
 import com.consultoraestrategia.ss_crmeducativo.dao.rubroEvalRNPFormula.RubroEvalRNPFormulaDao;
+import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.EvaluacionProcesoC;
@@ -15,8 +17,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento;
 import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.SilaboEventoCargaCursoModel;
@@ -35,6 +35,7 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -195,6 +196,9 @@ public class RubricaBidLocal implements RubricaBidDataSource {
                 rubBidUi.setAlias(proceso.getSubtitulo());
                 rubBidUi.setFormaEvaluacion(formaEvaluacion);
                 rubBidUi.setTipoEvaluacion(tipoEvaluacion);
+                rubBidUi.setExportado(proceso.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                        proceso.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                        proceso.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
                 //rubBidUi.setTipoNota(tipoNotaUi);
                 rubBidUi.setSesionAprendizajeId(proceso.getSesionAprendizajeId());
 
@@ -225,12 +229,7 @@ public class RubricaBidLocal implements RubricaBidDataSource {
                     rubBidUi.setPublicarEval(RubBidUi.PublicarEval.PARCIAL);
                 }
 
-                TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = SQLite.select()
-                        .from(TareaRubroEvaluacionProceso.class)
-                        .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.eq(proceso.getKey()))
-                        .querySingle(databaseWrapper);
-
-                if(tareaRubroEvaluacionProceso!=null){
+                if(!TextUtils.isEmpty(proceso.getTareaId())){
                     rubBidUi.setOrigenUi(OrigenUi.TAREA);
                 }
 
@@ -255,6 +254,7 @@ public class RubricaBidLocal implements RubricaBidDataSource {
                 rubBidList.add(rubBidUi);
             }
             databaseWrapper.setTransactionSuccessful();
+            Collections.reverse(rubBidList);
             callBackList.onListaRubBidList(rubBidList);
         } catch (Exception e){
             e.printStackTrace();

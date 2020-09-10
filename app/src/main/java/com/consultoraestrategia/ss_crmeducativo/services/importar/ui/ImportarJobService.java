@@ -10,7 +10,15 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.CMRE;
@@ -22,6 +30,7 @@ import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.importar.ImportarPresenter;
 import com.consultoraestrategia.ss_crmeducativo.services.importar.ImportarPresenterImpl;
+import com.consultoraestrategia.ss_crmeducativo.utils.AppMessengetNotification;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
@@ -29,7 +38,7 @@ import com.firebase.jobdispatcher.JobService;
  * Created by SCIEV on 12/06/2018.
  */
 
-public class ImportarJobService extends JobService implements ImportarEvent {
+public class ImportarJobService extends Worker implements ImportarEvent {
 
     public static final String REQUEST_STRING = "myRequest";
     public static final String RESPONSE_STRING = "myResponse";
@@ -46,18 +55,8 @@ public class ImportarJobService extends JobService implements ImportarEvent {
     private ImportarPresenterImpl presenter;
     private NotificationCompat.Builder builder;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "Servicio creado...");
-        setupPresenter();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "Servicio destruido...");
-        presenter = null;
+    public ImportarJobService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
     }
 
     private void setupPresenter() {
@@ -77,16 +76,17 @@ public class ImportarJobService extends JobService implements ImportarEvent {
     @Override
     public void setPresenter(ImportarPresenter presenter) {
         presenter.attachView(this);
+        presenter.setExtra(getInputData());
         presenter.onCreate();
     }
     @Override
     public void showNotificacionProgress(int icono, String titulo, String subtitulo, String textoLargo, int usuarioId) {
 
-        Intent intent = MainActivity.launchMainActivity(getBaseContext(),usuarioId);
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        Intent intent = MainActivity.launchMainActivity(getApplicationContext(),usuarioId);
+        PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
         Notification noti =
-                new NotificationCompat.Builder(this, CMRE.CHANNEL_ID)
+                new NotificationCompat.Builder(getApplicationContext(), CMRE.CHANNEL_ID)
                         .setSmallIcon(R.drawable.logo_consultoraa)
                         .setContentTitle(titulo)
                         .setContentText(subtitulo)
@@ -100,7 +100,7 @@ public class ImportarJobService extends JobService implements ImportarEvent {
         noti.defaults |= Notification.DEFAULT_LIGHTS;
         noti.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = CMRE.CHANNEL_ID;// The user-visible name of the channel.
@@ -127,33 +127,19 @@ public class ImportarJobService extends JobService implements ImportarEvent {
         Bundle bundle = new Bundle();
         importarWrapper.convertBundle(bundle);
         broadcastIntent.putExtras(bundle);
-        sendBroadcast(broadcastIntent);
+        getApplicationContext().sendBroadcast(broadcastIntent);
     }
 
+    @NonNull
     @Override
-    public boolean onStartJob(final JobParameters job) {
-        if(presenter!=null)presenter.setExtra(job.getExtras());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                codeYouWantToRun(job);
-            }
-        }).start();
-        return true;
+    public Result doWork() {
+        setupPresenter();
+        try {
+            if(presenter!=null)presenter.onHandleIntent();
+            return  Result.success();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.failure();
+        }
     }
-
-    public void codeYouWantToRun(JobParameters parameters) {
-           try {
-               if(presenter!=null)presenter.onHandleIntent();
-           }finally {
-               jobFinished(parameters, false);
-           }
-    }
-
-    @Override
-    public boolean onStopJob(JobParameters job) {
-        return false;
-    }
-
-
 }

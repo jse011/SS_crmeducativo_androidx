@@ -139,17 +139,18 @@ public class EvaluacionResultadoLocalDataSource implements EvaluacionResultadoDa
                     if(rubroEvalResultado==null)continue;
 
                     TipoNotaC tipoNotaC= SQLite.select().from(TipoNotaC.class).where(TipoNotaC_Table.key.withTable().eq(rubroEvalResultado.getTipoNotaId())).querySingle();
+                    Log.d(TAG, "TIPO NOTA Jse "+rubroEvalResultado.getTipoNotaId());
                     if(tipoNotaC==null)continue;
                     switch (tipoNotaC.getTipoId()){
-                        case TipoNotaC.VALOR_NUMERICO:
-                          //  Log.d(TAG, "VALOR_NUMERICO ");
-                            notaUi.setTipo(NotaUi.Tipo.VALOR_NUMERO);
-                            break;
                         case  TipoNotaC.SELECTOR_VALORES:
                            // Log.d(TAG, "SELECTOR_VALORES ");
                             notaUi.setTipo(NotaUi.Tipo.SELECTOR_VALORES);
-
+                            Log.d(TAG, "NOTAS Jse "+evaluacionResultado.getValorTipoNotaId());
                             notaUi.setValorTipoNotaUi(getValorTipoNota(evaluacionResultado.getValorTipoNotaId()));
+                            break;
+                        default:
+                            //  Log.d(TAG, "VALOR_NUMERICO ");
+                            notaUi.setTipo(NotaUi.Tipo.VALOR_NUMERO);
                             break;
                     }
 
@@ -165,8 +166,12 @@ public class EvaluacionResultadoLocalDataSource implements EvaluacionResultadoDa
                 }
 
                 if(tipoCompetencia!=TABLE_EVAL_RESULTADO_TIPO_CAPACIDAD){
-                    notaUiList.get(0).getRubro().setTipo(true);
-                    notaUiList.get(0).setTipo(NotaUi.Tipo.NOTA_FINAL);
+                    NotaUi notaUi = notaUiList.get(0);
+                    if(notaUi!=null){
+                        notaUi.getRubro().setTipo(true);
+                        notaUi.setTipo(NotaUi.Tipo.NOTA_FINAL);
+                    }
+
                 }
 
                 alumnoUi.setNotaUiList(notaUiList);

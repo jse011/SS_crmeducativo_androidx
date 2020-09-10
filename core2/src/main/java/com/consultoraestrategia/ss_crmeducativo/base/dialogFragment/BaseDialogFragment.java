@@ -3,6 +3,7 @@ package com.consultoraestrategia.ss_crmeducativo.base.dialogFragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -87,10 +88,17 @@ public abstract class BaseDialogFragment<V extends BaseView<P>, P extends BaseFr
         setPresenter(presenter);
     }
 
+    @Override @NonNull
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
-        this.getDialog().requestWindowFeature(STYLE_NO_TITLE);
+
         Log.d(getLogTag(), "onCreateView");
         if (presenter != null) presenter.onCreateView();
         View view =  inflateView(inflater, container);

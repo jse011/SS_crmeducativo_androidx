@@ -1,6 +1,10 @@
 package com.consultoraestrategia.ss_crmeducativo.crearEvento;
 
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseView;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AgendaUi;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AlumnoUi;
+
+import java.util.List;
 
 public interface CrearEventoView extends BaseView<CrearEventoPresenter> {
     void selectDate();
@@ -52,4 +56,23 @@ public interface CrearEventoView extends BaseView<CrearEventoPresenter> {
    void showDialogProgress();
 
    void hideDialogProgress();
+
+    void showListaAlumnos(List<AlumnoUi> alumnoUiList);
+
+    void updateAlumno(AlumnoUi alumnoUi);
+
+    void setCheckboxAllAlumnos(boolean checkbox);
+
+    void setCheckboxAllPadres(boolean checkbox);
+
+    void showAllCheck();
+
+    void hideAllCheck();
+
+    void setEquiteLista(String nombre);
+
+    void setNombresAlumnos(String nombre);
+
+    void panelUpAlumnos();
+
 }

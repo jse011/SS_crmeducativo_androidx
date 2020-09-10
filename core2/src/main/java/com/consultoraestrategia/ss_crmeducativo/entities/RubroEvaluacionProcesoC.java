@@ -82,6 +82,8 @@ public class RubroEvaluacionProcesoC extends BaseEntity {
 
     @Column
     int estrategiaEvaluacionId;
+    @Column
+    private String tareaId;
 
     public RubroEvaluacionProcesoC() {
         super();
@@ -357,6 +359,14 @@ public class RubroEvaluacionProcesoC extends BaseEntity {
 
     public void setEstrategiaEvaluacionId(int estrategiaEvaluacionId) {
         this.estrategiaEvaluacionId = estrategiaEvaluacionId;
+    }
+
+    public String getTareaId() {
+        return tareaId;
+    }
+
+    public void setTareaId(String tareaId) {
+        this.tareaId = tareaId;
     }
 
     @Override

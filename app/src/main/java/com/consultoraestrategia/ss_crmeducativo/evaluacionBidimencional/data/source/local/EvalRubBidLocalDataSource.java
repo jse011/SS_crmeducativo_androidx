@@ -148,8 +148,8 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
                 .querySingle();
 
         if(evaluacionProcesoC==null)return false;
-        evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        evaluacionProcesoC.save();
+        /*evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
+        evaluacionProcesoC.save();*/
 
         RubroEvaluacionProcesoC rubroEvaluacionProcesoC =  SQLite.select()
                 .from(RubroEvaluacionProcesoC.class)
@@ -161,10 +161,16 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
             rubroEvaluacionProcesoC.save();
         }
 
-        SQLite.delete()
+        RubroEvaluacionProcesoComentario rubroEvaluacionProcesoComentario = SQLite.select()
                 .from(RubroEvaluacionProcesoComentario.class)
                 .where(RubroEvaluacionProcesoComentario_Table.key.eq(mensajeUi.getId()))
-                .execute();
+                .querySingle();
+
+        if(rubroEvaluacionProcesoComentario!=null){
+            rubroEvaluacionProcesoComentario.setSyncFlag(BaseEntity.FLAG_UPDATED);
+            rubroEvaluacionProcesoComentario.setDelete(1);
+            rubroEvaluacionProcesoComentario.save();
+        }
 
          return true;
     }
@@ -192,11 +198,16 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
             rubroEvaluacionProcesoC.save();
         }
 
-        SQLite.delete()
+        ArchivosRubroProceso archivosRubroProceso = SQLite.select()
                 .from(ArchivosRubroProceso.class)
                 .where(ArchivosRubroProceso_Table.key.eq(archivoComentarioUi.getArchivoId()))
-                .execute();
+                .querySingle();
 
+        if(archivosRubroProceso!=null){
+            archivosRubroProceso.setSyncFlag(BaseEntity.FLAG_UPDATED);
+            archivosRubroProceso.setDelete(1);
+            archivosRubroProceso.save();
+        }
         return true;
     }
 
@@ -715,6 +726,7 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
                 .on(RubroEvaluacionProcesoComentario_Table.evaluacionProcesoId.withTable()
                         .eq(EvaluacionProcesoC_Table.key.withTable()))
                 .where(EvaluacionProcesoC_Table.key.withTable().in(evalauciones))
+                .and(RubroEvaluacionProcesoComentario_Table.delete.withTable().notEq(1))
                 .groupBy(Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES))
                 .queryList();
 
@@ -1812,6 +1824,7 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
                     .on(RubroEvaluacionProcesoComentario_Table.evaluacionProcesoId.withTable()
                             .eq(EvaluacionProcesoC_Table.key.withTable()))
                     .where(EvaluacionProcesoC_Table.key.withTable().in(evalauciones))
+                    .and(RubroEvaluacionProcesoComentario_Table.delete.withTable().notEq(1))
                     .groupBy(Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES))
                     .queryList(databaseWrapper);
 
@@ -1981,6 +1994,7 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
         List<RubroEvaluacionProcesoComentario> rubroEvaluacionProcesoComentarios = SQLite.select()
                 .from(RubroEvaluacionProcesoComentario.class)
                 .where(RubroEvaluacionProcesoComentario_Table.evaluacionProcesoId.eq(evaluacionProcesoC.getKey()))
+                .and(RubroEvaluacionProcesoComentario_Table.delete.withTable().notEq(1))
                 .queryList();
 
         for (RubroEvaluacionProcesoComentario rubroEvaluacionProcesoComentario : rubroEvaluacionProcesoComentarios){
@@ -2020,8 +2034,8 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
         rubroEvaluacionProcesoComentario.setKey(mensajeUi.getId());
         rubroEvaluacionProcesoComentario.setEvaluacionProcesoId(evaluacionProcesoC.getKey());
         rubroEvaluacionProcesoComentario.setSyncFlag(BaseEntity.FLAG_ADDED);
-        evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        evaluacionProcesoC.save();
+        //evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
+        //evaluacionProcesoC.save();
         return rubroEvaluacionProcesoComentario.save();
 
     }
@@ -2041,6 +2055,7 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
         List<ArchivosRubroProceso> archivosRubroProcesoList = SQLite.select()
                 .from(ArchivosRubroProceso.class)
                 .where(ArchivosRubroProceso_Table.evaluacionProcesoId.eq(evaluacionProcesoC.getKey()))
+                .and(ArchivosRubroProceso_Table.delete.notEq(1))
                 .queryList();
 
         for (ArchivosRubroProceso archivosRubroProceso: archivosRubroProcesoList){
@@ -2089,8 +2104,8 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
                 .querySingle();
 
         if(evaluacionProcesoC==null)return false;
-        evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        evaluacionProcesoC.save();
+        //evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
+        //evaluacionProcesoC.save();
 
         RubroEvaluacionProcesoC rubroEvaluacionProcesoC =  rubroEvalProcesoDao.get(evaluacionProcesoC.getRubroEvalProcesoId());
         if(rubroEvaluacionProcesoC!=null){

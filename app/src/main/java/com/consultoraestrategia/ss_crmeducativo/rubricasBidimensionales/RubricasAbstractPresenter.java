@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import com.consultoraestrategia.ss_crmeducativo.base.BaseFragmentPresenter;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.entidades.RubBidUi;
 
+import java.util.List;
+
 /**
  * Created by CCIE on 07/03/2018.
  */
@@ -39,4 +41,7 @@ public interface RubricasAbstractPresenter extends BaseFragmentPresenter<Rubrica
     void onResumeFragment(String idcalendarioPeriodo);
 
     void onClickBtnAceptarPublicarTodoEvaluaciones(RubBidUi rubBidUi);
+
+    void comprobarActualizacionRubros(List<RubBidUi> rubBidUiList);
+
 }

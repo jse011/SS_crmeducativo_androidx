@@ -34,7 +34,7 @@ public class AdapterServicioEnvio extends RecyclerView.Adapter<AdapterServicioEn
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_services_enviar, viewGroup, false));
+        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_services_enviar_relacionado, viewGroup, false));
     }
 
     @Override
@@ -87,10 +87,17 @@ public class AdapterServicioEnvio extends RecyclerView.Adapter<AdapterServicioEn
         ProgressBar progDowload;
         @BindView(R.id.prog_upload)
         ProgressBar progUpload;
+        @BindView(R.id.prog_pre)
+        ProgressBar progPre;
         @BindView(R.id.txt_upload)
         TextView txtUpload;
+        @BindView(R.id.txt_pre)
+        TextView txtPre;
         @BindView(R.id.txt_dowload)
         TextView txtDowload;
+        @BindView(R.id.txt_title_pre)
+        TextView txtTitlePre;
+
         private  EnviarListener listener;
         private ServiceEnvioUi serviceEnvioUi;
 
@@ -153,7 +160,9 @@ public class AdapterServicioEnvio extends RecyclerView.Adapter<AdapterServicioEn
             }
 
 
-            if(serviceEnvioUi.getUploadProgress()!=0||serviceEnvioUi.getDowloadProgress()!=0){
+            if(serviceEnvioUi.getUploadRubroProgress()!=0||
+                    serviceEnvioUi.getUploadProgress()!=0||
+                    serviceEnvioUi.getDowloadProgress()!=0){
 
                 if(serviceEnvioUi.getDowloadProgress()==100){
                     if(contProgress.getVisibility()==View.VISIBLE){
@@ -184,10 +193,26 @@ public class AdapterServicioEnvio extends RecyclerView.Adapter<AdapterServicioEn
             }
             progDowload.setProgress(serviceEnvioUi.getDowloadProgress());
             progUpload.setProgress(serviceEnvioUi.getUploadProgress());
+            progPre.setProgress(serviceEnvioUi.getUploadRubroProgress());
+
             String progressDowload = serviceEnvioUi.getDowloadProgress() + "%";
             String progressUpload = serviceEnvioUi.getUploadProgress() + "%";
+            String progressPre = serviceEnvioUi.getUploadRubroProgress() + "%";
             txtDowload.setText(progressDowload);
             txtUpload.setText(progressUpload);
+            txtPre.setText(progressPre);
+
+            if((serviceEnvioUi.getTipo()== ServiceEnvioUi.Tipo.Formula||
+                    serviceEnvioUi.getTipo()== ServiceEnvioUi.Tipo.Resultado)&&
+                    serviceEnvioUi.getUploadRubroProgress()>0){
+                txtPre.setVisibility(View.VISIBLE);
+                progPre.setVisibility(View.VISIBLE);
+                txtTitlePre.setVisibility(View.VISIBLE);
+            }else {
+                txtPre.setVisibility(View.GONE);
+                progPre.setVisibility(View.GONE);
+                txtTitlePre.setVisibility(View.GONE);
+            }
         }
 
         @Override

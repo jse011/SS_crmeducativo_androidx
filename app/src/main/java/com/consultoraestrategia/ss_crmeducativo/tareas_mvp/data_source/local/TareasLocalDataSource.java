@@ -9,6 +9,7 @@ import com.consultoraestrategia.ss_crmeducativo.dao.tareasDao.TareasDao;
 import com.consultoraestrategia.ss_crmeducativo.dao.unidadAprendizajeDao.UnidadAprendizajeDao;
 import com.consultoraestrategia.ss_crmeducativo.entities.Archivo;
 import com.consultoraestrategia.ss_crmeducativo.entities.Archivo_Table;
+import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.CargaAcademica;
@@ -30,8 +31,8 @@ import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Seccion;
 import com.consultoraestrategia.ss_crmeducativo.entities.Seccion_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso_Table;
+import com.consultoraestrategia.ss_crmeducativo.entities.SesionAprendizaje;
+import com.consultoraestrategia.ss_crmeducativo.entities.SesionAprendizaje_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasRecursosC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasRecursosC_Table;
@@ -167,6 +168,14 @@ public class TareasLocalDataSource implements TareasMvpDataSource {
                     }
 
                     tareasUI.setKeyTarea(tareas.getKey());
+
+                    SesionAprendizaje sesionAprendizaje = SQLite.select()
+                            .from(SesionAprendizaje.class)
+                            .where(SesionAprendizaje_Table.sesionAprendizajeId
+                                    .eq(tareas.getSesionAprendizajeId()))
+                            .querySingle();
+
+                    tareasUI.setNombreSesion(sesionAprendizaje!=null&&tipoTarea==0?" - Sesión "+sesionAprendizaje.getNroSesion():"");
                     tareasUI.setTituloTarea(tareas.getTitulo());
                     tareasUI.setDescripcion(tareas.getInstrucciones());
                     tareasUI.setFechaCreacionTarea(tareas.getFechaCreacion());
@@ -177,6 +186,9 @@ public class TareasLocalDataSource implements TareasMvpDataSource {
                     tareasUI.setIdUnidaddAprendizaje(tareas.getUnidadAprendizajeId());
                     tareasUI.setRubroEvalProcesoUi(getRubroEvalProcesoUi(tareas.getKey()));
                     tareasUI.setNombreCurso(nombreCurso);
+                    tareasUI.setExportado(tareas.getSyncFlag()!= BaseEntity.FLAG_ADDED&&
+                            tareas.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                            tareas.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
                     List<TareasRecursosC> tareasRecursosList = SQLite.select()
                             .from(TareasRecursosC.class)
                             .where(TareasRecursosC_Table.tareaId.is(tareas.getKey()))
@@ -407,10 +419,7 @@ public class TareasLocalDataSource implements TareasMvpDataSource {
     private RubroEvalProcesoUi getRubroEvalProcesoUi(String tareaId) {
         RubroEvaluacionProcesoC rubroEvaluacionProcesoC = SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionProcesoC_Table.ALL_COLUMN_PROPERTIES))
                 .from(RubroEvaluacionProcesoC.class)
-                .innerJoin(TareaRubroEvaluacionProceso.class)
-                .on(RubroEvaluacionProcesoC_Table.key.withTable()
-                        .eq(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.withTable()))
-                .where(TareaRubroEvaluacionProceso_Table.tareaId.withTable().eq(tareaId))
+                .where(RubroEvaluacionProcesoC_Table.tareaId.withTable().eq(tareaId))
                 .querySingle();
 
         if (rubroEvaluacionProcesoC == null) return null;

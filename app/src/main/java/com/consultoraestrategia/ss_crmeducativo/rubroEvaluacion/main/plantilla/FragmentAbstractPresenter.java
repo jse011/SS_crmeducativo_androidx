@@ -12,6 +12,7 @@ import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.RubroPr
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.plantilla.view.FragmentAbstractView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by SCIEV on 6/02/2018.
@@ -99,4 +100,6 @@ public interface FragmentAbstractPresenter extends BaseFragmentPresenter<Fragmen
     void onClickBtnAceptarPublicarTodoEvaluaciones(CapacidadUi capacidadUi, RubroProcesoUi rubroProcesoUi, int programaEducativoId);
 
     void onClickAceptarCalcular();
+
+    void comprobarActualizacionRubros(Map<RubroProcesoUi, CapacidadUi> rubroProcesoUiList);
 }

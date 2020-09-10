@@ -1,15 +1,21 @@
 package com.consultoraestrategia.ss_crmeducativo.lib;
 
 
+import android.text.TextUtils;
+
 import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
+import com.consultoraestrategia.ss_crmeducativo.entities.Calendario;
 import com.consultoraestrategia.ss_crmeducativo.entities.DimensionDesarrolloDetalle;
 import com.consultoraestrategia.ss_crmeducativo.entities.EstrategiaEvaluacion;
 import com.consultoraestrategia.ss_crmeducativo.entities.EvaluacionResultado;
 import com.consultoraestrategia.ss_crmeducativo.entities.EvaluacionResultadoC;
+import com.consultoraestrategia.ss_crmeducativo.entities.Evento;
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC;
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionResultado;
 import com.consultoraestrategia.ss_crmeducativo.entities.SesionAprendizaje;
+import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
+import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso_Table;
 import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.annotation.Migration;
@@ -29,101 +35,8 @@ import java.util.List;
 @Database(name = AppDatabase.NAME, version = AppDatabase.VERSION, insertConflict = ConflictAction.REPLACE)
 public class AppDatabase {
     public static final String NAME = "CRMEfinal";
-    public static final int VERSION = 12;//Pasar a la vercion 9
-
-    @Migration(version = 5, database = AppDatabase.class)
-    public static class MigrationRubroEvaluacionProceso extends AlterTableMigration<RubroEvaluacionProcesoC> {
-
-        public MigrationRubroEvaluacionProceso(Class<RubroEvaluacionProcesoC> table) {
-            super(table);
-        }
-
-        @Override
-        public void onPreMigrate() {
-            addColumn(SQLiteType.INTEGER, "unidadAprendizajeId");
-        }
-
-        @Override
-        public void onPostMigrate() {
-            super.onPostMigrate();
-        }
-
-    }
-
-    @Migration(version = 6, database = AppDatabase.class)
-    public static class MigrationRubroSesionAprendizaje extends AlterTableMigration<SesionAprendizaje> {
-
-        public MigrationRubroSesionAprendizaje(Class<SesionAprendizaje> table) {
-            super(table);
-        }
-
-        @Override
-        public void onPreMigrate() {
-            addColumn(SQLiteType.INTEGER, "estadoEvaluacion");
-            addColumn(SQLiteType.INTEGER, "evaluados");
-            addColumn(SQLiteType.INTEGER, "docenteid");
-        }
-
-        @Override
-        public void onPostMigrate() {
-            super.onPostMigrate();
-        }
-
-    }
-
-    @Migration(version = 7, database = AppDatabase.class)
-    public static class MigrationRubroEvaluacionProcesoTwo extends AlterTableMigration<RubroEvaluacionProcesoC> {
-
-        public MigrationRubroEvaluacionProcesoTwo(Class<RubroEvaluacionProcesoC> table) {
-            super(table);
-        }
-
-        @Override
-        public void onPreMigrate() {
-            addColumn(SQLiteType.INTEGER, "estrategiaEvaluacionId");
-        }
-
-        @Override
-        public void onPostMigrate() {
-            super.onPostMigrate();
-        }
-
-    }
-
-    @Migration(version = 8, database = AppDatabase.class)
-    public static class MigrationRubroEvaluacionResultado extends BaseMigration {
-
-        @Override
-        public void migrate(DatabaseWrapper database) {
-
-            List<EvaluacionResultado> evaluacionResultadoList = SQLite.select()
-                    .from(EvaluacionResultado.class)
-                    .queryList(database);
-
-            for(EvaluacionResultado evaluacionResultado : evaluacionResultadoList){
-                EvaluacionResultadoC evaluacionResultadoC = new EvaluacionResultadoC();
-                evaluacionResultadoC.setEvaluacionResultadoId(evaluacionResultado.getEvaluacionResultadoId());
-                evaluacionResultadoC.setCalendarioPeriodoId(evaluacionResultado.getCalendarioPeriodoId());
-                evaluacionResultadoC.setCompetenciaId(evaluacionResultado.getCompetenciaId());
-                evaluacionResultadoC.setAlumnoId(evaluacionResultado.getAlumnoId());
-                evaluacionResultadoC.setDocenteId(evaluacionResultado.getDocenteId());
-                evaluacionResultadoC.setNota(evaluacionResultado.getNota());
-                evaluacionResultadoC.setEscala(evaluacionResultado.getEscala());
-                evaluacionResultadoC.setRubroEvalResultadoId(evaluacionResultado.getRubroEvalResultadoId());
-                evaluacionResultadoC.setEstadoExportado(evaluacionResultado.getEstadoExportado());
-                evaluacionResultadoC.setValorTipoNotaId(evaluacionResultado.getValorTipoNotaId());
-                evaluacionResultadoC.setIcdId(evaluacionResultado.getIcdId());
-
-                evaluacionResultadoC.setFechaAccion(evaluacionResultado.getFechaAccion());
-                evaluacionResultadoC.setFechaCreacion(evaluacionResultado.getFechaCreacion());
-                evaluacionResultadoC.setUsuarioAccionId(evaluacionResultado.getUsuarioAccionId());
-                evaluacionResultadoC.setUsuarioCreacionId(evaluacionResultado.getUsuarioCreacionId());
-
-                evaluacionResultadoC.save(database);
-            }
-
-        }
-    }
+   // public static final int VERSION = 13;//Playstore 12
+    public static final int VERSION = 14;//Playstore 13
 
     @Migration(version = 9, database = AppDatabase.class)
     public static class MigrationRubroEvaluacionResultadoTwo extends AlterTableMigration<EvaluacionResultadoC> {
@@ -135,6 +48,80 @@ public class AppDatabase {
         @Override
         public void onPreMigrate() {
             addColumn(SQLiteType.INTEGER, "cargaCursoId");
+        }
+
+        @Override
+        public void onPostMigrate() {
+            super.onPostMigrate();
+        }
+
+    }
+
+    @Migration(version = 12, database = AppDatabase.class)
+    public static class MigrationTareaRubroEvaluacionProceso extends AlterTableMigration<RubroEvaluacionProcesoC> {
+
+        public MigrationTareaRubroEvaluacionProceso(Class<RubroEvaluacionProcesoC> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            addColumn(SQLiteType.TEXT, "tareaId");
+        }
+
+        @Override
+        public void onPostMigrate() {
+            super.onPostMigrate();
+            List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = SQLite.select()
+                    .from(TareaRubroEvaluacionProceso.class)
+                    .queryList();
+
+            for (TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso : tareaRubroEvaluacionProcesoList){
+                RubroEvaluacionProcesoC rubroEvaluacionProcesoC = SQLite.select()
+                        .from(RubroEvaluacionProcesoC.class)
+                        .where(RubroEvaluacionProcesoC_Table.key.eq(tareaRubroEvaluacionProceso.getRubroEvalProcesoId()))
+                        .querySingle();
+
+                if(rubroEvaluacionProcesoC!=null){
+                    rubroEvaluacionProcesoC.setTareaId(TextUtils.isEmpty(rubroEvaluacionProcesoC.getTareaId())?tareaRubroEvaluacionProceso.getTareaId():rubroEvaluacionProcesoC.getTareaId());
+                }
+            }
+        }
+
+    }
+
+    @Migration(version = 14, database = AppDatabase.class)
+    public static class MigrationEvento extends AlterTableMigration<Evento> {
+
+        public MigrationEvento(Class<Evento> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            addColumn(SQLiteType.INTEGER, "envioPersonalizado");
+        }
+
+        @Override
+        public void onPostMigrate() {
+            super.onPostMigrate();
+        }
+
+    }
+
+    @Migration(version = 14, database = AppDatabase.class)
+    public static class MigrationCalendario extends AlterTableMigration<Calendario> {
+
+        public MigrationCalendario(Class<Calendario> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            addColumn(SQLiteType.INTEGER, "cargaAcademicaId");
+            addColumn(SQLiteType.INTEGER, "cargaCursoId");
+            addColumn(SQLiteType.INTEGER, "estadoPublicación");
+            addColumn(SQLiteType.INTEGER, "rolId");
         }
 
         @Override

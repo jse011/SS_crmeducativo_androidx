@@ -217,6 +217,8 @@ public class AdapterUnidades extends RecyclerView.Adapter<AdapterUnidades.ViewHo
             AutoColumnGridLayoutManager autoColumnGridLayoutManager = new AutoColumnGridLayoutManager(itemView.getContext(), OrientationHelper.VERTICAL, false);
             SesionColumnCountProvider  columnCountProvider = new SesionColumnCountProvider(itemView.getContext());
             autoColumnGridLayoutManager.setColumnCountProvider(columnCountProvider);
+            rv_sesiones.setNestedScrollingEnabled(false);
+            rv_sesiones.setHasFixedSize(false);
             rv_sesiones.setLayoutManager(autoColumnGridLayoutManager);
             rv_sesiones.setAdapter(new AdapterSesionesLandscape(unidadAprendizaje.getObjectListSesiones(), unidadesListener,vint_backgroudColor, programaEducativoId));
 

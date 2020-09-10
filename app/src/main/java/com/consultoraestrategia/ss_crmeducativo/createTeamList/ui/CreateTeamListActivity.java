@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -404,8 +406,8 @@ public class CreateTeamListActivity extends AppCompatActivity implements CreateT
 
     @Override
     public void sync(int programaEducativoId) {
-        CallService.jobServiceExportarTipos(this, TipoExportacion.GRUPO);
         SimpleSyncIntenService.start(this, programaEducativoId);
+        SynckService.start(this,programaEducativoId);
         CMRE.saveNotifyChangeDataBase(this);
         finish();
     }

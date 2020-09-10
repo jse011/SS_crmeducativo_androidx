@@ -65,4 +65,5 @@ public interface TareasMvpView extends BaseView<TareasMvpPresenter> {
 
     void showCrearTarea(HeaderTareasAprendizajeUI headerTareasAprendizajeUI, int idSilaboEvento, int idCargaCurso);
 
+    void updateTarea(TareasUI tareasUI);
 }

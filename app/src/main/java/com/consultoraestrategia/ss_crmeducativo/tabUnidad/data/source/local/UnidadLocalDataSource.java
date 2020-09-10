@@ -15,17 +15,8 @@ import com.consultoraestrategia.ss_crmeducativo.entities.UnidadEventoCompetencia
 import com.consultoraestrategia.ss_crmeducativo.entities.UnidadEventoCompetenciaDesempenioIcdInstrumento_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.SesionEventoCompetenciaDesempenioIcd;
-import com.consultoraestrategia.ss_crmeducativo.entities.SesionEventoCompetenciaDesempenioIcd_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_COMPETENCIA_SESION_EVENTO;
-import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_COMPETENCIA_SESION_EVENTO_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_UNIDAD_APREN_EVENTO_TIPO;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_UNIDAD_APREN_EVENTO_TIPO_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.CampotematicoSesionAprendizajeModel;
-import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.IcdsSesionAprendizajeModel;
-import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.IcdsUnidadEventoModel;
-import com.consultoraestrategia.ss_crmeducativo.entities.queryCustomList.IndicadorQuery;
-import com.consultoraestrategia.ss_crmeducativo.entities.queryCustomList.IndicadorQuery_QueryTable;
 import com.consultoraestrategia.ss_crmeducativo.tabUnidad.entities.RecursosDidacticoUi;
 import com.consultoraestrategia.ss_crmeducativo.entities.Archivo;
 import com.consultoraestrategia.ss_crmeducativo.entities.Archivo_Table;
@@ -69,8 +60,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_UNIDAD_EVENTO_
 import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_UNIDAD_EVENTO_COMPETENCIA_DESEMPENIO_ICD_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.UnidadAprendizaje;
@@ -79,7 +68,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.SilaboEvento
 import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioEstadoFileU;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioTipoFileU;
-import com.consultoraestrategia.ss_crmeducativo.situacion.entity.SituacionUI;
 import com.consultoraestrategia.ss_crmeducativo.tabUnidad.data.source.UnidadDataSource;
 import com.consultoraestrategia.ss_crmeducativo.tabUnidad.entities.CampoAccionUi;
 import com.consultoraestrategia.ss_crmeducativo.tabUnidad.entities.CapacidadUi;
@@ -92,8 +80,6 @@ import com.consultoraestrategia.ss_crmeducativo.tabUnidad.entities.SituacionUi;
 import com.consultoraestrategia.ss_crmeducativo.util.YouTubeHelper;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.SqlUtils;
-import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
@@ -102,8 +88,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-
-import okhttp3.internal.Util;
 
 public class UnidadLocalDataSource implements UnidadDataSource {
 
@@ -574,12 +558,12 @@ public class UnidadLocalDataSource implements UnidadDataSource {
             rubro.setOrigen(RubricaUi.Origen.AREA);
         }
 
-        TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = SQLite.select()
-                .from(TareaRubroEvaluacionProceso.class)
-                .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.eq(rubroProceso.getKey()))
+        RubroEvaluacionProcesoC tareaRubroEvaluacionProceso = SQLite.select()
+                .from(RubroEvaluacionProcesoC.class)
+                .where(RubroEvaluacionProcesoC_Table.key.eq(rubroProceso.getKey()))
                 .querySingle(databaseWrapper);
 
-        if(tareaRubroEvaluacionProceso!=null){
+        if(tareaRubroEvaluacionProceso!=null&&!TextUtils.isEmpty(tareaRubroEvaluacionProceso.getTareaId())){
             rubro.setOrigen(RubricaUi.Origen.TAREA);
         }
 

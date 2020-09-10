@@ -10,6 +10,8 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.fragment.app.FragmentManager;
@@ -662,6 +664,7 @@ public class CrearRubrosFragment extends BaseFragment<CrearRubroView, CrearRubro
         listener.onSaveRubroEvaluacionProcesoSuccess(rubroEvaluacionProcesoId, crearRubroEvalUi);
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.RUBROEVALUACION);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
     }
 

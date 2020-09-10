@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         app:layout_constraintStart_toStartOf="parent"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,382 +21,405 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/md_white_1000"
             android:theme="@style/ToolbarTarea"
-            app:titleTextColor="#6B6A6A"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:titleTextColor="#6B6A6A">
 
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/viewpager"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/md_white_1000"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appbar">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="24sp"
-            android:orientation="vertical">
+            android:background="@color/md_white_1000"
+            android:paddingBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar">
 
-            <TextView
-                android:id="@+id/txtOffline"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Antes de guardar, revisé su conexión a internet.*"
-                android:textColor="@color/md_red_900"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:visibility="gone"
-                android:layout_marginBottom="8dp"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/root"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-8dp"
-                android:visibility="visible"
-                tools:visibility="visible">
-
-                <ImageView
-                    android:id="@+id/imageView28"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="40dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_edit_plomo_mini" />
-
-
-                <EditText
-                    android:id="@+id/edtAlias"
-                    style="@style/Widget.AppCompat.AutoCompleteTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="@null"
-                    android:ems="10"
-                    android:gravity="top"
-                    android:hint="Descripción"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView24"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout14"
-                    tools:text="" />
-
-                <ImageView
-                    android:id="@+id/imageView24"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout14"
-                    app:srcCompat="@drawable/ic_format_align"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageView
-                    android:id="@+id/imageView29"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="40dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/edtAlias"
-                    app:srcCompat="@drawable/ic_edit_plomo_mini" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout14"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <EditText
-                        android:id="@+id/edit_nombre_evento"
-                        style="@style/RecipientEditTextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:hint="Nombre del evento*"
-                        android:imeOptions="normal"
-                        android:inputType="textMultiLine|textCapWords|textCapSentences"
-                        android:textSize="24sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-                <ImageButton
-                    android:id="@+id/btnSelectFecha"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="24dp"
-                    android:src="@drawable/ic_date_tarea"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_fecha"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_fecha" />
-
-                <ImageButton
-                    android:id="@+id/btnSelectHora"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="24dp"
-                    android:src="@drawable/ic_time_tarea"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_hora"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_hora" />
-
-                <ImageView
-                    android:id="@+id/img_close_fecha"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_fecha"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_fecha"
-                    app:srcCompat="@drawable/ic_close_tarea"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageView
-                    android:id="@+id/img_close_hora"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_hora"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_hora"
-                    app:srcCompat="@drawable/ic_close_tarea"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <TextView
-                    android:id="@+id/txt_fecha"
-                    style="@style/RecipientEditTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="Fecha de evento"
-                    android:longClickable="false"
-                    app:layout_constraintEnd_toStartOf="@+id/img_close_fecha"
-                    app:layout_constraintStart_toEndOf="@+id/btnSelectFecha"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txt_hora"
-                    style="@style/RecipientEditTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="Hora de evento"
-                    android:longClickable="false"
-                    app:layout_constraintEnd_toStartOf="@+id/img_close_hora"
-                    app:layout_constraintStart_toEndOf="@+id/btnSelectFecha"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_fecha" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/btn_tipo_evento"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tilTipoEvaluacion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tilTipoEvaluacion"
-                    app:srcCompat="@drawable/ic_more_point"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
-                    android:id="@+id/btn_tipo_calendario"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tilFormaEvaluacion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tilFormaEvaluacion"
-                    app:srcCompat="@drawable/ic_more_point"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilTipoEvaluacion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_tipo_evento"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tilFormaEvaluacion"
-                    tools:ignore="MissingConstraints">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtTipoEvaluacion"
-                        style="@style/RecipientEditTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:hint="Tipo evento*"
-                        android:inputType="textNoSuggestions"
-                        android:longClickable="false"
-                        android:textSize="18sp"
-                        tools:text="Noticia" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFormaEvaluacion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_tipo_calendario"
-                    app:layout_constraintHorizontal_bias="0.48"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtFormaEvaluacion"
-                        style="@style/RecipientEditTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:hint="Tipo calendario*"
-                        android:imeOptions="normal"
-                        android:longClickable="false"
-                        android:textSize="18sp"
-                        tools:text="Calendario de Notificaciones a los Padres-Familia" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/conten_insertar"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingBottom="24sp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txt_insertar_imagen"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtOffline"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="4dp"
-                    android:text="Insertar imagen"
-                    android:textColor="#6B6A6A"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_imagen"
-                    app:layout_constraintStart_toEndOf="@+id/btn_imagen" />
-
-                <ImageView
-                    android:id="@+id/btn_imagen"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:text="Antes de guardar, revisé su conexión a internet.*"
+                    android:textColor="@color/md_red_900"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    android:padding="3dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_add_multimedia_tarea"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageView
-                    android:id="@+id/img_preview"
-                    android:layout_width="0dp"
-                    android:layout_height="250dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_imagen"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    android:visibility="gone"
+                    android:layout_marginBottom="8dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/lay_placeholder"
-                    android:layout_width="0dp"
-                    android:layout_height="250dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="#DFDFDF"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_insertar_imagen">
+                    android:id="@+id/root"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:visibility="visible"
+                    tools:visibility="visible">
 
                     <ImageView
-                        android:id="@+id/imageView20"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:id="@+id/imageView28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_edit_tarea_mini" />
+
+
+                    <EditText
+                        android:id="@+id/edtAlias"
+                        style="@style/Widget.AppCompat.AutoCompleteTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@null"
+                        android:ems="10"
+                        android:gravity="top"
+                        android:hint="Información"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView24"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout14"
+                        tools:text="" />
+
+                    <ImageView
+                        android:id="@+id/imageView24"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout14"
+                        app:srcCompat="@drawable/ic_format_align_tarea"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageView
+                        android:id="@+id/imageView29"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/edtAlias"
+                        app:srcCompat="@drawable/ic_edit_tarea_mini" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout14"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_placeholder"
-                        tools:ignore="VectorDrawableCompat" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <EditText
+                            android:id="@+id/edit_nombre_evento"
+                            style="@style/RecipientEditTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:hint="Título del evento *"
+                            android:imeOptions="normal"
+                            android:inputType="textMultiLine|textCapWords|textCapSentences"
+                            android:textSize="24sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
-
-
-    </androidx.core.widget.NestedScrollView>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
+                    <ImageButton
+                        android:id="@+id/btnSelectFecha"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="24dp"
+                        android:src="@drawable/ic_date_tarea"
+                        app:layout_constraintBottom_toBottomOf="@+id/txt_fecha"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txt_fecha" />
+
+                    <ImageButton
+                        android:id="@+id/btnSelectHora"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="24dp"
+                        android:src="@drawable/ic_time_tarea"
+                        app:layout_constraintBottom_toBottomOf="@+id/txt_hora"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txt_hora" />
+
+                    <ImageView
+                        android:id="@+id/img_close_fecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/txt_fecha"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txt_fecha"
+                        app:srcCompat="@drawable/ic_close_tarea"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageView
+                        android:id="@+id/img_close_hora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/txt_hora"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txt_hora"
+                        app:srcCompat="@drawable/ic_close_tarea"
+                        android:visibility="invisible"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/txt_fecha"
+                        style="@style/RecipientEditTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="Cuándo"
+                        android:longClickable="false"
+                        app:layout_constraintEnd_toStartOf="@+id/img_close_fecha"
+                        app:layout_constraintStart_toEndOf="@+id/btnSelectFecha"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_hora"
+                        style="@style/RecipientEditTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="¿Añadir un hora?"
+                        android:longClickable="false"
+                        app:layout_constraintEnd_toStartOf="@+id/img_close_hora"
+                        app:layout_constraintStart_toEndOf="@+id/btnSelectFecha"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_fecha" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <ImageButton
+                        android:id="@+id/btn_tipo_evento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/tilTipoEvaluacion"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tilTipoEvaluacion"
+                        app:srcCompat="@drawable/ic_more_point"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageButton
+                        android:id="@+id/btn_tipo_calendario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tilFormaEvaluacion"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tilFormaEvaluacion"
+                        app:srcCompat="@drawable/ic_more_point"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilTipoEvaluacion"
+                        android:layout_width="0dp"
+                        android:visibility="visible"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toStartOf="@+id/btn_tipo_evento"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tilFormaEvaluacion"
+                        tools:ignore="MissingConstraints">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtTipoEvaluacion"
+                            style="@style/RecipientEditTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:hint="Tipo evento*"
+                            android:inputType="textNoSuggestions"
+                            android:longClickable="false"
+                            android:textSize="18sp"
+                            tools:text="Noticia" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilFormaEvaluacion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toStartOf="@+id/btn_tipo_calendario"
+                        app:layout_constraintHorizontal_bias="0.48"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtFormaEvaluacion"
+                            style="@style/RecipientEditTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:hint="Tipo calendario*"
+                            android:imeOptions="normal"
+                            android:longClickable="false"
+                            android:textSize="18sp"
+                            tools:text="Calendario de Notificaciones a los Padres-Familia" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/conten_insertar"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/img_close_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/txt_insertar_imagen"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txt_insertar_imagen"
+                        app:srcCompat="@drawable/ic_close_tarea"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/txt_insertar_imagen"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="Agregar una foto al evento"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/btn_imagen"
+                        app:layout_constraintEnd_toStartOf="@+id/img_close_img"
+                        app:layout_constraintStart_toEndOf="@+id/btn_imagen" />
+
+                    <ImageView
+                        android:id="@+id/btn_imagen"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:padding="3dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_add_multimedia_tarea"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="210dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_imagen">
+                        <ImageView
+                            android:id="@+id/img_preview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/lay_placeholder"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:background="#DFDFDF">
+
+                            <ImageView
+                                android:id="@+id/imageView20"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginBottom="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_placeholder"
+                                tools:ignore="VectorDrawableCompat" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- Adding bottom sheet after main content -->
+        <include
+            layout="@layout/bottom_sheet_crear_evento" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -173,8 +173,8 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
         Log.d(TAG, " RubroEvaluacionProcesoComentario: " +count);
         count += ConsultaUtils.countChangeItemsTable(ArchivosRubroProceso.class);
         Log.d(TAG, " ArchivosRubroProceso: " +count);
-        count += ConsultaUtils.countChangeItemsTable(TareaRubroEvaluacionProceso.class);
-        Log.d(TAG, " TareaRubroEvaluacionProceso: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(TareaRubroEvaluacionProceso.class);
+       // Log.d(TAG, " TareaRubroEvaluacionProceso: " +count);
         count += ConsultaUtils.countChangeItemsTable(RubroEvaluacionResultado.class);
         Log.d(TAG, " RubroEvaluacionResultado: " +count);
         count += ConsultaUtils.countChangeItemsTable(EvaluacionResultadoC.class);
@@ -376,7 +376,7 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
         TransaccionUtils.fastStoreListSyncFlagUpdate(RecursoDidacticoEventoC.class,beDatosTareaRecursos.getRecursoDidactico(), syncFlag, databaseWrapper, false);
         TransaccionUtils.fastStoreListSyncFlagUpdateRel(TareasRecursosC.class,beDatosTareaRecursos.getTareasRecursos(), syncFlag, databaseWrapper, false);
         TransaccionUtils.fastStoreListSyncFlagUpdate(TareasC.class,beDatosTareaRecursos.getTareas(), syncFlag, databaseWrapper, false);
-        TransaccionUtils.fastStoreListSyncFlagUpdate(TareaRubroEvaluacionProceso.class,beDatosTareaRecursos.getTareaRubroEvaluacionProceso(), syncFlag, databaseWrapper, false);
+        //TransaccionUtils.fastStoreListSyncFlagUpdate(TareaRubroEvaluacionProceso.class,beDatosTareaRecursos.getTareaRubroEvaluacionProceso(), syncFlag, databaseWrapper, false);
 
         BEDatosEvaluacionResultado beDatosEvaluacionResultado = geDatosRubroEvaluacionProceso.getBeDatosRubroEvaluacionResultado();
         TransaccionUtils.fastStoreListSyncFlagUpdateRel(RubroEvaluacionResultado.class,beDatosEvaluacionResultado.getRubroEvaluacionResultado(), syncFlag, databaseWrapper, false);
@@ -712,7 +712,7 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
         TransaccionUtils.fastStoreListInsert(DimensionObservada.class, beDatosSilaboEventoEnvio.getObtenerDimensionObservada(), databaseWrapper, true);
         TransaccionUtils.fastStoreListInsert(InstrumentoObservado.class, beDatosSilaboEventoEnvio.getObtenerInstrumentoObservado(), databaseWrapper, true);
         TransaccionUtils.fastStoreListInsert(InstrumentoEvaluacion.class, beDatosSilaboEventoEnvio.getInstrumento_eval(), databaseWrapper, true);
-        TransaccionUtils.fastStoreListInsert(TareaRubroEvaluacionProceso.class, beDatosSilaboEventoEnvio.getTareaRubroEvaluacionProceso(), databaseWrapper, true);
+        //TransaccionUtils.fastStoreListInsert(TareaRubroEvaluacionProceso.class, beDatosSilaboEventoEnvio.getTareaRubroEvaluacionProceso(), databaseWrapper, true);
         TransaccionUtils.fastStoreListInsert(CalendarioPeriodoDetalle.class, beDatosSilaboEventoEnvio.getObtenerCalendarioPeriodoDetalle(), databaseWrapper, true);//1
         TransaccionUtils.fastStoreListInsert(CargaCursoCalendarioPeriodo.class, beDatosSilaboEventoEnvio.getObtenerCargaCursosCalendarioPeriodo(), databaseWrapper, true);//1
         TransaccionUtils.fastStoreListInsert(Desempenio.class, beDatosSilaboEventoEnvio.getObtenerDesempenio(), databaseWrapper, true);
@@ -945,10 +945,10 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
                     .where(ArchivosRubroProceso_Table.evaluacionProcesoId.in(evaluacionKeyList))
                     .queryList(databaseWrapper);
 
-            List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = SQLite.select()
+            /*List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = SQLite.select()
                     .from(TareaRubroEvaluacionProceso.class)
                     .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.in(keyLis))
-                    .queryList(databaseWrapper);
+                    .queryList(databaseWrapper);*/
 
 
 
@@ -964,7 +964,7 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
             TransaccionUtils.fastStoreListSyncFlagUpdate(CriterioRubroEvaluacionC.class, criterioRubroEvaluacionCList, BaseEntity.FLAG_DELETED, databaseWrapper, true);
             TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvaluacionProcesoComentario.class, evaluacionProcesoComentarioList, BaseEntity.FLAG_DELETED, databaseWrapper, true);
             TransaccionUtils.fastStoreListSyncFlagUpdate(ArchivosRubroProceso.class, archivosRubroProcesoList, BaseEntity.FLAG_DELETED, databaseWrapper, true);
-            TransaccionUtils.fastStoreListSyncFlagUpdate(TareaRubroEvaluacionProceso.class, tareaRubroEvaluacionProcesoList, BaseEntity.FLAG_DELETED, databaseWrapper, true);
+            //TransaccionUtils.fastStoreListSyncFlagUpdate(TareaRubroEvaluacionProceso.class, tareaRubroEvaluacionProcesoList, BaseEntity.FLAG_DELETED, databaseWrapper, true);
             TransaccionUtils.fastStoreListSyncFlagUpdate(EquipoEvaluacionProcesoC.class, equipoEvaluacionProcesoCList, BaseEntity.FLAG_DELETED, databaseWrapper, true);
 
             databaseWrapper.setTransactionSuccessful();
@@ -1216,13 +1216,13 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
 
         final GEDatosTareasRecursos beDatosTareasRecursos = new GEDatosTareasRecursos();
 
-        List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = ConsultaUtils.getChangeItemsTableChild(TareaRubroEvaluacionProceso.class,
-                    TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.in(rubroEvaluacionKey));
+        /*List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = ConsultaUtils.getChangeItemsTableChild(TareaRubroEvaluacionProceso.class,
+                    TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.in(rubroEvaluacionKey));*/
 
         List<String> TareaKeyList = new ArrayList<>();
-        for (TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso: tareaRubroEvaluacionProcesoList){
+        /*for (TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso: tareaRubroEvaluacionProcesoList){
                 TareaKeyList.add(tareaRubroEvaluacionProceso.getTareaId());
-        }
+        }*/
         List<TareasC> tareasCList = ConsultaUtils.getChangeItemsTableChild(TareasC.class,
                 TareasC_Table.key.in(TareaKeyList));
 
@@ -1239,8 +1239,8 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
         }
         beDatosTareasRecursos.setRecursoDidactico(ConsultaUtils.getChangeItemsTableChild(RecursoDidacticoEventoC.class, RecursoDidacticoEventoC_Table.key.in(recursosKey)));
 
-        beDatosTareasRecursos.setTareaRubroEvaluacionProceso(tareaRubroEvaluacionProcesoList);
-        Log.d(getClass().getSimpleName(),"size tarea recuros" +  beDatosTareasRecursos.getTareaRubroEvaluacionProceso().size());
+        //beDatosTareasRecursos.setTareaRubroEvaluacionProceso(tareaRubroEvaluacionProcesoList);
+        //Log.d(getClass().getSimpleName(),"size tarea recuros" +  beDatosTareasRecursos.getTareaRubroEvaluacionProceso().size());
         geDatosRubroEvaluacionProceso.setBeDatosTareaRecursos(beDatosTareasRecursos);
 
         BEDatosEvaluacionResultado beDatosEvaluacionResultado = new BEDatosEvaluacionResultado();
@@ -1315,7 +1315,7 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
         List<RubroEvaluacionProcesoComentario> rubroEvaluacionProcesoComentarioList = ConsultaUtils.getChangeItemsTable(RubroEvaluacionProcesoComentario.class);
         List<ArchivosRubroProceso> archivosRubroProcesoList = ConsultaUtils.getChangeItemsTable(ArchivosRubroProceso.class);
         List<CriterioRubroEvaluacionC> criterioRubroEvaluacionCList = ConsultaUtils.getChangeItemsTable(CriterioRubroEvaluacionC.class);
-        List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = ConsultaUtils.getChangeItemsTable(TareaRubroEvaluacionProceso.class);
+        //List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = ConsultaUtils.getChangeItemsTable(TareaRubroEvaluacionProceso.class);
         List<RubroEvalRNPFormulaC> rubroEvalRNPFormulaCList = ConsultaUtils.getChangeItemsTable(RubroEvalRNPFormulaC.class);
 
         Set<String> evaluacionProcesoIdList = new LinkedHashSet<>();
@@ -1357,10 +1357,11 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
             Log.d(TAG, "itemCriterio : " + itemCriterio.key);
             rubroEvaluacionIdList.add(itemCriterio.getRubroEvalProcesoId());
         }
+        /*
         for (TareaRubroEvaluacionProceso itemTarea : tareaRubroEvaluacionProcesoList) {
             Log.d(TAG, "itemTarea : " + itemTarea.key);
             rubroEvaluacionIdList.add(itemTarea.getRubroEvalProcesoId());
-        }
+        }*/
 
         for (RubroEvalRNPFormulaC rubroEvalRNPFormulaC : rubroEvalRNPFormulaCList) {
             Log.d(TAG, "rubroEvalRNPFormulaC : " + rubroEvalRNPFormulaC.key);
@@ -1374,13 +1375,13 @@ public class ServiceLocalDataRepositoryImpl implements ServiceLocalDataRepositor
         geDatosRubroEvaluacionProceso.setBeDatosRubroEvaluacionProceso(beDatosRubroEvaluacionProceso);
 
         List<String> tareaIdList = new ArrayList<>();
-
+        /*
         for (TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso : tareaRubroEvaluacionProcesoList){
             tareaIdList.add(tareaRubroEvaluacionProceso.getTareaId());
-        }
+        }*/
 
         GEDatosTareasRecursos geDatosTareasRecursos = getTareasRecursos(tareaIdList);
-        geDatosTareasRecursos.setTareaRubroEvaluacionProceso(tareaRubroEvaluacionProcesoList);
+        //geDatosTareasRecursos.setTareaRubroEvaluacionProceso(tareaRubroEvaluacionProcesoList);
         geDatosRubroEvaluacionProceso.setBeDatosTareaRecursos(geDatosTareasRecursos);
         geDatosRubroEvaluacionProceso.setBeDatosEnvioGrupo(getGrupoRubro(tRnMaeRubroEvaluacionProcesoEquipocList));
 

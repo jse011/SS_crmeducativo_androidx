@@ -9,6 +9,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.RubricasView;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.RubricasAbstractPresenterImpl;
+import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.EliminarRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.GetActualizasRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.GetCalendarioPeriodo;
@@ -17,6 +18,8 @@ import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstract
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.entidades.RubBidUi;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.sesiones.domain.useCase.GetRubricaSesionLista;
 import com.consultoraestrategia.ss_crmeducativo.tabsSesiones.view.TabsSesionesActivityV2;
+
+import java.util.ArrayList;
 
 /**
  * Created by CCIE on 07/03/2018.
@@ -36,8 +39,8 @@ public class RubricaSesionPresenterImpl extends RubricasAbstractPresenterImpl {
     private int calendarioPeriodoId;
     private PeriodoUi periodoUi;
 
-    public RubricaSesionPresenterImpl(UseCaseHandler handler, Resources res, GetActualizasRubricas getActualizasRubricas, EliminarRubricas eliminarRubricas, PublicarTodasEvaluacion publicarTodasEvaluacion, GetRubricaSesionLista getRubricaSesionLista, GetCalendarioPeriodo getCalendarioPeriodo) {
-        super(handler, getActualizasRubricas, eliminarRubricas,publicarTodasEvaluacion);
+    public RubricaSesionPresenterImpl(UseCaseHandler handler, Resources res, GetActualizasRubricas getActualizasRubricas, EliminarRubricas eliminarRubricas, PublicarTodasEvaluacion publicarTodasEvaluacion, GetRubricaSesionLista getRubricaSesionLista, GetCalendarioPeriodo getCalendarioPeriodo, ChangeEstadoActualizacion changeEstadoActualizacion) {
+        super(handler, getActualizasRubricas, eliminarRubricas,publicarTodasEvaluacion, changeEstadoActualizacion);
         this.getRubricaSesionLista = getRubricaSesionLista;
         this.getCalendarioPeriodo = getCalendarioPeriodo;
         this.res = res;
@@ -56,7 +59,6 @@ public class RubricaSesionPresenterImpl extends RubricasAbstractPresenterImpl {
                             Log.d(RUBRICA_BID_PRESENTER_IMPL_TAG, "if ");
                             if (view != null) {
                                 view.mostrarListaRubricas(response.getList());
-                                view.mostrarListaRubrica();
                                 view.ocultarProgressBar();
                                 view.ocultarMensaje();
                                 //view.actualizarListaRubrica();
@@ -64,7 +66,7 @@ public class RubricaSesionPresenterImpl extends RubricasAbstractPresenterImpl {
                         } else {
                             Log.d(RUBRICA_BID_PRESENTER_IMPL_TAG, "else ");
                             if (view != null) {
-                                view.ocultarListaRubrica();
+                                view.mostrarListaRubricas(new ArrayList<>());
                                 view.mostrarMensaje(res.getString(R.string.empty_data));
                                 view.ocultarProgressBar();
                             }
@@ -149,7 +151,5 @@ public class RubricaSesionPresenterImpl extends RubricasAbstractPresenterImpl {
         periodoUi = getCalendarioPeriodo.execute(calendarioPeriodoId, cargaCursoId);
         getRubricaBidAbstractList();
     }
-
-
 
 }

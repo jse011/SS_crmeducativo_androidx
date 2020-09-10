@@ -18,8 +18,7 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
-import com.consultoraestrategia.ss_crmeducativo.appmessage.R2;
+import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
@@ -35,13 +34,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ScremSplash extends BaseActivity<ScremSplashView, ScremSplashPresenter> implements ScremSplashView {
-    @BindView(R2.id.text_progress)
+    @BindView(R.id.text_progress)
     TextView textProgress;
-    @BindView(R2.id.pgr_progresshorizontal)
+    @BindView(R.id.pgr_progresshorizontal)
     ProgressBar pgrProgresshorizontal;
-    @BindView(R2.id.contendoLoading)
+    @BindView(R.id.contendoLoading)
     ConstraintLayout contendoLoading;
-    @BindView(R2.id.progressBar8)
+    @BindView(R.id.progressBar8)
     ProgressBar progressBar8;
 
     @Override

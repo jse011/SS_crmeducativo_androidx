@@ -64,6 +64,18 @@ public class UnidadesAdapter  extends SectioningAdapter {
         return new GhostHeaderViewHolder(ghostView);
     }
 
+    public void updateItem(TareasUI tareasUI) {
+        int count=0;
+        for (HeaderTareasAprendizajeUI headerTareasAprendizajeUI : headerTareasAprendizajeUIList){
+                int position = headerTareasAprendizajeUI.getTareasUIList().indexOf(tareasUI);
+                if(position!=-1){
+                    notifySectionItemChanged(count, position);
+                }
+            count++;
+        }
+
+    }
+
 
     public interface RecursoRemoveListener {
         void onbtnDeleteRecursoDataBase(TareasUI tareasUI, RecursosUI recursosUI);

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.FileProvider;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.Window;
 
@@ -26,12 +27,13 @@ import com.consultoraestrategia.ss_crmeducativo.util.IdGenerator;
 import com.consultoraestrategia.ss_crmeducativo.util.OpenIntents;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
-import droidninja.filepicker.utils.Orientation;
+import droidninja.filepicker.utils.ContentUriUtils;
 
 public class RepositorioArchivoViewImpl implements RepositorioView {
     private RepositorioArchivoRubroPresenterImpl presenter;
@@ -87,7 +89,7 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
         Log.d(getClass().getSimpleName(), "showPickPhoto");
         ArrayList<String> stringList = new ArrayList<>();
         //for (UpdateRepositorioFileUi recursoUploadFile : photoPaths)stringList.add(recursoUploadFile.getPath());
-        FilePickerBuilder filePickerBuilder = FilePickerBuilder.getInstance()
+        FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
                 //.setSelectedFiles(stringList)
                 .setActivityTheme(R.style.LibAppThemeLibrary)
                 //.setActivityTitle("Selección de multimedia")
@@ -97,9 +99,9 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
                 .showFolderView(true)
                 //.enableSelectAll(false)
                 .enableImagePicker(true)
-                .setMaxCount(1)
+                .setMaxCount(1);
                 //.setCameraPlaceholder(R.drawable.custom_camera)
-                .withOrientation(Orientation.UNSPECIFIED);
+                //.withOrientation(Orientation.UNSPECIFIED);
         filePickerBuilder.pickPhoto(fragment, CUSTOM_REQUEST_CODE);
     }
 
@@ -246,24 +248,32 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
         this.repositorioAdapter = repositorioAdapter;
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data, Context context) {
         Log.d(getClass().getSimpleName(),"onActivityResult: "+ requestCode +" / "+ resultCode);
-        ArrayList<String> photoPaths = new ArrayList<>();;
+
+        ArrayList<Uri> photoPaths = new ArrayList<>();
         switch (requestCode) {
             case CUSTOM_REQUEST_CODE:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
+                    photoPaths.addAll(data.<Uri>getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
                 }
                 break;
 
             case FilePickerConst.REQUEST_CODE_DOC:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+                    photoPaths.addAll(data.<Uri>getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
                 }
                 break;
         }
-
-        presenter.onSalirSelectPiket(photoPaths);
+        ArrayList<String> photoPaths2 = new ArrayList<>();
+        for (Uri uri: photoPaths){
+            try {
+                photoPaths2.add(ContentUriUtils.INSTANCE.getFilePath( context, uri));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        presenter.onSalirSelectPiket(photoPaths2);
     }
 
     public void destroy() {

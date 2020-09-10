@@ -15,9 +15,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
+import com.consultoraestrategia.ss_crmeducativo.util.IdGenerator;
 import com.consultoraestrategia.ss_crmeducativo.util.PhotoUtils;
 import com.iceteck.silicompressorr.SiliCompressor;
-import com.whatsappcamera.IdGenerator;
 
 import java.io.File;
 import java.io.FileNotFoundException;

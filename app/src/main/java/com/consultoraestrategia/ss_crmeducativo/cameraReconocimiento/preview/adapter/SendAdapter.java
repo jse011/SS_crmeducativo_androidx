@@ -10,8 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
-import com.consultoraestrategia.ss_crmeducativo.appmessage.R2;
+import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.cameraReconocimiento.entities.SentimientoUi;
 
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class SendAdapter extends RecyclerView.Adapter<SendAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R2.id.img_preview)
+        @BindView(R.id.img_preview)
         ImageView imgPreview;
 
         public ViewHolder(@NonNull View itemView) {

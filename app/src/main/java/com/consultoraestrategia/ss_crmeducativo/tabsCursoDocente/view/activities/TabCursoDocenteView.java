@@ -159,5 +159,9 @@ public interface TabCursoDocenteView extends BaseView<TabCursoDocentePresenter> 
 
     void showActivityService2(int usuarioId, int empleadoId, int idProgramaEducativo, int idCargaCurso, int idCalendarioPeriodo, int idGeoreferenciaId, int idEntidad, int silaboId, int idCurso, int idCargaAcademica, int anioAcademicoId, boolean cursoComplejo);
 
-    void showProgressService2(int usuarioId, int empleadoId, int idProgramaEducativo, int idCargaCurso, int idCalendarioPeriodo, int idGeoreferenciaId, int idEntidad, int silaboId, int idCurso, int idCargaAcademica, boolean cursoComplejo);
+    void showProgressService2(int usuarioId, int empleadoId, int idProgramaEducativo, int idCargaCurso, int idCalendarioPeriodo, int idGeoreferenciaId, int idEntidad, int silaboId, int idCurso, int idCargaAcademica, boolean cursoComplejo, int anioAcademicoId);
+
+    void comprobarSiActulizaronCorrectementeRubros();
+
+    void showActivityAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId, int cargaCursoId);
 }

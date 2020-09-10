@@ -15,7 +15,13 @@ public class SaveDatosServidor implements UseCaseLoginSincrono<ServiceEnvioUi, S
 
     @Override
     public RetrofitCancel execute(final ServiceEnvioUi serviceEnvioUi, final Callback<SaveDatosServidor.Response> callback) {
-        LoginDataRepository.CallBackSucces<ServiceEnvioUi> callBackSucces = new LoginDataRepository.CallBackSucces<ServiceEnvioUi>() {
+        LoginDataRepository.CallBackSuccessRelacion<ServiceEnvioUi> callBackSucces = new LoginDataRepository.CallBackSuccessRelacion<ServiceEnvioUi>() {
+            @Override
+            public void onRequestRubroProgress(int progress) {
+                serviceEnvioUi.setUploadRubroProgress(progress);
+                callback.onResponse(true, new ResponseUploadProgress(serviceEnvioUi));
+            }
+
             @Override
             public void onLoad(boolean success, ServiceEnvioUi item) {
                 if(success){

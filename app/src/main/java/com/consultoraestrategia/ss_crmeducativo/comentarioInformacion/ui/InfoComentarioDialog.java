@@ -345,7 +345,7 @@ public class InfoComentarioDialog extends BaseDialogFragment<InfoRubroView, Info
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        repositorioViewImpl.onActivityResult(requestCode, resultCode, data);
+        repositorioViewImpl.onActivityResult(requestCode, resultCode, data, getContext());
 
     }
 

@@ -5,18 +5,21 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.consultoraestrategia.ss_crmeducativo.R;
@@ -50,7 +53,7 @@ public class ChangePerfilFragment extends DialogFragment implements ChangePerfil
     @BindView(R.id.txt_description_telefono)
     TextView txtDescriptionTelefono;
     @BindView(R.id.celularPerson)
-    TextView celularPerson;
+    EditText celularPerson;
     @BindView(R.id.img_item_direccion)
     ImageView imgItemDireccion;
     @BindView(R.id.txt_description_direccion)
@@ -64,10 +67,18 @@ public class ChangePerfilFragment extends DialogFragment implements ChangePerfil
     @BindView(R.id.txt_description_email)
     TextView txtDescriptionEmail;
     @BindView(R.id.correoPerson)
-    TextView correoPerson;
+    EditText correoPerson;
     Unbinder unbinder1;
     @BindView(R.id.imagenReconosimiento)
     CircleImageView imagenReconosimiento;
+    @BindView(R.id.progress_succes2)
+    ProgressBar progressSucces2;
+    @BindView(R.id.btn_aceptar)
+    Button btnAceptar;
+    @BindView(R.id.btn_cancelar)
+    Button btnCancelar;
+    @BindView(R.id.progressBar7)
+    ProgressBar progressBar7;
     private Unbinder unbinder;
     private MainPresenter presenter;
 
@@ -168,10 +179,9 @@ public class ChangePerfilFragment extends DialogFragment implements ChangePerfil
         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
-                if(task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     Uri uri = task.getResult();
-                    if(uri!=null){
+                    if (uri != null) {
                         Glide.with(imagenReconosimiento)
                                 .load(uri.toString())
                                 .apply(Utils.getGlideRequestOptionsSimple())
@@ -183,8 +193,38 @@ public class ChangePerfilFragment extends DialogFragment implements ChangePerfil
         });
 
 
+        Log.d("showFaceDectecion", "georeferenciaId: " + georeferenciaId + " PersonaId: " + personaUi.getPersonaId());
+    }
 
-        Log.d("showFaceDectecion","georeferenciaId: " + georeferenciaId + " PersonaId: " + personaUi.getPersonaId());
+    @Override
+    public void updatePersona(PersonaUi personaUi) {
+        if (personaUi.getWorking()) {
+            progressSucces2.setVisibility(View.VISIBLE);
+        } else {
+            progressSucces2.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void disabledButtons() {
+        btnAceptar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar7.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void enabledButtons() {
+        btnAceptar.setEnabled(true);
+        btnCancelar.setEnabled(true);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar7.setVisibility(View.GONE);
     }
 
     @Override
@@ -202,6 +242,16 @@ public class ChangePerfilFragment extends DialogFragment implements ChangePerfil
     @OnClick(R.id.imagenReconosimiento)
     public void onClickedReconocimiento() {
         presenter.onClickReconocimiento();
+    }
+
+    @OnClick(R.id.btn_aceptar)
+    public void onAceptarClicked() {
+        presenter.onClickGuardarPerfil(celularPerson.getText().toString(), correoPerson.getText().toString());
+    }
+
+    @OnClick(R.id.nav_bar_content_profile)
+    public void onBtnChangeImageClicked() {
+        presenter.changeFile();
     }
 }
 

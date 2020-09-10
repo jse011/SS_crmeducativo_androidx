@@ -3,6 +3,8 @@ package com.consultoraestrategia.ss_crmeducativo.services.importar;
 
 import android.os.Bundle;
 
+import androidx.work.Data;
+
 import com.consultoraestrategia.ss_crmeducativo.services.importar.ui.ImportarEvent;
 
 /**
@@ -14,5 +16,5 @@ public interface ImportarPresenter {
     void onCreate();
     void onDestroy();
     void onHandleIntent();
-    void setExtra(Bundle extra);
+    void setExtra(Data extra);
 }

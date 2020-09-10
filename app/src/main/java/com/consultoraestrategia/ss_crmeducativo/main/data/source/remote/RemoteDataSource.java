@@ -34,6 +34,8 @@ import com.consultoraestrategia.ss_crmeducativo.entities.NivelAcademico;
 import com.consultoraestrategia.ss_crmeducativo.entities.ParametroConfiguracion;
 import com.consultoraestrategia.ss_crmeducativo.entities.ParametrosDisenio;
 import com.consultoraestrategia.ss_crmeducativo.entities.Periodo;
+import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
+import com.consultoraestrategia.ss_crmeducativo.entities.Persona_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.PlanCursos;
 import com.consultoraestrategia.ss_crmeducativo.entities.PlanCursos_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.PlanEstudios;
@@ -54,6 +56,7 @@ import com.consultoraestrategia.ss_crmeducativo.main.data.source.callbacks.GetUs
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AlarmaUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AnioAcademicoUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.GradoUi;
+import com.consultoraestrategia.ss_crmeducativo.main.entities.PersonaUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ProgramaEduactivosUI;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosAnioAcademico;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosInicioSesion;
@@ -85,6 +88,16 @@ public class RemoteDataSource implements MainDataSource {
     @Override
     public boolean succesData() {
         return false;
+    }
+
+    @Override
+    public void uploadFile(PersonaUi request, SucessCallback<String> stringSucessCallback) {
+
+    }
+
+    @Override
+    public void savePathPersona(PersonaUi personaUi) {
+
     }
 
     @Override
@@ -408,6 +421,51 @@ public class RemoteDataSource implements MainDataSource {
                 Log.d(TAG,"update anio academico onFailure ");
             }
         });
+        return retrofitCancel;
+    }
+
+    @Override
+    public RetrofitCancel updatePersona(PersonaUi personaUi, SucessCallback<Boolean> callback) {
+        final ApiRetrofit apiRetrofit = ApiRetrofit.getInstance();
+        apiRetrofit.changeSetTime(10,10,10, TimeUnit.SECONDS);
+        RetrofitCancel<Integer> retrofitCancel = null;
+        Persona persona = SQLite.select()
+                .from(Persona.class)
+                .where(Persona_Table.personaId.eq(personaUi.getPersonaId()))
+                .querySingle();
+
+        if(persona!=null){
+            persona.setCorreo(personaUi.getCorreo());
+            persona.setCelular(personaUi.getCelular());
+            List<Persona> personaList = new ArrayList<>();
+            personaList.add(persona);
+            retrofitCancel = new RetrofitCancelImpl<>(apiRetrofit.fupd_SimplePersonas(personaList));
+            retrofitCancel.enqueue(new RetrofitCancel.Callback<Integer>() {
+                @Override
+                public void onResponse(Integer response) {
+                    if(response == null){
+                        callback.onLoad(false, null);
+                        Log.d(TAG,"response peronsa null");
+                    }else {
+                        Log.d(TAG,"response peronsa true");
+
+                        persona.save();
+                        callback.onLoad(true, null);
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onLoad(false, null);
+                }
+            });
+        }else {
+            callback.onLoad(false, null);
+        }
+
+
         return retrofitCancel;
     }
 

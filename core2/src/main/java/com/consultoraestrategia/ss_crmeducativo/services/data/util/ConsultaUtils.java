@@ -37,8 +37,22 @@ public class ConsultaUtils {
             Property<Integer> syncFlag = new Property<Integer>(clazz, "syncFlag");
             count = SQLite.selectCountOf()
                     .from(clazz)
-                    .where(syncFlag.is(BaseEntity.FLAG_ADDED))
-                    .or(syncFlag.is(BaseEntity.FLAG_UPDATED))
+                    .where(syncFlag.in(BaseEntity.FLAG_ADDED,BaseEntity.FLAG_UPDATED))
+                    .count();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public static  <P extends BaseModel> long countChangeItemsTable(final Class<P> clazz, SQLOperator condition) {
+        long count = 0;
+        try {
+            Property<Integer> syncFlag = new Property<Integer>(clazz, "syncFlag");
+            count = SQLite.selectCountOf()
+                    .from(clazz)
+                    .where(syncFlag.in(BaseEntity.FLAG_ADDED,BaseEntity.FLAG_UPDATED))
+                    .and(condition)
                     .count();
         }catch (Exception e){
             e.printStackTrace();

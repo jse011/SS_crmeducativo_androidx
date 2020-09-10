@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.main.ui;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -15,11 +16,22 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
+import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase.Save;
+import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
+import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServiceFB;
+import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetUploadImagen;
+import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.SavePersona;
+import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.UpdatePersonaServidor;
 import com.google.android.material.appbar.AppBarLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.navigation.NavigationView;
@@ -127,11 +139,9 @@ import com.consultoraestrategia.ss_crmeducativo.main.seleccionarAnio.SeleccionAn
 import com.consultoraestrategia.ss_crmeducativo.main.seleccionarAnio.SeleccionarAnioAcademicoView;
 import com.consultoraestrategia.ss_crmeducativo.programahorario.complejo.ui.ProgramaHorarioComplejoActivity;
 import com.consultoraestrategia.ss_crmeducativo.programahorario.simple.ui.ProgramaHorarioSimpleActivity;
-import com.consultoraestrategia.ss_crmeducativo.services.data.local.ServiceLocalDataRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.importarActividad.ui.ImportarActivity;
-import com.consultoraestrategia.ss_crmeducativo.services.syncIntentService.ComplejoSyncIntenService;
 import com.consultoraestrategia.ss_crmeducativo.splashAppMessenger.ScremSplash;
 import com.consultoraestrategia.ss_crmeducativo.syncJobs.MyJobService;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.entities.PeriodoUi;
@@ -158,12 +168,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.shehabic.droppy.DroppyClickCallbackInterface;
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -252,6 +266,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     TextView textView40;
     @BindView(R.id.icon_animed)
     LottieAnimationView iconAnimed;
+    @BindView(R.id.imageView35)
+    ImageView imageView35;
 
     private PeriodoAdapter periodoAdapter;
     private GradoHolder olHolder;
@@ -266,6 +282,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private EdgeDecorator edgeDecorator;
     private String SHOWCASE_ID = "1";
     private ProgressDialog progressDialog;
+    private MenuItem itemAgenda;
 
     public static Intent launchMainActivity(Context context, int idUsuario) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -282,6 +299,12 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         super.onCreate(savedInstanceState);
         desbloqOrientation();
         setupAnimed();
+        navBarContentProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.changeFile();
+            }
+        });
     }
 
     private void setupAnimed() {
@@ -395,10 +418,32 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHANGE_DATABASE_SERVICE2 && resultCode == AppCompatActivity.RESULT_OK) {
             presenter.onChangeDatabseDesdeService2();
+        }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d(getTag(), "uri: " + result.getUri());
+                comprimirImagen(result.getUri());
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                showMessage(getResources().getString(R.string.unknown_error));
+            }
+            //return;
         }
 
     }
 
+    private void comprimirImagen(Uri uri) {
+
+        try {
+            Bitmap imageBitmap = SiliCompressor.with(this).getCompressBitmap(uri.getPath());
+            Save save = new Save();
+            String filePath = save.SaveImage(this, imageBitmap);
+            presenter.onCropImageActivityResult(filePath);
+        } catch (IOException e) {
+            showMessage("Error al guardar la foto");
+            e.printStackTrace();
+        }
+
+    }
     @Override
     protected void onStop() {
         Log.d(TAG, "onStop");
@@ -406,6 +451,29 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    public void startCropImageActivity(String path) {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .setAspectRatio(1, 1).start(this);
+    }
+
+    @Override
+    public void callSynckServiceFB() {
+        SynckServiceFB.start(this);
+    }
+
+    @Override
+    public void showBtnAgenda() {
+        if(itemAgenda!=null)itemAgenda.setVisible(true);
+    }
+
+    @Override
+    public void hideBtnAgenda() {
+        if(itemAgenda!=null)itemAgenda.setVisible(false);
     }
 
     private void subscribeToUser() {
@@ -454,7 +522,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected MainPresenter getPresenter() {
 
         MainRepository mainRepository = new MainRepository(new LocalDataSource(InjectorUtils.provideSessionUserDao(), InjectorUtils.providePersonaDao(), InjectorUtils.provideCalendarioPeriodo()), new RemoteDataSource());
-
+        LoginDataRepository service2Repositorio = new LoginDataRepositoryImpl(ApiRetrofit.getInstance(), InjectorUtils.provideSessionUserDao(), InjectorUtils.provideParametrosDisenioDao(), InjectorUtils.provideCursoDao(), InjectorUtils.provideAlumnoDao());
         return new MainPresenterImpl(
                 new UseCaseHandler(
                         new UseCaseThreadPoolScheduler()),
@@ -468,11 +536,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 new GetGradosList(mainRepository),
                 new SaveAlarma(mainRepository),
                 new GetAlarma(mainRepository),
-                new ChangeDataBaseDocenteMentor(new ServiceLocalDataRepositoryImpl(InjectorUtils.provideSessionUserDao())),
+                new ChangeDataBaseDocenteMentor(service2Repositorio),
                 new GetAnioAcademicoList(mainRepository),
                 new GetDatosServidorLocal(mainRepository),
                 new SuccesData(mainRepository),
-                new UpadateListAnioAcademico(mainRepository)
+                new UpadateListAnioAcademico(mainRepository),
+                new GetUploadImagen(mainRepository),
+                new SavePersona(mainRepository),
+                new UpdatePersonaServidor(mainRepository)
         );
 
     }
@@ -618,12 +689,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         navBarRcMenu.setLayoutManager(new LinearLayoutManager(this));
         menuAdapter = new MenuAdapter(new ArrayList<Object>(), this);
         navBarRcMenu.setAdapter(menuAdapter);
+        navBarRcMenu.setNestedScrollingEnabled(false);
     }
 
     private void setupRecyclerProgramas() {
         navBarRcMenu.setLayoutManager(new LinearLayoutManager(this));
         menuAdapter = new MenuAdapter(new ArrayList<Object>(), this);
         navBarRcMenu.setAdapter(menuAdapter);
+        navBarRcMenu.setNestedScrollingEnabled(false);
     }
 
     @Override
@@ -653,6 +726,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_final_menu, menu);
         this.menu = menu;
+        itemAgenda = menu.findItem(R.id.action_agenda);
         presenter.onCreateOptionsMenu();
         return true;
     }
@@ -909,6 +983,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
 
     private void setupTabMenu() {
+        if(getResources().getString(R.string.app_name).equals("Educar Teacher")){
+            Glide.with(imageView35)
+                    .load(R.drawable.logo_educar_2)
+                    .into(imageView35);
+            imageView35.setVisibility(View.VISIBLE);
+        }else{
+            imageView35.setVisibility(View.GONE);
+        }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -1101,7 +1183,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void callSynckService(int programaEducativoId) {
-        ComplejoSyncIntenService.start(this, programaEducativoId);
+        SynckService.start(this, programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getApplicationContext());
     }
 
@@ -1183,18 +1265,18 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void onStart(Class<?> aClass) {
-        if (aClass.equals(getClass())) {
+        /*if (aClass.equals(getClass())) {
             if (toolbarprogress != null) toolbarprogress.setVisibility(View.GONE);
             if (menu != null) {
                 MenuItem menuItem = menu.findItem(R.id.menu_refrescar);
                 menuItem.setVisible(true);
             }
-        }
+        }*/
     }
 
     @Override
     public void onLoad(int count) {
-        try {
+        /*try {
             if (toolbarprogress.getVisibility() == View.GONE) {
                 toolbarprogress.setVisibility(View.VISIBLE);
                 MenuItem menuItem = menu.findItem(R.id.menu_refrescar);
@@ -1202,24 +1284,23 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
     @Override
     public void onFinish() {
-        try {
-            if (toolbarprogress.getVisibility() == View.VISIBLE) {
+         /*try {
+           if (toolbarprogress.getVisibility() == View.VISIBLE) {
                 toolbarprogress.setVisibility(View.GONE);
                 MenuItem menuItem = menu.findItem(R.id.menu_refrescar);
                 menuItem.setVisible(true);
                 presenter.onChangeFull(true);
             }
-            presenter.onFinishSynck();
-
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
+        presenter.onFinishSynck();
     }
 
     @Override
@@ -1236,6 +1317,16 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onLoadFirebase(int count) {
+
+    }
+
+    @Override
+    public void onFinishFirebase() {
+
     }
 
     @Override
@@ -1595,13 +1686,14 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    public void showActivityAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId) {
+    public void showActivityAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId, int tutorCargaAdemicaId) {
         CRMBundle crmBundle = new CRMBundle();
         crmBundle.setUsuarioId(idUsuario);
         crmBundle.setGeoreferenciaId(georeferenciaId);
         crmBundle.setEmpleadoId(empleadoId);
         crmBundle.setAnioAcademico(anioAcademicoIdFinal);
         crmBundle.setEntidadId(entidadId);
+        crmBundle.setCargaAcademicaId(tutorCargaAdemicaId);
         Intent intent = new Intent(this, EventosActivty.class);
         intent.putExtras(crmBundle.instanceBundle());
         startActivity(intent);

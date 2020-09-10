@@ -36,6 +36,8 @@ public class DniFragment extends Fragment implements DniView, TextView.OnEditorA
     ImageView imageView17;
     @BindView(R.id.btn_atras_dni)
     ImageView btnAtrasDni;
+    @BindView(R.id.imageView8)
+    ImageView imageView8;
     private Unbinder unbinder;
     private Login2Presenter presenter;
 
@@ -52,9 +54,24 @@ public class DniFragment extends Fragment implements DniView, TextView.OnEditorA
         super.onViewCreated(view, savedInstanceState);
         //   initAdapter();
         edittextDni.setOnEditorActionListener(this);
-        Glide.with(imageView17)
-                .load(R.drawable.docente_mentor)
-                .into(imageView17);
+
+        if(getResources().getString(R.string.app_name).equals("Educar Teacher")){
+
+            Glide.with(imageView17)
+                    .load(R.drawable.logo_educar)
+                    .into(imageView17);
+            imageView8.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(R.drawable.docente_mentor)
+                    .into(imageView8);
+
+
+        }else{
+            Glide.with(imageView17)
+                    .load(R.drawable.docente_mentor)
+                    .into(imageView17);
+            imageView8.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

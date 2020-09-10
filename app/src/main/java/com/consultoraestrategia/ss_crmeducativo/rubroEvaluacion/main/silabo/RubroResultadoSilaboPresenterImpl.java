@@ -13,6 +13,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseSincrono;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
+import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.GetRubroProceso;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.AutoSaveFormulaCapacidad;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.CapacidadUi;
@@ -43,6 +44,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kike on 12/02/2018.
@@ -70,6 +72,7 @@ public class RubroResultadoSilaboPresenterImpl extends AbstractPresenterImpl {
     private int georeferenciaId;
     private int idcompetencia;
     private AutoSaveFormulaCapacidad saveFormulaCapacidad;
+    private ChangeEstadoActualizacion changeEstadoActualizacion;
 
 
     public RubroResultadoSilaboPresenterImpl(UseCaseHandler handler, Resources res,
@@ -83,7 +86,8 @@ public class RubroResultadoSilaboPresenterImpl extends AbstractPresenterImpl {
                                              ChangeToogle changeToogle,
                                              DesanclarFormula desanclarFormula,
                                              PublicarTodasEvaluacion publicarTodasEvaluacion,
-                                             AutoSaveFormulaCapacidad saveFormulaCapacidad) {
+                                             AutoSaveFormulaCapacidad saveFormulaCapacidad,
+                                             ChangeEstadoActualizacion changeEstadoActualizacion) {
         super(handler,res, deleteRubroProcesoSilabo,showCamposTematicos, showDesempenioIcds, getRubroProceso, changeToogle, publicarTodasEvaluacion);
         this.getPeriodoList = getPeriodoList;
         this.rubroEvalProcesoList = rubroEvalProcesoList;
@@ -91,6 +95,7 @@ public class RubroResultadoSilaboPresenterImpl extends AbstractPresenterImpl {
         this.desanclarFormula = desanclarFormula;
         this.saveFormulaCapacidad = saveFormulaCapacidad;
         //   this.beObtenerDatosRubroProcesoRemote = beObtenerDatosRubroProcesoRemote;
+        this.changeEstadoActualizacion = changeEstadoActualizacion;
     }
 
 
@@ -161,6 +166,7 @@ public class RubroResultadoSilaboPresenterImpl extends AbstractPresenterImpl {
                         procesoUiNuevo.setKey(procesoUi.getKey());
                         procesoUiNuevo.setDesempenioIcdId(procesoUi.getDesempenioIcdId());
                         procesoUiNuevo.setTitulo(procesoUi.getTitulo());
+                        procesoUiNuevo.setExportado(procesoUi.isExportado());
                         procesoUiNuevo.setSubTitulo(procesoUi.getSubTitulo());
                         procesoUiNuevo.setFecha(Utils.getDatePhone());
                         procesoUiNuevo.setColorRubro(procesoUi.getColorRubro());
@@ -747,6 +753,23 @@ public class RubroResultadoSilaboPresenterImpl extends AbstractPresenterImpl {
                 if(view!=null)view.hideDialogProgress();
             }
         });
+    }
+
+    @Override
+    public void comprobarActualizacionRubros(Map<RubroProcesoUi, CapacidadUi> rubroProcesoUiList) {
+        List<RubroProcesoUi> modificados = new ArrayList<>();
+        for (Map.Entry<RubroProcesoUi,CapacidadUi> procesoUiCapacidadUiEntry: rubroProcesoUiList.entrySet()){
+            RubroProcesoUi rubroProcesoUi = procesoUiCapacidadUiEntry.getKey();
+            if(!rubroProcesoUi.isExportado())modificados.add(rubroProcesoUi);
+        }
+        changeEstadoActualizacion.execute(modificados);
+
+        for (RubroProcesoUi rubroProcesoUi: modificados){
+            if(rubroProcesoUi.isExportado()){
+                CapacidadUi capacidadUi = rubroProcesoUiList.get(rubroProcesoUi);
+                if(view!=null)view.updateRubroProceso(capacidadUi, rubroProcesoUi, programaEducativoId);
+            }
+        }
     }
 
     private void getRubroProceso(int idcompetencia, int idCalendarioPeriodo){

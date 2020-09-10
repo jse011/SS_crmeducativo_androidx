@@ -20,6 +20,8 @@ public class CellValorNotaHolder  extends AbstractViewHolder {
     TextView valorN;
     @BindView(R.id.nota)
     TextView nota;
+    @BindView(R.id.valorN2)
+    TextView valorN2;
 
 
     public CellValorNotaHolder(View itemView) {
@@ -28,9 +30,21 @@ public class CellValorNotaHolder  extends AbstractViewHolder {
 
     }
     public void bind(NotaUi notaUi){
-     if(notaUi.getValorTipoNotaUi().getTitulo()!=null)nota.setText(String.valueOf(notaUi.getValorTipoNotaUi().getTitulo()));
-     else nota.setText("");
-     valorN.setText(notaUi.getNota());
+     if(notaUi.getValorTipoNotaUi()!=null){
+         nota.setText(String.valueOf(notaUi.getValorTipoNotaUi().getTitulo()));
+         nota.setVisibility(View.VISIBLE);
+         valorN.setVisibility(View.VISIBLE);
+         valorN2.setVisibility(View.GONE);
+         valorN.setText(notaUi.getNota());
+     } else {
+         nota.setText("");
+         nota.setVisibility(View.GONE);
+         valorN.setVisibility(View.GONE);
+         valorN2.setVisibility(View.VISIBLE);
+         valorN2.setText(notaUi.getNota());
+     }
+
+
 
     }
 }

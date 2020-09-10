@@ -83,12 +83,28 @@ public class PasswordFragment extends Fragment implements PasswordView, TextView
                 .apply(Utils.getGlideRequestOptions(R.drawable.ic_account_circle))
                 .into(imgUsuarioPassword);
 
-        Glide.with(this)
-                .load(personaUiSelected.getInstitucionUrl())
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL))
-                .into(imgInstitucion);
+        if(getResources().getString(R.string.app_name).equals("Educar Teacher")){
+
+            Glide.with(imageView17)
+                    .load(R.drawable.logo_educar)
+                    .into(imageView17);
+
+            Glide.with(this)
+                    .load(R.drawable.docente_mentor)
+                    .into(imgInstitucion);
+
+
+        }else{
+            Glide.with(imageView17)
+                    .load(R.drawable.docente_mentor)
+                    .into(imageView17);
+            Glide.with(this)
+                    .load(personaUiSelected.getInstitucionUrl())
+                    .apply(new RequestOptions()
+                            .centerInside()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(imgInstitucion);
+        }
     }
 
     @Override

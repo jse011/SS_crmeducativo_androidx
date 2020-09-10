@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.login2.principal.Login2Presenter;
 import com.consultoraestrategia.ss_crmeducativo.login2.adapter.PersonaAdapter;
@@ -31,6 +33,9 @@ public class ListaUsuarioFragment extends Fragment implements ListaUsuarioView, 
     RecyclerView rcContactos;
     @BindView(R.id.btn_quitar_usuario)
     TextView btnQuitarUsuario;
+    @BindView(R.id.imageView13)
+    ImageView imageView13;
+
     private Unbinder unbinder;
     private Login2Presenter presenter;
     private PersonaAdapter usuarioAdapter;
@@ -50,6 +55,17 @@ public class ListaUsuarioFragment extends Fragment implements ListaUsuarioView, 
         rcContactos.setLayoutManager(new LinearLayoutManager(getContext()));
         this.usuarioAdapter = new PersonaAdapter(new ArrayList<PersonaUi>(), this);
         rcContactos.setAdapter(this.usuarioAdapter);
+        if(getResources().getString(R.string.app_name).equals("Educar Teacher")){
+
+            Glide.with(imageView13)
+                    .load(R.drawable.logo_educar)
+                    .into(imageView13);
+
+        }else{
+            Glide.with(imageView13)
+                    .load(R.drawable.docente_mentor)
+                    .into(imageView13);
+        }
     }
 
     @Override

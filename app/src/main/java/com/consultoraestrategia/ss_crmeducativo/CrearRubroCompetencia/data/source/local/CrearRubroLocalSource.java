@@ -59,7 +59,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento;
 import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.TipoNotaC;
@@ -173,10 +172,13 @@ public class CrearRubroLocalSource  implements CrearRubroDataSource {
                     rubro.setTipoFormulaId(0);
                     rubro.setTipoRedondeoId(439);
                     rubro.setValorRedondeoId(426);
-                    rubro.setSyncFlag(RubroEvaluacionProcesoC.FLAG_ADDED);
+                    rubro.setSyncFlag(formaEvaluacionUi.getId()== 478?BaseEntity.FLAG_PREADD:BaseEntity.FLAG_ADDED);
                     rubro.setUsuarioAccionId(sessionUser.getUserId());
                     rubro.setUsuarioCreacionId(sessionUser.getUserId());
 
+                    if(!TextUtils.isEmpty(rubroUi.getTareaId())){
+                        rubro.setTareaId(rubroUi.getTareaId());
+                    }
 
                     Competencia competencia = competenciaDao.obtenerCompenciaPorCapacidad(rubroUi.getCompetenciaId());
                     if(competencia.getTipoId() == Competencia.COMPETENCIA_BASE)rubro.setRubroFormal(1);                //rubro.setRubroEvalResultadoId(rubroUi.getIdRubroResultadoId());
@@ -252,12 +254,6 @@ public class CrearRubroLocalSource  implements CrearRubroDataSource {
                     }
 
                     if(!TextUtils.isEmpty(rubroUi.getTareaId())){
-                        TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = new TareaRubroEvaluacionProceso();
-                        tareaRubroEvaluacionProceso.setRubroEvalProcesoId(rubroid);
-                        tareaRubroEvaluacionProceso.setTareaId(rubroUi.getTareaId());
-                        tareaRubroEvaluacionProceso.setSyncFlag(TareaRubroEvaluacionProceso.FLAG_ADDED);
-                        boolean succesTarea = tareaRubroEvaluacionProceso.save();
-                        if(!succesTarea)throw new Error("Error al guardar TareaRubroEvaluacionProceso");
                         TareasC tareasC = SQLite.select()
                                 .from(TareasC.class)
                                 .where(TareasC_Table.key.eq(rubroUi.getTareaId()))

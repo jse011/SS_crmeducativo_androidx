@@ -23,10 +23,6 @@ public interface RubricasView extends BaseView<RubricasAbstractPresenter> {
 
     void mostrarListaRubricas(List<RubBidUi> objectList);
 
-    void ocultarListaRubrica();
-
-    void mostrarListaRubrica();
-
     void actualizarVista(RubBidUi rubBidUi);
 
 
@@ -54,4 +50,6 @@ public interface RubricasView extends BaseView<RubricasAbstractPresenter> {
     void showDialogPublicarTodoEvaluaciones(RubBidUi rubBidUi);
 
     void succesChangePublicar(int programaEDucativoId, String key);
+
+    void notifyChangeRbrica();
 }

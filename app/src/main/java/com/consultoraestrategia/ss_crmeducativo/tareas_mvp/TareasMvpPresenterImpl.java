@@ -99,7 +99,8 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
                                     for (TareasUI tareasUI : headerTareasAprendizajeUI.getTareasUIList()){
 
                                         if(tareasUI.getKeyTarea().equals(newtareasUI.getKeyTarea())){
-
+                                            newtareasUI.setProgress(tareasUI.isProgress());
+                                            //newtareasUI.setEstado(tareasUI.getEstado());
                                             int pocision =0;
                                             for (RecursosUI newrepositorioFileUi : newtareasUI.getRecursosUIList()){
 
@@ -278,6 +279,8 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
 
     @Override
     public void onChangeEstado(TareasUI tareasUI) {
+        tareasUI.setProgress(true);
+        if(view!=null)view.updateTarea(tareasUI);
         switch (tareasUI.getEstado()){
             case Creado:
                 tareasUI.setEstado(TareasUI.Estado.Publicado);
@@ -288,8 +291,23 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
                 updateTareaEstado(tareasUI);
                 break;
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
+                for(HeaderTareasAprendizajeUI  header : headerTareasAprendizajeUIList){
+                    int position = header.getTareasUIList().indexOf(tareasUI);
+                    if(position!=-1){
+                        header.getTareasUIList().get(position).setProgress(false);
+                        if(view!=null)view.updateTarea(header.getTareasUIList().get(position));
+                    }
+                }
+            }
+        }, 5000);
     }
+
+
+
 
     @Override
     public void onCrearRubro(TareasUI tareasUI, HeaderTareasAprendizajeUI headerTareasAprendizajeUI) {
@@ -341,34 +359,29 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
 
 
     private void updateTareaEstado(final TareasUI tareasUI) {
-
         try {
-            new Thread(){
-                @Override
-                public void run() {
-                    TareasC tarea = SQLite.select()
-                            .from(TareasC.class)
-                            .where(TareasC_Table.key.eq(tareasUI.getKeyTarea()))
-                            .querySingle();
-                    int estadoId = 0;
-                    switch (tareasUI.getEstado()){
-                        case Creado:
-                            estadoId = 263;
-                            break;
-                        case Publicado:
-                            estadoId = 264;
-                            break;
-                        case Eliminado:
-                            estadoId = 265;
-                            break;
-                    }
+            TareasC tarea = SQLite.select()
+                    .from(TareasC.class)
+                    .where(TareasC_Table.key.eq(tareasUI.getKeyTarea()))
+                    .querySingle();
+            int estadoId = 0;
+            switch (tareasUI.getEstado()){
+                case Creado:
+                    estadoId = 263;
+                    break;
+                case Publicado:
+                    estadoId = 264;
+                    break;
+                case Eliminado:
+                    estadoId = 265;
+                    break;
+            }
 
-                    tarea.setEstadoId(estadoId);
-                    tarea.setSyncFlag(TareasC.FLAG_UPDATED);
-                    tarea.save();
-                    if(view!=null)view.showServiceExportTarea(programaEducativoId);
-                }
-            }.start();
+            tarea.setEstadoId(estadoId);
+            tarea.setSyncFlag(TareasC.FLAG_UPDATED);
+            tarea.save();
+            if(view!=null)view.showServiceExportTarea(programaEducativoId);
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -393,10 +406,12 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
                             Log.d(TAG,":( :" + repositorioFileUi.getNombreArchivo() +" = " + responseProgressValue.getRepositorioFileUi().getNombreArchivo());
                         }
                         if(response instanceof DowloadImageUseCase.ResponseSuccessValue){
+                            Log.d(DowloadImageUseCase.class.getSimpleName(),"success :)");
                             final DowloadImageUseCase.ResponseSuccessValue responseValue = (DowloadImageUseCase.ResponseSuccessValue) response;
                             saveRegistorRecursos(repositorioFileUi, new UseCaseSincrono.Callback<Boolean>() {
                                 @Override
                                 public void onResponse(boolean success, Boolean value) {
+                                    Log.d(DowloadImageUseCase.class.getSimpleName(),"success :) "+success);
                                     if(success){
                                         if(view!=null)view.setUpdate(responseValue.getRepositorioFileUi());
                                         if(view!=null)view.leerArchivo(repositorioFileUi.getPath());

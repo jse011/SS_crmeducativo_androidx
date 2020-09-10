@@ -18,10 +18,12 @@ import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.adapters.Compete
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.data.source.RubroEvaluacionProcesoListaRepository;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.data.source.local.RubroEvaluacionProcesoListaLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.data.source.remote.RubroEvaluacionProcesoListaRemoteDataSource;
+import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.GetCalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.GetRubroProceso;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.GetRubroProcesoSesionList;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.CapacidadUi;
+import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.CompetenciaUi;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.RubroProcesoUi;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.plantilla.data.source.CasoUsoRepository;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.plantilla.data.source.local.CasoUsoLocalDataSource;
@@ -32,7 +34,9 @@ import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.plantilla.v
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.sesion.RubroEvalProcesoListaPresenterImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SCIEV on 6/02/2018.
@@ -72,7 +76,8 @@ public class FragmentRubroEvalProcesoLista extends FragmentAbstract<FragmentRubr
                 new GetRubroProcesoSesionList(repository),
                 new GetCalendarioPeriodo(repository),
                 new ChangeToogle(casoUsoRepository),
-                new PublicarTodasEvaluacion(repository)
+                new PublicarTodasEvaluacion(repository),
+                new ChangeEstadoActualizacion(repository)
         );
 
     }
@@ -202,4 +207,21 @@ public class FragmentRubroEvalProcesoLista extends FragmentAbstract<FragmentRubr
     }
 
 
+    public void comprobarActualizacionRubros() {
+        Map<RubroProcesoUi, CapacidadUi> rubroProcesoUiList = new HashMap<>();
+        CompetenciaAdapter competenciaAdapter = (CompetenciaAdapter)rcRubroEvaluacionResultado.getAdapter();
+        if(competenciaAdapter!=null){
+            for (Object o : competenciaAdapter.getItems()){
+                if(o instanceof CompetenciaUi){
+                    CompetenciaUi competenciaUi = (CompetenciaUi)o;
+                    for (CapacidadUi capacidadUi : competenciaUi.getCapacidadUis()){
+                        for (RubroProcesoUi rubroProcesoUi : capacidadUi.getRubroProcesoUis()){
+                            rubroProcesoUiList.put(rubroProcesoUi, capacidadUi);
+                        }
+                    }
+                }
+            }
+        }
+        presenter.comprobarActualizacionRubros(rubroProcesoUiList);
+    }
 }

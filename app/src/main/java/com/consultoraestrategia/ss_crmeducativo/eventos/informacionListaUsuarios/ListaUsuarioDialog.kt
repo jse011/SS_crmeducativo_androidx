@@ -34,7 +34,7 @@ class ListaUsuarioDialog : DialogFragment(),ListaUsuarioView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        this.dialog.requestWindowFeature(STYLE_NO_TITLE)
+        this.dialog?.requestWindowFeature(STYLE_NO_TITLE)
         val view = super.onCreateView(inflater, container, savedInstanceState)
         return  view;
     }

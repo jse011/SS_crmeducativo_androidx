@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.tareas_mvp.crearTarea.repositorioComentario;
 
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
@@ -66,11 +67,13 @@ public class RepositorioArchivoTareaPresenterImpl extends BaseRepositorioPresent
                     @Override
                     public void onSuccess(UseCase.ResponseValue response) {
                         if(response instanceof DowloadImageUseCase.ResponseProgressValue){
+                            Log.d(getTag(),"DowloadImageUseCase.ResponseProgressValue");
                             DowloadImageUseCase.ResponseProgressValue responseProgressValue = (DowloadImageUseCase.ResponseProgressValue) response;
                             if(view!=null) view.setUpdateProgress(responseProgressValue.getRepositorioFileUi(), responseProgressValue.getCount());
                             //Log.d(TAG,":( :" + repositorioFileUi.getNombreArchivo() +" = " + responseProgressValue.getRepositorioFileUi().getNombreArchivo());
                         }
                         if(response instanceof DowloadImageUseCase.ResponseSuccessValue){
+                            Log.d(getTag(),"DowloadImageUseCase.ResponseSuccessValue");
                             final DowloadImageUseCase.ResponseSuccessValue responseValue = (DowloadImageUseCase.ResponseSuccessValue) response;
                             final RepositorioFileUi repositorioFileUi = responseValue.getRepositorioFileUi();
                             updateRepositorioDowload.execute(new UpdateRepositorio.Request(repositorioFileUi.getArchivoId(),repositorioFileUi.getTipoFileU() ,repositorioFileUi.getPath(), repositorio), new UseCaseSincrono.Callback<Boolean>() {
@@ -90,6 +93,7 @@ public class RepositorioArchivoTareaPresenterImpl extends BaseRepositorioPresent
 
                         }
                         if(response instanceof DowloadImageUseCase.ResponseErrorValue){
+                            Log.d(getTag(),"DowloadImageUseCase.ResponseErrorValue");
                             DowloadImageUseCase.ResponseErrorValue responseErrorValue = (DowloadImageUseCase.ResponseErrorValue) response;
                             setUpdate(responseErrorValue.getRepositorioFileUi());
                         }

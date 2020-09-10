@@ -41,6 +41,11 @@ public class RubroEvaluacionProcesoListaRepository implements RubroEvaluacionPro
     }
 
     @Override
+    public void changeEstadoActualizacion(List<RubroProcesoUi> rubroProcesoUiList) {
+        localDataSource.changeEstadoActualizacion(rubroProcesoUiList);
+    }
+
+    @Override
     public void getRubroProcesoSesionList(int idrubroformal, int sesionAprendizajeId, int nivel, int calendarioPerioId, int silaboEventoId, int cargaCursoId, ListCallback<Object> callback) {
          localDataSource.getRubroProcesoSesionList(idrubroformal,sesionAprendizajeId,nivel,calendarioPerioId,silaboEventoId, cargaCursoId, callback);
 

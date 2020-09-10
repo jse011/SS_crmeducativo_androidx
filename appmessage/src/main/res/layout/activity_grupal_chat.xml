@@ -31,7 +31,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize">
+                   android:layout_height="?attr/actionBarSize">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/conversation_image"
@@ -54,7 +54,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/contetprofiletwo"
-                            android:layout_width="wrap_content"
+                           android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -73,11 +73,11 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/section"
+                               android:id="@+id/section"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:textColor="@color/white"
+                                android:textColor="@color/md_white_1000"
                                 android:textSize="14sp"
                                 app:layout_constraintBottom_toBottomOf="@+id/circle"
                                 app:layout_constraintEnd_toEndOf="@+id/circle"
@@ -121,7 +121,7 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:maxLines="1"
-                            android:textColor="@color/white"
+                            android:textColor="@color/md_white_1000"
                             android:text="Shayan Rais"
                             android:textSize="18sp"/>
 
@@ -133,7 +133,7 @@
                             android:layout_weight="0.4"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:textColor="@color/white"
+                            android:textColor="@color/md_white_1000"
                             android:text="last seen 1 hour ago"
                             android:textSize="12sp" />
 
@@ -195,7 +195,7 @@
                     android:layout_marginBottom="29dp"
                     android:background="@drawable/ic_circle_count_message"
                     android:gravity="center"
-                    android:textColor="@color/white"
+                    android:textColor="@color/md_white_1000"
                     android:textSize="10dp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/btn_bajar"
@@ -436,7 +436,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:text="0"
-                            android:textColor="@color/white"
+                            android:textColor="@color/md_white_1000"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/btn_info"

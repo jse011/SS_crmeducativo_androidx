@@ -25,7 +25,14 @@ public class Calendario extends BaseEntity {
     public String cargo;
     @Column
     public int usuarioId;
-
+    @Column
+    public int cargaAcademicaId;
+    @Column
+    public int cargaCursoId;
+    @Column
+    public int estadoPublicación;
+    @Column
+    public int rolId;
 
     public String getCalendarioId() {
         return calendarioId;
@@ -97,5 +104,37 @@ public class Calendario extends BaseEntity {
 
     public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public int getCargaAcademicaId() {
+        return cargaAcademicaId;
+    }
+
+    public void setCargaAcademicaId(int cargaAcademicaId) {
+        this.cargaAcademicaId = cargaAcademicaId;
+    }
+
+    public int getCargaCursoId() {
+        return cargaCursoId;
+    }
+
+    public void setCargaCursoId(int cargaCursoId) {
+        this.cargaCursoId = cargaCursoId;
+    }
+
+    public int getEstadoPublicación() {
+        return estadoPublicación;
+    }
+
+    public void setEstadoPublicación(int estadoPublicación) {
+        this.estadoPublicación = estadoPublicación;
+    }
+
+    public int getRolId() {
+        return rolId;
+    }
+
+    public void setRolId(int rolId) {
+        this.rolId = rolId;
     }
 }

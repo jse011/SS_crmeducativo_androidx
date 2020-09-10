@@ -281,7 +281,7 @@ public class CRMEPresenterImpl implements CRMEPresenter {
 
     private void showNotificacionProgressError(int id){
         if(event == null)return;
-        event.showNotificacion(R.drawable.logo_consultoraa, "Docente Mentor 3.0", "Se concluyó con error la exportación de "+ mensajeNotificacion(),"" , id);
+        event.showNotificacion(R.drawable.logo_consultoraa, "Mensaje de actualización", "Se concluyó con error la exportación de "+ mensajeNotificacion(),"" , id);
     }
 
 

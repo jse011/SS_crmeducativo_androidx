@@ -40,7 +40,7 @@ public class GroupCourseHolder extends RecyclerView.ViewHolder {
         }
         sectionName.setText(j);
         name.setText(groupUi.getName());
-        sectionName.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
+        sectionName.setTextColor(Color.WHITE);
         try {
             ColorStateList csl = ColorStateList.valueOf(Color.parseColor(groupUi.getColor()));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

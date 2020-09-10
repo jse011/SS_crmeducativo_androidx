@@ -11,6 +11,7 @@ import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
+import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.GetCalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.GetRubroProceso;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.GetRubroProcesoSesionList;
@@ -29,6 +30,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SCIEV on 6/02/2018.
@@ -54,11 +56,13 @@ public class RubroEvalProcesoListaPresenterImpl extends AbstractPresenterImpl {
     public static final int INT_COMPETENCIABASE= 1;
     private int entidadId;
     private int georeferenciaId;
+    private ChangeEstadoActualizacion changeEstadoActualizacion;
 
-    public RubroEvalProcesoListaPresenterImpl(UseCaseHandler handler, Resources res, DeleteRubroProceso deleteRubroProcesoSilabo, ShowCamposTematicos showCamposTematicos, ShowDesempenioIcds showDesempenioIcds, GetRubroProceso getRubroProceso, GetRubroProcesoSesionList getRubroResultadoSesion, GetCalendarioPeriodo getCalendarioPeriodo, ChangeToogle changeToogle, PublicarTodasEvaluacion updatePublicacionEvaluacion) {
+    public RubroEvalProcesoListaPresenterImpl(UseCaseHandler handler, Resources res, DeleteRubroProceso deleteRubroProcesoSilabo, ShowCamposTematicos showCamposTematicos, ShowDesempenioIcds showDesempenioIcds, GetRubroProceso getRubroProceso, GetRubroProcesoSesionList getRubroResultadoSesion, GetCalendarioPeriodo getCalendarioPeriodo, ChangeToogle changeToogle, PublicarTodasEvaluacion updatePublicacionEvaluacion, ChangeEstadoActualizacion changeEstadoActualizacion) {
         super(handler,res, deleteRubroProcesoSilabo, showCamposTematicos, showDesempenioIcds, getRubroProceso,changeToogle, updatePublicacionEvaluacion);
         this.getRubroResultadoSesion = getRubroResultadoSesion;
         this.getCalendarioPeriodo =getCalendarioPeriodo;
+        this. changeEstadoActualizacion = changeEstadoActualizacion;
     }
 
     /*public RubroEvalProcesoListaPresenterImpl(UseCaseHandler handler, DeleteRubroProceso deleteRubroProcesoSilabo, GetRubroProceso getRubroProceso, GetRubroProcesoSesionList getRubroResultadoSesion, GetRubroProcesoSesionFiltroList getRubroProcesoSesionFiltroList) {
@@ -313,6 +317,23 @@ public class RubroEvalProcesoListaPresenterImpl extends AbstractPresenterImpl {
     public void onRefrescarFragment(String idCalendarioPeriodo, boolean status) {
         Log.d(TAG_1, "onRefrescarFragment");
         getRubroProceso(INT_COMPETENCIABASE);
+    }
+
+    @Override
+    public void comprobarActualizacionRubros(Map<RubroProcesoUi, CapacidadUi> rubroProcesoUiList) {
+        List<RubroProcesoUi> modificados = new ArrayList<>();
+        for (Map.Entry<RubroProcesoUi,CapacidadUi> procesoUiCapacidadUiEntry: rubroProcesoUiList.entrySet()){
+            RubroProcesoUi rubroProcesoUi = procesoUiCapacidadUiEntry.getKey();
+            if(!rubroProcesoUi.isExportado())modificados.add(rubroProcesoUi);
+        }
+        changeEstadoActualizacion.execute(modificados);
+
+        for (RubroProcesoUi rubroProcesoUi: modificados){
+            if(rubroProcesoUi.isExportado()){
+                CapacidadUi capacidadUi = rubroProcesoUiList.get(rubroProcesoUi);
+                if(view!=null)view.updateRubroProceso(capacidadUi, rubroProcesoUi, programaEducativoId);
+            }
+        }
     }
 
     @Override

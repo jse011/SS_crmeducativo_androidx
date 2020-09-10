@@ -14,6 +14,8 @@ import com.consultoraestrategia.ss_crmeducativo.entities.*;
 import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.CalendarioPeriodoModel;
 import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.UnidadAprendizajeCargaCursoModel;
 import com.consultoraestrategia.ss_crmeducativo.entities.queryCustomList.CursoCustom;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubricaPortalAlumnoFb;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubroEvalEnvioSimple;
 import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarTipoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarUi;
@@ -25,6 +27,7 @@ import com.consultoraestrategia.ss_crmeducativo.login2.entities.ProgramaEducativ
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.GrupoEnviarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ResultadoEnvioUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.RubroEnviarUi;
+import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioFbUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.SesionesEnviarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.TareaEnviarUi;
@@ -69,6 +72,7 @@ import com.google.gson.Gson;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
@@ -88,6 +92,7 @@ import me.jessyan.progressmanager.ProgressManager;
 import me.jessyan.progressmanager.body.ProgressInfo;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
+import retrofit2.Response;
 
 public class LoginDataRepositoryImpl implements LoginDataRepository {
     private static LoginDataRepositoryImpl mInstance;
@@ -360,7 +365,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                                         TransaccionUtils.fastStoreListInsert(Horario.class, response.getHorario(), databaseWrapper, true);
 
                                         datosProgressUi.setAnioAcademicoId(beDatosInicioSesion.getAnioAcademicoId());
-
+                                        datosProgressUi.setFechaServidor(beDatosInicioSesion.getFechaServidor());
                                     }
                                 }).success(new Transaction.Success() {
                                     @Override
@@ -371,6 +376,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                                 }).error(new Transaction.Error() {
                                     @Override
                                     public void onError(@NonNull Transaction transaction, @NonNull Throwable error) {
+                                        error.printStackTrace();
                                         callback.onResponse(false, new DatosProgressUi());
                                     }
                                 }).build();
@@ -734,7 +740,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
 
 
                         ActualizarUi unidades = new ActualizarUi();
-                        unidades.setNombre("Unidadades");
+                        unidades.setNombre("Unidades");
                         unidades.setTipo(ActualizarTipoUi.Unidades);
                         unidades.setCargacursoId(itemCargaCursos.getCargaCursoId());
                         unidades.setCalendarioPeriodoId(calendarioPeriodoId);
@@ -1062,7 +1068,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             programaEducativoUi.setEntidadId(entidadId);
             programaEducativoUi.setCalendarioPeriodoId(calendarioPeriodoId);
             programaEducativoUi.setGeoreferenciaId(georeferenciaId);
-            programaEducativoUi.setBimestre(tipos!=null?tipos.getNombre():"");
+            programaEducativoUi.setBimestre(tipos!=null?"Descargando "+tipos.getNombre():"");
             programaEducativoUi.setEncola(true);
             List<ActualizarUi> actualizarUiList = new ArrayList<>();
 
@@ -1097,14 +1103,14 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         int cursoId = cursos!=null? cursos.getCursoId() : 0;
 
                         ActualizarUi unidades = new ActualizarUi();
-                        unidades.setNombre("Unidadades");
+                        unidades.setNombre("Unidades");
                         unidades.setTipo(ActualizarTipoUi.Unidades);
                         unidades.setCargacursoId(itemCargaCursos.getCargaCursoId());
                         unidades.setCalendarioPeriodoId(calendarioPeriodoId);
                         unidades.setSilaboEventoId(silaboEvento.getSilaboEventoId());
                         unidades.generarId();
                         unidades.setFecha(getTimeSesionData(unidades));
-                        unidades.setEncoloa(unidades.getFecha()==0);
+                        unidades.setEncoloa(true);
                         actualizarUiList.add(unidades);
 
                         ActualizarUi tipoNota = new ActualizarUi();
@@ -1114,7 +1120,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         tipoNota.setUsuarioId(usuarioId);
                         tipoNota.generarId();
                         tipoNota.setFecha(getTimeSesionData(tipoNota));
-                        tipoNota.setEncoloa(tipoNota.getFecha()==0);
+                        tipoNota.setEncoloa(true);
                         actualizarUiList.add(tipoNota);
 
                         ActualizarUi estudiantes = new ActualizarUi();
@@ -1125,7 +1131,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         estudiantes.setCargaAcademicaId(itemCargaCursos.getCargaAcademicaId());
                         estudiantes.generarId();
                         estudiantes.setFecha(getTimeSesionData(estudiantes));
-                        estudiantes.setEncoloa(estudiantes.getFecha()==0);
+                        estudiantes.setEncoloa(true);
                         actualizarUiList.add(estudiantes);
 
 
@@ -1137,7 +1143,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         rubros.setSilaboEventoId(silaboEvento.getSilaboEventoId());
                         rubros.generarId();
                         rubros.setFecha(getTimeSesionData(rubros));
-                        rubros.setEncoloa(rubros.getFecha()==0);
+                        rubros.setEncoloa(true);
                         actualizarUiList.add(rubros);
 
                         ActualizarUi resultado = new ActualizarUi();
@@ -1148,7 +1154,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         resultado.setSilaboEventoId(silaboEvento.getSilaboEventoId());
                         resultado.generarId();
                         resultado.setFecha(getTimeSesionData(resultado));
-                        resultado.setEncoloa(resultado.getFecha()==0);
+                        resultado.setEncoloa(true);
                         actualizarUiList.add(resultado);
 
                         ActualizarUi grupos = new ActualizarUi();
@@ -1157,7 +1163,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         grupos.setCargacursoId(itemCargaCursos.getCargaCursoId());
                         grupos.generarId();
                         grupos.setFecha(getTimeSesionData(grupos));
-                        grupos.setEncoloa(grupos.getFecha()==0);
+                        grupos.setEncoloa(true);
                         actualizarUiList.add(grupos);
 
 
@@ -1169,7 +1175,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         tareas.setCalendarioPeriodoId(calendarioPeriodoId);
                         tareas.generarId();
                         tareas.setFecha(getTimeSesionData(tareas));
-                        tareas.setEncoloa(tareas.getFecha()==0);
+                        tareas.setEncoloa(true);
                         actualizarUiList.add(tareas);
 
                         ActualizarUi casos = new ActualizarUi();
@@ -1181,7 +1187,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         casos.setEntidadId(entidadId);
                         casos.generarId();
                         casos.setFecha(getTimeSesionData(casos));
-                        casos.setEncoloa(casos.getFecha()==0);
+                        casos.setEncoloa(true);
                         actualizarUiList.add(casos);
 
                         ActualizarUi asistencia = new ActualizarUi();
@@ -1191,7 +1197,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         asistencia.setCalendarioPeriodoId(calendarioPeriodoId);
                         asistencia.generarId();
                         asistencia.setFecha(getTimeSesionData(asistencia));
-                        asistencia.setEncoloa(asistencia.getFecha()==0);
+                        asistencia.setEncoloa(true);
                         actualizarUiList.add(asistencia);
 
                         ActualizarUi docente = new ActualizarUi();
@@ -1200,7 +1206,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         docente.setGeoreferenciaId(georeferenciaId);
                         docente.generarId();
                         docente.setFecha(getTimeSesionData(asistencia));
-                        docente.setEncoloa(asistencia.getFecha()==0);
+                        docente.setEncoloa(true);
                         actualizarUiList.add(asistencia);
 
                         ActualizarUi dimencionDesarrollo = new ActualizarUi();
@@ -1213,7 +1219,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         dimencionDesarrollo.setCargacursoId(itemCargaCursos.getCargaCursoId());
                         dimencionDesarrollo.generarId();
                         docente.setFecha(getTimeSesionData(dimencionDesarrollo));
-                        dimencionDesarrollo.setEncoloa(dimencionDesarrollo.getFecha()==0);
+                        dimencionDesarrollo.setEncoloa(true);
                         actualizarUiList.add(dimencionDesarrollo);
 
                     }
@@ -1251,55 +1257,332 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
 
     }
 
+    private interface SaveAdapter<T>{
+        void execute(DatabaseWrapper databaseWrapper, T response);
+    }
 
     private RetrofitCancel saveDatos(ApiRetrofit apiRetrofit, final ServiceEnvioUi serviceEnvioUi, final BEGuardarEntidadesGlobal beGuardarEntidadesGlobal, final CallBackSucces<ServiceEnvioUi> callBackSucces){
-        RetrofitCancel<BERespuesta> retrofitCancel = new RetrofitCancelImpl<>(apiRetrofit.fins_GuardarEntidades_GlobalSimple(beGuardarEntidadesGlobal));
+        Call<RestApiResponse<BERespuesta>> responseCall = apiRetrofit.fins_GuardarEntidades_GlobalSimple(beGuardarEntidadesGlobal);
+        RetrofitCancel<BERespuesta>  retrofitCancel = new RetrofitCancelImpl<>(responseCall);
 
-        retrofitCancel.enqueue(new RetrofitCancel.Callback<BERespuesta>() {
+        SaveAdapter<Object> saveAdapter = (databaseWrapper, response) -> {
+            final Gson gson = new Gson();
+            final String representacionJSON = gson.toJson(beGuardarEntidadesGlobal);
+            Log.d(TAG, "saveDatos : " + representacionJSON);
+
+            GEDatosEnvioAsistencia geDatosEnvioAsistencia = beGuardarEntidadesGlobal.getAsistencia();
+            if(geDatosEnvioAsistencia!=null)changeEstadoGlobals(geDatosEnvioAsistencia,BaseEntity.FLAG_EXPORTED,databaseWrapper);
+
+            BEDatosEnvioGrupo beDatosEnvioGrupo = beGuardarEntidadesGlobal.getGrupo();
+            if(beDatosEnvioGrupo!=null)changeEstadoGlobals(beDatosEnvioGrupo,BaseEntity.FLAG_EXPORTED,databaseWrapper);
+
+            BEDatosEnvioMensajeria beDatosEnvioMensajeria = beGuardarEntidadesGlobal.getMensajeria();
+            if(beDatosEnvioMensajeria!=null)changeEstadoGlobals(beDatosEnvioMensajeria,BaseEntity.FLAG_EXPORTED,databaseWrapper);
+
+            GEDatosRubroEvaluacionProceso geDatosRubroEvaluacionProceso = beGuardarEntidadesGlobal.getRubroEvaluacionProceso();
+            if(geDatosRubroEvaluacionProceso!=null)changeEstadoGlobals(geDatosRubroEvaluacionProceso,BaseEntity.FLAG_EXPORTED,databaseWrapper);
+
+            BEDatosSesionAprendizaje beDatosSesionAprendizaje = beGuardarEntidadesGlobal.getSesionAprendizaje();
+            if(beDatosSesionAprendizaje!=null)changeEstadoGlobals(beDatosSesionAprendizaje,BaseEntity.FLAG_EXPORTED,databaseWrapper);
+
+            GEDatosTareasRecursos geDatosTareasRecursos = beGuardarEntidadesGlobal.getTareaRecursos();
+            if(geDatosTareasRecursos!=null)changeEstadoGlobals(geDatosTareasRecursos,BaseEntity.FLAG_EXPORTED,databaseWrapper);
+
+            com.consultoraestrategia.ss_crmeducativo.services.entidad.servidor.BEDatosCasos beDatosCasos = beGuardarEntidadesGlobal.getCasos();
+            if(beDatosCasos!=null)changeEstadoGlobals(beDatosCasos,BaseEntity.FLAG_EXPORTED,databaseWrapper);
+
+            BEDatosCargaAcademica beDatosCargaAcademica = beGuardarEntidadesGlobal.getCargaAcademica();
+            if(beDatosCargaAcademica!=null){
+                changeEstadoGlobals(beDatosCargaAcademica, BaseEntity.FLAG_EXPORTED, databaseWrapper);
+            }
+            beGuardarEntidadesGlobal.setProgramaEducativoId(serviceEnvioUi.getProgramaEducativoId());
+            initNotification(beGuardarEntidadesGlobal);
+        };
+
+        if(!serviceEnvioUi.isSyncrono()){
+            retrofitCancel = new RetrofitCancelImpl<>(responseCall);
+            retrofitCancel.enqueue(new RetrofitCancel.Callback<BERespuesta>() {
+                @Override
+                public void onResponse(final BERespuesta response) {
+                    if(response == null) {
+                        callBackSucces.onLoad(false, serviceEnvioUi);
+                        Log.d(TAG, "SendDatos Successful body null ");
+                    }else {
+
+                        DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
+                        Transaction transaction = database.beginTransactionAsync(new ITransaction() {
+                            @Override
+                            public void execute(DatabaseWrapper databaseWrapper) {
+                                saveAdapter.execute(databaseWrapper, response);
+                            }
+                        }).success(new Transaction.Success() {
+                            @Override
+                            public void onSuccess(@NonNull Transaction transaction) {
+                                callBackSucces.onLoad(true, serviceEnvioUi);
+
+                            }
+                        }).error(new Transaction.Error() {
+                            @Override
+                            public void onError(@NonNull Transaction transaction, @NonNull Throwable error) {
+                                callBackSucces.onLoad(false, serviceEnvioUi);
+                            }
+                        }).build();
+
+                        transaction.execute();
+
+                        Log.d(TAG, "SendDatos Successful : false");
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    t.printStackTrace();
+                    callBackSucces.onLoad(false,serviceEnvioUi);
+                    Log.d(TAG, "getDatosLogin Throwable : false - "+t.getMessage());
+                }
+            });
+            setupListener( callBackSucces);
+        }else{
+            try {
+                Response<RestApiResponse<BERespuesta>> response = responseCall.execute();
+                if (!response.isSuccessful()){
+                    callBackSucces.onLoad(false, serviceEnvioUi);
+                    Log.d(TAG, "saveDatos Response: false");
+                }else {
+                    RestApiResponse<BERespuesta> body = response.body();
+                    if(body == null){
+                        callBackSucces.onLoad(false, serviceEnvioUi);
+                        Log.d(TAG, "saveDatos Successful body null ");
+                    } else if(body.isSuccessful()){
+                        Log.d(TAG, "saveDatos Successful : true");
+                        DatabaseDefinition appDatabase = FlowManager.getDatabase(AppDatabase.class);
+                        DatabaseWrapper databaseWrapper = appDatabase.getWritableDatabase();
+                        boolean success = false;
+                        try {
+                            databaseWrapper.beginTransaction();
+                            saveAdapter.execute(databaseWrapper, body.getValue());
+                            databaseWrapper.setTransactionSuccessful();
+                            success = true;
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        databaseWrapper.endTransaction();
+                        callBackSucces.onLoad(success, serviceEnvioUi);
+
+                    }else {
+                        callBackSucces.onLoad(false, serviceEnvioUi);
+                        Log.d(TAG, "saveDatos Successful : false");
+                    }
+                }
+
+            }catch (Throwable t){
+                t.printStackTrace();
+                Log.d(TAG, "saveDatos Throwable : false - "+t.getMessage());
+                callBackSucces.onLoad(false, serviceEnvioUi);
+            }
+        }
+
+        return retrofitCancel;
+    }
+
+    private RetrofitCancel saveDatosRubro(ApiRetrofit apiRetrofit, final ServiceEnvioUi serviceEnvioUi, final List<BERubroEvalEnvioSimple> beRubroEvalEnvioSimpleList, final CallBackSucces<ServiceEnvioUi> callBackSucces){
+        Call<RestApiResponse<List<BERubroEvalEnvioSimple>>> responseCall = apiRetrofit.fins_GuardarRubroEvaluacion(beRubroEvalEnvioSimpleList);
+        RetrofitCancel<List<BERubroEvalEnvioSimple>> retrofitCancel = new RetrofitCancelImpl<>(responseCall);
+
+        if(beRubroEvalEnvioSimpleList.isEmpty()){
+            callBackSucces.onRequestProgress(100);
+            callBackSucces.onResponseProgress(100);
+            callBackSucces.onLoad(true, serviceEnvioUi);
+            return retrofitCancel;
+        }
+
+        SaveAdapter<List<BERubroEvalEnvioSimple>> saveAdapter = (databaseWrapper, response) -> {
+            final Gson gson = new Gson();
+            final String representacionJSON = gson.toJson(response);
+            Log.d(TAG, "saveDatosRubro : " + representacionJSON);
+            Log.d(TAG, "saveDatosRubro : " + response.size());
+
+            beRubroEvalEnvioSimpleList.removeAll(response);
+
+            for (BERubroEvalEnvioSimple rubroEvalEnvioSimple: beRubroEvalEnvioSimpleList){
+
+                if(rubroEvalEnvioSimple.getGrupoEquipo()!=null){
+                    GrupoEquipoC grupoEquipoC = rubroEvalEnvioSimple.getGrupoEquipo();
+                    grupoEquipoC.setSyncFlag(BaseEntity.FLAG_EXPORTED);
+                    grupoEquipoC.save(databaseWrapper);
+
+                    TransaccionUtils.fastStoreListSyncFlagUpdate(EquipoIntegranteC.class, rubroEvalEnvioSimple.getEquipoIntegrantes(),BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                    TransaccionUtils.fastStoreListSyncFlagUpdate(EquipoC.class, rubroEvalEnvioSimple.getEquipos(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                }
+
+                if(rubroEvalEnvioSimple.getTarea()!=null){
+                    TareasC tareasC = rubroEvalEnvioSimple.getTarea();
+                    tareasC.setSyncFlag(BaseEntity.FLAG_EXPORTED);
+                    tareasC.save(databaseWrapper);
+
+                    TransaccionUtils.fastStoreListSyncFlagUpdate(RecursoDidacticoEventoC.class, rubroEvalEnvioSimple.getRecursoDidactico(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                    TransaccionUtils.fastStoreListSyncFlagUpdateRel(TareasRecursosC.class, rubroEvalEnvioSimple.getTareasRecursos(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                    TransaccionUtils.fastStoreListSyncFlagUpdateRel(RecursoArchivo.class, rubroEvalEnvioSimple.getRecursoArchivo(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+
+                    SQLite.update(Archivo.class)
+                            .set(Archivo_Table.syncFlag.eq(BaseEntity.FLAG_EXPORTED))
+                            .execute(databaseWrapper);
+                }
+
+
+                List<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = new ArrayList<>();
+                rubroEvaluacionProcesoCList.add(rubroEvalEnvioSimple.getRubroEvaluacionProceso());
+                rubroEvaluacionProcesoCList.addAll(rubroEvalEnvioSimple.getRubroEvaluacionAsociado()!=null?rubroEvalEnvioSimple.getRubroEvaluacionAsociado():new ArrayList<>());
+
+                TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvaluacionProcesoC.class, rubroEvaluacionProcesoCList, BaseEntity.FLAG_EXPORTED, databaseWrapper, true);
+                TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvalRNPFormulaC.class, rubroEvalEnvioSimple.getRubroEvalProcesoFormula(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                TransaccionUtils.fastStoreListSyncFlagUpdate(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.class, rubroEvalEnvioSimple.getObtenerRubroEvaluacionProcesoEquipo(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                TransaccionUtils.fastStoreListSyncFlagUpdateRel(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.class, rubroEvalEnvioSimple.getObtenerRubroEvaluacionProcesoIntegrante(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                TransaccionUtils.fastStoreListSyncFlagUpdate(EquipoEvaluacionProcesoC.class, rubroEvalEnvioSimple.getObtenerEquipoEvaluacionProceso(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                TransaccionUtils.fastStoreListSyncFlagUpdateRel(RubroEvaluacionProcesoCampotematicoC.class, rubroEvalEnvioSimple.getRubro_evaluacion_proceso_campotematico(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                TransaccionUtils.fastStoreListSyncFlagUpdate(CriterioRubroEvaluacionC.class, rubroEvalEnvioSimple.getObtenerCriterioRubroEvaluacionProceso(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+
+                TransaccionUtils.fastStoreListSyncFlagUpdate(EvaluacionProcesoC.class, rubroEvalEnvioSimple.getEvaluacionProceso(), BaseEntity.FLAG_EXPORTED,databaseWrapper, true);
+
+                TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvaluacionProcesoComentario.class,rubroEvalEnvioSimple.getRubroEvaluacionProcesoComentario(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                TransaccionUtils.fastStoreListSyncFlagUpdate(ArchivosRubroProceso.class,rubroEvalEnvioSimple.getArchivoRubroProceso(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+
+            }
+
+            for (BERubroEvalEnvioSimple rubroEvalEnvioSimpleError : response){
+                List<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = new ArrayList<>();
+                rubroEvaluacionProcesoCList.add(rubroEvalEnvioSimpleError.getRubroEvaluacionProceso());
+                TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvaluacionProcesoC.class, rubroEvaluacionProcesoCList, BaseEntity.FLAG_ERROREXPORTED, databaseWrapper, true);
+            }
+
+            initNotification(beRubroEvalEnvioSimpleList, serviceEnvioUi.getProgramaEducativoId());
+
+
+        };
+        if(!serviceEnvioUi.isSyncrono()){
+            retrofitCancel.enqueue(new RetrofitCancel.Callback<List<BERubroEvalEnvioSimple>>() {
+                @Override
+                public void onResponse(final List<BERubroEvalEnvioSimple> response) {
+                    if(response == null) {
+                        callBackSucces.onLoad(false, serviceEnvioUi);
+                        Log.d(TAG, "SendDatos Successful body null ");
+                    }else {
+
+                        DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
+                        Transaction transaction = database.beginTransactionAsync(new ITransaction() {
+                            @Override
+                            public void execute(DatabaseWrapper databaseWrapper) {
+                                saveAdapter.execute(databaseWrapper, response);
+                            }
+                        }).success(new Transaction.Success() {
+                            @Override
+                            public void onSuccess(@NonNull Transaction transaction) {
+                                callBackSucces.onLoad(true, serviceEnvioUi);
+
+                            }
+                        }).error(new Transaction.Error() {
+                            @Override
+                            public void onError(@NonNull Transaction transaction, @NonNull Throwable error) {
+                                callBackSucces.onLoad(false, serviceEnvioUi);
+                            }
+                        }).build();
+
+                        transaction.execute();
+
+                        Log.d(TAG, "SendDatos Successful : false");
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    t.printStackTrace();
+                    callBackSucces.onLoad(false,serviceEnvioUi);
+                    Log.d(TAG, "getDatosLogin Throwable : false - "+t.getMessage());
+                }
+            });
+            setupListener( callBackSucces);
+        }else {
+            try {
+                Response<RestApiResponse<List<BERubroEvalEnvioSimple>>> response = responseCall.execute();
+                if (!response.isSuccessful()){
+                    callBackSucces.onLoad(false, serviceEnvioUi);
+                    Log.d(TAG, "saveDatosRubro Response: false");
+                }else {
+                    RestApiResponse<List<BERubroEvalEnvioSimple>> body = response.body();
+                    if(body == null){
+                        callBackSucces.onLoad(false, serviceEnvioUi);
+                        Log.d(TAG, "saveDatosRubro Successful body null ");
+                    } else if(body.isSuccessful()){
+                        Log.d(TAG, "saveDatosRubro Successful : true");
+                        DatabaseDefinition appDatabase = FlowManager.getDatabase(AppDatabase.class);
+                        DatabaseWrapper databaseWrapper = appDatabase.getWritableDatabase();
+                        boolean succes = false;
+                        try {
+                            databaseWrapper.beginTransaction();
+                            saveAdapter.execute(databaseWrapper, body.getValue());
+                            databaseWrapper.setTransactionSuccessful();
+                            succes= true;
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        databaseWrapper.endTransaction();
+                        callBackSucces.onLoad(succes, serviceEnvioUi);
+                    }else {
+                        callBackSucces.onLoad(false, serviceEnvioUi);
+                        Log.d(TAG, "saveDatosRubro Successful : false");
+                    }
+                }
+
+            }catch (Throwable t){
+                t.printStackTrace();
+                Log.d(TAG, "saveDatosRubro Throwable : false - "+t.getMessage());
+                callBackSucces.onLoad(false, serviceEnvioUi);
+            }
+        }
+
+
+        return retrofitCancel;
+    }
+
+    private RetrofitCancel saveDatosFormula(ApiRetrofit apiRetrofit, final ServiceEnvioUi serviceEnvioUi, final List<BERubroEvalEnvioSimple> beRubroEvalEnvioSimpleList, final CallBackSucces<ServiceEnvioUi> callBackSucces){
+        Call<RestApiResponse<List<BERubroEvalEnvioSimple>>> responseCall = apiRetrofit.fins_GuardarRubroFormula(beRubroEvalEnvioSimpleList);
+        RetrofitCancel<List<BERubroEvalEnvioSimple>>  retrofitCancel = new RetrofitCancelImpl<>(responseCall);
+
+        SaveAdapter<List<BERubroEvalEnvioSimple>> saveAdapter = (databaseWrapper, response) -> {
+            final Gson gson = new Gson();
+            final String representacionJSON = gson.toJson(response);
+            Log.d(TAG, "saveDatosFormula : " + representacionJSON);
+            Log.d(TAG, "saveDatosFormula : " + response.size());
+            beRubroEvalEnvioSimpleList.removeAll(response);
+
+            for (BERubroEvalEnvioSimple rubroEvalEnvioSimple: beRubroEvalEnvioSimpleList){
+
+                List<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = new ArrayList<>();
+                rubroEvaluacionProcesoCList.add(rubroEvalEnvioSimple.getRubroEvaluacionProceso());
+                TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvaluacionProcesoC.class, rubroEvaluacionProcesoCList, BaseEntity.FLAG_EXPORTED, databaseWrapper, true);
+                TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvalRNPFormulaC.class, rubroEvalEnvioSimple.getRubroEvalProcesoFormula(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                TransaccionUtils.fastStoreListSyncFlagUpdateRel(RubroEvaluacionProcesoCampotematicoC.class, rubroEvalEnvioSimple.getRubro_evaluacion_proceso_campotematico(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+                TransaccionUtils.fastStoreListSyncFlagUpdate(CriterioRubroEvaluacionC.class, rubroEvalEnvioSimple.getObtenerCriterioRubroEvaluacionProceso(), BaseEntity.FLAG_EXPORTED, databaseWrapper, false);
+
+                TransaccionUtils.fastStoreListSyncFlagUpdate(EvaluacionProcesoC.class, rubroEvalEnvioSimple.getEvaluacionProceso(), BaseEntity.FLAG_EXPORTED,databaseWrapper, true);
+
+            }
+
+        };
+        if(!serviceEnvioUi.isSyncrono()){
+        retrofitCancel.enqueue(new RetrofitCancel.Callback<List<BERubroEvalEnvioSimple>>() {
             @Override
-            public void onResponse(final BERespuesta response) {
+            public void onResponse(final List<BERubroEvalEnvioSimple> response) {
                 if(response == null) {
                     callBackSucces.onLoad(false, serviceEnvioUi);
-                    Log.d(TAG, "SendDatos Successful body null ");
+                    Log.d(TAG, "saveDatosFormula Successful body null ");
                 }else {
 
                     DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
                     Transaction transaction = database.beginTransactionAsync(new ITransaction() {
                         @Override
                         public void execute(DatabaseWrapper databaseWrapper) {
-
-                            final Gson gson = new Gson();
-                            final String representacionJSON = gson.toJson(beGuardarEntidadesGlobal);
-                            ApiRetrofit.Log.d(TAG, "saveDatos : " + representacionJSON);
-
-                            GEDatosEnvioAsistencia geDatosEnvioAsistencia = beGuardarEntidadesGlobal.getAsistencia();
-                            if(geDatosEnvioAsistencia!=null)changeEstadoGlobals(geDatosEnvioAsistencia,BaseEntity.FLAG_EXPORTED,databaseWrapper);
-
-                            BEDatosEnvioGrupo beDatosEnvioGrupo = beGuardarEntidadesGlobal.getGrupo();
-                            if(beDatosEnvioGrupo!=null)changeEstadoGlobals(beDatosEnvioGrupo,BaseEntity.FLAG_EXPORTED,databaseWrapper);
-
-                            BEDatosEnvioMensajeria beDatosEnvioMensajeria = beGuardarEntidadesGlobal.getMensajeria();
-                            if(beDatosEnvioMensajeria!=null)changeEstadoGlobals(beDatosEnvioMensajeria,BaseEntity.FLAG_EXPORTED,databaseWrapper);
-
-                            GEDatosRubroEvaluacionProceso geDatosRubroEvaluacionProceso = beGuardarEntidadesGlobal.getRubroEvaluacionProceso();
-                            if(geDatosRubroEvaluacionProceso!=null)changeEstadoGlobals(geDatosRubroEvaluacionProceso,BaseEntity.FLAG_EXPORTED,databaseWrapper);
-
-                            BEDatosSesionAprendizaje beDatosSesionAprendizaje = beGuardarEntidadesGlobal.getSesionAprendizaje();
-                            if(beDatosSesionAprendizaje!=null)changeEstadoGlobals(beDatosSesionAprendizaje,BaseEntity.FLAG_EXPORTED,databaseWrapper);
-
-                            GEDatosTareasRecursos geDatosTareasRecursos = beGuardarEntidadesGlobal.getTareaRecursos();
-                            if(geDatosTareasRecursos!=null)changeEstadoGlobals(geDatosTareasRecursos,BaseEntity.FLAG_EXPORTED,databaseWrapper);
-
-                            com.consultoraestrategia.ss_crmeducativo.services.entidad.servidor.BEDatosCasos beDatosCasos = beGuardarEntidadesGlobal.getCasos();
-                            if(beDatosCasos!=null)changeEstadoGlobals(beDatosCasos,BaseEntity.FLAG_EXPORTED,databaseWrapper);
-
-                            BEDatosCargaAcademica beDatosCargaAcademica = beGuardarEntidadesGlobal.getCargaAcademica();
-                            if(beDatosCargaAcademica!=null){
-                                changeEstadoGlobals(beDatosCargaAcademica, BaseEntity.FLAG_EXPORTED, databaseWrapper);
-                            }
-
-                            initNotification(beGuardarEntidadesGlobal);
-
+                            saveAdapter.execute(databaseWrapper, response);
                         }
                     }).success(new Transaction.Success() {
                         @Override
@@ -1316,7 +1599,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
 
                     transaction.execute();
 
-                    Log.d(TAG, "SendDatos Successful : false");
+                    Log.d(TAG, "saveDatosFormula Successful : false");
                 }
             }
 
@@ -1324,23 +1607,62 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             public void onFailure(Throwable t) {
                 t.printStackTrace();
                 callBackSucces.onLoad(false,serviceEnvioUi);
-                Log.d(TAG, "getDatosLogin Throwable : false - "+t.getMessage());
+                Log.d(TAG, "saveDatosFormula Throwable : false - "+t.getMessage());
             }
         });
-
         setupListener( callBackSucces);
+        }else {
+            try {
+                Response<RestApiResponse<List<BERubroEvalEnvioSimple>>> response = responseCall.execute();
+                if (!response.isSuccessful()){
+                    callBackSucces.onLoad(false, serviceEnvioUi);
+                    Log.d(TAG, "saveDatosFormula Response: false");
+                }else {
+                    RestApiResponse<List<BERubroEvalEnvioSimple>> body = response.body();
+                    if(body == null){
+                        callBackSucces.onLoad(false, serviceEnvioUi);
+                        Log.d(TAG, "saveDatosFormula Successful body null ");
+                    } else if(body.isSuccessful()){
+                        Log.d(TAG, "saveDatosFormula Successful : true");
+                        DatabaseDefinition appDatabase = FlowManager.getDatabase(AppDatabase.class);
+                        DatabaseWrapper databaseWrapper = appDatabase.getWritableDatabase();
+                        boolean succes = false;
+                        try {
+                            databaseWrapper.beginTransaction();
+                            saveAdapter.execute(databaseWrapper, body.getValue());
+                            databaseWrapper.setTransactionSuccessful();
+                            succes = true;
+                        } catch (Exception e){
+                            e.printStackTrace();
+
+                        }
+                        databaseWrapper.endTransaction();
+                        callBackSucces.onLoad(succes, serviceEnvioUi);
+                    }else {
+                        callBackSucces.onLoad(false, serviceEnvioUi);
+                        Log.d(TAG, "saveDatosFormula Successful : false");
+                    }
+                }
+
+            }catch (Throwable t){
+                t.printStackTrace();
+                Log.d(TAG, "saveDatosFormula Throwable : false - "+t.getMessage());
+                callBackSucces.onLoad(false, serviceEnvioUi);
+            }
+        }
 
         return retrofitCancel;
     }
 
     @Override
-    public RetrofitCancel saveDatosResultado(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces) {
+    public RetrofitCancel saveDatosResultado(ServiceEnvioUi serviceEnvioUi, CallBackSuccessRelacion<ServiceEnvioUi> callBackSucces) {
         OkHttpClient.Builder builder = ProgressManager.getInstance().with(new OkHttpClient.Builder());
         builder.connectTimeout(30, TimeUnit.SECONDS) // connect timeout
                 .writeTimeout(30, TimeUnit.SECONDS) // write timeout
                 .readTimeout(30, TimeUnit.SECONDS);
         apiRetrofit.setOkHttpClient(builder.build());
 
+        List<String> rubroEvaluacionIdList = new ArrayList<>();
         BEGuardarEntidadesGlobal beGuardarEntidadesGlobal = new BEGuardarEntidadesGlobal();
         if(serviceEnvioUi instanceof ResultadoEnvioUi){
             ResultadoEnvioUi resultadoEnvioUi = (ResultadoEnvioUi)serviceEnvioUi;
@@ -1353,6 +1675,10 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                     .and(RubroEvaluacionResultado_Table.syncFlag.in(RubroEvaluacionResultado.FLAG_ADDED, RubroEvaluacionResultado.FLAG_UPDATED))
                     .queryList();
 
+            for (RubroEvaluacionResultado rubroEvaluacionResultado : rubroEvaluacionResultados){
+                if(!TextUtils.isEmpty(rubroEvaluacionResultado.getRubroEvalProcesoId()))rubroEvaluacionIdList.add(rubroEvaluacionResultado.getRubroEvalProcesoId());
+            }
+
             beDatosEvaluacionResultado.setRubroEvaluacionResultado(rubroEvaluacionResultados);
 
             List<EvaluacionResultadoC> evaluacionResultadoList = SQLite.select()
@@ -1362,20 +1688,52 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                     .queryList();
 
             beDatosEvaluacionResultado.setEvaluacionResultado(evaluacionResultadoList);
-
-            Set<String> rubroAncladoId = new LinkedHashSet<>();
-            for (RubroEvaluacionResultado rubroEvaluacionResultado : rubroEvaluacionResultados)rubroAncladoId.add(rubroEvaluacionResultado.getRubroEvalProcesoId());
-
             BEDatosRubroEvaluacionProceso beDatosRubroEvaluacionProceso = new BEDatosRubroEvaluacionProceso();
-
-            getRubroEvaluacionProceso(beDatosRubroEvaluacionProceso, new ArrayList<String>(rubroAncladoId));
             datosRubroEvaluacionProceso.setBeDatosRubroEvaluacionResultado(beDatosEvaluacionResultado);
             datosRubroEvaluacionProceso.setBeDatosRubroEvaluacionProceso(beDatosRubroEvaluacionProceso);
-
             beGuardarEntidadesGlobal.setRubroEvaluacionProceso(datosRubroEvaluacionProceso);
         }
 
-        return saveDatos(apiRetrofit, serviceEnvioUi,beGuardarEntidadesGlobal, callBackSucces );
+        List<RetrofitCancel> retrofitCancelList = new ArrayList<>();
+        retrofitCancelList.add(saveDatosRubro(apiRetrofit, serviceEnvioUi, getListRubroEvalEnvioList(rubroEvaluacionIdList), new CallBackSucces<ServiceEnvioUi>() {
+            @Override
+            public void onLoad(boolean success, ServiceEnvioUi item) {
+                retrofitCancelList.add(saveDatos(apiRetrofit, serviceEnvioUi,beGuardarEntidadesGlobal, callBackSucces));
+            }
+
+            @Override
+            public void onRequestProgress(int progress) {
+                callBackSucces.onRequestRubroProgress(progress);
+
+            }
+
+            @Override
+            public void onResponseProgress(int progress) {
+
+            }
+        }));
+
+        return new RetrofitCancel() {
+            @Override
+            public void enqueue(Callback callback) {
+
+            }
+
+            @Override
+            public boolean isExecuted() {
+                return false;
+            }
+
+            @Override
+            public void cancel() {
+                for (RetrofitCancel retrofitCancel : retrofitCancelList)retrofitCancel.cancel();
+            }
+
+            @Override
+            public boolean isCanceled() {
+                return false;
+            }
+        };
 
     }
 
@@ -1386,21 +1744,181 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 .writeTimeout(30, TimeUnit.SECONDS) // write timeout
                 .readTimeout(30, TimeUnit.SECONDS);
         apiRetrofit.setOkHttpClient(builder.build());
-
-        BEGuardarEntidadesGlobal beGuardarEntidadesGlobal = new BEGuardarEntidadesGlobal();
+        List<String> rubroEvalProcesoList = new ArrayList<>();
         if(serviceEnvioUi instanceof RubroEnviarUi){
             RubroEnviarUi rubroEnviarUi = (RubroEnviarUi)serviceEnvioUi;
-            GEDatosRubroEvaluacionProceso datosRubroEvaluacionProceso = new GEDatosRubroEvaluacionProceso();
+            rubroEvalProcesoList.addAll(rubroEnviarUi.getRubroEvaluacionIdList());
+        }
+        return saveDatosRubro(apiRetrofit, serviceEnvioUi,getListRubroEvalEnvioList(rubroEvalProcesoList), callBackSucces );
+    }
 
-            BEDatosRubroEvaluacionProceso beDatosRubroEvaluacionProceso = new BEDatosRubroEvaluacionProceso();
-            getRubroEvaluacionProceso(beDatosRubroEvaluacionProceso, rubroEnviarUi.getRubroEvaluacionIdList());
-            datosRubroEvaluacionProceso.setBeDatosRubroEvaluacionProceso(beDatosRubroEvaluacionProceso);
-            datosRubroEvaluacionProceso.setBeDatosTareaRecursos(getTareaRubro(rubroEnviarUi.getRubroEvaluacionIdList(), beDatosRubroEvaluacionProceso.getRubroEvalProcesoFormula() ));
-            datosRubroEvaluacionProceso.setBeDatosEnvioGrupo(getGrupoRubro(beDatosRubroEvaluacionProceso.getObtenerRubroEvaluacionProcesoEquipo()));
-            beGuardarEntidadesGlobal.setRubroEvaluacionProceso(datosRubroEvaluacionProceso);
+    private List<BERubroEvalEnvioSimple> getListRubroEvalEnvioList(List<String> rubroEvalProcesoIdList){
+        List<BERubroEvalEnvioSimple> beRubroEvalEnvioSimpleList = new ArrayList<>();
+        Where<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCWhere = SQLite.select()
+                .from(RubroEvaluacionProcesoC.class)
+                .where(RubroEvaluacionProcesoC_Table.syncFlag.in(RubroEvaluacionProcesoC.FLAG_ADDED, RubroEvaluacionProcesoC.FLAG_UPDATED))
+                .and(RubroEvaluacionProcesoC_Table.tiporubroid.in(RubroEvaluacionProcesoC.TIPORUBRO_BIMENSIONAL, RubroEvaluacionProcesoC.TIPORUBRO_UNIDIMENCIONAL));
+        if(rubroEvalProcesoIdList!=null){
+            rubroEvaluacionProcesoCWhere.and(RubroEvaluacionProcesoC_Table.key.in(rubroEvalProcesoIdList));
         }
 
-        return saveDatos(apiRetrofit, serviceEnvioUi,beGuardarEntidadesGlobal, callBackSucces );
+        List<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = rubroEvaluacionProcesoCWhere.queryList();
+
+        for (RubroEvaluacionProcesoC rubroEvaluacionProcesoC : rubroEvaluacionProcesoCList){
+            BERubroEvalEnvioSimple beRubroEvalEnvioSimple = new BERubroEvalEnvioSimple();
+
+            beRubroEvalEnvioSimple.setRubroEvaluacionProceso(rubroEvaluacionProcesoC);
+
+            if(rubroEvaluacionProcesoC.getTiporubroid()==RubroEvaluacionProcesoC.TIPORUBRO_BIMENSIONAL){
+
+                beRubroEvalEnvioSimple.setRubroEvaluacionAsociado(SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionProcesoC_Table.ALL_COLUMN_PROPERTIES))
+                        .from(RubroEvaluacionProcesoC.class)
+                        .innerJoin(RubroEvalRNPFormulaC.class)
+                        .on(RubroEvalRNPFormulaC_Table.rubroEvaluacionSecId.withTable()
+                                .eq(RubroEvaluacionProcesoC_Table.key.withTable()))
+                        .where(RubroEvalRNPFormulaC_Table.rubroEvaluacionPrimId.eq(rubroEvaluacionProcesoC.getKey()))
+                        .queryList());
+            }
+            List<String> rubroEvaluacionIdList =  new ArrayList<>();
+            rubroEvaluacionIdList.add(rubroEvaluacionProcesoC.getKey());
+            for (RubroEvaluacionProcesoC item : beRubroEvalEnvioSimple.getRubroEvaluacionAsociado()!=null?
+                    beRubroEvalEnvioSimple.getRubroEvaluacionAsociado():new ArrayList<RubroEvaluacionProcesoC>()){
+                rubroEvaluacionIdList.add(item.getKey());
+            }
+
+            beRubroEvalEnvioSimple.setRubro_evaluacion_proceso_campotematico(SQLite.select()
+                    .from(RubroEvaluacionProcesoCampotematicoC.class)
+                    .where(RubroEvaluacionProcesoCampotematicoC_Table.rubroEvalProcesoId.in(rubroEvaluacionIdList))
+                    .and(RubroEvaluacionProcesoCampotematicoC_Table.syncFlag.in(RubroEvaluacionProcesoCampotematicoC.FLAG_ADDED,RubroEvaluacionProcesoCampotematicoC.FLAG_UPDATED ))
+                    .queryList());
+
+            beRubroEvalEnvioSimple.setObtenerCriterioRubroEvaluacionProceso(SQLite.select()
+                    .from(CriterioRubroEvaluacionC.class)
+                    .where(CriterioRubroEvaluacionC_Table.rubroEvalProcesoId.in(rubroEvaluacionIdList))
+                    .and(CriterioRubroEvaluacionC_Table.syncFlag.in(CriterioRubroEvaluacionC.FLAG_ADDED,CriterioRubroEvaluacionC.FLAG_UPDATED ))
+                    .queryList());
+
+            beRubroEvalEnvioSimple.setObtenerRubroEvaluacionProcesoEquipo(SQLite.select()
+                    .from(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.class)
+                    .where(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC_Table.rubroEvalProcesoId.in(rubroEvaluacionIdList))
+                    .and(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC_Table.syncFlag.withTable().in(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.FLAG_ADDED,T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.FLAG_UPDATED ))
+                    .queryList());
+
+            beRubroEvalEnvioSimple.setObtenerRubroEvaluacionProcesoIntegrante(SQLite.select(Utils.f_allcolumnTable(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC_Table.ALL_COLUMN_PROPERTIES))
+                    .from(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.class)
+                    .innerJoin(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.class)
+                    .on(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC_Table.rubroEvaluacionEquipoId.withTable().eq(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC_Table.key.withTable()))
+                    .where(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC_Table.rubroEvalProcesoId.withTable().in(rubroEvaluacionIdList))
+                    .and(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC_Table.syncFlag.withTable().in(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.FLAG_ADDED,T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.FLAG_UPDATED ))
+                    .queryList());
+
+            beRubroEvalEnvioSimple.setObtenerEquipoEvaluacionProceso(SQLite.select()
+                    .from(EquipoEvaluacionProcesoC.class)
+                    .where(EquipoEvaluacionProcesoC_Table.rubroEvalProcesoId.in(rubroEvaluacionIdList))
+                    .and(EquipoEvaluacionProcesoC_Table.syncFlag.in(EquipoEvaluacionProcesoC.FLAG_ADDED,EquipoEvaluacionProcesoC.FLAG_UPDATED ))
+                    .queryList());
+
+            beRubroEvalEnvioSimple.setEvaluacionProceso(SQLite.select()
+                    .from(EvaluacionProcesoC.class)
+                    .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.in(rubroEvaluacionIdList))
+                    .and(EvaluacionProcesoC_Table.syncFlag.in(EvaluacionProcesoC.FLAG_ADDED, EvaluacionProcesoC.FLAG_UPDATED))
+                    .queryList());
+
+            beRubroEvalEnvioSimple.setRubroEvaluacionProcesoComentario(SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionProcesoComentario_Table.ALL_COLUMN_PROPERTIES))
+                    .from(RubroEvaluacionProcesoComentario.class)
+                    .innerJoin(EvaluacionProcesoC.class)
+                    .on(RubroEvaluacionProcesoComentario_Table.evaluacionProcesoId.withTable().eq(EvaluacionProcesoC_Table.key.withTable()))
+                    .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.withTable().in(rubroEvaluacionIdList))
+                    .and(RubroEvaluacionProcesoComentario_Table.syncFlag.withTable().in(RubroEvaluacionProcesoComentario.FLAG_ADDED, RubroEvaluacionProcesoComentario.FLAG_UPDATED))
+                    .queryList());
+
+            beRubroEvalEnvioSimple.setArchivoRubroProceso(SQLite.select(Utils.f_allcolumnTable(ArchivosRubroProceso_Table.ALL_COLUMN_PROPERTIES))
+                    .from(ArchivosRubroProceso.class)
+                    .innerJoin(EvaluacionProcesoC.class)
+                    .on(ArchivosRubroProceso_Table.evaluacionProcesoId.withTable().eq(EvaluacionProcesoC_Table.key.withTable()))
+                    .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.withTable().in(rubroEvaluacionIdList))
+                    .and(ArchivosRubroProceso_Table.syncFlag.withTable().in(ArchivosRubroProceso.FLAG_ADDED, ArchivosRubroProceso.FLAG_UPDATED))
+                    .queryList());
+
+            if(rubroEvaluacionProcesoC.getTiporubroid()==RubroEvaluacionProcesoC.TIPORUBRO_BIMENSIONAL){
+                List<RubroEvalRNPFormulaC> rubroEvalRNPFormulaCList = SQLite.select()
+                        .from(RubroEvalRNPFormulaC.class)
+                        .where(RubroEvalRNPFormulaC_Table.syncFlag.withTable().in(RubroEvalRNPFormulaC.FLAG_ADDED, RubroEvalRNPFormulaC.FLAG_UPDATED))
+                        .and(RubroEvalRNPFormulaC_Table.rubroEvaluacionPrimId.in(rubroEvaluacionIdList))
+                        .queryList();
+                beRubroEvalEnvioSimple.setRubroEvalProcesoFormula(rubroEvalRNPFormulaCList);
+            }
+
+            if(!TextUtils.isEmpty(rubroEvaluacionProcesoC.getTareaId())){
+                List<String> tareaIdList = new ArrayList<>();
+                tareaIdList.add(rubroEvaluacionProcesoC.getTareaId());
+                GEDatosTareasRecursos geDatosTareasRecursos = getTareasRecursos(tareaIdList);
+                beRubroEvalEnvioSimple.setTarea(!geDatosTareasRecursos.getTareas().isEmpty()?geDatosTareasRecursos.getTareas().get(0): null);
+                beRubroEvalEnvioSimple.setTareasRecursos(geDatosTareasRecursos.getTareasRecursos());
+                beRubroEvalEnvioSimple.setRecursoDidactico(geDatosTareasRecursos.getRecursoDidactico());
+                beRubroEvalEnvioSimple.setRecursoArchivo(geDatosTareasRecursos.getRecursoArchivo());
+                beRubroEvalEnvioSimple.setArchivo(geDatosTareasRecursos.getArchivo());
+            }
+
+            BEDatosEnvioGrupo beDatosGrupo = getGrupoRubro(beRubroEvalEnvioSimple.getObtenerRubroEvaluacionProcesoEquipo());
+            beRubroEvalEnvioSimple.setGrupoEquipo(!beDatosGrupo.getGrupo_equipo().isEmpty()?beDatosGrupo.getGrupo_equipo().get(0) : null);
+            beRubroEvalEnvioSimple.setEquipos(beDatosGrupo.getEquipo());
+            beRubroEvalEnvioSimple.setEquipoIntegrantes(beDatosGrupo.getEquipo_integrante());
+
+            beRubroEvalEnvioSimpleList.add(beRubroEvalEnvioSimple);
+        }
+
+        return beRubroEvalEnvioSimpleList;
+    }
+
+    private List<BERubroEvalEnvioSimple> getListFormulaEvalEnvioList(List<String> rubroEvalProcesoIdList){
+        List<BERubroEvalEnvioSimple> beRubroEvalEnvioSimpleList = new ArrayList<>();
+        Where<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCWhere = SQLite.select()
+                .from(RubroEvaluacionProcesoC.class)
+                .where(RubroEvaluacionProcesoC_Table.syncFlag.in(RubroEvaluacionProcesoC.FLAG_ADDED, RubroEvaluacionProcesoC.FLAG_UPDATED))
+                .and(RubroEvaluacionProcesoC_Table.tipoFormulaId.notEq(0))
+                .and(RubroEvaluacionProcesoC_Table.formaEvaluacionId.isNotNull());
+        if(rubroEvalProcesoIdList!=null){
+            rubroEvaluacionProcesoCWhere.and(RubroEvaluacionProcesoC_Table.key.in(rubroEvalProcesoIdList));
+        }
+
+        List<RubroEvaluacionProcesoC> rubroFormulaList = rubroEvaluacionProcesoCWhere.queryList();
+        BERubroEvalEnvioSimple beRubroEvalEnvioSimple = new BERubroEvalEnvioSimple();
+        for (RubroEvaluacionProcesoC rubroFormula : rubroFormulaList){
+
+
+            beRubroEvalEnvioSimple.setRubroEvaluacionProceso(rubroFormula);
+
+            beRubroEvalEnvioSimple.setRubro_evaluacion_proceso_campotematico(SQLite.select()
+                    .from(RubroEvaluacionProcesoCampotematicoC.class)
+                    .where(RubroEvaluacionProcesoCampotematicoC_Table.rubroEvalProcesoId.eq(rubroFormula.getKey()))
+                    .and(RubroEvaluacionProcesoCampotematicoC_Table.syncFlag.in(RubroEvaluacionProcesoCampotematicoC.FLAG_ADDED,RubroEvaluacionProcesoCampotematicoC.FLAG_UPDATED ))
+                    .queryList());
+
+            beRubroEvalEnvioSimple.setObtenerCriterioRubroEvaluacionProceso(SQLite.select()
+                    .from(CriterioRubroEvaluacionC.class)
+                    .where(CriterioRubroEvaluacionC_Table.rubroEvalProcesoId.eq(rubroFormula.getKey()))
+                    .and(CriterioRubroEvaluacionC_Table.syncFlag.in(CriterioRubroEvaluacionC.FLAG_ADDED,CriterioRubroEvaluacionC.FLAG_UPDATED ))
+                    .queryList());
+
+
+            beRubroEvalEnvioSimple.setEvaluacionProceso(SQLite.select()
+                    .from(EvaluacionProcesoC.class)
+                    .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.eq(rubroFormula.getKey()))
+                    .and(EvaluacionProcesoC_Table.syncFlag.in(EvaluacionProcesoC.FLAG_ADDED, EvaluacionProcesoC.FLAG_UPDATED))
+                    .queryList());
+
+            List<RubroEvalRNPFormulaC> rubroEvalRNPFormulaCList = SQLite.select()
+                        .from(RubroEvalRNPFormulaC.class)
+                        .where(RubroEvalRNPFormulaC_Table.syncFlag.withTable().in(RubroEvalRNPFormulaC.FLAG_ADDED, RubroEvalRNPFormulaC.FLAG_UPDATED))
+                        .and(RubroEvalRNPFormulaC_Table.rubroEvaluacionPrimId.eq(rubroFormula.getKey()))
+                        .queryList();
+            beRubroEvalEnvioSimple.setRubroEvalProcesoFormula(rubroEvalRNPFormulaCList);
+
+            beRubroEvalEnvioSimpleList.add(beRubroEvalEnvioSimple);
+        }
+
+        return beRubroEvalEnvioSimpleList;
     }
 
     @Override
@@ -1411,52 +1929,73 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 .readTimeout(30, TimeUnit.SECONDS);
         apiRetrofit.setOkHttpClient(builder.build());
 
-        BEGuardarEntidadesGlobal beGuardarEntidadesGlobal = new BEGuardarEntidadesGlobal();
+        List<String> rubroEvalProcesoList = new ArrayList<>();
         if(serviceEnvioUi instanceof RubroEnviarUi){
             RubroEnviarUi rubroEnviarUi = (RubroEnviarUi)serviceEnvioUi;
-            GEDatosRubroEvaluacionProceso datosRubroEvaluacionProceso = new GEDatosRubroEvaluacionProceso();
-
-            BEDatosRubroEvaluacionProceso beDatosRubroEvaluacionProceso = new BEDatosRubroEvaluacionProceso();
-
-            getRubroEvaluacionProceso(beDatosRubroEvaluacionProceso, rubroEnviarUi.getRubroEvaluacionIdList());
-
-            datosRubroEvaluacionProceso.setBeDatosRubroEvaluacionProceso(beDatosRubroEvaluacionProceso);
-
-            datosRubroEvaluacionProceso.setBeDatosTareaRecursos(getTareaRubro(rubroEnviarUi.getRubroEvaluacionIdList(), beDatosRubroEvaluacionProceso.getRubroEvalProcesoFormula()));
-
-            datosRubroEvaluacionProceso.setBeDatosEnvioGrupo(getGrupoRubro(beDatosRubroEvaluacionProceso.getObtenerRubroEvaluacionProcesoEquipo()));
-
-            beGuardarEntidadesGlobal.setRubroEvaluacionProceso(datosRubroEvaluacionProceso);
+            rubroEvalProcesoList.addAll(rubroEnviarUi.getRubroEvaluacionIdList());
         }
-
-        Gson gson = new Gson();
-        String representacionJSON = gson.toJson(beGuardarEntidadesGlobal);
-        ApiRetrofit.Log.d(TAG, "saveDatosRubrica : " + representacionJSON);
-
-        return saveDatos(apiRetrofit, serviceEnvioUi,beGuardarEntidadesGlobal, callBackSucces );
+        return saveDatosRubro(apiRetrofit, serviceEnvioUi,getListRubroEvalEnvioList(rubroEvalProcesoList), callBackSucces);
     }
 
     @Override
-    public RetrofitCancel saveDatosFormula(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces) {
+    public RetrofitCancel saveDatosFormula(ServiceEnvioUi serviceEnvioUi, CallBackSuccessRelacion<ServiceEnvioUi> callBackSucces) {
+
         OkHttpClient.Builder builder = ProgressManager.getInstance().with(new OkHttpClient.Builder());
         builder.connectTimeout(30, TimeUnit.SECONDS) // connect timeout
                 .writeTimeout(30, TimeUnit.SECONDS) // write timeout
                 .readTimeout(30, TimeUnit.SECONDS);
         apiRetrofit.setOkHttpClient(builder.build());
-
-        BEGuardarEntidadesGlobal beGuardarEntidadesGlobal = new BEGuardarEntidadesGlobal();
+        List<String> rubroEvalProcesoList = new ArrayList<>();
         if(serviceEnvioUi instanceof RubroEnviarUi){
             RubroEnviarUi rubroEnviarUi = (RubroEnviarUi)serviceEnvioUi;
-            GEDatosRubroEvaluacionProceso datosRubroEvaluacionProceso = new GEDatosRubroEvaluacionProceso();
-            BEDatosRubroEvaluacionProceso beDatosRubroEvaluacionProceso = new BEDatosRubroEvaluacionProceso();
-            getRubroEvaluacionProceso(beDatosRubroEvaluacionProceso, rubroEnviarUi.getRubroEvaluacionIdList());
-            datosRubroEvaluacionProceso.setBeDatosRubroEvaluacionProceso(beDatosRubroEvaluacionProceso);
-            datosRubroEvaluacionProceso.setBeDatosTareaRecursos(getTareaRubro(rubroEnviarUi.getRubroEvaluacionIdList(), beDatosRubroEvaluacionProceso.getRubroEvalProcesoFormula()));
-            datosRubroEvaluacionProceso.setBeDatosEnvioGrupo(getGrupoRubro(beDatosRubroEvaluacionProceso.getObtenerRubroEvaluacionProcesoEquipo()));
-            beGuardarEntidadesGlobal.setRubroEvaluacionProceso(datosRubroEvaluacionProceso);
+            rubroEvalProcesoList.addAll(rubroEnviarUi.getRubroEvaluacionIdList());
         }
+        List<BERubroEvalEnvioSimple> rubroEvalEnvioSimpleList = getListFormulaEvalEnvioList(rubroEvalProcesoList);
+        List<String> rubroEvaluacionIdList = new ArrayList<>();
+        for (BERubroEvalEnvioSimple rubroEvalEnvioSimple : rubroEvalEnvioSimpleList){
+            for (RubroEvalRNPFormulaC rubroEvalRNPFormulaC : rubroEvalEnvioSimple.getRubroEvalProcesoFormula()){
+                rubroEvaluacionIdList.add(rubroEvalRNPFormulaC.getRubroEvaluacionSecId());
+            }
+        }
+        List<RetrofitCancel> retrofitCancelList = new ArrayList<>();
+        retrofitCancelList.add(saveDatosRubro(apiRetrofit, serviceEnvioUi, getListRubroEvalEnvioList(rubroEvaluacionIdList), new CallBackSucces<ServiceEnvioUi>() {
+            @Override
+            public void onLoad(boolean success, ServiceEnvioUi item) {
+                retrofitCancelList.add(saveDatosFormula(apiRetrofit, serviceEnvioUi, rubroEvalEnvioSimpleList, callBackSucces));
+            }
 
-        return saveDatos(apiRetrofit, serviceEnvioUi,beGuardarEntidadesGlobal, callBackSucces );
+            @Override
+            public void onRequestProgress(int progress) {
+                callBackSucces.onRequestRubroProgress(progress);
+            }
+
+            @Override
+            public void onResponseProgress(int progress) {
+
+            }
+        }));
+
+        return new RetrofitCancel() {
+            @Override
+            public void enqueue(Callback callback) {
+
+            }
+
+            @Override
+            public boolean isExecuted() {
+                return false;
+            }
+
+            @Override
+            public void cancel() {
+                for (RetrofitCancel retrofitCancel : retrofitCancelList)retrofitCancel.cancel();
+            }
+
+            @Override
+            public boolean isCanceled() {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -1472,7 +2011,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             TareaEnviarUi tareaEnviarUi = (TareaEnviarUi)serviceEnvioUi;
             beGuardarEntidadesGlobal.setTareaRecursos(getTareasRecursos(tareaEnviarUi.getTareaIdLis()));
         }
-
+        Log.d(TAG, " saveDatosTarea :"+serviceEnvioUi.getProgramaEducativoId());
         return saveDatos(apiRetrofit, serviceEnvioUi,beGuardarEntidadesGlobal, callBackSucces );
 
     }
@@ -1560,109 +2099,187 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         return success;
     }
 
+    @Override
+    public BEGuardarEntidadesGlobal getDatosExportarGlobalSimple() {
 
-    private void getRubroEvaluacionProceso(BEDatosRubroEvaluacionProceso beDatosRubroEvaluacionProceso ,List<String> rubroEvaluacionId){
+        return null;
+    }
 
-        List<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = SQLite.select()
-                .from(RubroEvaluacionProcesoC.class)
-                .where(RubroEvaluacionProcesoC_Table.key.in(rubroEvaluacionId))
-                .and(RubroEvaluacionProcesoC_Table.syncFlag.in(RubroEvaluacionProcesoC.FLAG_ADDED, RubroEvaluacionProcesoC.FLAG_UPDATED))
-                .queryList();
+    @Override
+    public RetrofitCancel getCambiosFirebase(int usuarioid, long fechaCambio, boolean modoSynck, Callback<List<ServiceEnvioFbUi>> callback) {
+        OkHttpClient.Builder builder = ProgressManager.getInstance().with(new OkHttpClient.Builder());
+        builder.connectTimeout(10, TimeUnit.SECONDS) // connect timeout
+                .writeTimeout(30, TimeUnit.SECONDS) // write timeout
+                .readTimeout(30, TimeUnit.SECONDS);
+        apiRetrofit.setOkHttpClient(builder.build());
 
-        beDatosRubroEvaluacionProceso.addRubroEvaluacionProceso(rubroEvaluacionProcesoCList);
+        Call<RestApiResponse<List<BERubricaPortalAlumnoFb>>> responseCall = apiRetrofit.getCambiosFirebase(usuarioid, fechaCambio);
+        RetrofitCancel<List<BERubricaPortalAlumnoFb>> retrofitCancel = new RetrofitCancelImpl<>(responseCall);
+        if(!modoSynck){
+            retrofitCancel.enqueue(new RetrofitCancel.Callback<List<BERubricaPortalAlumnoFb>>() {
+                @Override
+                public void onResponse(final List<BERubricaPortalAlumnoFb> response) {
+                    if(response == null){
+                        callback.onResponse(false, null);
+                        Log.d(TAG,"response getWebConfig null");
+                    }else {
+                        callback.onResponse(true, convert(response));
+                        Log.d(TAG,"response getWebConfig true");
+                    }
+                }
 
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onResponse(false, null);
+                    Log.d(TAG,"response getWebConfig Throwable");
+                    t.printStackTrace();
+                }
+            });
+        }else {
+            try {
+                Response<RestApiResponse<List<BERubricaPortalAlumnoFb>>> response = responseCall.execute();
+                if (!response.isSuccessful()){
+                    callback.onResponse(false, null);
+                    Log.d(TAG, "getWebConfig Response: false");
+                }else {
+                    RestApiResponse<List<BERubricaPortalAlumnoFb>> body = response.body();
+                    if(body == null){
+                        callback.onResponse(false, null);
+                        Log.d(TAG, "Successful getWebConfig null ");
+                    } else if(body.isSuccessful()){
+                        Log.d(TAG, "Successful getWebConfig true");
+                        callback.onResponse(true, convert(body.getValue()));
+                    }else {
+                        callback.onResponse(false, null);
+                        Log.d(TAG, "getWebConfig : false");
+                    }
+                }
 
-        beDatosRubroEvaluacionProceso.addRubro_evaluacion_proceso_campotematico(SQLite.select()
-                .from(RubroEvaluacionProcesoCampotematicoC.class)
-                .where(RubroEvaluacionProcesoCampotematicoC_Table.rubroEvalProcesoId.in(rubroEvaluacionId))
-                .and(RubroEvaluacionProcesoCampotematicoC_Table.syncFlag.in(RubroEvaluacionProcesoCampotematicoC.FLAG_ADDED,RubroEvaluacionProcesoCampotematicoC.FLAG_UPDATED ))
-                .queryList());
-
-        beDatosRubroEvaluacionProceso.addObtenerCriterioRubroEvaluacionProceso(SQLite.select()
-                .from(CriterioRubroEvaluacionC.class)
-                .where(CriterioRubroEvaluacionC_Table.rubroEvalProcesoId.in(rubroEvaluacionId))
-                .and(CriterioRubroEvaluacionC_Table.syncFlag.in(CriterioRubroEvaluacionC.FLAG_ADDED,CriterioRubroEvaluacionC.FLAG_UPDATED ))
-                .queryList());
-
-        beDatosRubroEvaluacionProceso.addObtenerRubroEvaluacionProcesoEquipo(SQLite.select()
-                .from(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.class)
-                .where(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC_Table.rubroEvalProcesoId.in(rubroEvaluacionId))
-                .and(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC_Table.syncFlag.withTable().in(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.FLAG_ADDED,T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.FLAG_UPDATED ))
-                .queryList());
-
-        beDatosRubroEvaluacionProceso.addObtenerRubroEvaluacionProcesoIntegrante(SQLite.select(Utils.f_allcolumnTable(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC_Table.ALL_COLUMN_PROPERTIES))
-                .from(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.class)
-                .innerJoin(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.class)
-                .on(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC_Table.rubroEvaluacionEquipoId.withTable().eq(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC_Table.key.withTable()))
-                .where(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC_Table.rubroEvalProcesoId.withTable().in(rubroEvaluacionId))
-                .and(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC_Table.syncFlag.withTable().in(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.FLAG_ADDED,T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.FLAG_UPDATED ))
-                .queryList());
-
-        beDatosRubroEvaluacionProceso.addObtenerEquipoEvaluacionProceso(SQLite.select()
-                .from(EquipoEvaluacionProcesoC.class)
-                .where(EquipoEvaluacionProcesoC_Table.rubroEvalProcesoId.in(rubroEvaluacionId))
-                .and(EquipoEvaluacionProcesoC_Table.syncFlag.in(EquipoEvaluacionProcesoC.FLAG_ADDED,EquipoEvaluacionProcesoC.FLAG_UPDATED ))
-                .queryList());
-
-        beDatosRubroEvaluacionProceso.addEvaluacionProceso(SQLite.select()
-                .from(EvaluacionProcesoC.class)
-                .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.in(rubroEvaluacionId))
-                .and(EvaluacionProcesoC_Table.syncFlag.in(EvaluacionProcesoC.FLAG_ADDED, EvaluacionProcesoC.FLAG_UPDATED))
-                .queryList());
-
-        beDatosRubroEvaluacionProceso.addRubroEvaluacionProcesoComentario(SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionProcesoComentario_Table.ALL_COLUMN_PROPERTIES))
-                .from(RubroEvaluacionProcesoComentario.class)
-                .innerJoin(EvaluacionProcesoC.class)
-                .on(RubroEvaluacionProcesoComentario_Table.evaluacionProcesoId.withTable().eq(EvaluacionProcesoC_Table.key.withTable()))
-                .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.withTable().in(rubroEvaluacionId))
-                .and(RubroEvaluacionProcesoComentario_Table.syncFlag.withTable().in(RubroEvaluacionProcesoComentario.FLAG_ADDED, RubroEvaluacionProcesoComentario.FLAG_UPDATED))
-                .queryList());
-        beDatosRubroEvaluacionProceso.addArchivoRubroProceso(SQLite.select(Utils.f_allcolumnTable(ArchivosRubroProceso_Table.ALL_COLUMN_PROPERTIES))
-                .from(ArchivosRubroProceso.class)
-                .innerJoin(EvaluacionProcesoC.class)
-                .on(ArchivosRubroProceso_Table.evaluacionProcesoId.withTable().eq(EvaluacionProcesoC_Table.key.withTable()))
-                .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.withTable().in(rubroEvaluacionId))
-                .and(ArchivosRubroProceso_Table.syncFlag.withTable().in(ArchivosRubroProceso.FLAG_ADDED, ArchivosRubroProceso.FLAG_UPDATED))
-                .queryList());
-
-        List<RubroEvalRNPFormulaC> rubroEvalRNPFormulaCList = SQLite.select()
-                .from(RubroEvalRNPFormulaC.class)
-                .where(RubroEvalRNPFormulaC_Table.syncFlag.withTable().in(RubroEvalRNPFormulaC.FLAG_ADDED, RubroEvalRNPFormulaC.FLAG_UPDATED))
-                .queryList();
-
-        beDatosRubroEvaluacionProceso.addRubroEvalProcesoFormula(rubroEvalRNPFormulaCList);
-
-        List<RubroEvalRNPFormulaC> rubroEvalRNPFormulaCList2 = SQLite.select()
-                .from(RubroEvalRNPFormulaC.class)
-                .where(RubroEvalRNPFormulaC_Table.rubroEvaluacionPrimId.in(rubroEvaluacionId))
-                .queryList();
-
-        Set<String> rubroDetalleId = new LinkedHashSet<>();
-        for (RubroEvalRNPFormulaC rubroEvalRNPFormulaC : rubroEvalRNPFormulaCList2)rubroDetalleId.add(rubroEvalRNPFormulaC.getRubroEvaluacionSecId());
-
-        if(!rubroDetalleId.isEmpty()){
-            Log.d(TAG, "rubroDetalleId: " + rubroDetalleId);
-            getRubroEvaluacionProceso(beDatosRubroEvaluacionProceso, new ArrayList<String>(rubroDetalleId));
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.d(TAG, "getWebConfig Throwable : false - "+e.getMessage());
+                callback.onResponse(false, null);
+            }
         }
 
+        return retrofitCancel;
+    }
 
-        /*
+    @Override
+    public RetrofitCancel updateRubroEvalaucionServidor(List<String> rubroEvalaucionIds, Callback<Throwable> callback) {
+        OkHttpClient.Builder builder = ProgressManager.getInstance().with(new OkHttpClient.Builder());
+        builder.connectTimeout(10, TimeUnit.SECONDS) // connect timeout
+                .writeTimeout(30, TimeUnit.SECONDS) // write timeout
+                .readTimeout(30, TimeUnit.SECONDS);
+        apiRetrofit.setOkHttpClient(builder.build());
+        Call<RestApiResponse<BEDatosRubro>> responseCall = apiRetrofit.flst_getDatosRubroIds(rubroEvalaucionIds);
+            RetrofitCancel<BEDatosRubro> retrofitCancel = new RetrofitCancelImpl<>(responseCall);
+            retrofitCancel.enqueue(new RetrofitCancel.Callback<BEDatosRubro>() {
+                @Override
+                public void onResponse(BEDatosRubro value) {
+                    if(value==null){
+                        Log.d(TAG, "getWebConfig Response: null");
+                        callback.onResponse(false, new Throwable("updateRubroEvalaucionServidor response null"));
+                    }else {
+                        DatabaseDefinition database = FlowManager.getDatabase(AppDatabase.class);
+                        Transaction transaction = database.beginTransactionAsync(new ITransaction() {
+                            @Override
+                            public void execute(DatabaseWrapper databaseWrapper) {
+                                TransaccionUtils.fastStoreListInsert(RubroEvaluacionProcesoC.class, value.getRubroEvaluacionProceso(), databaseWrapper, true);
+                                TransaccionUtils.fastStoreListInsert(RubroEvalRNPFormulaC.class, value.getRelRubroEvaluacionRNPFormula(), databaseWrapper, true);
+                                TransaccionUtils.fastStoreListInsert(EvaluacionProcesoC.class, value.getEvaluacionProceso(), databaseWrapper, true);
 
-        rubroActualizarUi.setTareaRubroEvaluacionProcesoList(new ArrayList<Object>(SQLite.select()
-                .from(TareaRubroEvaluacionProceso.class)
-                .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.eq(rubroEvaluacionProcesoC.getKey()))
-                .and(TareaRubroEvaluacionProceso_Table.syncFlag.in(TareaRubroEvaluacionProceso.FLAG_ADDED, TareaRubroEvaluacionProceso.FLAG_UPDATED))
-                .queryList()));
+                                TransaccionUtils.fastStoreListInsert(CriterioRubroEvaluacionC.class, value.getCriterioRubroEvaluacionProceso(), databaseWrapper, true);
+                                TransaccionUtils.fastStoreListInsert(RubroEvaluacionProcesoCampotematicoC.class, value.getRubroEvaluacionProcesoCampotematico(), databaseWrapper, true);
+                                TransaccionUtils.fastStoreListInsert(ComentarioPredeterminado.class, value.getComentarioPredeterminado(), databaseWrapper, true);
+                                TransaccionUtils.fastStoreListInsert(ArchivosRubroProceso.class, value.getArchivoRubroProceso(), databaseWrapper, true);
+                                TransaccionUtils.fastStoreListInsert(RubroEvaluacionProcesoComentario.class, value.getRubroEvaluacionProcesoComentario(), databaseWrapper, true);
 
-        rubroActualizarUi.setTareaCList(new ArrayList<Object>(SQLite.select(Utils.f_allcolumnTable(TareasC_Table.ALL_COLUMN_PROPERTIES))
-                .from(TareasC.class)
-                .innerJoin(TareaRubroEvaluacionProceso.class)
-                .on(TareasC_Table.key.withTable().eq(TareaRubroEvaluacionProceso_Table.tareaId.withTable()))
-                .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.withTable().eq(rubroEvaluacionProcesoC.getKey()))
-                .and(TareaRubroEvaluacionProceso_Table.syncFlag.withTable().in(TareaRubroEvaluacionProceso.FLAG_ADDED, TareaRubroEvaluacionProceso.FLAG_UPDATED))
-                .queryList()));*/
+                            }
+                        }).success(new Transaction.Success() {
+                            @Override
+                            public void onSuccess(@NonNull Transaction transaction) {
+                                callback.onResponse(true, null);
 
+                            }
+                        }).error(new Transaction.Error() {
+                            @Override
+                            public void onError(@NonNull Transaction transaction, @NonNull Throwable error) {
+                                error.printStackTrace();
+                                callback.onResponse(false, error);
+                            }
+                        }).build();
 
+                        transaction.execute();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onResponse(false, t);
+                }
+            });
+            return retrofitCancel;
+    }
+
+    @Override
+    public String changeEstadoSesionEjecutado(int sesionAprendizajeDocenteId) {
+        String nombreSesionModiciada = null;
+            SesionAprendizaje sesionAprendizaje = SQLite.select()
+                    .from(SesionAprendizaje.class)
+                    .where(SesionAprendizaje_Table.sesionAprendizajeId.eq(sesionAprendizajeDocenteId))
+                    .querySingle();
+
+        if(sesionAprendizaje!=null){
+            if(sesionAprendizaje.getEstadoEjecucionId()!=317){
+                nombreSesionModiciada = sesionAprendizaje.getTitulo();
+                sesionAprendizaje.setEstadoEjecucionId(317);
+                sesionAprendizaje.save();
+            }
+
+        }
+        return nombreSesionModiciada;
+    }
+
+    private List<ServiceEnvioFbUi> convert(List<BERubricaPortalAlumnoFb> beRubricaPortalAlumnoFbList){
+        List<ServiceEnvioFbUi> serviceEnvioFbUiList = new ArrayList<>();
+        for (BERubricaPortalAlumnoFb beRubricaPortalAlumnoFb : beRubricaPortalAlumnoFbList){
+            ServiceEnvioFbUi serviceEnvioFbUi = new ServiceEnvioFbUi();
+            serviceEnvioFbUi.setKey(beRubricaPortalAlumnoFb.getKey());
+            serviceEnvioFbUi.setNombre(beRubricaPortalAlumnoFb.getNombre());
+            if("SESIONALUMNO".equals(beRubricaPortalAlumnoFb.getTipo())){
+                serviceEnvioFbUi.setTipo(ServiceEnvioUi.Tipo.SessionAlumno);
+            }else if("TAREAALUMNO".equals(beRubricaPortalAlumnoFb.getTipo())){
+                serviceEnvioFbUi.setTipo(ServiceEnvioUi.Tipo.TareaAlumno);
+            }
+            serviceEnvioFbUi.setFechaModificacion(beRubricaPortalAlumnoFb.getFechaModificacion());
+            serviceEnvioFbUi.setSesionAprendizajeId(beRubricaPortalAlumnoFb.getSesionAprendizajeId());
+            serviceEnvioFbUi.setSesionAprendizajeId(beRubricaPortalAlumnoFb.getSesionAprendizajeId());
+            serviceEnvioFbUi.setRubroEvaluacionId(beRubricaPortalAlumnoFb.getRubroEvaluacionId());
+            serviceEnvioFbUi.setSesionAprendizajeDocenteId(beRubricaPortalAlumnoFb.getSesionAprendizajeDocenteId());
+            serviceEnvioFbUi.setTareaId(beRubricaPortalAlumnoFb.getTareaId());
+            List<ServiceEnvioFbUi.Detalle> detalleList =  new ArrayList<>();
+            if(beRubricaPortalAlumnoFb.getDetalles()!=null){
+                for (BERubricaPortalAlumnoFb.Detalle detalleFb : beRubricaPortalAlumnoFb.getDetalles()){
+                    ServiceEnvioFbUi.Detalle detalle =  new ServiceEnvioFbUi.Detalle();
+                    detalle.setInstrumentoEvalId(detalleFb.getInstrumentoEvalId());
+                    detalle.setNombre(TextUtils.isEmpty(detalleFb.getNombre())? detalleFb.getPregunta(): detalleFb.getNombre());
+                    detalle.setPreguntaPortalAlumnoId(detalleFb.getPreguntaPortalAlumnoId());
+                    detalle.setRubroEvalProcesoId(detalleFb.getRubroEvalProcesoId());
+                    detalleList.add(detalle);
+                }
+            }
+            serviceEnvioFbUi.setDetalles(detalleList);
+            serviceEnvioFbUiList.add(serviceEnvioFbUi);
+        }
+
+        return serviceEnvioFbUiList;
+    }
+
+    @Override
+    public List<BERubroEvalEnvioSimple> getLisRubroEvalSimple() {
+
+        return null;
     }
 
     private GEDatosTareasRecursos getTareaRubro(List<String> rubroEvaluacionIdList, List<RubroEvalRNPFormulaC> rubroEvalRNPFormulaCList) {
@@ -1682,7 +2299,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         }
 
         GEDatosTareasRecursos geDatosTareasRecursos = getTareasRecursos(tareaIdList);
-        geDatosTareasRecursos.setTareaRubroEvaluacionProceso(tareaRubroEvaluacionProcesoList);
+        //geDatosTareasRecursos.setTareaRubroEvaluacionProceso(tareaRubroEvaluacionProcesoList);
         return geDatosTareasRecursos;
 
     }
@@ -1696,6 +2313,67 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 .where(TareasC_Table.key.in(tareaIdList))
                 .and(TareasC_Table.syncFlag.in(TareasC.FLAG_ADDED, TareasC.FLAG_UPDATED))
                 .queryList();
+
+        for (TareasC tareasC : tareasCList){
+            RubroEvaluacionProcesoC rubroEvaluacionProcesoC = SQLite.select()
+                    .from(RubroEvaluacionProcesoC.class)
+                    .where(RubroEvaluacionProcesoC_Table.tareaId
+                            .eq(tareasC.getKey()))
+                    .and(RubroEvaluacionProcesoC_Table.estadoId.notEq(RubroEvaluacionProcesoC.ESTADO_ELIMINADO))
+                    .querySingle();
+            if(rubroEvaluacionProcesoC!=null){
+                tareasC.setRubroEvalProcesoId(rubroEvaluacionProcesoC.getKey());
+                tareasC.setTiporubroId(rubroEvaluacionProcesoC.getTiporubroid());
+                tareasC.setTipoNotaId(rubroEvaluacionProcesoC.getTipoNotaId());
+                tareasC.setCompetenciaId(rubroEvaluacionProcesoC.getCompetenciaId());
+            }
+
+            UnidadAprendizaje unidadAprendizaje = SQLite.select()
+                    .from(UnidadAprendizaje.class)
+                    .where(UnidadAprendizaje_Table.unidadAprendizajeId.eq(tareasC.getUnidadAprendizajeId()))
+                    .querySingle();
+            if(unidadAprendizaje!=null){
+                tareasC.setSilaboEventoId(unidadAprendizaje.getSilaboEventoId());
+            }
+            T_GC_REL_UNIDAD_APREN_EVENTO_TIPO unidadTipo = SQLite.select()
+                    .from(T_GC_REL_UNIDAD_APREN_EVENTO_TIPO.class)
+                    .where(T_GC_REL_UNIDAD_APREN_EVENTO_TIPO_Table.unidadaprendizajeId.eq(tareasC.getUnidadAprendizajeId()))
+                    .querySingle();
+            if(unidadTipo!=null){
+                tareasC.setTipoPeriodoId(unidadTipo.getTipoid());
+            }
+
+            SesionAprendizaje sesionAprendizaje = SQLite.select()
+                    .from(SesionAprendizaje.class)
+                    .where(SesionAprendizaje_Table.sesionAprendizajeId
+                            .eq(tareasC.getSesionAprendizajeId()))
+                    .querySingle();
+            if(sesionAprendizaje!=null){
+                tareasC.setNombreSesion(sesionAprendizaje.getTitulo());
+                tareasC.setNroSesion(sesionAprendizaje.getNroSesion());
+            }
+
+            SessionUser sessionUser =  SessionUser.getCurrentUser();
+            int personaId = sessionUser!=null?sessionUser.getPersonaId():0;
+            Persona persona = SQLite.select()
+                    .from(Persona.class)
+                    .where(Persona_Table.personaId
+                            .eq(personaId))
+                    .querySingle();
+
+            if(persona!=null){
+                String fileName = persona.getFoto();
+                if(!TextUtils.isEmpty(fileName)){
+                    int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+                    fileName = fileName.substring(p + 1);
+                }
+
+                tareasC.setDatosUsuarioCreador((persona.getNombres()+" "+persona.getApellidos()).toUpperCase() + "$_#" + persona.getPersonaId() + "$_#" + fileName );
+            }
+
+        }
+
+
         tareaIdList.clear();
         for (TareasC tareasC : tareasCList)tareaIdList.add(tareasC.getKey());
 
@@ -1851,8 +2529,8 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         serviceEnvioUiList.addAll(getCasosEnviar(cargaCursoId));
         serviceEnvioUiList.addAll(getSesionesEnviar(cargaCursoId, anioAcademicoId));
         serviceEnvioUiList.addAll(getTareaEnviar(cargaCursoId, anioAcademicoId, silaboEventoId));
-        serviceEnvioUiList.addAll(getResultadoEnvio(silaboEventoId));
         serviceEnvioUiList.addAll(getRubroEnviar(silaboEventoId));
+        serviceEnvioUiList.addAll(getResultadoEnvio(silaboEventoId));
         serviceEnvioUiList.addAll(getcerrarCursoEnviarUi());
         return serviceEnvioUiList;
     }
@@ -1891,6 +2569,8 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         }
         return calendarioPeriodoUiList;
     }
+
+
 
     @Override
     public CalendarioPeriodoUi getCalendarioPeriodo(int calendarioPeriodoId) {
@@ -3299,7 +3979,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                             TransaccionUtils.fastStoreListInsert(RecursoArchivo.class, response.getRecursoArchivo(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(RecursoDidacticoEventoC.class, response.getRecursoDidactico(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(Archivo.class, response.getArchivo(), databaseWrapper, true);
-                            TransaccionUtils.fastStoreListInsert(TareaRubroEvaluacionProceso.class, response.getTareaRubroEvaluacion(), databaseWrapper, true);
+                            //TransaccionUtils.fastStoreListInsert(TareaRubroEvaluacionProceso.class, response.getTareaRubroEvaluacion(), databaseWrapper, true);
 
                         }
                     }).success(new Transaction.Success() {
@@ -3376,7 +4056,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                             TransaccionUtils.fastStoreListInsert(RecursoArchivo.class, response.getRecursoArchivo(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(RecursoDidacticoEventoC.class, response.getRecursoDidactico(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(Archivo.class, response.getArchivo(), databaseWrapper, true);
-                            TransaccionUtils.fastStoreListInsert(TareaRubroEvaluacionProceso.class, response.getTareaRubroEvaluacion(), databaseWrapper, true);
+                            //TransaccionUtils.fastStoreListInsert(TareaRubroEvaluacionProceso.class, response.getTareaRubroEvaluacion(), databaseWrapper, true);
 
                         }
                     }).success(new Transaction.Success() {
@@ -3949,7 +4629,10 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
 
         clearDataRubroEvaluacionProceso();
 
-        Set<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = new LinkedHashSet<>(ConsultaUtils.getChangeItemsTable(RubroEvaluacionProcesoC.class));
+        Set<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = new LinkedHashSet<>(SQLite.select()
+                .from(RubroEvaluacionProcesoC.class)
+                .where(RubroEvaluacionProcesoC_Table.syncFlag.in(BaseEntity.FLAG_ADDED,BaseEntity.FLAG_UPDATED, BaseEntity.FLAG_ERROREXPORTED))
+                .queryList());
         List<T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC> tRnMaeRubroEvaluacionProcesoEquipocList = ConsultaUtils.getChangeItemsTable(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.class);
         List<EquipoEvaluacionProcesoC> equipoEvaluacionProcesoCList = ConsultaUtils.getChangeItemsTable(EquipoEvaluacionProcesoC.class);
         Set<EvaluacionProcesoC> evaluacionProcesoCList = new LinkedHashSet<>(ConsultaUtils.getChangeItemsTable(EvaluacionProcesoC.class));
@@ -4062,6 +4745,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                         .where(RubroEvaluacionProcesoC_Table.key.in(rubroEvaluacionIdList))
                         .and(RubroEvaluacionProcesoC_Table.silaboEventoId.withTable().eq(silaboEventoId))
                         .and(RubroEvaluacionProcesoC_Table.calendarioPeriodoId.eq(itemCalendarioPeriodo.getCalendarioPeriodoId()))
+                        .and(RubroEvaluacionProcesoC_Table.syncFlag.notEq(BaseEntity.FLAG_PREADD))
                         .queryList()){
                     if(rubroEvaluacionProcesoC.getTipoFormulaId()!=0){
                         rubroFormulaLocalList.add(rubroEvaluacionProcesoC.getKey());
@@ -4073,6 +4757,16 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 }
 
 
+                if(!rubroEvaluacionLocalList.isEmpty()){
+                    RubroEnviarUi rubroEnviarLocalUi = new RubroEnviarUi();
+                    rubroEnviarLocalUi.setNombre("Rubro evaluación " + bimestre);
+                    rubroEnviarLocalUi.setRubroEvaluacionIdList(rubroEvaluacionLocalList);
+                    rubroEnviarLocalUi.setBimestre(true);
+                    //String descripcion = "Existen " + rubroEvaluacionLocalList.size() + " rubro modificados a enviar";
+                    String descripcion2 =  rubroEvaluacionLocalList.size() + (rubroEvaluacionLocalList.size()==1?" rubro evaluación no se guardó correctamente": " rubros evaluación no se guardaron correctamente");
+                    rubroEnviarLocalUi.setDescripcion(descripcion2);
+                    rubroEnviarUiList.add(rubroEnviarLocalUi);
+                }
 
                 if(!rubricaEvaluacionLocalList.isEmpty()){
                     RubroEnviarUi rubroEnviarRubricaLocalUi = new RubroEnviarUi();
@@ -4080,19 +4774,10 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                     rubroEnviarRubricaLocalUi.setRubroEvaluacionIdList(rubricaEvaluacionLocalList);
                     rubroEnviarRubricaLocalUi.setBimestre(true);
                     for (String key : rubricaEvaluacionLocalList)Log.d(TAG, "rubrica " + key);
-                    String descripcion = "Existen " + rubricaEvaluacionLocalList.size() + " rúbricas modificados a enviar";
-                    rubroEnviarRubricaLocalUi.setDescripcion(descripcion);
+                    //String descripcion = "Existen " + rubricaEvaluacionLocalList.size() + " rúbricas modificados a enviar";
+                    String descripcion2 =  rubricaEvaluacionLocalList.size() + (rubricaEvaluacionLocalList.size()==1?" rúbrica evaluación no se guardó correctamente": " rúbricas evaluación no se guardaron correctamente");
+                    rubroEnviarRubricaLocalUi.setDescripcion(descripcion2);
                     rubroEnviarUiList.add(rubroEnviarRubricaLocalUi);
-                }
-
-                if(!rubroEvaluacionLocalList.isEmpty()){
-                    RubroEnviarUi rubroEnviarLocalUi = new RubroEnviarUi();
-                    rubroEnviarLocalUi.setNombre("Rubro evaluación " + bimestre);
-                    rubroEnviarLocalUi.setRubroEvaluacionIdList(rubroEvaluacionLocalList);
-                    rubroEnviarLocalUi.setBimestre(true);
-                    String descripcion = "Existen " + rubroEvaluacionLocalList.size() + " rubro modificados a enviar";
-                    rubroEnviarLocalUi.setDescripcion(descripcion);
-                    rubroEnviarUiList.add(rubroEnviarLocalUi);
                 }
 
                 if(!rubroFormulaLocalList.isEmpty()){
@@ -4100,8 +4785,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                     rubroEnviarFormulaLocalUi.setNombre("Fórmula evaluación " + bimestre);
                     rubroEnviarFormulaLocalUi.setRubroEvaluacionIdList(rubroFormulaLocalList);
                     rubroEnviarFormulaLocalUi.setBimestre(true);
-                    String descripcion = "Existen " + rubroFormulaLocalList.size() + " fórmulas modificados a enviar";
-                    rubroEnviarFormulaLocalUi.setDescripcion(descripcion);
+                    //String descripcion = "Existen " + rubroFormulaLocalList.size() + " fórmulas modificados a enviar";
+                    String descripcion2 =  rubroFormulaLocalList.size() + (rubroFormulaLocalList.size()==1?" fórmula evaluación no se guardó correctamente": " fórmulas evaluación no se guardaron correctamente");
+                    rubroEnviarFormulaLocalUi.setDescripcion(descripcion2);
                     rubroEnviarUiList.add(rubroEnviarFormulaLocalUi);
                 }
             }
@@ -4113,6 +4799,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             for (RubroEvaluacionProcesoC rubroEvaluacionProcesoC: SQLite.select()
                     .from(RubroEvaluacionProcesoC.class)
                     .where(RubroEvaluacionProcesoC_Table.key.in(rubroEvaluacionIdList))
+                    .and(RubroEvaluacionProcesoC_Table.syncFlag.notIn(BaseEntity.FLAG_PREADD, BaseEntity.FLAG_ERROREXPORTED))
                     .queryList()){
 
                 if(rubroEvaluacionProcesoC.getTipoFormulaId()!=0){
@@ -4130,8 +4817,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 rubroEnviarRubricaLocalUi.setNombre("Rúbrica evaluación");
                 rubroEnviarRubricaLocalUi.setRubroEvaluacionIdList(rubricaEvaluacionLocalList);
                 rubroEnviarRubricaLocalUi.setBimestre(true);
-                String descripcion = "Existen " + rubricaEvaluacionLocalList.size() + " rúbricas modificados a enviar";
-                rubroEnviarRubricaLocalUi.setDescripcion(descripcion);
+                //String descripcion = "Existen " + rubricaEvaluacionLocalList.size() + " rúbricas modificados a enviar";
+                String descripcion2 =  rubricaEvaluacionLocalList.size() + (rubricaEvaluacionLocalList.size()==1?" rúbrica evaluación no se guardó correctamente": " rúbricas evaluación no se guardaron correctamente");
+                rubroEnviarRubricaLocalUi.setDescripcion(descripcion2);
                 rubroEnviarUiList.add(rubroEnviarRubricaLocalUi);
             }
 
@@ -4140,8 +4828,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 rubroEnviarLocalUi.setNombre("Rubro evaluación");
                 rubroEnviarLocalUi.setRubroEvaluacionIdList(rubroEvaluacionLocalList);
                 rubroEnviarLocalUi.setBimestre(true);
-                String descripcion = "Existen " + rubroEvaluacionLocalList.size() + " rubro modificados a enviar";
-                rubroEnviarLocalUi.setDescripcion(descripcion);
+                //String descripcion = "Existen " + rubroEvaluacionLocalList.size() + " rubro modificados a enviar";
+                String descripcion2 =  rubroEvaluacionLocalList.size() + (rubroEvaluacionLocalList.size()==1?" rubro evaluación no se guardó correctamente": " rubros evaluación no se guardaron correctamente");
+                rubroEnviarLocalUi.setDescripcion(descripcion2);
                 rubroEnviarUiList.add(rubroEnviarLocalUi);
             }
 
@@ -4150,8 +4839,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 rubroEnviarFormulaLocalUi.setNombre("Fórmula evaluación");
                 rubroEnviarFormulaLocalUi.setRubroEvaluacionIdList(rubroFormulaLocalList);
                 rubroEnviarFormulaLocalUi.setBimestre(true);
-                String descripcion = "Existen " + rubroFormulaLocalList.size() + " fórmulas modificados a enviar";
-                rubroEnviarFormulaLocalUi.setDescripcion(descripcion);
+                //String descripcion = "Existen " + rubroFormulaLocalList.size() + " fórmulas modificados a enviar";
+                String descripcion2 =  rubroFormulaLocalList.size() + (rubroFormulaLocalList.size()==1?" fórmula evaluación no se guardó correctamente": " fórmulas evaluación no se guardaron correctamente");
+                rubroEnviarFormulaLocalUi.setDescripcion(descripcion2);
                 rubroEnviarUiList.add(rubroEnviarFormulaLocalUi);
             }
         }
@@ -4320,8 +5010,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                     TareaEnviarUi tareaEnviarUi = new TareaEnviarUi();
                     tareaEnviarUi.setTipo(ServiceEnvioUi.Tipo.Tareas);
                     tareaEnviarUi.setNombre("Tarea "+ bimestre);
-                    String descripcion = "Existen " + tareaIdList.size() + " tareas modificadas a enviar";
-                    tareaEnviarUi.setDescripcion(descripcion);
+                    //String descripcion = "Existen " + tareaIdList.size() + " tareas modificadas a enviar";
+                    String descripcion2 =  tareaIdList.size() + (tareaIdList.size()==1?" tarea no se guardó correctamente": " tareas no se guardaron correctamente");
+                    tareaEnviarUi.setDescripcion(descripcion2);
                     tareaEnviarUi.setTareaIdLis(new ArrayList<String>(tareaIdList));
                     tareaEnviarUiList.add(tareaEnviarUi);
                 }
@@ -4334,8 +5025,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             if(!tareaIdList.isEmpty()){
                 TareaEnviarUi tareaEnviarUi = new TareaEnviarUi();
                 tareaEnviarUi.setNombre("Tarea");
-                String descripcion = "Existen " + tareaIdList.size() + " tareas modificadas a enviar";
-                tareaEnviarUi.setDescripcion(descripcion);
+                //String descripcion = "Existen " + tareaIdList.size() + " tareas modificadas a enviar";
+                String descripcion2 =  tareaIdList.size() + (tareaIdList.size()==1?" tarea no se guardó correctamente": " tareas no se guardaron correctamente");
+                tareaEnviarUi.setDescripcion(descripcion2);
                 tareaEnviarUi.setTipo(ServiceEnvioUi.Tipo.Tareas);
                 tareaEnviarUi.setTareaIdLis(new ArrayList<String>(tareaIdList));
                 tareaEnviarUiList.add(tareaEnviarUi);
@@ -4410,8 +5102,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             if(!sesionesIdList.isEmpty()){
                 SesionesEnviarUi sesionesEnviarUi = new SesionesEnviarUi();
                 sesionesEnviarUi.setNombre("Sesión");
-                String descripcion = "Existen " + sesionesIdList.size() + " sesiones modificadas a enviar";
-                sesionesEnviarUi.setDescripcion(descripcion);
+                //String descripcion = "Existen " + sesionesIdList.size() + " sesiones modificadas a enviar";
+                String descripcion2 =  sesionesIdList.size() + (sesionesIdList.size()==1?" sesión no se guardó correctamente": " sesiones no se guardaron correctamente");
+                sesionesEnviarUi.setDescripcion(descripcion2);
                 sesionesEnviarUi.setTipo(ServiceEnvioUi.Tipo.Unidades);
                 sesionesEnviarUi.setSesionesIdList(sesionesIdList);
                 sesionesEnviarUiList.add(sesionesEnviarUi);
@@ -4496,8 +5189,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 GrupoEnviarUi grupoEnviarUi = new GrupoEnviarUi();
                 grupoEnviarUi.setTipo(ServiceEnvioUi.Tipo.Grupos);
                 grupoEnviarUi.setNombre("Lista de Grupo");
-                String descripcion = "Existen " + grupoEquipoIdList.size() + " lista de grupos modificadas a enviar";
-                grupoEnviarUi.setDescripcion(descripcion);
+                //String descripcion = "Existen " + grupoEquipoIdList.size() + " lista de grupos modificadas a enviar";
+                String descripcion2 =  grupoEquipoIdList.size() + (grupoEquipoIdList.size()==1?" grupo no se guardó correctamente": " grupos no se guardaron correctamente");
+                grupoEnviarUi.setDescripcion(descripcion2);
                 grupoEnviarUi.setGrupoEquipoList(grupoEquipoIdList);
                 grupoEnviarUiList.add(grupoEnviarUi);
             }
@@ -4553,8 +5247,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                     CasosEnviarUi casosEnviarUi = new CasosEnviarUi();
                     casosEnviarUi.setTipo(ServiceEnvioUi.Tipo.Casos);
                     casosEnviarUi.setNombre("Casos "+ bimestre);
-                    String descripcion = "Existen " + casosIdList.size() + " casos modificadas a enviar";
-                    casosEnviarUi.setDescripcion(descripcion);
+                    String descripcion2 =  casosIdList.size() + (casosIdList.size()==1?" caso no se guardó correctamente": " casos no se guardaron correctamente");
+                    //String descripcion = "Existen " + casosIdList.size() + " casos modificadas a enviar";
+                    casosEnviarUi.setDescripcion(descripcion2);
                     casosEnviarUi.setCasosIdList(casosIdList);
                     casosEnviarUiList.add(casosEnviarUi);
                 }
@@ -4569,8 +5264,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 CasosEnviarUi casosEnviarUi = new CasosEnviarUi();
                 casosEnviarUi.setTipo(ServiceEnvioUi.Tipo.Casos);
                 casosEnviarUi.setNombre("Casos");
-                String descripcion = "Existen " + integerList.size() + " casos modificadas a enviar";
-                casosEnviarUi.setDescripcion(descripcion);
+                String descripcion2 =  integerList.size() + (integerList.size()==1?" caso no se guardó correctamente": " casos no se guardaron correctamente");
+                //String descripcion = "Existen " + integerList.size() + " casos modificadas a enviar";
+                casosEnviarUi.setDescripcion(descripcion2);
                 casosEnviarUi.setCasosIdList(new ArrayList<String>(integerList));
                 casosEnviarUiList.add(casosEnviarUi);
             }
@@ -4625,8 +5321,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                     ResultadoEnvioUi resultadoEnvioUi = new ResultadoEnvioUi();
                     resultadoEnvioUi.setTipo(ServiceEnvioUi.Tipo.Resultado);
                     resultadoEnvioUi.setNombre("Rubro resultado "+ bimestre);
-                    String descripcion = "Existen " + rubroResultadoIdList.size() + " rubros resultados modificados a enviar";
-                    resultadoEnvioUi.setDescripcion(descripcion);
+                    //String descripcion = "Existen " + rubroResultadoIdList.size() + " rubros resultados modificados a enviar";
+                    String descripcion2 =  integerList.size() + (integerList.size()==1?" rubro resultado no se guardó correctamente": " rubros resultado no se guardaron correctamente");
+                    resultadoEnvioUi.setDescripcion(descripcion2);
                     resultadoEnvioUi.setRubroEvaluacionResultadoIdList(rubroResultadoIdList);
                     resultadoEnvioUiList.add(resultadoEnvioUi);
                 }
@@ -4641,8 +5338,9 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 ResultadoEnvioUi resultadoEnvioUi = new ResultadoEnvioUi();
                 resultadoEnvioUi.setTipo(ServiceEnvioUi.Tipo.Resultado);
                 resultadoEnvioUi.setNombre("Rubro resultado");
-                String descripcion = "Existen " + integerList.size() + " rubros resultados modificados a enviar";
-                resultadoEnvioUi.setDescripcion(descripcion);
+                String descripcion2 =  integerList.size() + (integerList.size()==1?" rubro resultado no se guardó correctamente": " rubros resultado no se guardaron correctamente");
+                //String descripcion = "Existen " + integerList.size() + " rubros resultados modificados a enviar";
+                resultadoEnvioUi.setDescripcion(descripcion2);
                 resultadoEnvioUi.setRubroEvaluacionResultadoIdList(new ArrayList<Integer>(integerList));
                 resultadoEnvioUiList.add(resultadoEnvioUi);
             }
@@ -4670,7 +5368,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                     cargaCursoCalendarioPeriodoIdList.add(cargaCursoCalendarioPeriodo.getCargaCursoCalendarioPeriodoId());
                 }
             }
-            String descripcion = "se modificó el cursos";
+            String descripcion = "Periodo del curso no se guardó correctamente";
             cerrarCursoEnviarUi.setDescripcion(descripcion);
             cerrarCursoEnviarUi.setCargaCursoCalendarioPeriodoIdList(cargaCursoCalendarioPeriodoIdList);
             cerrarCursoEnviarUiList.add(cerrarCursoEnviarUi);
@@ -4765,7 +5463,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         BEDatosRubroEvaluacionProceso beDatosRubroEvaluacionProceso = geDatosRubroEvaluacionProceso.getBeDatosRubroEvaluacionProceso();
         if(beDatosRubroEvaluacionProceso!=null){
             TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvaluacionProcesoC.class, beDatosRubroEvaluacionProceso.getRubroEvaluacionProceso(), syncFlag, databaseWrapper, true);
-            Log.d(TAG, "Size getRubroEvalProcesoFormula: "+ beDatosRubroEvaluacionProceso.getRubroEvalProcesoFormula().size());
+            //Log.d(TAG, "Size getRubroEvalProcesoFormula: "+ beDatosRubroEvaluacionProceso.getRubroEvalProcesoFormula().size());
             TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvalRNPFormulaC.class, beDatosRubroEvaluacionProceso.getRubroEvalProcesoFormula(), syncFlag, databaseWrapper, false);
             TransaccionUtils.fastStoreListSyncFlagUpdate(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.class, beDatosRubroEvaluacionProceso.getObtenerRubroEvaluacionProcesoEquipo(), syncFlag, databaseWrapper, false);
             TransaccionUtils.fastStoreListSyncFlagUpdateRel(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.class, beDatosRubroEvaluacionProceso.getObtenerRubroEvaluacionProcesoIntegrante(), syncFlag, databaseWrapper, false);
@@ -4773,7 +5471,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             TransaccionUtils.fastStoreListSyncFlagUpdateRel(RubroEvaluacionProcesoCampotematicoC.class, beDatosRubroEvaluacionProceso.getRubro_evaluacion_proceso_campotematico(), syncFlag, databaseWrapper, false);
             TransaccionUtils.fastStoreListSyncFlagUpdate(CriterioRubroEvaluacionC.class, beDatosRubroEvaluacionProceso.getObtenerCriterioRubroEvaluacionProceso(), syncFlag, databaseWrapper, false);
 
-            Log.d(TAG, "Size eval: "+ beDatosRubroEvaluacionProceso.getEvaluacionProceso().size());
+            //Log.d(TAG, "Size eval: "+ beDatosRubroEvaluacionProceso.getEvaluacionProceso().size());
             TransaccionUtils.fastStoreListSyncFlagUpdate(EvaluacionProcesoC.class, beDatosRubroEvaluacionProceso.getEvaluacionProceso(), syncFlag,databaseWrapper, true);
 
             TransaccionUtils.fastStoreListSyncFlagUpdate(RubroEvaluacionProcesoComentario.class,beDatosRubroEvaluacionProceso.getRubroEvaluacionProcesoComentario(), syncFlag, databaseWrapper, false);
@@ -4796,7 +5494,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             TransaccionUtils.fastStoreListSyncFlagUpdate(RecursoDidacticoEventoC.class,beDatosTareaRecursos.getRecursoDidactico(), syncFlag, databaseWrapper, false);
             TransaccionUtils.fastStoreListSyncFlagUpdateRel(TareasRecursosC.class,beDatosTareaRecursos.getTareasRecursos(), syncFlag, databaseWrapper, false);
             TransaccionUtils.fastStoreListSyncFlagUpdate(TareasC.class,beDatosTareaRecursos.getTareas(), syncFlag, databaseWrapper, false);
-            TransaccionUtils.fastStoreListSyncFlagUpdate(TareaRubroEvaluacionProceso.class,beDatosTareaRecursos.getTareaRubroEvaluacionProceso(), syncFlag, databaseWrapper, false);
+            //TransaccionUtils.fastStoreListSyncFlagUpdate(TareaRubroEvaluacionProceso.class,beDatosTareaRecursos.getTareaRubroEvaluacionProceso(), syncFlag, databaseWrapper, false);
         }
 
 
@@ -4841,7 +5539,8 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
     //#endregion
 
     //#region initNotification Padre Mentor
-    protected void initNotification(BEGuardarEntidadesGlobal beGuardarEntidadesGlobal){
+
+    private void initNotification(BEGuardarEntidadesGlobal beGuardarEntidadesGlobal){
         //hallar el cambio-tareacurso
         int programaEducativoId= beGuardarEntidadesGlobal.getProgramaEducativoId();
         List<Caso> casosList = beGuardarEntidadesGlobal.getCasos()!=null?beGuardarEntidadesGlobal.getCasos().getCaso():new ArrayList<Caso>();
@@ -4849,12 +5548,12 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         List<EvaluacionProcesoC>evaluacionProcesoCList = beGuardarEntidadesGlobal.getRubroEvaluacionProceso()!=null?beGuardarEntidadesGlobal.getRubroEvaluacionProceso().getBeDatosRubroEvaluacionProceso().getEvaluacionProceso(): new ArrayList<EvaluacionProcesoC>();
         List<AsistenciaSesionAlumnoC>asistenciaSesionAlumnoCList= beGuardarEntidadesGlobal.getAsistencia()!=null?beGuardarEntidadesGlobal.getAsistencia().getBeDatosEnvioAsistencia().getAsistenciaAlumnos(): new ArrayList<AsistenciaSesionAlumnoC>();
         List<TareasC> tareasCList = beGuardarEntidadesGlobal.getTareaRecursos()!=null?beGuardarEntidadesGlobal.getTareaRecursos().getTareas(): new ArrayList<TareasC>();
-        Log.d(TAG, "asistencia  Size: "+  asistenciaSesionAlumnoCList.size());
+        //Log.d(TAG, "asistencia  Size: "+  asistenciaSesionAlumnoCList.size());
 
 
         Set<Integer> evaluacionAlumnoIdList = new LinkedHashSet<>();
 
-        if(evaluacionProcesoCList.size()!=0)
+        if(evaluacionProcesoCList!=null&&evaluacionProcesoCList.size()!=0)
         {
             List<String>Stringlist= new ArrayList<>();
             for( EvaluacionProcesoC evaluacionProcesoC: evaluacionProcesoCList){
@@ -4901,13 +5600,13 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
 
         int countTarea = 0;
         for(TareasC tareasC: tareasCList){
-            if(tareasC.syncFlag== BaseEntity.FLAG_UPDATED || tareasC.syncFlag== BaseEntity.FLAG_ADDED){
+            if(tareasC.getEstadoId()==TareasC.PUBLICADO){
                 countTarea++;
                 break;
             }
 
         }
-
+        Log.d(TAG, "countTarea : "+  countTarea);
         Set<Integer> asistenciaAlumnoIdList = new LinkedHashSet<>();
         if(!asistenciaSesionAlumnoCList.isEmpty()){
             for(AsistenciaSesionAlumnoC asistencia: asistenciaSesionAlumnoCList)
@@ -4936,11 +5635,82 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             model.setAsistencia(asistenciaIdList);
         }
 
-
         if(tareaCount!=0 ||
                 (evaluacionIdList!= null && evaluacionIdList.length != 0) ||
                 (casosIdList!= null && casosIdList.length != 0) ||
                 (asistenciaIdList!= null && asistenciaIdList.length != 0)) {
+            Log.d(TAG, "countTarea : "+  new Gson().toJson(model));
+            Log.d(TAG, "countTarea programaEducativoId : "+  programaEducativoId);
+            final String json =  new Gson().toJson(model);
+            String NOTIFICACION_FULL = "complejo";
+            sendNotificacionPadre(NOTIFICACION_FULL, programaEducativoId,json);
+        }
+
+    }
+
+    private void initNotification(List<BERubroEvalEnvioSimple> beRubroEvalEnvioSimpleList, int programaEducativoId){
+        //hallar el cambio-tareacurso
+
+        List<EvaluacionProcesoC> evaluacionProcesoCList = new ArrayList<>();
+        int tareaCount = 0;
+        for (BERubroEvalEnvioSimple beRubroEvalEnvioSimple : beRubroEvalEnvioSimpleList){
+            evaluacionProcesoCList.addAll(beRubroEvalEnvioSimple.getRubroEvaluacionProceso()!=null?beRubroEvalEnvioSimple.getEvaluacionProceso(): new ArrayList<EvaluacionProcesoC>());
+
+            TareasC tareasC = beRubroEvalEnvioSimple.getTarea();
+            if(tareasC!=null){
+                if(tareasC.getEstadoId()==TareasC.PUBLICADO){
+                    tareaCount++;
+                }
+            }
+        }
+
+        Set<Integer> evaluacionAlumnoIdList = new LinkedHashSet<>();
+
+        if(evaluacionProcesoCList.size()!=0)
+        {
+            List<String>Stringlist= new ArrayList<>();
+            for( EvaluacionProcesoC evaluacionProcesoC: evaluacionProcesoCList){
+                Stringlist.add(evaluacionProcesoC.key);
+            }
+
+            List<EvaluacionProcesoC >evaluacionProcesoCList2= SQLite
+                    .select(Utils.f_allcolumnTable(EvaluacionProcesoC_Table.ALL_COLUMN_PROPERTIES))
+                    .from(EvaluacionProcesoC.class)
+                    .innerJoin(RubroEvaluacionProcesoC.class)
+                    .on(EvaluacionProcesoC_Table.rubroEvalProcesoId.withTable()
+                            .eq(RubroEvaluacionProcesoC_Table.key.withTable()))
+                    .where(EvaluacionProcesoC_Table.key.withTable().in(Stringlist))
+                    .and(RubroEvaluacionProcesoC_Table.tipoNotaId.withTable().isNotNull())
+                    .and(RubroEvaluacionProcesoC_Table.tipoNotaId.withTable().notEq(""))
+                    .and(RubroEvaluacionProcesoC_Table.tipoFormulaId.withTable().eq(0))
+                    .and(RubroEvaluacionProcesoC_Table.tiporubroid.withTable().notEq(RubroEvaluacionProcesoC.TIPORUBRO_BIDIMENCIONAL_DETALLE))
+                    .and(RubroEvaluacionProcesoC_Table.estadoId.withTable().notEq(280))
+                    .groupBy(Utils.f_allcolumnTable(EvaluacionProcesoC_Table.ALL_COLUMN_PROPERTIES))
+                    .orderBy(EvaluacionProcesoC_Table.fechaCreacion.withTable().desc()).queryList();
+            Log.d(TAG, "complejos_jse 1: "+ evaluacionProcesoCList2.size());
+            for(EvaluacionProcesoC evaluacion:evaluacionProcesoCList2)
+            {
+                Log.d(TAG, "complejos_jse 1: "+ new Gson().toJson(evaluacion));
+                //if(evaluacion.syncFlag== BaseEntity.FLAG_UPDATED || evaluacion.syncFlag== BaseEntity.FLAG_ADDED)
+                if(evaluacion.getPublicado()==1) evaluacionAlumnoIdList.add(evaluacion.getAlumnoId());
+            }
+        }
+
+        Log.d(TAG, "complejos_jse 1: "+ evaluacionAlumnoIdList.size());
+        int[] evaluacionIdList = ArrayUtils.toPrimitiveArray(new ArrayList<Integer>(evaluacionAlumnoIdList));
+        Log.d(TAG, "complejos_jse 1: "+ evaluacionIdList.length);
+        SyncIntenService.Model model = new SyncIntenService.Model();
+
+        if(tareaCount!=0){
+            model.setTarea(true);
+        }
+
+        if(evaluacionIdList!=null){
+            model.setEvaluacion(evaluacionIdList);
+        }
+
+        if(tareaCount!=0 ||
+                (evaluacionIdList!= null && evaluacionIdList.length != 0)) {
 
             final String json =  new Gson().toJson(model);
             String NOTIFICACION_FULL = "complejo";
@@ -4949,7 +5719,8 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
 
     }
 
-    public void sendNotificacionPadre(String objeto, int programaEducativoId, String complejo){
+    private void sendNotificacionPadre(String objeto, int programaEducativoId, String complejo){
+        Log.d(TAG, "complejos_jse: "+complejo);
         long date= Calendar.getInstance().getTimeInMillis();
         DatabaseReference myRef =  FirebaseDatabase.getInstance()
                 .getReference("padre_mentor")
@@ -5000,5 +5771,173 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             this.tarea = tarea;
         }
     }
+    //#endregion
+
+    @Override
+    public List<String> comprobrarCambiosBaseDatosDaocenteMentor() {
+        List<String> stringList = new ArrayList<>();
+        if(countBEDatosAsistencia()!=0){
+            stringList.add("code: asistencia export");
+        }
+        if(countBEDatosEnvioGrupo()!=0){
+            stringList.add("code: grupo export");
+        }
+        if(countBEDatosEnvioMensajeria()!=0){
+            stringList.add("code: mensajeria export");
+        }
+        if(countGEDatosRubroEvaluacionProceso()!=0){
+            stringList.add("code: rubro export");
+        }
+        if(countBEDatosSesionAprendizaje()!=0){
+            stringList.add("code: sesion export");
+        }
+        if(countGEDatosTareasRecursos()!=0){
+            stringList.add("code: tarea export");
+        }
+        if(countGEDatosCargaAcademica()!=0){
+            stringList.add("code: cargaAcadmica export");
+        }
+        if(countGEDatosCasos()!=0){
+            stringList.add("code: Caso export");
+        }
+        Log.d(TAG, " comprobrarCambiosBaseDatosDaocenteMentor: " + stringList.toString());
+        return stringList;
+    }
+
+
+    //#region comprobrarCambiosBaseDatosDaocenteMentor
+    private long countGEDatosCargaAcademica() {
+        return ConsultaUtils.countChangeItemsTable(CargaCursoCalendarioPeriodo.class);
+    }
+
+    private long countGEDatosCasos() {
+        long count = 0;
+        count += ConsultaUtils.countChangeItemsTable(Caso.class);
+        Log.d(TAG, " Caso: " + count);
+        count +=ConsultaUtils.countChangeItemsTable(CasoArchivo.class);
+        Log.d(TAG, " CasoArchivo: " + count);
+        return  count;
+    }
+
+    //#region countBEDatosAsistencia
+    private long countBEDatosAsistencia() {
+        long count = 0;
+        count += ConsultaUtils.countChangeItemsTable(AsistenciaSesionAlumnoC.class);
+        Log.d(TAG, " AsistenciaSesionAlumnoC: " + count);
+        count +=ConsultaUtils.countChangeItemsTable(JustificacionC.class);
+        Log.d(TAG, " JustificacionC: " + count);
+        count +=ConsultaUtils.countChangeItemsTable(ArchivoAsistencia.class);
+        Log.d(TAG, " ArchivoAsistencia" + count);
+        count +=ConsultaUtils.countChangeItemsTable(TipoNotaC.class);
+        Log.d(TAG, " TipoNotaC" + count);
+        count +=ConsultaUtils.countChangeItemsTable(ValorTipoNotaC.class);
+        Log.d(TAG, " ValorTipoNotaC" + count);
+        count += ConsultaUtils.countChangeItemsTable(RelProgramaEducativoTipoNota.class);
+        Log.d(TAG, " RelProgramaEducativoTipoNota" + count);
+        return  count;
+    }
+    //#endregion countBEDatosAsistencia
+
+    //#region countBEDatosEnvioGrupo BEDatosEnvioGrupo
+    private long countBEDatosEnvioGrupo() {
+        long count = 0;
+        count += ConsultaUtils.countChangeItemsTable(GrupoEquipoC.class);
+        count += ConsultaUtils.countChangeItemsTable(EquipoIntegranteC.class);
+        count += ConsultaUtils.countChangeItemsTable(EquipoC.class);
+        return count;
+    }
+    //#endregion countBEDatosEnvioGrupo BEDatosEnvioGrupo
+
+    //#region countBEDatosEnvioMensajeria BEDatosEnvioMensajeria
+    private long countBEDatosEnvioMensajeria() {
+        long count = 0;
+        count += ConsultaUtils.countChangeItemsTable(MensajeUsuarioC.class);
+        count += ConsultaUtils.countChangeItemsTable(MensajeIntencionItemC.class);
+        count += ConsultaUtils.countChangeItemsTable(CanalDestinoEstadoC.class);
+        count += ConsultaUtils.countChangeItemsTable(MensajeC.class);
+        count += ConsultaUtils.countChangeItemsTable(InteraccionTextual.class);
+        return count;
+    }
+    //#endregion countBEDatosEnvioMensajeria BEDatosEnvioMensajeria
+
+    //#region countGEDatosRubroEvaluacionProceso GEDatosRubroEvaluacionProceso
+    private long countGEDatosRubroEvaluacionProceso() {
+        long count = 0;
+        //count += ConsultaUtils.countChangeItemsTable(TipoNotaC.class);
+        //Log.d(TAG, " TipoNotaC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(ValorTipoNotaC.class);
+        //Log.d(TAG, " ValorTipoNotaC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(RelProgramaEducativoTipoNota.class);
+        //Log.d(TAG, " RelProgramaEducativoTipoNota: " +count);
+        count += ConsultaUtils.countChangeItemsTable(RubroEvaluacionProcesoC.class, RubroEvaluacionProcesoC_Table.tiporubroid.notEq(RubroEvaluacionProcesoC.TIPORUBRO_BIDIMENCIONAL_DETALLE));
+        Log.d(TAG, " RubroEvaluacionProcesoC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(RubroEvalRNPFormulaC.class);
+        //Log.d(TAG, " RubroEvalRNPFormulaC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC.class);
+        //Log.d(TAG, " T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC.class);
+        //Log.d(TAG, " T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(EquipoEvaluacionProcesoC.class);
+        //Log.d(TAG, " EquipoEvaluacionProcesoC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(RubroEvaluacionProcesoCampotematicoC.class);
+        //Log.d(TAG, " RubroEvaluacionProcesoCampotematicoC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(CriterioRubroEvaluacionC.class);
+        //Log.d(TAG, " CriterioRubroEvaluacionC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(EvaluacionProcesoC.class);
+        //Log.d(TAG, " EvaluacionProcesoC: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(RubroEvaluacionProcesoComentario.class);
+        //Log.d(TAG, " RubroEvaluacionProcesoComentario: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(ArchivosRubroProceso.class);
+        //Log.d(TAG, " ArchivosRubroProceso: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(TareaRubroEvaluacionProceso.class);
+        // Log.d(TAG, " TareaRubroEvaluacionProceso: " +count);
+        count += ConsultaUtils.countChangeItemsTable(RubroEvaluacionResultado.class);
+        Log.d(TAG, " RubroEvaluacionResultado: " +count);
+        count += ConsultaUtils.countChangeItemsTable(EvaluacionResultadoC.class);
+        Log.d(TAG, " EvaluacionResultado: " +count);
+        return count;
+    }
+    //#endregion countGEDatosRubroEvaluacionProceso GEDatosRubroEvaluacionProceso
+
+    //#region countBEDatosSesionAprendizaje BEDatosSesionAprendizaje
+    private long countBEDatosSesionAprendizaje() {
+        long count = 0;
+        count += ConsultaUtils.countChangeItemsTable(SesionAprendizaje.class);
+        Log.d(TAG, " SesionAprendizaje: " +count);/*
+        count += ConsultaUtils.countChangeItemsTable(Competencia.class);
+        Log.d(TAG, " Competencia: " +count);
+        count += ConsultaUtils.countChangeItemsTable(Competencia.class);
+        Log.d(TAG, " SesionAprendizaje: " +count);
+        count += ConsultaUtils.countChangeItemsTable(DesempenioIcd.class);
+        Log.d(TAG, " DesempenioIcd: " +count);
+        count += ConsultaUtils.countChangeItemsTable(Icds.class);
+        Log.d(TAG, " Icds: " +count);
+        count += ConsultaUtils.countChangeItemsTable(CampoTematico.class);
+        Log.d(TAG, " CampoTematico: " +count);
+        count += ConsultaUtils.countChangeItemsTable(RecursoDidacticoEventoC.class);
+        Log.d(TAG, " RecursoDidacticoEventoC: " +count);
+        count += ConsultaUtils.countChangeItemsTable(TareasC.class);
+        Log.d(TAG, " TareasC: " +count);
+        count += ConsultaUtils.countChangeItemsTable(TareasRecursosC.class);
+        Log.d(TAG, " TareasRecursosC: " +count);
+        count += ConsultaUtils.countChangeItemsTable(ActividadAprendizaje.class);
+        Log.d(TAG, " ActividadAprendizaje: " +count);
+        count += ConsultaUtils.countChangeItemsTable(UnidadAprendizaje.class);
+        Log.d(TAG, " UnidadAprendizaje: " +count);*/
+        return count;
+    }
+    //#endregion countBEDatosSesionAprendizaje BEDatosSesionAprendizaje
+
+    //#region countGEDatosTareasRecursos GEDatosTareasRecursos
+    private long countGEDatosTareasRecursos() {
+        long count = 0;
+        count += ConsultaUtils.countChangeItemsTable(TareasC.class);
+        count += ConsultaUtils.countChangeItemsTable(RecursoDidacticoEventoC.class);
+        count += ConsultaUtils.countChangeItemsTable(TareasRecursosC.class);
+        count += ConsultaUtils.countChangeItemsTable(RecursoArchivo.class);
+        count += ConsultaUtils.countChangeItemsTable(Archivo.class);
+        return count;
+    }
+    //#endregion countGEDatosTareasRecursos GEDatosTareasRecursos
     //#endregion
 }

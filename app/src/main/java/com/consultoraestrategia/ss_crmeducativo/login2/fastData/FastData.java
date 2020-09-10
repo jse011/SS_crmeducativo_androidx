@@ -7,20 +7,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.consultoraestrategia.ss_crmeducativo.CMRE;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
@@ -34,6 +41,8 @@ import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetDatosPr
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.servidorData.GetDatosServidorTwo;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ProgramaEducativoUi;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,37 +83,69 @@ public class FastData extends BaseActivity<FastDataView, FastDataPresenter> impl
         super.onCreate(savedInstanceState);
     }
 
+    int randomWithRange(int min, int max)
+    {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
+    }
+
     private void setupAnimation() {
-        int numero = (int) (Math.random() * 6);
-        switch (numero) {
-            case 0:
-                progressInit.setBackgroundColor(Color.parseColor("#BCC3C6"));
-                animationView.setAnimation("runningloader2.json");
-                break;
-            case 1:
-                progressInit.setBackgroundColor(Color.parseColor("#BCC3C6"));
-                animationView.setAnimation("rainloader.json");
-                break;
-            case 2:
-                progressInit.setBackgroundColor(Color.parseColor("#EB6849"));
-                animationView.setAnimation("sheep_play_computer.json");
-                break;
-            case 3:
-                progressInit.setBackgroundColor(Color.WHITE);
-                animationView.setAnimation("sheeploader.json");
-                //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
-                break;
-            case 4:
-                progressInit.setBackgroundColor(Color.BLACK);
-                animationView.setAnimation("hand_sanitizer.json");
-                //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
-                break;
-            case 5:
-                progressInit.setBackgroundColor(Color.BLACK);
-                animationView.setAnimation("sheep_drive_car.json");
-                //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
-                break;
+        if(Calendar.getInstance().get(Calendar.MONTH) == Calendar.JUNE &&
+                Calendar.getInstance().get(Calendar.YEAR) == 2020){
+
+            switch (randomWithRange(0,2)) {
+                case 0:
+                    progressInit.setBackgroundColor(Color.BLACK);
+                    animationView.setAnimation("hand_sanitizer.json");
+                    break;
+                case 1:
+                    progressInit.setBackgroundColor(Color.BLACK);
+                    animationView.setAnimation("hand_sanitizer.json");
+                    break;
+                case 2:
+                    progressInit.setBackgroundColor(Color.WHITE);
+                    animationView.setAnimation("social_distancing.json");
+                    break;
+            }
+
+        }else{
+            switch (randomWithRange(0,6)) {
+                case 0:
+                    progressInit.setBackgroundColor(Color.parseColor("#BCC3C6"));
+                    animationView.setAnimation("runningloader2.json");
+
+                    break;
+                case 1:
+                    progressInit.setBackgroundColor(Color.parseColor("#BCC3C6"));
+                    animationView.setAnimation("rainloader.json");
+                    break;
+                case 2:
+                    progressInit.setBackgroundColor(Color.parseColor("#EB6849"));
+                    animationView.setAnimation("sheep_play_computer.json");
+                    break;
+                case 3:
+                    progressInit.setBackgroundColor(Color.WHITE);
+                    animationView.setAnimation("sheeploader.json");
+                    //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
+                    setupWhiteToolbar();
+                    break;
+                case 4:
+                    progressInit.setBackgroundColor(Color.BLACK);
+                    animationView.setAnimation("hand_sanitizer.json");
+                    //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
+                    break;
+                case 5:
+                    progressInit.setBackgroundColor(Color.BLACK);
+                    animationView.setAnimation("sheep_drive_car.json");
+                    //if (fastDataAdapter != null) fastDataAdapter.setTexColor(Color.BLACK);
+                    break;
+                case 6:
+                    progressInit.setBackgroundColor(Color.WHITE);
+                    animationView.setAnimation("social_distancing.json");
+                    break;
+            }
         }
+
 
         animationView.setRepeatCount(ValueAnimator.INFINITE);
         animationView.playAnimation();
@@ -145,8 +186,30 @@ public class FastData extends BaseActivity<FastDataView, FastDataPresenter> impl
         ButterKnife.bind(this);
         initAdapter();
         setupAnimation();
+        setupToolbar(Color.BLACK);
     }
 
+    private void setupWhiteToolbar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //change color of status bar
+            Window window = this.getWindow();
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(Color.WHITE);
+        }
+    }
+
+    private void setupToolbar(int color){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //change color of status bar
+            Window window = this.getWindow();
+            //window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(color);
+        }
+    }
 
     @Override
     protected ViewGroup getRootLayout() {
@@ -214,6 +277,11 @@ public class FastData extends BaseActivity<FastDataView, FastDataPresenter> impl
     @Override
     public void cerrarActividad() {
        finish();
+    }
+
+    @Override
+    public void changeDataBase() {
+        CMRE.saveNotifyChangeDataBase(this);
     }
 
     @Override

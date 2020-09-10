@@ -18,7 +18,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoCampotematicoC;
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoCampotematicoC_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.RubroProcesoUi;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.CamposAccionUi;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.IndicadoresCamposAccionUi;
@@ -81,9 +80,17 @@ public class CasoUsoLocalDataSource implements CasoUsoDataSource {
         if(rubroEvaluacionProcesoC==null)success = true;
 
         if(success){
-            TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = tareaRubroEvaluacionProcesoDao.getTareaRubroPorRubroId(rubroProcesoUi.getKey());
-            if(tareaRubroEvaluacionProceso!=null)tareaRubroEvaluacionProcesoDao.elimarTareaRubroEvaluacionProceso(rubroProcesoUi.getKey());
+            //TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = tareaRubroEvaluacionProcesoDao.getTareaRubroPorRubroId(rubroProcesoUi.getKey());
+            //if(tareaRubroEvaluacionProceso!=null)tareaRubroEvaluacionProcesoDao.elimarTareaRubroEvaluacionProceso(rubroProcesoUi.getKey());
+            RubroEvaluacionProcesoC item = SQLite.select()
+                    .from(RubroEvaluacionProcesoC.class)
+                    .where(RubroEvaluacionProcesoC_Table.key.eq(rubroProcesoUi.getKey()))
+                    .querySingle();
 
+            if(item!=null){
+                item.setTareaId("");
+                item.save();
+            }
 
             SQLite.update(RubroEvaluacionProcesoC.class)
                     .set(RubroEvaluacionProcesoC_Table.estadoId.is(280),

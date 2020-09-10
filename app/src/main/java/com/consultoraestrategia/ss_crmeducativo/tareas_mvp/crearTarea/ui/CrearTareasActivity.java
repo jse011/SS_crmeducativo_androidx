@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
@@ -150,7 +152,7 @@ public class CrearTareasActivity extends BaseActivity<CreateTareaView, CreateTar
                 new CloneImagenCompress(SiliCompressor.with(this), this),
                 new MoverArchivosAlaCarpetaTarea(TareasMvpRepository.getInstace(
                         new TareasLocalDataSource(),
-                        new RemoteMvpDataSource(this))));
+                        new RemoteMvpDataSource())));
 
         CreateTareaRepository repository = new CreateTareaRepository(
                 new CreateTareaLocalDataSource(
@@ -167,7 +169,7 @@ public class CrearTareasActivity extends BaseActivity<CreateTareaView, CreateTar
                 new EliminarRecursoUseCase(repository),
                 new MoverArchivosAlaCarpetaTarea(TareasMvpRepository.getInstace(
                         new TareasLocalDataSource(),
-                        new RemoteMvpDataSource(this))
+                        new RemoteMvpDataSource())
         ));
 //        return null;
     }
@@ -284,8 +286,6 @@ public class CrearTareasActivity extends BaseActivity<CreateTareaView, CreateTar
     @Override
     public void showTextEmpty() {
         if (!TextUtils.isEmpty(txtTitulo.getText())) {
-            if (!TextUtils.isEmpty(descripcion.getText())) {
-            } else Toast.makeText(this, "Ingrese las Instrucciones", Toast.LENGTH_SHORT).show();
         } else Toast.makeText(this, "Ingrese el Titulo", Toast.LENGTH_SHORT).show();
 
     }
@@ -381,7 +381,6 @@ public class CrearTareasActivity extends BaseActivity<CreateTareaView, CreateTar
         Log.d(TAG, "guardarTarea ");
 
         error = presenter.validateField(txtTitulo);
-        error = presenter.validateField(descripcion);
         //error = presenter.validateField(txtFechaEntrega);
         //error = presenter.validateField(txtHoraEntrega);
         presenter.correctImputs(error,
@@ -411,6 +410,7 @@ public class CrearTareasActivity extends BaseActivity<CreateTareaView, CreateTar
     public void actualiceTarea(int programaEducativoId) {
         CallService.jobServiceExportarTipos(this, TipoExportacion.TAREA);
         SimpleSyncIntenService.start(this, programaEducativoId);
+        SynckService.start(this,programaEducativoId);
     }
 
     @Override
@@ -573,7 +573,7 @@ public class CrearTareasActivity extends BaseActivity<CreateTareaView, CreateTar
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        repositorioViewImpl.onActivityResult(requestCode, resultCode, data);
+        repositorioViewImpl.onActivityResult(requestCode, resultCode, data,this);
 
     }
 

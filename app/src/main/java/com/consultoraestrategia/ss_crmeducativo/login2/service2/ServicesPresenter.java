@@ -31,4 +31,18 @@ public interface ServicesPresenter extends BasePresenter<ServicesView> {
     void onViewClickedCardProgEnvio();
 
     void onClicAnioCalendario(CalendarioPeriodoUi calendarioPeriodoUi);
+
+    void onStartSynckService();
+
+    void onClickContRestaurar();
+
+    void onLoadFirebase(int count);
+
+    void onFinishFirebase();
+
+    void onClickedImgActualizar();
+
+    void onSelectedMensageStopSynckFB();
+
+    void onRefresh();
 }

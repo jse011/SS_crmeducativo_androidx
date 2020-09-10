@@ -1,17 +1,18 @@
 package com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.domain.UseCase;
 
-import com.consultoraestrategia.ss_crmeducativo.services.data.local.ServiceLocalDataRepository;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 
 import java.util.List;
 
 public class ChangeDataBaseDocenteMentor {
-    private ServiceLocalDataRepository serviceLocalDataRepository;
+    private LoginDataRepository repository;
 
-    public ChangeDataBaseDocenteMentor(ServiceLocalDataRepository serviceLocalDataRepository) {
-        this.serviceLocalDataRepository = serviceLocalDataRepository;
+    public ChangeDataBaseDocenteMentor(LoginDataRepository repository) {
+        this.repository = repository;
     }
 
     public List<String> execute(){
-        return serviceLocalDataRepository.comprobrarCambiosBaseDatosDaocenteMentor();
+        return repository.comprobrarCambiosBaseDatosDaocenteMentor();
     }
 }

@@ -34,6 +34,7 @@ import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.BaseTabFragmentView;
 import com.consultoraestrategia.ss_crmeducativo.crearRubroListaInidicadores.listener.CrearRubroListaIndicadoresListener;
 import com.consultoraestrategia.ss_crmeducativo.crearRubroListaInidicadores.ui.ListaIndicadoresFragment;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.adapters.CompetenciaAdapter;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.adapters.PeriodoAdapter;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.crearRubroFormula.CrearRubroFormulaActivity;
@@ -414,6 +415,7 @@ public abstract class FragmentAbstract<T extends Fragment, P extends AbstractPre
     public void initServiceUpdate(int programaEducativoId) {
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.RUBROEVALUACION);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
     }
 
@@ -799,6 +801,7 @@ public abstract class FragmentAbstract<T extends Fragment, P extends AbstractPre
     public void succesChangePublicar(RubroProcesoUi rubroProcesoUi, int programaEducativoId) {
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.RUBROEVALUACION);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
     }
 

@@ -19,14 +19,14 @@ public class GetListActualizar {
 
 
         ActualizarUi unidades = new ActualizarUi();
-        unidades.setNombre("Unidadades");
+        unidades.setNombre("Unidades");
         unidades.setTipo(ActualizarTipoUi.Unidades);
         unidades.setCargacursoId(cargaCursoId);
         unidades.setCalendarioPeriodoId(calendarioPeriodoId);
         unidades.setSilaboEventoId(silaboEventoId);
         unidades.generarId();
         unidades.setFecha(repositorio.getTimeSesionData(unidades));
-        unidades.setEncoloa(unidades.getFecha()==0);
+        unidades.setEncoloa(false);
 
 
         ActualizarUi tipoNota = new ActualizarUi();
@@ -36,7 +36,7 @@ public class GetListActualizar {
         tipoNota.setUsuarioId(usuarioId);
         tipoNota.generarId();
         tipoNota.setFecha(repositorio.getTimeSesionData(tipoNota));
-        tipoNota.setEncoloa(tipoNota.getFecha()==0);
+        tipoNota.setEncoloa(false);
 
 
         ActualizarUi estudiantes = new ActualizarUi();
@@ -47,7 +47,7 @@ public class GetListActualizar {
         estudiantes.setCargaAcademicaId(cargaAcademicaId);
         estudiantes.generarId();
         estudiantes.setFecha(repositorio.getTimeSesionData(estudiantes));
-        estudiantes.setEncoloa(estudiantes.getFecha()==0);
+        estudiantes.setEncoloa(false);
 
 
 
@@ -59,7 +59,7 @@ public class GetListActualizar {
         rubros.setSilaboEventoId(silaboEventoId);
         rubros.generarId();
         rubros.setFecha(repositorio.getTimeSesionData(rubros));
-        rubros.setEncoloa(rubros.getFecha()==0);
+        rubros.setEncoloa(false);
 
 
 
@@ -71,7 +71,7 @@ public class GetListActualizar {
         resultado.setSilaboEventoId(silaboEventoId);
         resultado.generarId();
         resultado.setFecha(repositorio.getTimeSesionData(resultado));
-        resultado.setEncoloa(resultado.getFecha()==0);
+        resultado.setEncoloa(false);
 
         ActualizarUi grupos = new ActualizarUi();
         grupos.setNombre("Grupos");
@@ -79,7 +79,7 @@ public class GetListActualizar {
         grupos.setCargacursoId(cargaCursoId);
         grupos.generarId();
         grupos.setFecha(repositorio.getTimeSesionData(grupos));
-        grupos.setEncoloa(grupos.getFecha()==0);
+        grupos.setEncoloa(false);
 
 
         ActualizarUi tareas = new ActualizarUi();
@@ -90,7 +90,7 @@ public class GetListActualizar {
         tareas.setCalendarioPeriodoId(calendarioPeriodoId);
         tareas.generarId();
         tareas.setFecha(repositorio.getTimeSesionData(tareas));
-        tareas.setEncoloa(tareas.getFecha()==0);
+        tareas.setEncoloa(false);
 
 
         ActualizarUi casos = new ActualizarUi();
@@ -102,7 +102,7 @@ public class GetListActualizar {
         casos.setEntidadId(entidadId);
         casos.generarId();
         casos.setFecha(repositorio.getTimeSesionData(casos));
-        casos.setEncoloa(casos.getFecha()==0);
+        casos.setEncoloa(false);
 
 
         ActualizarUi asistencia = new ActualizarUi();
@@ -112,7 +112,7 @@ public class GetListActualizar {
         asistencia.setCalendarioPeriodoId(calendarioPeriodoId);
         asistencia.generarId();
         asistencia.setFecha(repositorio.getTimeSesionData(asistencia));
-        asistencia.setEncoloa(asistencia.getFecha()==0);
+        asistencia.setEncoloa(false);
 
 
         ActualizarUi docente = new ActualizarUi();
@@ -121,7 +121,7 @@ public class GetListActualizar {
         docente.setGeoreferenciaId(georeferenciaId);
         docente.generarId();
         docente.setFecha(repositorio.getTimeSesionData(docente));
-        docente.setEncoloa(docente.getFecha()==0);
+        docente.setEncoloa(false);
 
 
         ActualizarUi dimencionDesarrollo = new ActualizarUi();
@@ -134,7 +134,7 @@ public class GetListActualizar {
         dimencionDesarrollo.setDocenteId(empleadoId);
         dimencionDesarrollo.generarId();
         dimencionDesarrollo.setFecha(repositorio.getTimeSesionData(dimencionDesarrollo));
-        dimencionDesarrollo.setEncoloa(dimencionDesarrollo.getFecha()==0);
+        dimencionDesarrollo.setEncoloa(false);
 
         /*if(rubrica.getFecha()==0||rubros.getFecha()==0||formula.getFecha()==0||resultado.getFecha()==0){
             tipoNota.setEncoloa(true);

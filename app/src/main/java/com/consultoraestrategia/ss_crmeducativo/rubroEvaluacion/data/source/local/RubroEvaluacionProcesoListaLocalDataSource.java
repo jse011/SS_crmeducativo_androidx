@@ -55,8 +55,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_RUBRO_EVALUACI
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.TipoNotaC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TipoNotaC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
@@ -257,6 +255,27 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
     }
 
     @Override
+    public void changeEstadoActualizacion(List<RubroProcesoUi> rubroProcesoUiList) {
+        List<String> rubrosIdList = new ArrayList<>();
+        for (RubroProcesoUi rubroProcesoUi: rubroProcesoUiList)rubrosIdList.add(rubroProcesoUi.getKey());
+
+        List<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = SQLite.select()
+                .from(RubroEvaluacionProcesoC.class)
+                .where(RubroEvaluacionProcesoC_Table.key.in(rubrosIdList))
+                .queryList();
+
+        for (RubroEvaluacionProcesoC rubroEvaluacionProcesoC : rubroEvaluacionProcesoCList){
+            for (RubroProcesoUi rubroProcesoUi : rubroProcesoUiList){
+                if(rubroEvaluacionProcesoC.getKey().equals(rubroProcesoUi.getKey())){
+                    rubroProcesoUi.setExportado(rubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                            rubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                            rubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
+                }
+            }
+        }
+    }
+
+    @Override
     public void getRubroProcesoSesionList(int idrubroformal, int sesionAprendizajeId, int nivel, int calendarioPerioId, int silaboEventoId, int cargaCursoId, ListCallback<Object> callback) {
 
         DatabaseDefinition appDatabase = FlowManager.getDatabase(AppDatabase.class);
@@ -451,6 +470,9 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
             rubroProcesoUi.setDesempenioIcdId(rubroEvaluacionProceso.getDesempenioIcdId());
             rubroProcesoUi.setFecha(Utils.f_fecha_letras(rubroEvaluacionProceso.getFechaCreacion()));
             rubroProcesoUi.setTitulo(rubroEvaluacionProceso.getTitulo());
+            rubroProcesoUi.setExportado(rubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                    rubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                    rubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
             rubroProcesoUi.setSubTitulo(rubroEvaluacionProceso.getSubtitulo());
             rubroProcesoUi.setCapacidadId(rubroEvaluacionProceso.getCompetenciaId());
             rubroProcesoUi.setSesionAprendizajeId(rubroEvaluacionProceso.getSesionAprendizajeId());
@@ -519,8 +541,12 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                 rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.SILABO);
             }
 
-            TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = tareaRubroEvaluacionProcesoDao.getTareaRubroPorRubroId(rubroProcesoUi.getKey());
-            if(tareaRubroEvaluacionProceso!=null){
+            RubroEvaluacionProcesoC tareaRubroEvaluacionProceso = SQLite.select()
+                    .from(RubroEvaluacionProcesoC.class)
+                    .where(RubroEvaluacionProcesoC_Table.key.eq(rubroProcesoUi.getKey()))
+                    .querySingle();
+
+            if(tareaRubroEvaluacionProceso!=null&&!TextUtils.isEmpty(tareaRubroEvaluacionProceso.getTareaId())){
                 rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.TAREA);
             }
 
@@ -543,7 +569,9 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
         RubroProcesoUi rubroProcesoUi = new RubroProcesoUi();
         if(rubroEvaluacionProceso != null){
             rubroProcesoUi.setTitulo(rubroEvaluacionProceso.getTitulo());
-
+            rubroProcesoUi.setExportado(rubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                    rubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                    rubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
             switch (rubroEvaluacionProceso.getFormaEvaluacionId()){
                 case 477:
                     rubroProcesoUi.setFormEvaluacion(RubroProcesoUi.FormEvaluacion.INDIVIDUAL);
@@ -609,9 +637,7 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                 rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.SILABO);
             }
 
-            TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = tareaRubroEvaluacionProcesoDao.getTareaRubroPorRubroId(rubroProcesoUi.getKey());
-
-            if(tareaRubroEvaluacionProceso!=null){
+            if(TextUtils.isEmpty(rubroEvaluacionProceso.getTareaId())){
                 rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.TAREA);
             }
             rubroProcesoUi.setDisabledEval(isDiasbleEvaluacion(rubroEvaluacionProceso.getTiporubroid(), rubroEvaluacionProceso.getCalendarioPeriodoId()));
@@ -1203,6 +1229,9 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                     rubroProcesoUi.setPosicion(posicionRubros);
                     rubroProcesoUi.setFecha(Utils.f_fecha_letras(itemRubroEvaluacionProceso.getFechaCreacion()));
                     rubroProcesoUi.setTitulo(itemRubroEvaluacionProceso.getTitulo());
+                    rubroProcesoUi.setExportado(itemRubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                            itemRubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                            itemRubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
                     rubroProcesoUi.setSubTitulo(itemRubroEvaluacionProceso.getSubtitulo());
                     rubroProcesoUi.setColorRubro(itemRubroEvaluacionProceso.getTipoColorRubroProceso());
                     rubroProcesoUi.setTipoFormulaId(itemRubroEvaluacionProceso.getTipoFormulaId());
@@ -1322,10 +1351,12 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                         rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.SILABO);
                     }
 
+                    RubroEvaluacionProcesoC tareaRubroEvaluacionProceso = SQLite.select()
+                            .from(RubroEvaluacionProcesoC.class)
+                            .where(RubroEvaluacionProcesoC_Table.key.eq(itemRubroEvaluacionProceso.getKey()))
+                            .querySingle(databaseWrapper);
 
-                    TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = tareaRubroEvaluacionProcesoDao.getTareaRubroPorRubroId(itemRubroEvaluacionProceso.getKey(), databaseWrapper);
-
-                    if(tareaRubroEvaluacionProceso!=null){
+                    if(tareaRubroEvaluacionProceso!=null&&!TextUtils.isEmpty(tareaRubroEvaluacionProceso.getTareaId())){
                         rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.TAREA);
                     }
 
@@ -1879,6 +1910,9 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                 RubroProcesoUi rubroProcesoUi = new RubroProcesoUi();
                 rubroProcesoUi.setKey(itemRubroEvaluacionProcesoC.getKey());
                 rubroProcesoUi.setTitulo(itemRubroEvaluacionProcesoC.getTitulo());
+                rubroProcesoUi.setExportado(itemRubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                        itemRubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                        itemRubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
                 rubroProcesoUi.setSubTitulo(itemRubroEvaluacionProcesoC.getSubtitulo());
                 rubroProcesoUi.setTipoEscalaEvaluacionId(rubroProcesoUi.getTipoEscalaEvaluacionId());
                 rubroProcesoUi.setTipoFormulaId(itemRubroEvaluacionProcesoC.getTipoFormulaId());
@@ -2674,11 +2708,6 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                 .queryList();
 
 
-        List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = SQLite.select()
-                .from(TareaRubroEvaluacionProceso.class)
-                .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.in(rubroProcesoEvalaucionIdList))
-                .queryList();
-
         List<IndicadorQuery> icds = SQLite.select(Utils.f_allcolumnTable(Utils.f_allcolumnTable(Icds_Table.icdId,
                 Icds_Table.desempenioId,
                 Icds_Table.descripcion,
@@ -2800,6 +2829,9 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                     rubroProcesoUi.setPosicion(posicionRubros);
                     rubroProcesoUi.setFecha(Utils.f_fecha_letras(itemRubroEvaluacionProceso.getFechaCreacion()));
                     rubroProcesoUi.setTitulo(itemRubroEvaluacionProceso.getTitulo());
+                    rubroProcesoUi.setExportado(itemRubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                            itemRubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                            itemRubroEvaluacionProceso.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
                     rubroProcesoUi.setSubTitulo(itemRubroEvaluacionProceso.getSubtitulo());
                     rubroProcesoUi.setColorRubro(itemRubroEvaluacionProceso.getTipoColorRubroProceso());
                     rubroProcesoUi.setMedia(0.0);
@@ -2917,15 +2949,7 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                         rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.SILABO);
                     }
 
-                    TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = null;
-                    for (TareaRubroEvaluacionProceso itemTareaRubroEvaluacionProceso: tareaRubroEvaluacionProcesoList){
-                        if(itemRubroEvaluacionProceso.getKey().equals(itemRubroEvaluacionProceso.getRubroEvalProcesoId())){
-                            tareaRubroEvaluacionProceso = itemTareaRubroEvaluacionProceso;
-                            break;
-                        }
-                    }
-
-                    if(tareaRubroEvaluacionProceso!=null){
+                    if(!TextUtils.isEmpty(itemRubroEvaluacionProceso.getTareaId())){
                         rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.TAREA);
                     }
 
@@ -3373,12 +3397,7 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                 rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.SILABO);
             }
 
-            TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = SQLite.select()
-                    .from(TareaRubroEvaluacionProceso.class)
-                    .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.eq(itemRubroEvaluacionProceso.getKey()))
-                    .querySingle();
-
-            if(tareaRubroEvaluacionProceso!=null){
+            if(TextUtils.isEmpty(itemRubroEvaluacionProceso.getTareaId())){
                 rubroProcesoUi.setOrigen(RubroProcesoUi.Origen.TAREA);
             }
 

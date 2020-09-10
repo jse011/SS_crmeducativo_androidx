@@ -9,10 +9,12 @@ import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.Calendario;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioListaUsuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.Evento;
+import com.consultoraestrategia.ss_crmeducativo.entities.EventoPersona;
 import com.consultoraestrategia.ss_crmeducativo.entities.Evento_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.ListaUsuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.ListaUsuarioDetalle;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
+import com.consultoraestrategia.ss_crmeducativo.entities.Relaciones;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Usuario;
@@ -126,7 +128,7 @@ public class EventoRemoteDataSource implements EventosDataSource {
         ApiRetrofit apiRetrofit = utilServidor.getApiRetrofit();
         apiRetrofit.changeSetTime(10, 15, 15, TimeUnit.SECONDS);
 
-        retrofitCancel = new RetrofitCancelImpl<BEEventos>(apiRetrofit.flst_ObtenerCalendarioEventoDocente(idUsuario, idGeoreferenciaId));
+        retrofitCancel = new RetrofitCancelImpl<>(apiRetrofit.flst_ObtenerCalendarioEventoDocente(idUsuario, idGeoreferenciaId));
         retrofitCancel.enqueue(new RetrofitCancel.Callback<BEEventos>() {
             @Override
             public void onResponse(final BEEventos response) {
@@ -159,7 +161,7 @@ public class EventoRemoteDataSource implements EventosDataSource {
                             TransaccionUtils.deleteTable(CalendarioListaUsuario.class);
                             TransaccionUtils.deleteTable(ListaUsuario.class);
                             TransaccionUtils.deleteTable(ListaUsuarioDetalle.class);
-
+                            TransaccionUtils.deleteTable(EventoPersona.class);
                             SQLite.delete()
                                     .from(Tipos.class)
                                     .where(Tipos_Table.objeto.eq("T_CE_MOV_EVENTOS"))
@@ -176,7 +178,8 @@ public class EventoRemoteDataSource implements EventosDataSource {
                             TransaccionUtils.fastStoreListInsert(Tipos.class, response.getTipos(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(Persona.class, response.getPersona(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(Usuario.class, response.getUsuario(), databaseWrapper, true);
-
+                            TransaccionUtils.fastStoreListInsert(Relaciones.class, response.getRelaciones(), databaseWrapper, true);
+                            TransaccionUtils.fastStoreListInsert(EventoPersona.class, response.getEventoPersona(), databaseWrapper, true);
 
                         }
                     }).success(new Transaction.Success() {
@@ -387,7 +390,7 @@ public class EventoRemoteDataSource implements EventosDataSource {
     }
 
     @Override
-    public List<Object> getListaUsuarios(String calendarioId) {
+    public List<Object> getListaUsuarios(String calendarioId, String idEvento) {
         return null;
     }
 

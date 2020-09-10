@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +37,7 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacion_sesionPrincipal.conte
 import com.consultoraestrategia.ss_crmeducativo.evaluacion_sesionPrincipal.evaluacion_sesion.ui.RegistroFragment;
 import com.consultoraestrategia.ss_crmeducativo.evaluacion_sesionPrincipal.evaluacion_sesion_grupo.ui.RegistroGrupoFragment;
 
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.RepositorioRepository;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.local.RepositorioLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.preferents.RepositorioPreferentsDataSource;
@@ -175,26 +178,23 @@ public class FragmentTareas extends Fragment implements TareasMvpView, UnidadApr
                 new GetTareasUIList(
                         TareasMvpRepository.getInstace(
                                 new TareasLocalDataSource(),
-                                new RemoteMvpDataSource(getContext()))),
+                                new RemoteMvpDataSource())),
                 new GetParametroDisenio(
                         TareasMvpRepository.getInstace(
                                 new TareasLocalDataSource(),
-                                new RemoteMvpDataSource(getContext())
-                        )
-                ),
+                                new RemoteMvpDataSource())),
                 new DowloadImageUseCase(new  RepositorioRepository(
                         new RepositorioLocalDataSource(),
                         new RepositorioPreferentsDataSource(),
                         new RepositorioRemoteDataSource(ApiRetrofit.getInstance()))),
-                new UpdateSuccesDowloadArchivo(TareasMvpRepository.getInstace(
-                        new TareasLocalDataSource(),
-                        new RemoteMvpDataSource(getContext())
-                )),
-                new MoverArchivosAlaCarpetaTarea(TareasMvpRepository.getInstace(
-                        new TareasLocalDataSource(),
-                        new RemoteMvpDataSource(getContext()))
-
-        ));
+                new UpdateSuccesDowloadArchivo(
+                        TareasMvpRepository.getInstace(
+                                new TareasLocalDataSource(),
+                                new RemoteMvpDataSource())),
+                new MoverArchivosAlaCarpetaTarea(
+                        TareasMvpRepository.getInstace(
+                                new TareasLocalDataSource(),
+                                new RemoteMvpDataSource())));
 
         setPresenter(presenter);
         Log.d(TAG, "onCreate");
@@ -219,6 +219,7 @@ public class FragmentTareas extends Fragment implements TareasMvpView, UnidadApr
         int resId = R.anim.layout_animation_from_bottom;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
         rvUnidades.setLayoutAnimation(animation);
+        ((SimpleItemAnimator) rvUnidades.getItemAnimator()).setSupportsChangeAnimations(false);
     }
 
 
@@ -285,6 +286,7 @@ public class FragmentTareas extends Fragment implements TareasMvpView, UnidadApr
     public void exportarTareasEliminadas(int programaEducativoId) {
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.TAREA);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
     }
 
@@ -308,6 +310,7 @@ public class FragmentTareas extends Fragment implements TareasMvpView, UnidadApr
     public void showServiceExportTarea(int programaEducativoId) {
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.TAREA);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
     }
 
@@ -421,6 +424,11 @@ public class FragmentTareas extends Fragment implements TareasMvpView, UnidadApr
     @Override
     public void showCrearTarea(HeaderTareasAprendizajeUI headerTareasAprendizajeUI, int idSilaboEvento, int idCargaCurso) {
         //Solo Sesiones
+    }
+
+    @Override
+    public void updateTarea(TareasUI tareasUI) {
+        unidadesAdapter.updateItem(tareasUI);
     }
 
 

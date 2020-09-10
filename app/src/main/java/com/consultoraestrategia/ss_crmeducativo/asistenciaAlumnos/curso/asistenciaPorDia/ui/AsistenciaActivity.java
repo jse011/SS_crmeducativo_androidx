@@ -49,6 +49,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
 import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentListener;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.listener.RepositorioListener;
 import com.consultoraestrategia.ss_crmeducativo.services.syncIntentService.SimpleSyncIntenService;
@@ -239,6 +240,7 @@ public class AsistenciaActivity extends BaseActivity<AsistenciaView,AsistenciaPr
     @Override
     public void sincronizar(int programaEducativoId) {
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
         CMRE.saveNotifyChangeDataBase(this);
         finish();
     }

@@ -15,6 +15,8 @@ public class BEDatosInicioSesion {
 
     private int anioAcademicoId;
 
+    private long fechaServidor;
+
     public List<AnioAcademico> getAnioAcademicos() {
         return anioAcademicos;
     }
@@ -45,5 +47,13 @@ public class BEDatosInicioSesion {
 
     public void setParametroConfiguracion(List<ParametroConfiguracion> parametroConfiguracion) {
         this.parametroConfiguracion = parametroConfiguracion;
+    }
+
+    public long getFechaServidor() {
+        return fechaServidor;
+    }
+
+    public void setFechaServidor(long fechaServidor) {
+        this.fechaServidor = fechaServidor;
     }
 }

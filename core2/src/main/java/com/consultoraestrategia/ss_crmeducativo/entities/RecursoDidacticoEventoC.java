@@ -41,6 +41,8 @@ public class RecursoDidacticoEventoC extends BaseEntity {
     @Column
     private String localUrl;
 
+    private String archivoId;
+
     public RecursoDidacticoEventoC() {
     }
 
@@ -157,5 +159,11 @@ public class RecursoDidacticoEventoC extends BaseEntity {
         this.localUrl = localUrl;
     }
 
-    
+    public String getArchivoId() {
+        return archivoId;
+    }
+
+    public void setArchivoId(String archivoId) {
+        this.archivoId = archivoId;
+    }
 }

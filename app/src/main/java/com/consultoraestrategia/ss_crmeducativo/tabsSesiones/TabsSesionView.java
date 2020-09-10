@@ -116,5 +116,8 @@ public interface TabsSesionView extends BaseView<TabsSesionPresenter> {
     void successchangeDataBase();
 
     void saveNotifyChangeTabCurso();
+
+    void comprobarSiActulizaronCorrectementeRubros();
+
 }
 

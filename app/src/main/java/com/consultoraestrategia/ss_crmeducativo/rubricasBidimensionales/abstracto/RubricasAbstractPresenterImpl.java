@@ -9,6 +9,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.RubricasAbstractPresenter;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.RubricasView;
+import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.EliminarRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.GetActualizasRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.PublicarTodasEvaluacion;
@@ -39,12 +40,15 @@ public abstract class RubricasAbstractPresenterImpl implements RubricasAbstractP
     protected int programaEDucativoId;
     private EliminarRubricas eliminarRubricas;
     private PublicarTodasEvaluacion publicarTodasEvaluacion;
+    private ChangeEstadoActualizacion changeEstadoActualizacion;
 
-    public RubricasAbstractPresenterImpl(UseCaseHandler handler, GetActualizasRubricas getActualizasRubricas, EliminarRubricas eliminarRubricas, PublicarTodasEvaluacion publicarTodasEvaluacion) {
+    public RubricasAbstractPresenterImpl(UseCaseHandler handler, GetActualizasRubricas getActualizasRubricas, EliminarRubricas eliminarRubricas, PublicarTodasEvaluacion publicarTodasEvaluacion,
+                                         ChangeEstadoActualizacion changeEstadoActualizacion) {
         this.handler = handler;
         this.getActualizasRubricas = getActualizasRubricas;
         this.eliminarRubricas = eliminarRubricas;
         this.publicarTodasEvaluacion = publicarTodasEvaluacion;
+        this.changeEstadoActualizacion = changeEstadoActualizacion;
 
     }
 
@@ -315,4 +319,9 @@ public abstract class RubricasAbstractPresenterImpl implements RubricasAbstractP
         }
     }
 
+    @Override
+    public void comprobarActualizacionRubros(List<RubBidUi> rubBidUiList) {
+        changeEstadoActualizacion.execute(rubBidUiList);
+        if(view!=null)view.notifyChangeRbrica();
+    }
 }

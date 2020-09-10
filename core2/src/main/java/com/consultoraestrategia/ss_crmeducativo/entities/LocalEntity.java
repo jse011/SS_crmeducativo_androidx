@@ -16,7 +16,6 @@ public class LocalEntity extends BaseModel {
     public static final int FLAG_ADDED = 1;
     public static final int FLAG_UPDATED = 2;
     public static final int FLAG_DELETED = 3;
-
     @PrimaryKey(autoincrement = true)
     public int androidId;
     @Column

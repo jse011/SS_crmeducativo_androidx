@@ -13,8 +13,8 @@ public class GetListaUsuario {
     }
 
 
-    public List<Object> execute(String calendarioId){
-        return repository.getListaUsuarios(calendarioId);
+    public List<Object> execute(String calendarioId, String idEvento){
+        return repository.getListaUsuarios(calendarioId, idEvento);
     }
     public class Request{
         private String calendarioId;

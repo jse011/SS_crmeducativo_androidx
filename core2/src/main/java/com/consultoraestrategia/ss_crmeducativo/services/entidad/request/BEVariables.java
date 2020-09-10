@@ -2,6 +2,8 @@ package com.consultoraestrategia.ss_crmeducativo.services.entidad.request;
 
 import android.os.Bundle;
 
+import androidx.work.Data;
+
 import java.io.Serializable;
 
 /**
@@ -181,6 +183,24 @@ public class BEVariables implements Serializable {
         bundle.putString(PAQUETE,paquete);
     }
 
+    public Data convertData(){
+        Data.Builder builder = new Data.Builder();
+        builder.putInt(USUARIOID,usuarioId);
+        builder.putInt(CARGACURSOID,cargaCursoId);
+        builder.putInt(CALENDARIOPERIODOID,calendarioPeriodoId);
+        builder.putInt(DOCENTEID,docenteId);
+        builder.putInt(SILABOEVENTOID,silavoEventoId);
+        builder.putString(RUBROEVALUACIONID,rubroEvaluacionId);
+        builder.putInt(SESIONAPRENDIZAJE,sesionEventoId);
+        builder.putInt(UNIDADAPRENDIZAJE,unidadAprendizajeId);
+        builder.putString(GRUPOEQUIPO,grupoEquipoId);
+        builder.putInt(PROGRAMAEDUCATIVOID,programaEducativoId);
+        builder.putInt(ANIOACADEMICOID,anioAcademicoId);
+        builder.putLong(DATATIME,dataTime);
+        builder.putString(PAQUETE,paquete);
+        return builder.build();
+    }
+
     public static BEVariables getBundle(Bundle bundle){
         BEVariables beVariables = new BEVariables();
         beVariables.setUsuarioId(bundle.getInt(USUARIOID));
@@ -196,6 +216,24 @@ public class BEVariables implements Serializable {
         beVariables.setAnioAcademicoId(bundle.getInt(ANIOACADEMICOID));
         beVariables.setDataTime(bundle.getLong(DATATIME));
         beVariables.setPaquete(bundle.getString(PAQUETE));
+        return beVariables;
+    }
+
+    public static BEVariables getBundle(Data data){
+        BEVariables beVariables = new BEVariables();
+        beVariables.setUsuarioId(data.getInt(USUARIOID, 0));
+        beVariables.setCargaCursoId(data.getInt(CARGACURSOID, 0));
+        beVariables.setCalendarioPeriodoId(data.getInt(CALENDARIOPERIODOID, 0));
+        beVariables.setDocenteId(data.getInt(DOCENTEID, 0));
+        beVariables.setSilavoEventoId(data.getInt(SILABOEVENTOID, 0));
+        beVariables.setRubroEvaluacionId(data.getString(RUBROEVALUACIONID));
+        beVariables.setSesionEventoId(data.getInt(SESIONAPRENDIZAJE, 0));
+        beVariables.setGrupoEquipoId(data.getString(GRUPOEQUIPO));
+        beVariables.setUnidadAprendizajeId(data.getInt(UNIDADAPRENDIZAJE, 0));
+        beVariables.setProgramaEducativoId(data.getInt(PROGRAMAEDUCATIVOID, 0));
+        beVariables.setAnioAcademicoId(data.getInt(ANIOACADEMICOID, 0));
+        beVariables.setDataTime(data.getLong(DATATIME, 0));
+        beVariables.setPaquete(data.getString(PAQUETE));
         return beVariables;
     }
 }

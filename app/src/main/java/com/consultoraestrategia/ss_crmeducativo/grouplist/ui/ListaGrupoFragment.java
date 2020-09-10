@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
@@ -235,6 +237,7 @@ public class ListaGrupoFragment extends Fragment implements GroupListView, Group
     public void onExportarGrupoList(int programaEducativoId) {
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.GRUPO);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
     }
 

@@ -99,6 +99,7 @@ public class RubroProcesoDaoImpl extends BaseDaoImpl<RubroEvaluacionProcesoC, Ru
                         .where(RubroEvaluacionProcesoC_Table.key.eq(key))
                         .querySingle();
                 if(rubroEvaluacionProcesoC!=null){
+                    rubroEvaluacionProcesoC.setTareaId("");
                     rubroEvaluacionProcesoC.setEstadoId(RubroEvaluacionProcesoC.ESTADO_ELIMINADO);
                     rubroEvaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
                     callback.onSuccess(rubroEvaluacionProcesoC.save());

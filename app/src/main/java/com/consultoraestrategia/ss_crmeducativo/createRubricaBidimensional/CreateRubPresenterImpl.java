@@ -1229,7 +1229,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
                     //showFinalMessage(res.getString(R.string.global_message_sucess));
                     //view.showMessage(res.getString(R.string.global_message_sucess));
                 }else {
-                    showImportantMessage(res.getString(R.string.unknown_error));
+                    if (view != null)view.showMessage(res.getString(R.string.unknown_error));
                 }
             }
         });

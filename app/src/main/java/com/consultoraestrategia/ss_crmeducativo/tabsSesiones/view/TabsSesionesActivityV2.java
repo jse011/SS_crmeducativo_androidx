@@ -820,7 +820,6 @@ public class TabsSesionesActivityV2 extends AppCompatActivity implements TabsSes
                 toolbarprogress.setVisibility(View.GONE);
                 /*MenuItem menuItem = menu.findItem(R.id.menu_refrescar);
                 menuItem.setVisible(true);*/
-                presenter.onChangeFull(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -842,6 +841,16 @@ public class TabsSesionesActivityV2 extends AppCompatActivity implements TabsSes
         }
 
         presenter.onFinishSynck();
+    }
+
+    @Override
+    public void onLoadFirebase(int count) {
+
+    }
+
+    @Override
+    public void onFinishFirebase() {
+
     }
 
     @Override
@@ -938,6 +947,19 @@ public class TabsSesionesActivityV2 extends AppCompatActivity implements TabsSes
         Intent databack = new Intent();
         setResult(RESULT_OK,databack);
         //CMRE.saveNotifyChangeDataBase(getBaseContext());
+    }
+
+    @Override
+    public void comprobarSiActulizaronCorrectementeRubros() {
+        List<Fragment> fragments = getFragments();
+        for (Fragment fragment : fragments) {
+            if(fragment instanceof RubricaSesionFragment && fragment.isVisible())
+                ((RubricaSesionFragment) fragment).comprobarActualizacionRubros();
+            else if(fragment instanceof FragmentRubroEvalProcesoLista && fragment.isVisible()){
+                ((FragmentRubroEvalProcesoLista)fragment).comprobarActualizacionRubros();
+            }
+
+        }
     }
 
 }

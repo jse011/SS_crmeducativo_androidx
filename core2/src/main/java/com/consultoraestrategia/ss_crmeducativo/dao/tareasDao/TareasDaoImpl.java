@@ -55,7 +55,7 @@ public class TareasDaoImpl extends BaseDaoImpl<TareasC, TareasC_Table> implement
                 .from(TareasC.class)
                 .where(TareasC_Table.unidadAprendizajeId.is(unidadAprendizajeId))
                 .and(TareasC_Table.estadoId.notIn(265))
-                .and(TareasC_Table.sesionAprendizajeId.eq(0))
+                //.and(TareasC_Table.sesionAprendizajeId.eq(0))
                 .orderBy(TareasC_Table.fechaCreacion.asc())
                 .queryList();
     }

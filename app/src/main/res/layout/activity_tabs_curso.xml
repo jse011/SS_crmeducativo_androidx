@@ -5,10 +5,16 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
+    android:background="#FAFAFAFA"
     android:fitsSystemWindows="true"
     tools:context="com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.view.activities.TabsCursoDocenteActivity">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/pattern_repeat">
+
+    </FrameLayout>
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"

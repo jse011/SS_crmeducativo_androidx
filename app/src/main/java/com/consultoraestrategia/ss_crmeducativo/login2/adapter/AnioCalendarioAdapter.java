@@ -64,8 +64,8 @@ public class AnioCalendarioAdapter extends RecyclerView.Adapter<AnioCalendarioAd
             this.listener = listener;
             this.calendarioPeriodoUi = calendarioPeriodoUi;
             txtBimestre.setText(calendarioPeriodoUi.getNombre());
-            String descripcion = "del " + Utils.f_fecha_letras_dos(calendarioPeriodoUi.getFechaInicio()) +" al "+Utils.f_fecha_letras_dos(calendarioPeriodoUi.getFechaFin());
-            txtDescripcion.setText(descripcion);
+            //String descripcion = "del " + Utils.f_fecha_letras_dos(calendarioPeriodoUi.getFechaInicio()) +" al "+Utils.f_fecha_letras_dos(calendarioPeriodoUi.getFechaFin());
+            //txtDescripcion.setText(descripcion);
         }
 
         @Override

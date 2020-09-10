@@ -117,6 +117,7 @@ public class CrmeNotificationServiceImpl implements CrmeNotificationService, Chi
 
     @Override
     public void ejecutarbedatossesionaprendizaje(BEVariables beVariables) {
+
         LlamarImportarService.jobServiceExportarTipos(context,TipoImportacion.SESIONES, beVariables);
     }
 

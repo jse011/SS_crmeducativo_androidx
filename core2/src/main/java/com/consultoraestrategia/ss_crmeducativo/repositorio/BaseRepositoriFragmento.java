@@ -5,17 +5,24 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.consultoraestrategia.ss_crmeducativo.util.StreamUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,16 +66,18 @@ import com.consultoraestrategia.ss_crmeducativo.util.OpenIntents;
 import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import droidninja.filepicker.models.sort.SortingTypes;
-import droidninja.filepicker.utils.Orientation;
+import droidninja.filepicker.utils.ContentUriUtils;
 
 public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, RepositorioPresenter, RepositorioListener> implements RepositorioView, RepositorioItemListener, RepositorioItemUpdateListener, View.OnClickListener {
-
+    private final static int REQUEST_CODE_DOC_Q = 2312;
     protected static final int CUSTOM_REQUEST_CODE = 532;
     protected RecyclerView rcRepositorio;
     protected RepositorioAdapter repositorioAdapter;
@@ -286,42 +295,84 @@ public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, Repos
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ArrayList<String> photoPaths = new ArrayList<>();
+        ArrayList<Uri> photoPaths = new ArrayList<>();
+        ArrayList<String> photoPaths2 = new ArrayList<>();
         switch (requestCode) {
             case CUSTOM_REQUEST_CODE:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
+                    photoPaths.addAll(data.<Uri>getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
                 }
                 break;
 
             case FilePickerConst.REQUEST_CODE_DOC:
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    photoPaths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+                    photoPaths.addAll(data.<Uri>getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+                }
+                break;
+            case REQUEST_CODE_DOC_Q:
+                try{
+                    Uri uri = data.getData();
+                    String nombreArchivo = getNombre(uri, getContext());
+                    InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+                    File file = StreamUtil.stream2file(inputStream, nombreArchivo);
+                    photoPaths2.add(file.getAbsolutePath());
+                    //dumpImageMetaData(uri, activity);
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
                 break;
         }
 
-        presenter.onSalirSelectPiket(photoPaths);
+        for (Uri uri: photoPaths){
+            try {
+                photoPaths2.add(ContentUriUtils.INSTANCE.getFilePath(getContext(), uri));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
 
+        Log.d("photoPaths","photoPaths " + photoPaths2);
+        presenter.onSalirSelectPiket(photoPaths2);
+
+    }
+
+    public String getNombre(Uri uri, Context context) {
+        String displayName = null;
+        try {
+            Cursor cursor = context.getContentResolver()
+                    .query(uri, null, null, null, null, null);
+            // moveToFirst() returns false if the cursor has 0 rows.  Very handy for
+            // "if there's anything to look at, look at it" conditionals.
+            if (cursor != null) {
+                if(cursor.moveToFirst()){
+                    displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+                cursor.close();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return displayName;
     }
 
     @Override
     public void showPickPhoto(boolean enableVideo, int maxCount, List<UpdateRepositorioFileUi> photoPaths) {
         ArrayList<String> stringList = new ArrayList<>();
         //for (UpdateRepositorioFileUi recursoUploadFile : photoPaths)stringList.add(recursoUploadFile.getPath());
-        FilePickerBuilder filePickerBuilder = FilePickerBuilder.getInstance()
-                //.setSelectedFiles(stringList)
-                .setActivityTheme(R.style.LibAppThemeLibrary)
-                //.setActivityTitle("Selección de multimedia")
-                .enableVideoPicker(enableVideo)
-                .enableCameraSupport(true)
-                .showGifs(true)
-                .showFolderView(true)
-                //.enableSelectAll(false)
-                .enableImagePicker(true)
-                .setMaxCount(1)
-                //.setCameraPlaceholder(R.drawable.custom_camera)
-                .withOrientation(Orientation.UNSPECIFIED);
+            FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
+                    //.setSelectedFiles(stringList)
+                    .setActivityTheme(R.style.LibAppThemeLibrary)
+                    //.setActivityTitle("Selección de multimedia")
+                    .enableVideoPicker(enableVideo)
+                    .enableCameraSupport(true)
+                    .showGifs(true)
+                    .showFolderView(true)
+                    //.enableSelectAll(false)
+                    .enableImagePicker(true)
+                    .setMaxCount(1);
+            //.setCameraPlaceholder(R.drawable.custom_camera)
+            //.withOrientation(Orientation.UNSPECIFIED);
             filePickerBuilder.pickPhoto(this, CUSTOM_REQUEST_CODE);
     }
 
@@ -336,26 +387,40 @@ public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, Repos
      COMPRESION(new String[]{".gz",".gzip",".rar",".zip"});*/
     @Override
     public void onShowPickDoc(int maxCount, List<UpdateRepositorioFileUi> docPaths) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+            // browser.
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            // Filter to only show results that can be "opened", such as a
+            // file (as opposed to a list of contacts or timezones)
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            // Filter to show only images, using the image MIME data type.
+            // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+            // To search for all documents available via installed storage providers,
+            // it would be "*/*".
+            intent.setType("*/*");
+            startActivityForResult(intent, REQUEST_CODE_DOC_Q);
 
-        FilePickerBuilder filePickerBuilder = FilePickerBuilder.getInstance()
-                .setMaxCount(1)
-                //.setSelectedFiles(stringList)
-                .setActivityTheme(R.style.LibAppThemeLibrary)
-                //.setActivityTitle("Selección de documento");
-                .addFileSupport("DOCUMENTO", new String[]{".doc", ".docx", ".txt"},R.drawable.ext_doc)
-                .addFileSupport("HOJA DE CALCULO", new String[]{".xls", ".xlsx",".ods"},R.drawable.ext_xls)
-                .addFileSupport("PDF", new String[]{".pdf"},R.drawable.ext_pdf)
-                .addFileSupport("PRESENTACION", new String[]{".ppt", ".pptx"},R.drawable.ext_ppt)
-                .addFileSupport("MUSICA", new String[]{".mp3", ".ogg",".wav"},R.drawable.ext_aud)
-                //filePickerBuilder.addFileSupport("COMPRESION", new String[]{".gz",".gzip",".rar",".zip"});
-                .enableDocSupport(false)
-                //.enableSelectAll(true)
-                //.showFolderView(true)
-                .sortDocumentsBy(SortingTypes.name)
-                .withOrientation(Orientation.UNSPECIFIED);
+        }else {
+            FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
+                    .setMaxCount(1)
+                    //.setSelectedFiles(stringList)
+                    .setActivityTheme(R.style.LibAppThemeLibrary)
+                    //.setActivityTitle("Selección de documento");
+                    .addFileSupport("DOCUMENTO", new String[]{".doc", ".docx", ".txt"},R.drawable.ext_doc)
+                    .addFileSupport("HOJA DE CALCULO", new String[]{".xls", ".xlsx",".ods"},R.drawable.ext_xls)
+                    .addFileSupport("PDF", new String[]{".pdf"},R.drawable.ext_pdf)
+                    .addFileSupport("PRESENTACION", new String[]{".ppt", ".pptx"},R.drawable.ext_ppt)
+                    .addFileSupport("MUSICA", new String[]{".mp3", ".ogg",".wav"},R.drawable.ext_aud)
+                    //filePickerBuilder.addFileSupport("COMPRESION", new String[]{".gz",".gzip",".rar",".zip"});
+                    .enableDocSupport(false)
+                    //.enableSelectAll(true)
+                    //.showFolderView(true)
+                    .sortDocumentsBy(SortingTypes.name);
 
 
-        filePickerBuilder.pickFile(this, FilePickerConst.REQUEST_CODE_DOC);
+            filePickerBuilder.pickFile(this, FilePickerConst.REQUEST_CODE_DOC);
+        }
     }
 
 

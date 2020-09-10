@@ -4,6 +4,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -216,6 +218,11 @@ public class RubroProcesoFormulaHolder extends RecyclerView.ViewHolder implement
         txtFecha.setText(rubroProcesoUiFormula.getFecha());
         String mediaDesviacionEstandar = (rubroProcesoUiFormula.getMedia() + "(" + rubroProcesoUiFormula.getDesviacionE() + ")");
         txtMedia.setText(mediaDesviacionEstandar);
+        if(rubroProcesoUiFormula.isExportado()){
+            txtTitulo.setTextColor(Color.BLACK);
+        }else {
+            txtTitulo.setTextColor(Color.RED);
+        }
     }
 
     private void validarListener(RubroEvaluacionProcesoListener listener) {

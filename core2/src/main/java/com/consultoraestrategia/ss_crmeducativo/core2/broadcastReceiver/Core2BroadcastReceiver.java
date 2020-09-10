@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -24,6 +25,11 @@ public class Core2BroadcastReceiver extends BroadcastReceiver {
         //SyncIntenService.start(context);
     }
 
+    @Override
+    public IBinder peekService(Context myContext, Intent service) {
+        return super.peekService(myContext, service);
+    }
 
-
+    public Core2BroadcastReceiver() {
+    }
 }

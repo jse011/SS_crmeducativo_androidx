@@ -3,6 +3,8 @@ package com.consultoraestrategia.ss_crmeducativo.services.importar;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.work.Data;
+
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.services.data.source.base.ServiceDataSource;
@@ -77,7 +79,7 @@ public class ImportarPresenterImpl implements ImportarPresenter {
     }
 
     @Override
-    public void setExtra(Bundle extra) {
+    public void setExtra(Data extra) {
         if(extra== null)return;
         try {
             this.tipoImportacion = TipoImportacion.valueOf(extra.getString(ImportarJobService.ENUM_TIPOIMPORTACION));
@@ -93,7 +95,7 @@ public class ImportarPresenterImpl implements ImportarPresenter {
 
     private void onChangeDataBase() {
         if(event == null)return;
-        event.showNotificacionProgress(R.drawable.logo_consultoraa, "Docente Mentor 3.0", tipoImportacion.getMsgExecute(), "",this.importarWrapper.getUsuarioId());
+        event.showNotificacionProgress(R.drawable.logo_consultoraa, "Mensaje de actualización", tipoImportacion.getMsgExecute(), "",this.importarWrapper.getUsuarioId());
         switch (tipoImportacion){
             case TAREA:
                 changenTareaRecursos();
@@ -306,12 +308,12 @@ public class ImportarPresenterImpl implements ImportarPresenter {
 
     private void showNotificacionProgress(int id){
         if(event == null)return;
-        event.showNotificacionProgress(R.drawable.logo_consultoraa, "Docente Mentor 3.0", tipoImportacion.getMsgSuccess(), "",id);
+        event.showNotificacionProgress(R.drawable.logo_consultoraa, "Mensaje de actualización", tipoImportacion.getMsgSuccess(), "",id);
     }
 
     private void showNotificacionProgressError(int id){
         if(event == null)return;
-        event.showNotificacionProgress(R.drawable.logo_consultoraa, "Docente Mentor 3.0",  tipoImportacion.getMsgError(), "", SessionUser.getCurrentUser().getUserId());
+        event.showNotificacionProgress(R.drawable.logo_consultoraa, "Mensaje de actualización",  tipoImportacion.getMsgError(), "", SessionUser.getCurrentUser().getUserId());
     }
 
 }

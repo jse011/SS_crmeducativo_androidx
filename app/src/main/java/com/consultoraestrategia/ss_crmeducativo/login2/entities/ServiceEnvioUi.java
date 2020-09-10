@@ -2,10 +2,13 @@ package com.consultoraestrategia.ss_crmeducativo.login2.entities;
 
 public class ServiceEnvioUi {
     private int uploadProgress;
+    private int uploadRubroProgress;//Solo cuando se sincroniza los rubros primero
     private int dowloadProgress;
     private boolean activo;
     private boolean encoloa;
     private int success;
+    private int programaEducativoId;
+    private boolean syncrono;
 
     public void setUploadProgress(int uploadProgress) {
         this.uploadProgress = uploadProgress;
@@ -47,7 +50,23 @@ public class ServiceEnvioUi {
         return success;
     }
 
-    public enum Tipo{TipoNota, Rubrica, Resultado, Rubro, Formula, Unidades, Grupos, Tareas, Casos, Asistencias, Estudiantes, CerrarCurso}
+    public void setProgramaEducativoId(int programaEducativoId) {
+        this.programaEducativoId = programaEducativoId;
+    }
+
+    public int getProgramaEducativoId() {
+        return programaEducativoId;
+    }
+
+    public void setSyncrono(boolean syncrono) {
+        this.syncrono = syncrono;
+    }
+
+    public boolean isSyncrono() {
+        return syncrono;
+    }
+
+    public enum Tipo{TipoNota, Rubrica, Resultado, Rubro, Formula, Unidades, Grupos, Tareas, Casos, Asistencias, Estudiantes, CerrarCurso, SessionAlumno, TareaAlumno}
 
     private String nombre;
     private Tipo tipo = Tipo.Rubrica;
@@ -78,4 +97,11 @@ public class ServiceEnvioUi {
         this.tipo = tipo;
     }
 
+    public int getUploadRubroProgress() {
+        return uploadRubroProgress;
+    }
+
+    public void setUploadRubroProgress(int uploadRubroProgress) {
+        this.uploadRubroProgress = uploadRubroProgress;
+    }
 }

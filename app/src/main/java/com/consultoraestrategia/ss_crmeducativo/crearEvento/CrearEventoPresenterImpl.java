@@ -8,11 +8,17 @@ import android.util.Log;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenterImpl;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.GetAlumnoCargaAcademica;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.GetAlumnoCargaCurso;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.GetEvento;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.GetFile64;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.GetNombreCargaAcademica;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.GetNombreCargaCurso;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.GetTipoCalendario;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.GetTipoEvento;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.SaveEvento;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AgendaUi;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AlumnoUi;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.EventoUi;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.TipoCalendarioUi;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.TipoEventoUi;
@@ -49,14 +55,29 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
     private String imageBaseG4;
     private RetrofitCancel retrofitCancel;
     private String pathEdit;
+    private List<AlumnoUi> alumnoUiList = new ArrayList<>();
+    private int tutorCargaAcademicaId;
+    private int cargaCursoId;
+    private GetAlumnoCargaAcademica getAlumnoCargaAcademica;
+    private GetNombreCargaAcademica getNombreCargaAcademica;
+    private GetNombreCargaCurso getNombreCargaCurso;
+    private GetAlumnoCargaCurso getAlumnoCargaCurso;
+    private boolean checboxAllAlumnos;
+    private boolean checboxAllPadres;
+    private String nombreCalendario;
 
-    public CrearEventoPresenterImpl(UseCaseHandler handler, Resources res, GetEvento getEvento, GetTipoCalendario getTipoCalendario, GetTipoEvento getTipoEvento, SaveEvento saveEvento, GetFile64 getFile64) {
+    public CrearEventoPresenterImpl(UseCaseHandler handler, Resources res, GetEvento getEvento, GetTipoCalendario getTipoCalendario, GetTipoEvento getTipoEvento, SaveEvento saveEvento, GetFile64 getFile64,
+                                    GetAlumnoCargaAcademica getAlumnoCargaAcademica, GetNombreCargaAcademica getNombreCargaAcademica, GetNombreCargaCurso getNombreCargaCurso, GetAlumnoCargaCurso getAlumnoCargaCurso) {
         super(handler, res);
         this.getEvento = getEvento;
         this.getTipoCalendario = getTipoCalendario;
         this.getTipoEvento = getTipoEvento;
         this.saveEvento = saveEvento;
         this.getFile64 = getFile64;
+        this.getAlumnoCargaAcademica = getAlumnoCargaAcademica;
+        this.getNombreCargaAcademica = getNombreCargaAcademica;
+        this.getNombreCargaCurso = getNombreCargaCurso;
+        this.getAlumnoCargaCurso = getAlumnoCargaCurso;
     }
 
     @Override
@@ -79,11 +100,18 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
         anioAcademicoId = crmBundle.getAnioAcademico();
         enventoId = extras.getString("eventoId");
         entidadId = crmBundle.getEntidadId();
+        tutorCargaAcademicaId = crmBundle.getCargaAcademicaId();
+        cargaCursoId = crmBundle.getCargaCursoId();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        setupCheckboxAllPadres();
+        setupCheckboxAllAlumnos();
+        if(view!=null)view.showAllCheck();
+
         if(!TextUtils.isEmpty(enventoId)){
             EventoUi eventoUi = getEvento.execute(enventoId);
             if(eventoUi!=null){
@@ -95,31 +123,59 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
                 tipoEventoUiSelected.setId(eventoUi.getTipoEventoId());
 
                 horaEntrega = eventoUi.getHora();
+                if(!TextUtils.isEmpty(horaEntrega)&&horaEntrega.equals("00:00:00"))horaEntrega = "";
                 fechaEntrega = eventoUi.getFecha();
 
                 if(view!=null)view.setNombre(eventoUi.getNombre());
                 if(view!=null)view.setDescripcion(eventoUi.getDescripcion());
                 showFecha();
                 showHora();
-
+                cargaCursoId = eventoUi.getCargaCursoId();
+                tutorCargaAcademicaId = eventoUi.getCargaAcademicaId();
                 pathEdit =  eventoUi.getPath();
-                if(eventoUi.getTipoEventoId()==EVENTO||eventoUi.getTipoEventoId()==NOTICIA){
-                    if(view!=null)view.showContenPreview();
-                    if(view!=null)view.showImage(eventoUi.getPath());
-                }else {
-                    if(view!=null)view.hideContenPreview();
-                    if(view!=null)view.hideImage();
-                }
 
+                if(view!=null)view.showContenPreview();
+
+                if(!TextUtils.isEmpty(eventoUi.getPath()))
+                    if(view!=null)view.showImage(eventoUi.getPath());
+                    //if(view!=null)view.hideContenPreview();
+                    //if(view!=null)view.hideImage();
             }
         }
 
         getTipoCalendario();
         getTipoEvento();
 
+        getAlumno();
+
         if(view!=null&&!view.isInternetAvailable()){
             if(view!=null)view.showOffline();
         }
+    }
+
+    private void setupCheckboxAllAlumnos() {
+        checboxAllAlumnos = false;
+        if(view!=null)view.setCheckboxAllAlumnos(checboxAllAlumnos);
+    }
+
+    private void setupCheckboxAllPadres() {
+        checboxAllPadres = false;
+        if(view!=null)view.setCheckboxAllPadres(checboxAllPadres);
+    }
+
+    private void getAlumno() {
+        alumnoUiList.clear();
+        if(tutorCargaAcademicaId>0){
+            nombreCalendario = getNombreCargaAcademica.execute(tutorCargaAcademicaId);
+            alumnoUiList.addAll(getAlumnoCargaAcademica.execute(tutorCargaAcademicaId, empleadoId, enventoId));
+        }else if(cargaCursoId>0){
+            nombreCalendario = getNombreCargaCurso.execute(cargaCursoId);
+            alumnoUiList.addAll(getAlumnoCargaCurso.execute(cargaCursoId, empleadoId, enventoId));
+        }
+
+        if(view!=null)view.setEquiteLista("Lista de "+nombreCalendario);
+        if(view!=null)view.showListaAlumnos(alumnoUiList);
+        changeAllCheck();
     }
 
     private void getTipoEvento() {
@@ -137,8 +193,6 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
         }else {
             if(view!=null)view.setTipoEvento("");
         }
-
-
     }
 
     private void getTipoCalendario() {
@@ -160,6 +214,10 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
 
     @Override
     public void onBtnCreateClicked(String nombre, String descripcion) {
+        saveEvento(nombre, descripcion, false);
+    }
+
+    private void saveEvento(String nombre, String descripcion, boolean publicar){
         if(TextUtils.isEmpty(nombre)){
             if(view!=null)view.showMessage("Ingresé el nombre del evento");
             return;
@@ -170,23 +228,32 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
             return;
         }
 
-        if(tipoCalendarioUiSelected==null){
-            if(view!=null)view.showMessage("Seleccioné un tipo calendario");
+        int countSelected = 0;
+        for (AlumnoUi alumnoUi : alumnoUiList){
+            if(alumnoUi.isEnviarAlumno()||alumnoUi.isEnviarPadre())countSelected++;
+        }
+        if(countSelected==0){
+            if(view!=null)view.showMessage("Seleccione a quien va diriguido");
+            if(view!=null)view.panelUpAlumnos();
             return;
         }
 
-        if(tipoEventoUiSelected==null){
-            if(view!=null)view.showMessage("Seleccioné un tipo evento");
-            return;
-        }
+        //if(tipoCalendarioUiSelected==null){
+        //  if(view!=null)view.showMessage("Seleccioné un tipo calendario");
+        //return;
+        // }
 
-        if(tipoEventoUiSelected.getId()==EVENTO||tipoEventoUiSelected.getId()==NOTICIA){
-            if(TextUtils.isEmpty(pathEdit)){
-                if(view!=null)view.showMessage("Seleccioné una imagen");
-                return;
-            }
-        }
+        //if(tipoEventoUiSelected==null){
+        // if(view!=null)view.showMessage("Seleccioné un tipo evento");
+        // return;
+        //}
 
+        //if(tipoEventoUiSelected.getId()==EVENTO||tipoEventoUiSelected.getId()==NOTICIA){
+        // if(TextUtils.isEmpty(pathEdit)){
+        // if(view!=null)view.showMessage("Seleccioné una imagen");
+        // return;
+        //}
+        //}
 
         if(view!=null&&view.isInternetAvailable()){
             if(view!=null)view.hideOffline();
@@ -196,14 +263,18 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
             eventoUi.setId(enventoId);
             eventoUi.setNombre(nombre);
             eventoUi.setDescripcion(descripcion);
-            eventoUi.setCalendarioId(tipoCalendarioUiSelected.getId());
-            eventoUi.setTipoEventoId(tipoEventoUiSelected.getId());
+            //eventoUi.setCalendarioId(tipoCalendarioUiSelected.getId());
+            //eventoUi.setTipoEventoId(tipoEventoUiSelected.getId());
             eventoUi.setFecha(fechaEntrega);
             eventoUi.setHora(horaEntrega);
             eventoUi.setEntidadId(entidadId);
             eventoUi.setGeoreferencia(georeferenciaId);
             eventoUi.setFoto(imageBaseG4);
-            retrofitCancel = saveEvento.execute(eventoUi, new UseCaseLoginSincrono.Callback<Boolean>() {
+            eventoUi.setListEnvio(alumnoUiList);
+            eventoUi.setCargaCursoId(cargaCursoId);
+            eventoUi.setCargaAcademicaId(tutorCargaAcademicaId);
+            eventoUi.setNombreCalendario(nombreCalendario);
+            retrofitCancel = saveEvento.execute(eventoUi, publicar, new UseCaseLoginSincrono.Callback<Boolean>() {
                 @Override
                 public void onResponse(boolean success, Boolean value) {
                     if(success){
@@ -219,7 +290,6 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
             if(view!=null)view.showOffline();
             if(view!=null)view.showMessage("Sin conexión a internet");
         }
-
     }
 
     @Override
@@ -344,6 +414,102 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
 
     }
 
+    @Override
+    public void onClickItem(AlumnoUi alumnoUi) {
+        if(alumnoUi.isEnviarPadre()||alumnoUi.isEnviarAlumno()){
+            alumnoUi.setEnviarPadre(false);
+            alumnoUi.setEnviarAlumno(false);
+        }else {
+            alumnoUi.setEnviarPadre(true);
+        }
+        if(view!=null)view.updateAlumno(alumnoUi);
+        changeAllCheck();
+    }
+
+    @Override
+    public void onChangePadres(AlumnoUi alumnoUi) {
+        alumnoUi.setEnviarPadre(!alumnoUi.isEnviarPadre());
+        if(view!=null)view.updateAlumno(alumnoUi);
+        changeAllCheck();
+    }
+
+    private void changeAllCheck(){
+        int countPadres = 0;
+        int countAlumnos = 0;
+        StringBuilder stringBuilder =  new StringBuilder();
+        for (AlumnoUi alumnoUi : alumnoUiList){
+            if(alumnoUi.isEnviarAlumno())countAlumnos++;
+            if(alumnoUi.isEnviarPadre())countPadres++;
+            if(alumnoUi.isEnviarPadre()||alumnoUi.isEnviarAlumno()){
+                if(stringBuilder.length()>0)stringBuilder.append(", ");
+
+                if(alumnoUi.isEnviarPadre()&&!alumnoUi.isEnviarAlumno())stringBuilder.append("Los padres de ");
+                stringBuilder.append(alumnoUi.getNombres());
+                stringBuilder.append(" ");
+                stringBuilder.append(alumnoUi.getApellidos());
+            }
+        }
+        if(view!=null)view.setNombresAlumnos(stringBuilder.toString());
+
+        checboxAllPadres = alumnoUiList.size()==countPadres;
+        if(view!=null)view.setCheckboxAllPadres(checboxAllPadres);
+
+        checboxAllAlumnos = alumnoUiList.size()==countAlumnos;
+        if(view!=null)view.setCheckboxAllAlumnos(checboxAllAlumnos);
+    }
+
+    @Override
+    public void onChangeAlumno(AlumnoUi alumnoUi) {
+        alumnoUi.setEnviarAlumno(!alumnoUi.isEnviarAlumno());
+        if(view!=null)view.updateAlumno(alumnoUi);
+        changeAllCheck();
+    }
+
+    @Override
+    public void onClickAllPadres() {
+
+        checboxAllPadres = !checboxAllPadres;
+        if(view!=null)view.setCheckboxAllPadres(checboxAllPadres);
+        for (AlumnoUi alumnoUi: alumnoUiList){
+            alumnoUi.setEnviarPadre(checboxAllPadres);
+            if(view!=null)view.updateAlumno(alumnoUi);
+        }
+
+        changeAllCheck();
+    }
+
+    @Override
+    public void onClickAllAlumnos() {
+        checboxAllAlumnos = !checboxAllAlumnos;
+        if(view!=null)view.setCheckboxAllAlumnos(checboxAllAlumnos);
+        for (AlumnoUi alumnoUi: alumnoUiList){
+            alumnoUi.setEnviarAlumno(checboxAllAlumnos);
+            if(view!=null)view.updateAlumno(alumnoUi);
+        }
+
+        changeAllCheck();
+    }
+
+    @Override
+    public void onChangeSearch(String search) {
+        if(TextUtils.isEmpty(search)){
+            if(view!=null)view.showAllCheck();
+        }else {
+            if(view!=null)view.hideAllCheck();
+        }
+    }
+
+    @Override
+    public void onBtnPublicarClicked(String nombre, String descripcion) {
+        saveEvento(nombre, descripcion, true);
+    }
+
+    @Override
+    public void onClickCloseImage() {
+        if(view!=null)view.hideImage();
+        pathEdit = null;
+        imageBaseG4= null;
+    }
 
     @Override
     public void btnCloseFecha() {

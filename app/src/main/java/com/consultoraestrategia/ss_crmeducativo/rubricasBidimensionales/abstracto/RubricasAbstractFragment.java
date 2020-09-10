@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.OrientationHelper;
@@ -199,6 +201,11 @@ public abstract class RubricasAbstractFragment<T extends Fragment, P extends Rub
     }
 
     @Override
+    public void notifyChangeRbrica() {
+        rubBidAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onItemSelected(RubBidUi item) {
         presenter.onRubricaSelected(item);
 
@@ -234,18 +241,6 @@ public abstract class RubricasAbstractFragment<T extends Fragment, P extends Rub
     @Override
     public void ocultarMensaje() {
         textViewMensaje.setVisibility(View.GONE);
-    }
-
-
-    @Override
-    public void ocultarListaRubrica() {
-        recicladorRubricas.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void mostrarListaRubrica() {
-        Log.d(RUBRICAS_ABSTRACT_FRAGMENT_TAG, "mostrarListaRubrica() ");
-        recicladorRubricas.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -374,6 +369,16 @@ public abstract class RubricasAbstractFragment<T extends Fragment, P extends Rub
     public void succesChangePublicar(int programaEDucativoId, String key) {
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.RUBROEVALUACION);
         SimpleSyncIntenService.start(getContext(), programaEDucativoId);
+        SynckService.start(getContext(),programaEDucativoId);
+    }
+
+    public void comprobarActualizacionRubros() {
+        RubBidAdapter adapter = (RubBidAdapter)recicladorRubricas.getAdapter();
+        if(adapter!=null){
+            List<RubBidUi> rubBidUiList = adapter.getItems();
+            presenter.comprobarActualizacionRubros(rubBidUiList);
+        }
+
     }
 
 }

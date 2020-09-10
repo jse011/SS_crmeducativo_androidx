@@ -52,13 +52,8 @@ public class RubBidAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void setItems(List<RubBidUi> items) {
-        resverList(items);
         this.items = items;
         notifyDataSetChanged();
-    }
-
-    private void resverList(List<RubBidUi> items) {
-        Collections.reverse(items);
     }
 
     public void agregarItem(RubBidUi rubBidUi) {
@@ -100,4 +95,7 @@ public class RubBidAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    public List<RubBidUi> getItems() {
+        return items;
+    }
 }

@@ -1,10 +1,12 @@
 package com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.sesiones.data.source.local;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.TipoUi;
 import com.consultoraestrategia.ss_crmeducativo.dao.calendarioPeriodo.CalendarioPeriodoDao;
 import com.consultoraestrategia.ss_crmeducativo.dao.rubroEvalRNPFormula.RubroEvalRNPFormulaDao;
+import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.EvaluacionProcesoC;
@@ -14,8 +16,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos_Table;
 import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
@@ -25,6 +25,7 @@ import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstract
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.entidades.RubEvalProcUi;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.sesiones.data.source.RubricaSesionDataSource;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -32,6 +33,7 @@ import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -118,6 +120,9 @@ public class RubricaSesionLocal implements RubricaSesionDataSource {
                 rubBidUi.setEditar(calendarioEditar);
                 rubBidUi.setDisabledEval(calendarioVigente);
                 rubBidUi.setAlias(proceso.getSubtitulo());
+                rubBidUi.setExportado(proceso.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                        proceso.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                        proceso.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
                 rubBidUi.setKey(proceso.getKey());
                 rubBidUi.setEstadoMsje(proceso.getMsje());
                 rubBidUi.setPosicion(conteo);
@@ -163,12 +168,7 @@ public class RubricaSesionLocal implements RubricaSesionDataSource {
                     rubBidUi.setPublicarEval(RubBidUi.PublicarEval.PARCIAL);
                 }
 
-                TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = SQLite.select()
-                        .from(TareaRubroEvaluacionProceso.class)
-                        .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.eq(proceso.getKey()))
-                        .querySingle(databaseWrapper);
-
-                if(tareaRubroEvaluacionProceso!=null){
+                if(!TextUtils.isEmpty(proceso.getTareaId())){
                     rubBidUi.setOrigenUi(OrigenUi.TAREA);
                 }
 
@@ -177,7 +177,7 @@ public class RubricaSesionLocal implements RubricaSesionDataSource {
 
             Log.d("RUBRICA_BID_LOCAL_TAG", "rubBidUiList size: " + rubBidList.size());
             databaseWrapper.setTransactionSuccessful();
-
+            Collections.reverse(rubBidList);
             callBackListRub.onListaRubBidList(rubBidList);
         } catch (Exception e){
             e.printStackTrace();

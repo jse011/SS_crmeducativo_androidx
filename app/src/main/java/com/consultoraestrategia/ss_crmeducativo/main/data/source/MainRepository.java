@@ -9,6 +9,7 @@ import com.consultoraestrategia.ss_crmeducativo.main.data.source.remote.RemoteDa
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AlarmaUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AnioAcademicoUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.GradoUi;
+import com.consultoraestrategia.ss_crmeducativo.main.entities.PersonaUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ProgramaEduactivosUI;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.entities.PeriodoUi;
@@ -45,6 +46,16 @@ public class MainRepository implements MainDataSource {
     }
 
     @Override
+    public void uploadFile(PersonaUi request, SucessCallback<String> stringSucessCallback) {
+        localDataSource.uploadFile(request, stringSucessCallback);
+    }
+
+    @Override
+    public void savePathPersona(PersonaUi personaUi) {
+        localDataSource.savePathPersona(personaUi);
+    }
+
+    @Override
     public void getAccesosUIList(int idUsuario, int idHijo, GetAccesosListCallback callback) {
         localDataSource.getAccesosUIList(idUsuario, idHijo, callback);
         remoteDataSource.getAccesosUIList(idUsuario, idHijo, callback);
@@ -66,7 +77,6 @@ public class MainRepository implements MainDataSource {
     @Override
     public void getUsuarioUI(GetUsuarioCallback callback) {
         localDataSource.getUsuarioUI(callback);
-        remoteDataSource.getUsuarioUI(callback);
     }
 
     @Override
@@ -109,6 +119,11 @@ public class MainRepository implements MainDataSource {
     @Override
     public RetrofitCancel updateListAnioAcademico(int usuarioId, SucessCallback<Boolean> callback) {
         return remoteDataSource.updateListAnioAcademico(usuarioId, callback);
+    }
+
+    @Override
+    public RetrofitCancel updatePersona(PersonaUi personaUi, SucessCallback<Boolean> callback) {
+        return remoteDataSource.updatePersona(personaUi, callback);
     }
 
 

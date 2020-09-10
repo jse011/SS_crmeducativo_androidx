@@ -13,7 +13,7 @@ import com.consultoraestrategia.ss_crmeducativo.main.entities.UsuarioUi;
  * Created by irvinmarin on 03/10/2017.
  */
 
-public class GetUsuarioUI extends UseCaseSincrono<GetUsuarioUI.RequestValues, GetUsuarioUI.ResponseValue> {
+public class GetUsuarioUI extends UseCaseSincrono<Void, GetUsuarioUI.ResponseValue>{
 
     private MainRepository repository;
 
@@ -21,9 +21,8 @@ public class GetUsuarioUI extends UseCaseSincrono<GetUsuarioUI.RequestValues, Ge
         this.repository = repository;
     }
 
-
     @Override
-    public void execute(RequestValues request, final Callback<ResponseValue> callback) {
+    public void execute(Void request, Callback<GetUsuarioUI.ResponseValue> callback) {
         repository.getUsuarioUI(new GetUsuarioCallback() {
             @Override
             public void onError(String error) {
@@ -36,10 +35,6 @@ public class GetUsuarioUI extends UseCaseSincrono<GetUsuarioUI.RequestValues, Ge
             }
 
         });
-    }
-
-    public static final class RequestValues implements UseCase.RequestValues {
-
     }
 
     public static final class ResponseValue implements UseCase.ResponseValue {

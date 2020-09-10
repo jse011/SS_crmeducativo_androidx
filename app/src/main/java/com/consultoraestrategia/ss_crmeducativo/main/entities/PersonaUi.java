@@ -17,6 +17,8 @@ public class PersonaUi {
     private int empleadoId;
     private int georeferenciaId;
     private int entidadId;
+    private boolean working;
+    private String path;
 
     public int getPersonaId() {
         return personaId;
@@ -88,5 +90,21 @@ public class PersonaUi {
 
     public int getEmpleadoId() {
         return empleadoId;
+    }
+
+    public void setWorking(boolean working) {
+        this.working = working;
+    }
+
+    public boolean getWorking() {
+        return working;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

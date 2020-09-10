@@ -4,7 +4,6 @@ package com.consultoraestrategia.ss_crmeducativo.main;
 import android.os.Bundle;
 
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenter;
-import com.consultoraestrategia.ss_crmeducativo.main.adapters.holders.CursosViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.main.changePerfil.ChangePerfilView;
 import com.consultoraestrategia.ss_crmeducativo.main.dialogProgress.ProgressDialogView;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AlarmaUi;
@@ -109,4 +108,10 @@ public interface MainPresenter extends BasePresenter<MainView> {
     void onClickActionAgenta();
 
     void onClickReconocimientoCursoSelected(CursosUI cursosUI, int cargaCurso);
+
+    void onClickGuardarPerfil(String telefono, String email);
+
+    void changeFile();
+
+    void onCropImageActivityResult(String filePath);
 }

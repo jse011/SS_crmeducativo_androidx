@@ -183,12 +183,12 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
 
     }
 
-    override fun showCrearEventos(usuarioId: Int, georeferenciaId: Int, empleadoId: Int, anioAcademicoId: Int, entidadId: Int) {
-        CrearEventoActivity.start(this, "", usuarioId, georeferenciaId, empleadoId, anioAcademicoId, entidadId)
+    override fun showCrearEventos(usuarioId: Int, georeferenciaId: Int, empleadoId: Int, anioAcademicoId: Int, entidadId: Int, tutorCargaAcademicaId: Int, cargaCursoId: Int) {
+        CrearEventoActivity.start(this, "", usuarioId, georeferenciaId, empleadoId, anioAcademicoId, entidadId,tutorCargaAcademicaId, cargaCursoId)
     }
 
     override fun showEditarEventos(idEvento: String?, usuarioId: Int, georeferenciaId: Int, empleadoId: Int, anioAcademicoId: Int, entidadId: Int) {
-        CrearEventoActivity.start(this, idEvento, usuarioId, georeferenciaId, empleadoId, anioAcademicoId, entidadId)
+        CrearEventoActivity.start(this, idEvento, usuarioId, georeferenciaId, empleadoId, anioAcademicoId, entidadId, 0, 0)
     }
 
     override fun showListaUsuarioDiaolog() {

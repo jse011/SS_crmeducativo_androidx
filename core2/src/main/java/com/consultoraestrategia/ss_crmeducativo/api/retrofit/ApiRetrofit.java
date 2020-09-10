@@ -2,6 +2,7 @@
 package com.consultoraestrategia.ss_crmeducativo.api.retrofit;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroChangeAdminService;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroChangeData;
@@ -9,6 +10,8 @@ import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.Parametr
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroChangeUser;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroLogin;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroNotificacion;
+import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosChangePortalAlumno;
+import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosEventos;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosExportar;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosExportarGlobal;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosImportar;
@@ -16,10 +19,15 @@ import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.UsuarioA
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.response.RestApiResponse;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.service.Service;
 import com.consultoraestrategia.ss_crmeducativo.entities.AdminService;
+import com.consultoraestrategia.ss_crmeducativo.entities.Calendario;
 import com.consultoraestrategia.ss_crmeducativo.entities.Evento;
+import com.consultoraestrategia.ss_crmeducativo.entities.EventoPersona;
 import com.consultoraestrategia.ss_crmeducativo.entities.GlobalSettings;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
 import com.consultoraestrategia.ss_crmeducativo.entities.Usuario;
+import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubricaPortalAlumnoFb;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubroEvalEnvioSimple;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosCasos;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosContacto;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosEstudiante;
@@ -240,6 +248,9 @@ public class ApiRetrofit {
         Log.d(TAG,"url: " + url);
         Log.d(TAG, "usuarioId : " + usuarioId);
         ApiRequestBody<ParametroLogin> apiRequestBody = new ApiRequestBody<>("flst_getDatosInicioSesion",parametroLogin);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.flst_getDatosInicioSesion(apiRequestBody);
     }
 
@@ -301,6 +312,17 @@ public class ApiRetrofit {
         return service.flst_getDatosRubroInicial(apiRequestBody);
     }
 
+    public Call<RestApiResponse<BEDatosRubro>> flst_getDatosRubroIds(List<String> rubroEvaluacionIdList) {
+        ParametrosChangePortalAlumno parametroLogin = new ParametrosChangePortalAlumno();
+        parametroLogin.setRubroEvaluacionidList(rubroEvaluacionIdList);
+        Log.d(TAG,"url: " + url);
+        ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody = new ApiRequestBody<>("flst_getDatosRubroIds",parametroLogin);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.flst_getDatosRubroIds(apiRequestBody);
+    }
+
     public Call<RestApiResponse<BEDatosGrupo>> flst_getDatosGrupo(List<Integer> cargaCursoIdList) {
         ParametroChangeData2 parametroLogin = new ParametroChangeData2();
         parametroLogin.setCargaCursoIdList(cargaCursoIdList);
@@ -353,6 +375,9 @@ public class ApiRetrofit {
         Log.d(TAG, "empleadoId : " + empleadoId);
         Log.d(TAG, "anioId : " + anioId);
         ApiRequestBody<ParametroChangeData2> apiRequestBody = new ApiRequestBody<>("flst_getDatosAnioAcademico",parametroChangeData2);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.flst_getDatosAnioAcademico(apiRequestBody);
     }
 
@@ -379,11 +404,23 @@ public class ApiRetrofit {
     }
 
     public Call<RestApiResponse<String>> flst_saveEvento(Evento evento) {
-        ParametroChangeData2 parametroChangeData2 = new ParametroChangeData2();
-        parametroChangeData2.setEvento(evento);
+        ParametrosEventos parametrosEventos = new ParametrosEventos();
+        parametrosEventos.setEvento(evento);
         Log.d(TAG,"flst_saveEvento: " + url);
-        ApiRequestBody<ParametroChangeData2> apiRequestBody = new ApiRequestBody<>("flst_saveEvento",parametroChangeData2);
+        ApiRequestBody<ParametrosEventos> apiRequestBody = new ApiRequestBody<>("flst_saveEvento",parametrosEventos);
         return service.flst_saveEvento(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<BEEventos>> flst_saveEvento2(Evento evento, Calendario calendario, List<EventoPersona> personaList) {
+        ParametrosEventos parametrosEventos = new ParametrosEventos();
+        parametrosEventos.setEvento(evento);
+        parametrosEventos.setCalendario(calendario);
+        parametrosEventos.setEventoPersonaList(personaList);
+        ApiRequestBody<ParametrosEventos> apiRequestBody = new ApiRequestBody<>("flst_saveEvento2",parametrosEventos);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.flst_saveEvento2(apiRequestBody);
     }
 
     public Call<RestApiResponse<BEDatosContacto>> flst_getDatosContacto(int usuarioId, int georeferenciaId, List<Integer> cargaCursoIdList) {
@@ -410,6 +447,57 @@ public class ApiRetrofit {
         return service.flst_Notificacion(apiRequestBody);
     }
 
+    public Call<RestApiResponse<List<BERubroEvalEnvioSimple>>> fins_GuardarRubroEvaluacion(List<BERubroEvalEnvioSimple> beRubroEvalEnvioSimpleList) {
+        ParametrosExportarGlobal parametrosExportarGlobal = new ParametrosExportarGlobal();
+        parametrosExportarGlobal.setBeRubroEvalEnvioSimpleList(beRubroEvalEnvioSimpleList);
+        Log.d(TAG,"url: " + url);
+        ApiRequestBody<ParametrosExportarGlobal> apiRequestBody = new ApiRequestBody<>("fins_GuardarRubroEvaluacion",parametrosExportarGlobal);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.fins_GuardarRubroEvaluacion(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<List<BERubroEvalEnvioSimple>>> fins_GuardarRubroFormula(List<BERubroEvalEnvioSimple> beRubroEvalEnvioSimpleList) {
+        ParametrosExportarGlobal parametrosExportarGlobal = new ParametrosExportarGlobal();
+        parametrosExportarGlobal.setBeRubroEvalEnvioSimpleList(beRubroEvalEnvioSimpleList);
+        Log.d(TAG,"url: " + url);
+        ApiRequestBody<ParametrosExportarGlobal> apiRequestBody = new ApiRequestBody<>("fins_GuardarRubroFormula",parametrosExportarGlobal);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.fins_GuardarRubroEvaluacion(apiRequestBody);
+    }
+
+    public  Call<RestApiResponse<Integer>> fupd_SimplePersonas(List<Persona> personaList) {
+        ParametrosExportarGlobal parametrosExportarGlobal = new ParametrosExportarGlobal();
+        parametrosExportarGlobal.setPersonaList(personaList);
+        Log.d(TAG,"url: " + url);
+        ApiRequestBody<ParametrosExportarGlobal> apiRequestBody = new ApiRequestBody<>("fupd_SimplePersonas",parametrosExportarGlobal);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.fupd_SimplePersonas(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<List<WebConfig>>> getWebConfig() {
+        ApiRequestBody<ParametrosExportarGlobal> apiRequestBody = new ApiRequestBody<>("fupd_SimplePersonas", new ParametrosExportarGlobal());
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.getWebConfig(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<List<BERubricaPortalAlumnoFb>>> getCambiosFirebase(int usuarioid, long fechaCambio) {
+        ParametrosChangePortalAlumno parametrosChangePortalAlumno = new ParametrosChangePortalAlumno();
+        parametrosChangePortalAlumno.setUsuarioId(usuarioid);
+        parametrosChangePortalAlumno.setFechaCambio(fechaCambio);
+        ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody = new ApiRequestBody<>("getCambiosFirebase", parametrosChangePortalAlumno);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.getCambiosFirebase(apiRequestBody);
+    }
 
     public class ApiRequestBody<T extends Parameters>{
         @SerializedName("interface")
@@ -604,6 +692,9 @@ public class ApiRetrofit {
         Log.d(TAG,"url: " + url);
         Log.d(TAG, "json: " + parametroChangeUser.getUsuario());
         ApiRequestBody< ParametroChangeUser> apiRequestBody = new ApiRequestBody<>("flst_ObtenerPersona",parametroChangeUser);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.flst_ObtenerPersona(apiRequestBody);
     }
 
@@ -651,8 +742,11 @@ public class ApiRetrofit {
         ParametroChangeUser parametroChangeUser = new ParametroChangeUser();
         parametroChangeUser.setUsuarioId(usuarioId);//
         Log.d(TAG,"url: " + url);
-        Log.d(TAG, "json: " + parametroChangeUser.toString());
         ApiRequestBody< ParametroChangeUser> apiRequestBody = new ApiRequestBody<>("fobj_ObtenerUsuario_By_Id",parametroChangeUser);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+
         return service.fobj_ObtenerUsuario(apiRequestBody);
     }
 
@@ -926,21 +1020,6 @@ public class ApiRetrofit {
     public String getUrl() {
         return url;
     }
-
-    public static class Log{
-        public static void d(String TAG, String message) {
-            int maxLogSize = 2000;
-            for(int i = 0; i <= message.length() / maxLogSize; i++) {
-                int start = i * maxLogSize;
-                int end = (i+1) * maxLogSize;
-                end = end > message.length() ? message.length() : end;
-                android.util.Log.d(TAG, message.substring(start, end));
-            }
-        }
-    }
-
-
-
 }
 
 

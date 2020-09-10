@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseSincrono;
@@ -29,10 +30,13 @@ import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetGradosLi
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetHijosUIList;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetPeriodosList;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetProgramasEdcativosList;
+import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetUploadImagen;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetUsuarioUI;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.SaveAlarma;
+import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.SavePersona;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.SuccesData;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.UpadateListAnioAcademico;
+import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.UpdatePersonaServidor;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AlarmaUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AnioAcademicoUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ConfiguracionUi;
@@ -108,9 +112,17 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
     private RetrofitCancel cancelUpadateListAnioAcademico;
     private RetrofitCancel retrofitCancelGetDatosServidor;
     private ChangePerfilView changePerfilView;
+    private GetUploadImagen getUploadImagen;
+    private SavePersona savePersona;
+    private UpdatePersonaServidor updatePersonaServidor;
+    private RetrofitCancel updatePersonaRetrofitCancel;
+    private ArrayList<UsuarioAccesoUI> usuarioAccesoUIList = new ArrayList<>();
+    private ArrayList<ConfiguracionUi> configuracionUiList = new ArrayList<>();
+    private int menuSelected = 0;
+    private int tutorCargaAdemicaId;
 
     public MainPresenterImpl(UseCaseHandler handler, Resources res, GetProgramasEdcativosList getProgramasEdcativosUIList, GetAccesosUIList getAccesosUIList, GetCursosUIList getCursosUIList, GetUsuarioUI getUsuarioUI, GetHijosUIList getHijosUIList, GetPeriodosList getPeriodosList, GetGradosList getGradosList, SaveAlarma saveAlarma, GetAlarma getAlarma,
-                             ChangeDataBaseDocenteMentor changeDataBaseDocenteMentor,GetAnioAcademicoList getAnioAcademicoList, GetDatosServidorLocal getDatosServidorLocal, SuccesData succesData,UpadateListAnioAcademico upadateListAnioAcademico) {
+                             ChangeDataBaseDocenteMentor changeDataBaseDocenteMentor,GetAnioAcademicoList getAnioAcademicoList, GetDatosServidorLocal getDatosServidorLocal, SuccesData succesData,UpadateListAnioAcademico upadateListAnioAcademico, GetUploadImagen getUploadImagen, SavePersona savePersona, UpdatePersonaServidor updatePersonaServidor) {
         super(handler, res);
         this.handler = handler;
         this.getProgramasEdcativosUIList = getProgramasEdcativosUIList;
@@ -127,6 +139,9 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         this.getDatosServidorLocal = getDatosServidorLocal;
         this.succesData= succesData;
         this.upadateListAnioAcademico = upadateListAnioAcademico;
+        this.getUploadImagen = getUploadImagen;
+        this.savePersona = savePersona;
+        this.updatePersonaServidor = updatePersonaServidor;
     }
 
     @Override
@@ -143,6 +158,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
     @Override
     public void onCreate() {
         Log.d(TAG, "onCreate");
+        menuSelected=0;
         getUsuario();
     }
 
@@ -185,6 +201,8 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         Log.d(TAG, "onDestroy");
         view = null;
         if(retrofitCancelGetDatosServidor!=null)retrofitCancelGetDatosServidor.cancel();
+        if(updatePersonaRetrofitCancel!=null)updatePersonaRetrofitCancel.cancel();
+        if(cancelUpadateListAnioAcademico!=null)cancelUpadateListAnioAcademico.cancel();
     }
 
     @Override
@@ -265,7 +283,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
 
     private void getUsuario() {
-        getUsuarioUI.execute(new GetUsuarioUI.RequestValues(), new UseCaseSincrono.Callback<GetUsuarioUI.ResponseValue>() {
+        getUsuarioUI.execute(null, new UseCaseSincrono.Callback<GetUsuarioUI.ResponseValue>() {
             @Override
             public void onResponse(boolean success, GetUsuarioUI.ResponseValue response) {
                 if(success){
@@ -295,7 +313,8 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
                 }
             }
         });
-
+        if(view!=null)view.callSynckServiceFB();
+        if(programaEducativoUi!=null)if(view!=null)view.callSynckService(programaEducativoUi.getIdPrograma());
     }
 
     private void initMain() {
@@ -316,6 +335,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         }else {
             if(view!=null)view.showBtnEntidadSelect();
         }*/
+
         if(view!=null)view.hideBtnEntidadSelect();
         if(!successData){
             successData = succesData.execute();
@@ -463,14 +483,8 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
     @Override
     public void onIbtnProgramaClicked() {
-        showProgramaEducativo(programaEduactivosUIList);
-    }
-
-    private void showProgramaEducativo(List<ProgramaEduactivosUI> programaEduactivosUIList){
-        if(programaEduactivosUIList==null)return;
-        List<Object > objectList = new ArrayList<>();
-        objectList.addAll(programaEduactivosUIList);
-        if(view != null)view.showMenuList(objectList);
+        menuSelected=0;
+        showMenuList();
     }
 
     @Override
@@ -522,8 +536,11 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
             case ACCESO_TIPO_NOTA:
                 if(view!=null)view.startActivityTipoNota(usuarioAccesoUI);
                 break;
-            default:
+            case 1:
                 if(view!=null)view.showPerfil();
+                break;
+            case 2:
+                if(programaEducativoUi!=null)if(view!=null)view.showActivityService2(idUsuario, empleadoId,anioAcademicoIdFinal, programaEducativoUi.getIdPrograma(), georeferenciaId, entidadId);
                 break;
         }
     }
@@ -566,25 +583,29 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
     @Override
     public void onClickBtnAcceso() {
+        this.usuarioAccesoUIList.clear();
         UsuarioAccesoUI usuarioAccesoUI = new UsuarioAccesoUI();
         usuarioAccesoUI.setIdAcceso(1);
         usuarioAccesoUI.setNombreAcceso("Perfil");
-        List<UsuarioAccesoUI> usuarioAccesoUIList = new ArrayList<>();
         usuarioAccesoUIList.add(usuarioAccesoUI);
-        showAccesoList(usuarioAccesoUIList);
+        usuarioAccesoUI = new UsuarioAccesoUI();
+        usuarioAccesoUI.setIdAcceso(2);
+        usuarioAccesoUI.setNombreAcceso("Servicio general");
+        usuarioAccesoUIList.add(usuarioAccesoUI);
+        menuSelected=1;
+        showMenuList();
     }
 
     @Override
     public void onClickBtnConfiguracion() {
-        List<ConfiguracionUi> configuracionUiList = new ArrayList<>();
+        this.configuracionUiList = new ArrayList<>();
         configuracionUiList.add(ConfiguracionUi.INFORMACION);
         //configuracionUiList.add(ConfiguracionUi.BORRAR_CACHE);
         //configuracionUiList.add(ConfiguracionUi.CONTACTOS);
         configuracionUiList.add(ConfiguracionUi.ALARMA);
         configuracionUiList.add(ConfiguracionUi.CERRAR_SESION);
-
-
-        if(view != null)view.showMenuList(new ArrayList<Object>(configuracionUiList));
+        menuSelected=2;
+        showMenuList();
     }
 
 
@@ -700,7 +721,22 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
             e.printStackTrace();
         }
 
-        if(view!=null)view.showMenuList(new ArrayList<Object>(programaEduactivosUIList));
+        showMenuList();
+
+    }
+
+    private void showMenuList() {
+        switch (menuSelected){
+            case 0://Programa Educativo
+                if(view!=null)view.showMenuList(new ArrayList<Object>(programaEduactivosUIList));
+                break;
+            case 1:///usuario Accesos
+                if(view!=null)view.showMenuList(new ArrayList<Object>(usuarioAccesoUIList));
+                break;
+            default://configuracion
+                if(view!=null)view.showMenuList(new ArrayList<Object>(configuracionUiList));
+                break;
+        }
 
     }
 
@@ -718,13 +754,6 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 //        view.showImgProfileBackgroundUser("http://3.bp.blogspot.com/-ftcLyoUXwsc/UVRjuPWuUFI/AAAAAAAAAA0/BKPJPpDvFPI/s1600/8310376-world-map-technology-style-against-fiber-optic-background.jpg");
     }
 
-    private void showAccesoList(List<UsuarioAccesoUI> usuarioAccesoUIList) {
-        List<Object> objectList = new ArrayList<>();
-        if(usuarioAccesoUIList!=null)objectList.addAll(usuarioAccesoUIList);
-        if(view!=null)view.showMenuList(objectList);
-
-    }
-
 
     private void getCursosUIListCallback() {
 
@@ -739,6 +768,22 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
             public void onSuccess(GetCursosUIList.ResponseValue response) {
 
                 cursosList = response.getCursosUIList();
+                //Is Tutor
+                tutorCargaAdemicaId = 0;
+                for (CursosUI cursosUI : cursosList){
+                    if(cursosUI.isTutor()){
+                        tutorCargaAdemicaId = cursosUI.getCargaAcademicaId();
+                        break;
+                    }
+                }
+                //Is Tutor
+                if(tutorCargaAdemicaId>0){
+                    if(view!=null)view.showBtnAgenda();
+                }else {
+                    if(view!=null)view.hideBtnAgenda();
+                }
+
+
                 if(view!=null)view.hideProgress();
                 showCursosUIList(cursosList, efectoLista);
                 if(response.getCursosUIList().isEmpty()){
@@ -752,6 +797,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
             public void onError() {
                 Log.d(TAG, "Error no hay cursos");
                 hideProgress();
+                if(view!=null)view.hideBtnAgenda();
             }
         });
 
@@ -866,7 +912,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
     @Override
     public void onChangeFull(boolean b) {
-        getUsuario();
+        //getUsuario();
     }
 
     @Override
@@ -883,6 +929,11 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
     @Override
     public void onCreateOptionsMenu() {
         changeDataBaseDocenteMentor();
+        if(tutorCargaAdemicaId>0){//Volver a llamar por si el caso de uso se jecuto antes del metodo on Create Option menu
+            if(view!=null)view.showBtnAgenda();
+        }else {
+            if(view!=null)view.hideBtnAgenda();
+        }
     }
 
     @Override
@@ -1010,7 +1061,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
     @Override
     public void onClickActionAgenta() {
-       if(view!=null)view.showActivityAgenda(idUsuario, georeferenciaId, empleadoId, anioAcademicoIdFinal, entidadId);
+       if(view!=null)view.showActivityAgenda(idUsuario, georeferenciaId, empleadoId, anioAcademicoIdFinal, entidadId, tutorCargaAdemicaId);
     }
 
     @Override
@@ -1018,6 +1069,79 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         if(view!=null)view.showReconocimientoActivity(cargaCursoId, georeferenciaId, entidadId);
 
     }
+
+    @Override
+    public void onClickGuardarPerfil(String telefono, String email) {
+        String telefonoAnterio = telefono;
+        String emailAnterior = email;
+        personaUi.setCorreo(email);
+        personaUi.setCelular(telefono);
+        if(view!=null)changePerfilView.disabledButtons();
+        if(view!=null)changePerfilView.showProgress();
+        updatePersonaRetrofitCancel = updatePersonaServidor.execute(personaUi, new UpdatePersonaServidor.Callback() {
+            @Override
+            public void onSuccess() {
+                if (changePerfilView != null) changePerfilView.enabledButtons();
+                if (changePerfilView != null) changePerfilView.hideProgress();
+                if (changePerfilView != null) changePerfilView.close();
+            }
+
+            @Override
+            public void onError() {
+                if (changePerfilView != null) changePerfilView.enabledButtons();
+                if (changePerfilView != null) changePerfilView.hideProgress();
+
+                personaUi.setCorreo(emailAnterior);
+                personaUi.setCelular(telefonoAnterio);
+            }
+        });
+    }
+
+    @Override
+    public void changeFile() {
+        if(view!=null)view.startCropImageActivity(personaUi.getPath());
+    }
+
+    @Override
+    public void onCropImageActivityResult(String filePath) {
+        if(personaUi!=null){
+            personaUi.setPath(filePath);
+            savePersona.execute(personaUi);
+            boolean isInternet = false;
+            if(view!=null)isInternet = view.isInternetAvailable();
+            if(!isInternet){
+                if(view!=null)view.showMessage("No tiene acceso a internet");
+                return;
+            }
+
+            if(TextUtils.isEmpty(personaUi.getPath())){
+                showMessage("Seleccione una imagen");
+                return;
+            }
+
+            personaUi.setWorking(true);
+            if(changePerfilView!=null)changePerfilView.updatePersona(personaUi);
+            getUploadImagen.execute(personaUi, new UseCaseSincrono.Callback<PersonaUi>() {
+                @Override
+                public void onResponse(boolean success, PersonaUi value) {
+                    if(success){
+                        savePersona.execute(value);
+                        value.setWorking(false);
+                    }else {
+                        value.setWorking(false);
+                        showMessage(res.getString(R.string.unknown_error));
+                    }
+                    getUsuario();
+                    if(changePerfilView!=null)changePerfilView.updatePersona(value);
+                }
+            });
+
+
+        }
+    }
+
+
+
 
     private void changeDataBaseDocenteMentor(){
         Log.d(TAG, "changeDataBaseDocenteMentor");

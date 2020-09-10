@@ -42,6 +42,7 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacion_sesionPrincipal.entit
 import com.consultoraestrategia.ss_crmeducativo.evaluacion_sesionPrincipal.evaluacion_sesion.ui.RegistroFragment;
 import com.consultoraestrategia.ss_crmeducativo.evaluacion_sesionPrincipal.evaluacion_sesion_grupo.ui.RegistroGrupoFragment;
 import com.consultoraestrategia.ss_crmeducativo.grouplist.ui.ListaGrupoFragment;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.plantilla.view.FragmentAbstract;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.sesion.view.FragmentRubroEvalProcesoLista;
 import com.consultoraestrategia.ss_crmeducativo.services.daemon.util.CallService;
@@ -422,6 +423,7 @@ public class EvaluacionContainerActivity extends BaseActivity<EvaluacionContaine
     public void onSincronizate(int programaEducativoId, String rubroEvaluacionId) {
         CallService.jobServiceExportarTipos(this, TipoExportacion.RUBROEVALUACION_FORMULA_ASOCIADOS);
         SimpleSyncIntenService.start(this, programaEducativoId);
+        SynckService.start(this,programaEducativoId);
     }
 
     @OnClick(R.id.msg_actualizar)

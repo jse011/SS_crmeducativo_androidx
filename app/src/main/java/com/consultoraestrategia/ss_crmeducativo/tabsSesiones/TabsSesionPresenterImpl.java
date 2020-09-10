@@ -525,6 +525,7 @@ public class TabsSesionPresenterImpl implements TabsSesionPresenter {
     @Override
     public void onFinishSynck() {
         changeDataBaseDocenteMentor();
+        if(view!=null)view.comprobarSiActulizaronCorrectementeRubros();
     }
 
     private void changeDataBaseDocenteMentor(){

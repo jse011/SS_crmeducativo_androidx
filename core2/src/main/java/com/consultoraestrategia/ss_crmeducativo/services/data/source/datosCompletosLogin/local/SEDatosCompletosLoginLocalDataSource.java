@@ -419,7 +419,7 @@ public class SEDatosCompletosLoginLocalDataSource extends ServiceLocalDataSource
                 TransaccionUtils.fastStoreListInsert(DimensionObservada.class, beDatosSilaboEventoEnvio.getObtenerDimensionObservada(), databaseWrapper, true);
                 TransaccionUtils.fastStoreListInsert(InstrumentoObservado.class, beDatosSilaboEventoEnvio.getObtenerInstrumentoObservado(), databaseWrapper, true);
                 TransaccionUtils.fastStoreListInsert(InstrumentoEvaluacion.class, beDatosSilaboEventoEnvio.getInstrumento_eval(), databaseWrapper, true);
-                TransaccionUtils.fastStoreListInsert(TareaRubroEvaluacionProceso.class, beDatosSilaboEventoEnvio.getTareaRubroEvaluacionProceso(), databaseWrapper, true);
+                //TransaccionUtils.fastStoreListInsert(TareaRubroEvaluacionProceso.class, beDatosSilaboEventoEnvio.getTareaRubroEvaluacionProceso(), databaseWrapper, true);
                 TransaccionUtils.fastStoreListInsert(CalendarioPeriodoDetalle.class, beDatosSilaboEventoEnvio.getObtenerCalendarioPeriodoDetalle(), databaseWrapper, true);//1
                 TransaccionUtils.fastStoreListInsert(CargaCursoCalendarioPeriodo.class, beDatosSilaboEventoEnvio.getObtenerCargaCursosCalendarioPeriodo(), databaseWrapper, true);//1
                 TransaccionUtils.fastStoreListInsert(ProductoEventoReferencia.class, beDatosSilaboEventoEnvio.getProducto_evento_referencia(), databaseWrapper, true);

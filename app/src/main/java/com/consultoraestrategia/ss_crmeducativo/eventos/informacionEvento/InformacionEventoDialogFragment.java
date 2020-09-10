@@ -162,7 +162,8 @@ public class InformacionEventoDialogFragment extends DialogFragment implements I
         String tipo = eventosUi.getTiposUi().getNombre() + " para:";
 
         if (eventosUi.getTiposUi().getTipos()== TiposUi.NOTICIA ||
-                eventosUi.getTiposUi().getTipos() == TiposUi.EVENTOS){
+                eventosUi.getTiposUi().getTipos() == TiposUi.EVENTOS||
+                (eventosUi.getTiposUi().getTipos() == TiposUi.AGENDA && !TextUtils.isEmpty(eventosUi.getImagen()))){
 
             if(!TextUtils.isEmpty(eventosUi.getImagen())){
                 imagenEvento.setVisibility(View.VISIBLE);

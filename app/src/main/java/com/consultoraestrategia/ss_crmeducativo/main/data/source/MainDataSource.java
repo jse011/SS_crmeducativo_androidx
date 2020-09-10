@@ -8,6 +8,7 @@ import com.consultoraestrategia.ss_crmeducativo.main.data.source.callbacks.GetUs
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AlarmaUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.AnioAcademicoUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.GradoUi;
+import com.consultoraestrategia.ss_crmeducativo.main.entities.PersonaUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ProgramaEduactivosUI;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosInicioSesion;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
@@ -22,6 +23,10 @@ import java.util.List;
 public interface MainDataSource {
 
     boolean succesData();
+
+    void uploadFile(PersonaUi request, SucessCallback<String> stringSucessCallback);
+
+    void savePathPersona(PersonaUi personaUi);
 
     interface SucessCallback<T> {
         void onLoad(boolean success, T item);
@@ -48,4 +53,6 @@ public interface MainDataSource {
     RetrofitCancel getDatosInicioSesion (int empleadoId, int anioId, MainDataSource.SucessCallback<Boolean> callback);
 
     RetrofitCancel updateListAnioAcademico(int usuarioId, SucessCallback<Boolean> callback);
+
+    RetrofitCancel updatePersona (PersonaUi personaUi, SucessCallback<Boolean> callback);
 }

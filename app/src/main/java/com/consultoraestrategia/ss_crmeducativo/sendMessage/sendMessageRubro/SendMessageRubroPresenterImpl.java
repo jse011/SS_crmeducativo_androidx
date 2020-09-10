@@ -180,7 +180,7 @@ public class SendMessageRubroPresenterImpl extends SendMessageBasePresenterImpl 
         rubroUIFIrebase.setCells(response.getListCellsParent());
         Gson gson = new Gson();
         String json = gson.toJson(rubroUIFIrebase);
-        ApiRetrofit.Log.d(TAG, "rubrojson: " + json);
+        Log.d(TAG, "rubrojson: " + json);
 
         OfficialMessageWrapper wrapper = new OfficialMessageWrapper(
                 phoneNumberFrom,

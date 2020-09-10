@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.entities.SesionAprendizaje;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.services.daemon.util.CallService;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoExportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.syncIntentService.SimpleSyncIntenService;
@@ -195,6 +196,7 @@ public class SesionHolderLandScape extends RecyclerView.ViewHolder implements Vi
                     cambiarTagColor();
                     CallService.jobServiceExportarTipos(itemView.getContext(), TipoExportacion.SESIONES);
                     SimpleSyncIntenService.start(itemView.getContext(), programaEducativoId);
+                    SynckService.start(itemView.getContext(),programaEducativoId);
                 }else if(estadoSesiones == EstadoSesiones.HECHO){
 
                     if(sesionAprendizaje.getFechaEjecucion() < calendar.getTimeInMillis()){
@@ -210,6 +212,7 @@ public class SesionHolderLandScape extends RecyclerView.ViewHolder implements Vi
                                     cambiarTagColor();
                                     CallService.jobServiceExportarTipos(itemView.getContext(), TipoExportacion.SESIONES);
                                     SimpleSyncIntenService.start(itemView.getContext(), programaEducativoId);
+                                    SynckService.start(itemView.getContext(),programaEducativoId);
                                 }
 
                                 @Override
@@ -227,6 +230,7 @@ public class SesionHolderLandScape extends RecyclerView.ViewHolder implements Vi
                                     cambiarTagColor();
                                     //CallService.jobServiceExportarTipos(itemView.getContext(), TipoExportacion.SESIONES);
                                     SimpleSyncIntenService.start(itemView.getContext(), programaEducativoId);
+                                    SynckService.start(itemView.getContext(),programaEducativoId);
                                 }
 
                                 @Override

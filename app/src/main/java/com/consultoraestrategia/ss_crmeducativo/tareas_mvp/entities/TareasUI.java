@@ -14,6 +14,9 @@ import java.util.List;
 public class TareasUI  {
     public boolean calendarioVigente;
     public boolean calendarioEditar;
+    public boolean progress;
+    public boolean exportado;
+    public String nombreSesion;
 
     public boolean isCalendarioVigente() {
         return calendarioVigente;
@@ -29,6 +32,30 @@ public class TareasUI  {
 
     public void setCalendarioEditar(boolean calendarioEditar) {
         this.calendarioEditar = calendarioEditar;
+    }
+
+    public boolean isProgress() {
+        return progress;
+    }
+
+    public void setProgress(boolean progress) {
+        this.progress = progress;
+    }
+
+    public boolean isExportado() {
+        return exportado;
+    }
+
+    public void setExportado(boolean exportado) {
+        this.exportado = exportado;
+    }
+
+    public String getNombreSesion() {
+        return nombreSesion;
+    }
+
+    public void setNombreSesion(String nombreSesion) {
+        this.nombreSesion = nombreSesion;
     }
 
     //IU
@@ -205,6 +232,21 @@ public class TareasUI  {
 
     public void setRubroEvalProcesoUi(RubroEvalProcesoUi rubroEvalProcesoUi) {
         this.rubroEvalProcesoUi = rubroEvalProcesoUi;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TareasUI tareasUI = (TareasUI) o;
+
+        return keyTarea != null ? keyTarea.equals(tareasUI.keyTarea) : tareasUI.keyTarea == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return keyTarea != null ? keyTarea.hashCode() : 0;
     }
 
     @Override

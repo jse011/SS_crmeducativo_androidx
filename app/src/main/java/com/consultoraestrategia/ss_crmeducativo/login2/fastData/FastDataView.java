@@ -12,4 +12,7 @@ public interface FastDataView extends BaseView<FastDataPresenter> {
     void finshedDialogWithError();
 
     void cerrarActividad();
+
+    void changeDataBase();
+
 }

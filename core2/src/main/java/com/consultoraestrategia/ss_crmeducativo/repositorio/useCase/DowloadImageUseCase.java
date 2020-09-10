@@ -45,6 +45,7 @@ public class DowloadImageUseCase extends UseCase<DowloadImageUseCase.RequestValu
             private DownloadCancelUi downloadCancelUi;
             @Override
             public void onProgress(int count) {
+                Log.d(DowloadImageUseCase.class.getSimpleName(),"count: " + count);
                 repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.ENPROCESO_DESCARGA);
                 if(repositorioFileUi.isCancel())downloadCancelUi.setCancel(true);
                 getUseCaseCallback().onSuccess(new ResponseProgressValue(count, repositorioFileUi));
@@ -52,6 +53,7 @@ public class DowloadImageUseCase extends UseCase<DowloadImageUseCase.RequestValu
 
             @Override
             public void onLoad(boolean success, String item) {
+                Log.d(DowloadImageUseCase.class.getSimpleName(),"success: " + success);
                 if(success){
                     repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.DESCARGA_COMPLETA);
                     repositorioFileUi.setPath(item);

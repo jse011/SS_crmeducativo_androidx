@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.card.MaterialCardView;
 import androidx.fragment.app.Fragment;
@@ -106,7 +107,7 @@ public class TabCreateComportFragment extends BaseFragment<TabCreateComportView,
     @BindView(R.id.cont_tipo_comentario)
     ConstraintLayout contTipoComentario;
     @BindView(R.id.constraintLayout10)
-    MaterialCardView constraintLayout10;
+    CardView constraintLayout10;
     @BindView(R.id.txt_peso_comportamiento)
     TextView txtPesoComportamiento;
     @BindView(R.id.textView134)

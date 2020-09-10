@@ -16,7 +16,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_RUBRO_EVALUACION_PROCESO_EQUIPOC;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_RUBRO_EVALUACION_PROCESO_INTEGRANTEC;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasRecursosC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TipoNotaC;
@@ -127,7 +126,7 @@ public class GEDatosRubroEvaluacionProcesoLocalDataSource extends ServiceLocalDa
             TransaccionUtils.fastStoreListComprobacionSave(RecursoDidacticoEventoC.class,geDatosTareasRecursos.getRecursoDidactico(),false);
             TransaccionUtils.fastStoreListComprobacionSave(TareasRecursosC.class,geDatosTareasRecursos.getTareasRecursos(),false);
             TransaccionUtils.fastStoreListComprobacionSave(TareasC.class,geDatosTareasRecursos.getTareas(),false);
-            TransaccionUtils.fastStoreListComprobacionSave(TareaRubroEvaluacionProceso.class,geDatosTareasRecursos.getTareaRubroEvaluacionProceso(),false);
+            //TransaccionUtils.fastStoreListComprobacionSave(TareaRubroEvaluacionProceso.class,geDatosTareasRecursos.getTareaRubroEvaluacionProceso(),false);
 
 
 
@@ -161,7 +160,7 @@ public class GEDatosRubroEvaluacionProcesoLocalDataSource extends ServiceLocalDa
             TransaccionUtils.fastStoreListComprobacionSave(RecursoDidacticoEventoC.class,geDatosTareasRecursos.getRecursoDidactico(),false);
             TransaccionUtils.fastStoreListComprobacionSave(TareasRecursosC.class,geDatosTareasRecursos.getTareasRecursos(),false);
             TransaccionUtils.fastStoreListComprobacionSave(TareasC.class,geDatosTareasRecursos.getTareas(),false);
-            TransaccionUtils.fastStoreListComprobacionSave(TareaRubroEvaluacionProceso.class,geDatosTareasRecursos.getTareaRubroEvaluacionProceso(),false);
+            //TransaccionUtils.fastStoreListComprobacionSave(TareaRubroEvaluacionProceso.class,geDatosTareasRecursos.getTareaRubroEvaluacionProceso(),false);
 
 
             BEDatosEnvioTipoNota beDatosEnvioTipoNota = item.getBeDatosEnvioTipoNota();

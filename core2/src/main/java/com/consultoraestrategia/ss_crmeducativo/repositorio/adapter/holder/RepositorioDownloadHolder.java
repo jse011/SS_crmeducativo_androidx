@@ -22,12 +22,11 @@ import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.Repositorio
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioTipoFileU;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.listener.RepositorioItemListener;
+import com.consultoraestrategia.ss_crmeducativo.util.AndroidLifecycleUtils;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import java.io.File;
-
-import droidninja.filepicker.utils.AndroidLifecycleUtils;
 
 public class RepositorioDownloadHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

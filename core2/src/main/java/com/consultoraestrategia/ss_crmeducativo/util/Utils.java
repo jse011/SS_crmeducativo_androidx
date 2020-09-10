@@ -461,13 +461,31 @@ public class Utils {
         int diaManiana = calendarActual.get(Calendar.DAY_OF_MONTH);
 
         if (anhio==anhoActual&&mesActual==mes&&dia==diaActual){
-            return "para hoy a las " + changeTime12Hour(hora,minuto);
+            if(hora==0&&minuto==0){
+                return "para hoy";
+            }else {
+                return "para hoy a las " + changeTime12Hour(hora,minuto);
+            }
+
         }else if (anhio==anioManiana&&mesManiana==mes&&dia==diaManiana) {
-            return "para mañana a las " + changeTime12Hour(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
+            if(hora==0&&minuto==0){
+                return "para mañana";
+            }else {
+                return "para mañana a las " + changeTime12Hour(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
+            }
+
         }else if(anhio==anhoActual){
-            return "para el "+Utils.f_fecha_letras(fecha) + " " + changeTime12Hour(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
+            if(hora==0&&minuto==0){
+                return "para el "+Utils.f_fecha_letras(fecha);
+            }else {
+                return "para el "+Utils.f_fecha_letras(fecha) + " " + changeTime12Hour(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
+            }
         }else {
-            return  "para el "+Utils.getFechaDiaMesAnho(fecha) + " " + changeTime12Hour(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
+            if(hora==0&&minuto==0){
+                return  "para el "+Utils.getFechaDiaMesAnho(fecha);
+            }else {
+                return  "para el "+Utils.getFechaDiaMesAnho(fecha) + " " + changeTime12Hour(calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE));
+            }
         }
 
     }

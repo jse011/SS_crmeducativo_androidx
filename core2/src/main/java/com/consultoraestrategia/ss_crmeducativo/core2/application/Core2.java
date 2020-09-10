@@ -38,6 +38,8 @@ public class Core2 extends Application implements ActivityLifecycleHandler.Lifec
     public static final String ACTION_PROGRESO ="net.sgoliver.intent.action.PROGRESO";
     public static final String ACTION_FIN ="net.sgoliver.intent.action.FIN";
     public static final String ACTION_SIMPLE_FIN ="net.sgoliver.intent.action.SIMPLE_FIN";
+    public static final String ACTION_PROGRESO_FIREBASE ="net.sgoliver.intent.action.PROGRESOPORTALALUMNO";
+    public static final String ACTION_FIN_FIREBASE ="net.sgoliver.intent.action.FINPORTALALUMNO";
 
     @SuppressLint("MissingPermission")
     @Override
@@ -56,6 +58,8 @@ public class Core2 extends Application implements ActivityLifecycleHandler.Lifec
         filter.addAction(ACTION_PROGRESO);
         filter.addAction(ACTION_FIN);
         filter.addAction(ACTION_SIMPLE_FIN);
+        filter.addAction(ACTION_PROGRESO_FIREBASE);
+        filter.addAction(ACTION_FIN_FIREBASE);
         LocalBroadcastManager.getInstance(this).registerReceiver(getProgressReceiver(), filter);
     }
 
@@ -145,7 +149,7 @@ public class Core2 extends Application implements ActivityLifecycleHandler.Lifec
                         Manifest.permission.ACCESS_NETWORK_STATE,
                         //Manifest.permission.READ_CONTACTS,
                         Manifest.permission.CAMERA,
-                        Manifest.permission.RECORD_AUDIO,
+                        //Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.ACCESS_WIFI_STATE
@@ -211,6 +215,13 @@ public class Core2 extends Application implements ActivityLifecycleHandler.Lifec
                 for (Core2Listener listener : core2ListenerList)listener.onFinishSimple();
                 Log.d(TAG,"ACTION_SIMPLE_FIN ");
                 //Toast.makeText(context, "Tarea finalizada!", Toast.LENGTH_SHORT).show();
+            } else if(intent.getAction().equals(ACTION_PROGRESO_FIREBASE)) {
+                int prog = intent.getIntExtra("progreso", 0);
+                for (Core2Listener listener : core2ListenerList)listener.onLoadFirebase(prog);
+                Log.d(TAG,"progreso ACTION_PROGRESO_FIREBASE" + prog );
+            }else if(intent.getAction().equals(ACTION_FIN_FIREBASE)) {
+                for (Core2Listener listener : core2ListenerList)listener.onFinishFirebase();
+                Log.d(TAG,"ACTION_FIN_FIREBASE");
             }
         }
     }

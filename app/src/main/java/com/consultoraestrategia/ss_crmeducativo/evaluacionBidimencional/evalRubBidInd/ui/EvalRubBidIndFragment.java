@@ -121,7 +121,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 import droidninja.filepicker.FilePickerBuilder;
-import droidninja.filepicker.utils.Orientation;
 
 /**
  * Created by @stevecampos on 28/02/2018.
@@ -565,7 +564,7 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
 
     @Override
     public void showPickPhoto(boolean enableVideo) {
-        FilePickerBuilder filePickerBuilder = FilePickerBuilder.getInstance()
+        FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
                 //.setSelectedFiles(stringList)
                 .setActivityTheme(R.style.LibAppThemeLibrary)
                 //.setActivityTitle("Selección de multimedia")
@@ -575,9 +574,9 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
                 .showFolderView(true)
                 //.enableSelectAll(false)
                 .enableImagePicker(true)
-                .setMaxCount(1)
+                .setMaxCount(1);
                 //.setCameraPlaceholder(R.drawable.custom_camera)
-                .withOrientation(Orientation.UNSPECIFIED);
+                //.withOrientation(Orientation.UNSPECIFIED);
         filePickerBuilder.pickPhoto(this, CUSTOM_REQUEST_CODE);
     }
 
@@ -909,7 +908,7 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        repositorioViewImpl.onActivityResult(requestCode, resultCode, data);
+        repositorioViewImpl.onActivityResult(requestCode, resultCode, data, getContext());
 
     }
 

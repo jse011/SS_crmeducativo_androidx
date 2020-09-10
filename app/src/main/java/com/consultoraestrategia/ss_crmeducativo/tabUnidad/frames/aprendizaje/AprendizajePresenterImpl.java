@@ -8,7 +8,6 @@ import android.util.Log;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentPresenterImpl;
-import com.consultoraestrategia.ss_crmeducativo.services.uploadFile.UploadFile;
 import com.consultoraestrategia.ss_crmeducativo.sesiones.entities.UnidadParametros;
 import com.consultoraestrategia.ss_crmeducativo.tabUnidad.domain.usecase.GetCamposAccion;
 import com.consultoraestrategia.ss_crmeducativo.tabUnidad.domain.usecase.GetCompetenciaCapacidad;

@@ -1,9 +1,12 @@
 package com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.adapter.holder;
 
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +18,7 @@ import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entit
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.adapter.RubEvalProcAdapter;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.entidades.RubBidUi;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.listener.RubricaListener;
+import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 
 
 import butterknife.BindView;
@@ -50,6 +54,8 @@ public class RubBidHolder extends RecyclerView.ViewHolder implements View.OnClic
     ImageView imgPublicar;
     @BindView(R.id.morePoints)
     ImageView morePoints;
+    @BindView(R.id.card_rubro_proceso)
+    CardView CardRubroProceso;
 
 
     RubricaListener listener;
@@ -129,6 +135,16 @@ public class RubBidHolder extends RecyclerView.ViewHolder implements View.OnClic
             morePoints.setVisibility(View.VISIBLE);
         }else {
             morePoints.setVisibility(View.GONE);
+        }
+
+        if(rubBidUi.isExportado()){
+            textTitle.setTextColor(Color.BLACK);
+            //CardRubroProceso.setCardBackgroundColor(Color.WHITE);
+            //CardRubroProceso.setCardElevation(Utils.convertDpToPixel(4, itemView.getContext()));
+        }else {
+            textTitle.setTextColor(Color.RED);
+            //CardRubroProceso.setCardBackgroundColor(Color.parseColor("#54FFFFFF"));
+            //CardRubroProceso.setCardElevation(0);
         }
     }
 

@@ -17,6 +17,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenterImpl;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
 import com.consultoraestrategia.ss_crmeducativo.comportamiento.ui.ComportamientoFragment;
+import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.view.EvaluacionCompetenciasFragment;
 import com.consultoraestrategia.ss_crmeducativo.grouplist.ui.ListaGrupoFragment;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.principal.RubricaBidFragment;
@@ -261,6 +262,7 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
             if(view!=null) view.onResumenFragmentUnidades(idCalendarioPeriodo, false);
             if(view!=null) view.onResumenFragmentRubrica(idCalendarioPeriodo, false);
             if(view!=null)view.onResumenFragmentRegistro(idCalendarioPeriodo, false);
+            if(view!=null)view.onResumenFragmentTareas(idCalendarioPeriodo, false);
             return;
         }
 
@@ -491,7 +493,7 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
 
     private void primeravesCursoDocente(){
         if(isPrimeravesCursoDocente){
-            if(view!=null)view.showProgressService2(usuarioId, empleadoId, idProgramaEducativo, idCargaCurso, idCalendarioPeriodo, idGeoreferenciaId, idEntidad, silaboId, idCurso, idCargaAcademica,cursoComplejo);
+            if(view!=null)view.showProgressService2(usuarioId, empleadoId, idProgramaEducativo, idCargaCurso, idCalendarioPeriodo, idGeoreferenciaId, idEntidad, silaboId, idCurso, idCargaAcademica,cursoComplejo, anioAcademicoId);
         }
     }
 
@@ -808,6 +810,7 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
     @Override
     public void onFinishSynck() {
         changeDataBaseDocenteMentor();
+        if(view!=null)view.comprobarSiActulizaronCorrectementeRubros();
     }
 
     @Override
@@ -865,6 +868,13 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
         else{
             if(view!=null)view.showMessage("Seleccioné un calendario periodo");
         }
+    }
+
+    @Override
+    public void onClickCalendario() {
+        SessionUser sessionUser = SessionUser.getCurrentUser();
+        int usuarioId = sessionUser!=null?sessionUser.getUserId(): 0;
+        if(view!=null)view.showActivityAgenda(usuarioId, idGeoreferenciaId, empleadoId, anioAcademicoId, idEntidad, idCargaCurso);
     }
 
     @Override

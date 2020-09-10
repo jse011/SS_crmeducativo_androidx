@@ -66,6 +66,9 @@ public interface TabCursoDocentePresenter extends BasePresenter<TabCursoDocenteV
 
     void onClickAceptarRevizarErroresActualizar();
 
+    void onClickCalendario();
+
+
     //a Eliminar!!!
     //void onActivityResult(int requestCode, int resultCode, Intent data);
 }

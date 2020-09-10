@@ -306,7 +306,7 @@ public class PersonalChatActivity extends BaseActivity<PersonalChatView, Persona
                     }
                     title_img.setText(j.toUpperCase());
 
-                    title_img.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                    title_img.setTextColor(Color.WHITE);
                     ColorStateList csl2 = ColorStateList.valueOf(Color.parseColor(chatUi.getColor()));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         circle.setImageTintList(csl2);

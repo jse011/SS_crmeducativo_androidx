@@ -41,8 +41,6 @@ public class ParametroChangeData2 extends ApiRetrofit.Parameters {
     private int cargaAcademicaId;
     @SerializedName("vint_AnioAcademicoId")
     private int anioAcademicoId;
-    @SerializedName("vobj_Eventos")
-    private Evento evento;
 
     public ParametroChangeData2() {
     }
@@ -159,11 +157,4 @@ public class ParametroChangeData2 extends ApiRetrofit.Parameters {
         this.cursoIdList = cursoIdList;
     }
 
-    public Evento getEvento() {
-        return evento;
-    }
-
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
 }

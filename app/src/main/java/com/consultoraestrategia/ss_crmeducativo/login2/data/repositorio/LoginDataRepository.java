@@ -1,14 +1,19 @@
 package com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio;
 
+import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubricaPortalAlumnoFb;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubroEvalEnvioSimple;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.AlarmaUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.CalendarioPeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ProgramaEducativoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.PersonaUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.DatosProgressUi;
+import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioFbUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.UsuarioExternoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.UsuarioUi;
+import com.consultoraestrategia.ss_crmeducativo.services.entidad.servidor.BEGuardarEntidadesGlobal;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 
 import java.util.List;
@@ -38,13 +43,13 @@ public interface LoginDataRepository {
 
     RetrofitCancel saveDatosUnidades(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces);
 
-    RetrofitCancel saveDatosResultado(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces);
+    RetrofitCancel saveDatosResultado(ServiceEnvioUi serviceEnvioUi, CallBackSuccessRelacion<ServiceEnvioUi> callBackSucces);
 
     RetrofitCancel saveDatosRubro(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces);
 
     RetrofitCancel saveDatosRubrica(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces);
 
-    RetrofitCancel saveDatosFormula(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces);
+    RetrofitCancel saveDatosFormula(ServiceEnvioUi serviceEnvioUi, CallBackSuccessRelacion<ServiceEnvioUi> callBackSucces);
 
     RetrofitCancel saveDatosTarea(ServiceEnvioUi serviceEnvioUi, CallBackSucces<ServiceEnvioUi> callBackSucces);
 
@@ -58,6 +63,14 @@ public interface LoginDataRepository {
 
     boolean savePlanSinck(int hora, int minute);
 
+    BEGuardarEntidadesGlobal getDatosExportarGlobalSimple();
+
+    RetrofitCancel getCambiosFirebase(int usuarioid, long fechaCambio, boolean modoSynck, Callback<List<ServiceEnvioFbUi>> callback);
+
+    RetrofitCancel updateRubroEvalaucionServidor(List<String> rubroEvalaucionIds, Callback<Throwable> callback);
+
+    String changeEstadoSesionEjecutado(int sesionAprendizajeDocenteId);
+
     interface Callback<S>{
         void onResponse(boolean success, S value);
     }
@@ -66,6 +79,10 @@ public interface LoginDataRepository {
         void onLoad(boolean success, T item);
         void onRequestProgress(int progress);
         void onResponseProgress(int progress);
+    }
+
+    interface CallBackSuccessRelacion<T> extends CallBackSucces<T>{
+        void onRequestRubroProgress(int progress);
     }
 
     interface CallBackComplejo<T>{
@@ -119,5 +136,9 @@ public interface LoginDataRepository {
     List<ServiceEnvioUi> getDataForSynck(int anioAcademicoId, int cargaCursoId, int calendarioPeriodoId, int silaboEventoId, int programaAcademicoId);
 
     List<CalendarioPeriodoUi> getListCalendarioAcademico(int anioAcademicoId, int programaEducativoId);
+
+    List<BERubroEvalEnvioSimple> getLisRubroEvalSimple();
+
+    List<String> comprobrarCambiosBaseDatosDaocenteMentor();
 }
 

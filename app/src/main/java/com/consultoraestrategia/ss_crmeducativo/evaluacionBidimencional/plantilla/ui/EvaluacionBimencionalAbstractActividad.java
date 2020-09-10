@@ -12,6 +12,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.appbar.AppBarLayout;
 
 import androidx.transition.Slide;
@@ -586,6 +588,7 @@ public abstract class EvaluacionBimencionalAbstractActividad extends BaseActivit
     public void onSincronization(int programaEducativoId, String rubBidId) {
         CallService.jobServiceExportarTipos(this, TipoExportacion.RUBROEVALUACION_FORMULA_ASOCIADOS);
         SimpleSyncIntenService.start(this, programaEducativoId);
+        SynckService.start(this,programaEducativoId);
     }
 
     @Override

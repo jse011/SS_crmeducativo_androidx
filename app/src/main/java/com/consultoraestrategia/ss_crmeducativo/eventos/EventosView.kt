@@ -12,7 +12,7 @@ interface EventosView:BaseView<EventosPresenter> {
     fun hideTextEmpty()
     fun showTextEmpty()
     fun notificationChangeEvento()
-    fun showCrearEventos(usuarioId: Int, georeferenciaId: Int, empleadoId: Int, anioAcademicoId: Int, entidadId: Int)
+    fun showCrearEventos(usuarioId: Int, georeferenciaId: Int, empleadoId: Int, anioAcademicoId: Int, entidadId: Int, tutorCargaAcademicaId: Int, cargaCursoId: Int)
     fun showEditarEventos(idEvento: String?, usuarioId: Int, georeferenciaId: Int, empleadoId: Int, anioAcademicoId: Int, entidadId: Int)
     fun showListaUsuarioDiaolog()
 

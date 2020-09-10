@@ -277,7 +277,6 @@ public class CreateTareaLocalDataSource implements CreateTareaDataSource {
             tareasUI.setIdUnidaddAprendizaje(tarea.getUnidadAprendizajeId());
             tareasUI.setIdSesionAprendizaje(tarea.getSesionAprendizajeId());
 
-
             int unidadAprendizajeId = tarea.getUnidadAprendizajeId();
             if(unidadAprendizajeId==0){
                 SesionAprendizaje sesionAprendizaje = SQLite.select()

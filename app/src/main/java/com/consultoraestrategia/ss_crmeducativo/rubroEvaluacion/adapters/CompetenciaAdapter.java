@@ -371,4 +371,8 @@ public class CompetenciaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         }
     }
+
+    public List<Object> getItems() {
+        return items;
+    }
 }

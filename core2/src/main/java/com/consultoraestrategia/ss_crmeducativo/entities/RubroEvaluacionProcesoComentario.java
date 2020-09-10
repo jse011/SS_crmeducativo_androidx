@@ -16,6 +16,8 @@ public class RubroEvaluacionProcesoComentario extends BaseEntity{
     private String comentarioId;
     @Column
     private String descripcion;
+    @Column
+    private int delete;
 
     public RubroEvaluacionProcesoComentario() { }
 
@@ -49,5 +51,13 @@ public class RubroEvaluacionProcesoComentario extends BaseEntity{
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public int getDelete() {
+        return delete;
+    }
+
+    public void setDelete(int delete) {
+        this.delete = delete;
     }
 }

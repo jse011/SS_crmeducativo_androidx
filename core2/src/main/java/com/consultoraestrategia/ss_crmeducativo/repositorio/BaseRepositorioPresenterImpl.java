@@ -363,6 +363,8 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
         Log.d(TAG, "onClickAddVinculo: " );
         RepositorioFileUi repositorioFileUi = new RepositorioFileUi();
         repositorioFileUi.setArchivoId(IdGenerator.generateId());
+        repositorioFileUi.setFechaAccionArchivo(new Date().getTime());
+        repositorioFileUi.setFechaCreacionRecuros(new Date().getTime());
         if(view!=null)view.showDialogaddVinculo(repositorioFileUi);
     }
 

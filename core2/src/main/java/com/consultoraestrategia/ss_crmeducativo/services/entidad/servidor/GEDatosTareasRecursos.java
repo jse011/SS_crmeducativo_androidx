@@ -3,7 +3,6 @@ package com.consultoraestrategia.ss_crmeducativo.services.entidad.servidor;
 import com.consultoraestrategia.ss_crmeducativo.entities.Archivo;
 import com.consultoraestrategia.ss_crmeducativo.entities.RecursoArchivo;
 import com.consultoraestrategia.ss_crmeducativo.entities.RecursoDidacticoEventoC;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasRecursosC;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.BEDatosServidor;
@@ -18,7 +17,6 @@ public class GEDatosTareasRecursos extends BEDatosServidor {
     private List<TareasRecursosC> tareasRecursos;
     private List<RecursoDidacticoEventoC> recursoDidactico;
     private List<TareasC> tareas;
-    private List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProceso;
     private List<RecursoArchivo> recursoArchivo;
     private List<Archivo> archivo;
 
@@ -47,14 +45,6 @@ public class GEDatosTareasRecursos extends BEDatosServidor {
 
     public void setTareas(List<TareasC> tareas) {
         this.tareas = tareas;
-    }
-
-    public List<TareaRubroEvaluacionProceso> getTareaRubroEvaluacionProceso() {
-        return tareaRubroEvaluacionProceso;
-    }
-
-    public void setTareaRubroEvaluacionProceso(List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProceso) {
-        this.tareaRubroEvaluacionProceso = tareaRubroEvaluacionProceso;
     }
 
     public List<RecursoArchivo> getRecursoArchivo() {

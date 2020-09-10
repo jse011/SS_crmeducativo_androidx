@@ -34,7 +34,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_COMPETENCIA_SE
 import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_UNIDAD_APREN_EVENTO_TIPO;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_UNIDAD_EVENTO_COMPETENCIA_DESEMPENIO_ICD;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_GC_REL_UNIDAD_EVENTO_COMPETENCIA_DESEMPENIO_ICD_CAMPO_TEMATICO;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasRecursosC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TecnicaEvaluacion;
@@ -109,7 +108,6 @@ public class GEDatosSilaboEventoEnvio extends BEDatosServidor {
     private List<DimensionObservada> obtenerDimensionObservada;
     private List<InstrumentoObservado> obtenerInstrumentoObservado;
     //private GEDatosTareasRecursos datosTareaRecursos;
-    private List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProceso;
 
     private List<UnidadEventoCompetenciaDesempenioIcdInstrumento>obtenerUnidadEventoCompetenciaDesempenioICDInstrumento;
     private List<UnidadEventoCompetenciaDesempenioIcdInstrumentoTecnica>obtenerUnidadEventoCompetenciaDesempenioIcdInstrumentoTecnica;
@@ -398,13 +396,7 @@ public class GEDatosSilaboEventoEnvio extends BEDatosServidor {
         this.datosTareaRecursos = datosTareaRecursos;
     }*/
 
-    public List<TareaRubroEvaluacionProceso> getTareaRubroEvaluacionProceso() {
-        return tareaRubroEvaluacionProceso;
-    }
 
-    public void setTareaRubroEvaluacionProceso(List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProceso) {
-        this.tareaRubroEvaluacionProceso = tareaRubroEvaluacionProceso;
-    }
 
 
     public List<Desempenio> getObtenerDesempenio() {

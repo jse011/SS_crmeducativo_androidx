@@ -27,6 +27,7 @@ import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventosUi
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposUi
 import com.consultoraestrategia.ss_crmeducativo.util.IntentHelper
 import com.consultoraestrategia.ss_crmeducativo.util.Utils
+import com.consultoraestrategia.ss_crmeducativo.utils.LinkUtils
 import com.shehabic.droppy.DroppyMenuItem
 import com.shehabic.droppy.DroppyMenuPopup
 import com.shehabic.droppy.animations.DroppyFadeInAnimation
@@ -107,7 +108,7 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
                 itemClickEventos(eventosUi)
             })
 
-            btn_me_compartir.setOnClickListener({
+            btn_me_compartir.setOnClickListener {
                 Glide
                         .with(this)
                         .asBitmap()
@@ -133,14 +134,15 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
                                 IntentHelper.sendEmailUri(itemView.context, null, eventosUi.titulo, eventosUi.descripcion, Uri.parse(path))
                             }
                         })
-            })
+            }
 
 
             text_contenido.text = eventosUi.descripcion?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) }
             txt_titulo.text = eventosUi.titulo
             itemRenderEvento(eventosUi)
             Log.d(TAG, eventosUi.tiposUi.tipos.toString() + "")
-            if(eventosUi.tiposUi.tipos == TiposUi.NOTICIA || eventosUi.tiposUi.tipos == TiposUi.EVENTOS) {
+            if(eventosUi.tiposUi.tipos == TiposUi.NOTICIA || eventosUi.tiposUi.tipos == TiposUi.EVENTOS ||
+                    (eventosUi.tiposUi.tipos ==  TiposUi.AGENDA && !TextUtils.isEmpty(eventosUi.imagen))) {
                     conten_image.visibility = View.VISIBLE
                     if (!TextUtils.isEmpty(eventosUi.imagen)) {
                         lay_placeholder.visibility = View.VISIBLE
@@ -221,17 +223,18 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
 
             var tipo: String? = eventosUi.tiposUi.nombre
 
+
             tipo += when (eventosUi.tiposUi.tipos) {
-                TiposUi.EVENTOS -> " " + Utils.tiempoFechaCreacion(eventosUi.fechaEvento)
-                TiposUi.NOTICIA -> " del " + Utils.getFechaDiaMesAnho(eventosUi.fechaEvento)
-                else -> " " + Utils.tiempoFechaCreacion(eventosUi.fechaEvento)
+                TiposUi.EVENTOS ->  if(eventosUi.fechaEvento > 0)" " + Utils.tiempoFechaCreacion(eventosUi.fechaEvento)else ""
+                TiposUi.NOTICIA -> if(eventosUi.fechaEvento > 0)" del " + Utils.getFechaDiaMesAnho(eventosUi.fechaEvento)else ""
+                else -> if(eventosUi.fechaEvento > 0)" " + Utils.tiempoFechaCreacion(eventosUi.fechaEvento)else ""
             }
 
             fechaPublicacion.text = tipo
 
-            val info_envio = "Información del envio ("+eventosUi.cantidaEnviar+")"
+            val info_envio = "Información del envío"
             txt_enviar_info.text = info_envio
-
+            cont_enviar.visibility = if(eventosUi.tiposUi.tipos==TiposUi.AGENDA) View.VISIBLE else View.GONE
 
             if(eventosUi.externo){
                 btn_enviar.visibility = View.INVISIBLE
@@ -247,16 +250,26 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
             setProgresEnviar(eventosUi)
 
             txt_titulo_calendario.text = eventosUi.nombreCalendario
+            LinkUtils.autoLink(text_contenido, object: LinkUtils.OnClickListener{
+                override fun onLinkClicked(v: View?, link: String?) {
+
+                }
+
+                override fun onClicked(v: View?) {
+
+                }
+
+            })
         }
 
         fun setEnviar(eventosUi: EventosUi) = with(itemView){
 
             if(eventosUi.publicado){
                 img_enviar.setImageDrawable(ContextCompat.getDrawable(img_megusta.getContext(), R.drawable.ic_internet))
-                txt_enviar.text = "Enviado"
+                txt_enviar.text = "Publicar"
             }else{
                 img_enviar.setImageDrawable(ContextCompat.getDrawable(img_megusta.getContext(), R.drawable.ic_global))
-                txt_enviar.text = "Sin enviar"
+                txt_enviar.text = "Sin publicar"
             }
         }
 

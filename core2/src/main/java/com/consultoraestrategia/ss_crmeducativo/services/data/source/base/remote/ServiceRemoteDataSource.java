@@ -135,39 +135,23 @@ public abstract class ServiceRemoteDataSource<T> implements ServiceDataSource<T>
         try {
 
             Call<RestApiResponse<T>> responseCall = _getDatosImportar(apiRetrofit, importar);
+            Response<RestApiResponse<T>> responseResponse = responseCall.execute();
+            RestApiResponse<T> body = responseResponse.body();
+            if(body == null){
+                Log.d(TAG, "getDatosLogin Successful body null " + getTableclass() + ": false");
+                callBack.onResponse(false,null);
+            } else if(body.isSuccessful()){
+                Log.d(TAG, "getDatosLogin Successful " + getTableclass() + ": true");
+                callBack.onResponse(true,body.getValue());
 
-            responseCall.enqueue(new Callback<RestApiResponse<T>>() {
-                @Override
-                public void onResponse(@NonNull Call<RestApiResponse<T>> call, @NonNull Response<RestApiResponse<T>> response) {
-                    if (!response.isSuccessful()){
-                        Log.d(TAG, "getDatosLogin Response" + getTableclass() + ": false");
-                        callBack.onResponse(false,null);
-                    }else {
-                        RestApiResponse<T> body = response.body();
-                        if(body == null){
-                            Log.d(TAG, "getDatosLogin Successful body null " + getTableclass() + ": false");
-                            callBack.onResponse(false,null);
-                        } else if(body.isSuccessful()){
-                            Log.d(TAG, "getDatosLogin Successful " + getTableclass() + ": true");
-                            callBack.onResponse(true,body.getValue());
+            }else {
+                Log.d(TAG, "getDatosLogin Successful " + getTableclass() + ": false");
+                callBack.onResponse(false, body.getValue());
+            }
 
-                        }else {
-                            Log.d(TAG, "getDatosLogin Successful " + getTableclass() + ": false");
-                            callBack.onResponse(false, body.getValue());
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<RestApiResponse<T>> call, @NonNull Throwable t) {
-                    t.printStackTrace();
-
-                    Log.d(TAG, "getDatosLogin Throwable " + getTableclass() + ": false - "+t.getMessage());
-                    Log.d(TAG, "getDatosLogin Throwable " + getTableclass() + ": false - "+ t.getLocalizedMessage());
-                    callBack.onResponse(false,null);
-                }
-            });
         } catch (Exception e) {
+            Log.d(TAG, "getDatosLogin Throwable " + getTableclass() + ": false - "+e.getMessage());
+            Log.d(TAG, "getDatosLogin Throwable " + getTableclass() + ": false - "+ e.getLocalizedMessage());
             callBack.onResponse(false,null);
             e.printStackTrace();
         }

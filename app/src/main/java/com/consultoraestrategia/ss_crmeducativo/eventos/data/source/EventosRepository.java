@@ -64,8 +64,8 @@ public class EventosRepository implements EventosDataSource {
     }
 
     @Override
-    public List<Object> getListaUsuarios(String calendarioId) {
-        return localDataSource.getListaUsuarios(calendarioId);
+    public List<Object> getListaUsuarios(String calendarioId, String idEvento) {
+        return localDataSource.getListaUsuarios(calendarioId, idEvento);
     }
 
 

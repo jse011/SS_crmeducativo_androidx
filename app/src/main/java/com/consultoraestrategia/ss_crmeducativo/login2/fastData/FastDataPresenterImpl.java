@@ -52,6 +52,7 @@ public class FastDataPresenterImpl extends BasePresenterImpl<FastDataView> imple
     @Override
     public void onCreate() {
         super.onCreate();
+        messageError = false;
         getInformacionPreFastData();
     }
 
@@ -105,6 +106,7 @@ public class FastDataPresenterImpl extends BasePresenterImpl<FastDataView> imple
             if(messageError) {
                 if(view!=null)view.finshedDialogWithError();
             }else {
+                if(view!=null)view.changeDataBase();
                 if(view!=null)view.cerrarActividad();
             }
             // getCursosUIListCallback();
@@ -182,6 +184,7 @@ public class FastDataPresenterImpl extends BasePresenterImpl<FastDataView> imple
 
     @Override
     public void reintentarDescarga() {
+        messageError = false;
         getInformacionPreFastData();
     }
 }

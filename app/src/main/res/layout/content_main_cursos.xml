@@ -83,7 +83,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contFragment"
         android:layout_width="match_parent"
@@ -93,7 +92,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="55dp">
-
 
         <TextView
             android:id="@+id/msj_vacio"
@@ -156,6 +154,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
             android:clickable="true"
+            android:visibility="gone"
             app:cardCornerRadius="45dp"
             app:cardBackgroundColor="@color/md_green_900"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -173,7 +172,6 @@
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <include android:id="@+id/conten_asistencia"
         layout="@layout/conten_main_asistencia"
@@ -198,7 +196,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="Estamos reconstruyendo la informació, este proceso prodría demorar unos minutos y es necesario en algunos casos el acceso a internet mediante wifi. "
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -214,6 +212,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
         </com.airbnb.lottie.LottieAnimationView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

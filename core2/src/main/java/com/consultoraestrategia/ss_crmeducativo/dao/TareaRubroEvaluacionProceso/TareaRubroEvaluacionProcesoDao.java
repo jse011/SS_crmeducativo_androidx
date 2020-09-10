@@ -1,11 +1,9 @@
 package com.consultoraestrategia.ss_crmeducativo.dao.TareaRubroEvaluacionProceso;
 
 import com.consultoraestrategia.ss_crmeducativo.dao.baseDao.BaseDao;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
+import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
-public interface TareaRubroEvaluacionProcesoDao extends BaseDao<TareaRubroEvaluacionProceso> {
+public interface TareaRubroEvaluacionProcesoDao {
     boolean elimarTareaRubroEvaluacionProceso(String rubroEvalProcesoId);
-    TareaRubroEvaluacionProceso getTareaRubroPorRubroId(String rubroEvaluacionProcesoId);
-    TareaRubroEvaluacionProceso getTareaRubroPorRubroId(String key, DatabaseWrapper databaseWrapper);
 }

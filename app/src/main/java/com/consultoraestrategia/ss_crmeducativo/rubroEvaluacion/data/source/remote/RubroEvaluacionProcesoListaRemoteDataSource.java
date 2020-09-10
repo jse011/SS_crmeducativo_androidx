@@ -33,6 +33,11 @@ public class RubroEvaluacionProcesoListaRemoteDataSource implements RubroEvaluac
     }
 
     @Override
+    public void changeEstadoActualizacion(List<RubroProcesoUi> rubroProcesoUiList) {
+
+    }
+
+    @Override
     public void getRubroProcesoSesionList(int idrubroformal, int sesionAprendizajeId, int nivel, int calendarioPerioId, int silaboEventoId, int cargaCursoId, ListCallback<Object> callback) {
 
     }

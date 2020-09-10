@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Guideline;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -416,6 +418,7 @@ public class CrearRubroFormulaActivity extends BaseActivity<CrearRubroFormulaVie
     public void onSincronizate(int programaEducatId) {
         //CallService.jobServiceExportarTipos(this, TipoExportacion.RUBROEVALUACION);
         SimpleSyncIntenService.start(this, programaEducatId);
+        SynckService.start(this,programaEducatId);
         CMRE.saveNotifyChangeDataBase(this);
     }
 

@@ -36,6 +36,8 @@ public class UsuarioFragment extends Fragment implements UsuarioView, TextView.O
     Button btnSiguienteUser;
     @BindView(R.id.imageView17)
     ImageView imageView17;
+    @BindView(R.id.imageView2)
+    ImageView imageView2;
     @BindView(R.id.btn_atras_lst_usu)
     ImageView btnAtrasLstUsu;
     private Unbinder unbinder;
@@ -52,12 +54,20 @@ public class UsuarioFragment extends Fragment implements UsuarioView, TextView.O
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Glide.with(imageView17)
-                .load(R.drawable.docente_mentor)
-                .into(imageView17);
 
         edittextPasswordUser.setOnEditorActionListener(this);
-        //   initAdapter();
+        if(getResources().getString(R.string.app_name).equals("Educar Teacher")){
+
+            Glide.with(imageView17)
+                    .load(R.drawable.logo_educar)
+                    .into(imageView17);
+            imageView2.setVisibility(View.VISIBLE);
+        }else{
+            Glide.with(imageView17)
+                    .load(R.drawable.docente_mentor)
+                    .into(imageView17);
+            imageView2.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

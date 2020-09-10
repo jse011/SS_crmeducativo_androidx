@@ -6,6 +6,8 @@ import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.Parametr
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroChangeUser;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroChangeAdminService;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroNotificacion;
+import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosChangePortalAlumno;
+import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosEventos;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosExportar;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosExportarGlobal;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosImportar;
@@ -14,6 +16,9 @@ import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.Parametr
 import com.consultoraestrategia.ss_crmeducativo.entities.AdminService;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
 import com.consultoraestrategia.ss_crmeducativo.entities.Usuario;
+import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubricaPortalAlumnoFb;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubroEvalEnvioSimple;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosCasos;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosContacto;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosEstudiante;
@@ -190,9 +195,21 @@ public interface Service {
     @POST(" ")
     Call<RestApiResponse<BEEventos>> flst_ObtenerCalendarioEventoDocente(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData2> apiRequestBody);
     @POST(" ")
-    Call<RestApiResponse<String>> flst_saveEvento(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData2> apiRequestBody);
+    Call<RestApiResponse<String>> flst_saveEvento(@Body ApiRetrofit.ApiRequestBody<ParametrosEventos> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<BEDatosContacto>> flst_getDatosContacto(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData2> apiRequestBody);
     @POST(" ")
-    Call<RestApiResponse<String>> flst_Notificacion( @Body ApiRetrofit.ApiRequestBody<ParametroNotificacion> apiRequestBody);
+    Call<RestApiResponse<String>> flst_Notificacion(@Body ApiRetrofit.ApiRequestBody<ParametroNotificacion> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<List<BERubroEvalEnvioSimple>>> fins_GuardarRubroEvaluacion(@Body ApiRetrofit.ApiRequestBody<ParametrosExportarGlobal> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<Integer>> fupd_SimplePersonas(@Body ApiRetrofit.ApiRequestBody<ParametrosExportarGlobal> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<List<WebConfig>>> getWebConfig(@Body ApiRetrofit.ApiRequestBody<ParametrosExportarGlobal> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<List<BERubricaPortalAlumnoFb>>> getCambiosFirebase(@Body ApiRetrofit.ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<BEDatosRubro>> flst_getDatosRubroIds(@Body ApiRetrofit.ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<BEEventos>> flst_saveEvento2(@Body ApiRetrofit.ApiRequestBody<ParametrosEventos> apiRequestBody);
 }

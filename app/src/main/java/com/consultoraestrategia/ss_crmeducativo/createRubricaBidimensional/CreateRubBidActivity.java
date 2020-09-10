@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.appbar.AppBarLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.widget.NestedScrollView;
@@ -624,6 +626,7 @@ public class CreateRubBidActivity extends BaseActivity<CreateRubBidView, CreateR
         Log.d(TAG, "onSucess:rubroEvalId " + rubroEvalId);
         CallService.jobServiceExportarTipos(this, TipoExportacion.RUBROEVALUACION);
         SimpleSyncIntenService.start(this, programaEducativoId);
+        SynckService.start(this,programaEducativoId);
         CMRE.saveNotifyChangeDataBase(this);
         // Prepare data intent
         Intent intent = new Intent();

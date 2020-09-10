@@ -1,5 +1,6 @@
 package com.consultoraestrategia.ss_crmeducativo.tareas_mvp.adapters;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -10,9 +11,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.adapterDownload.adapter.DownloadAdapter;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
@@ -76,6 +79,10 @@ class ViewHolderTareas extends SectioningAdapter.ItemViewHolder implements  View
     ConstraintLayout constraintLayoutContenido;
     @BindView(R.id.contentVacio)
     ConstraintLayout contentVacio;
+    @BindView(R.id.animation_view)
+    LottieAnimationView animationView;
+    @BindView(R.id.conten_progress)
+    FrameLayout contenProgress;
 
 
     private TareasUIListener listener;
@@ -155,7 +162,7 @@ class ViewHolderTareas extends SectioningAdapter.ItemViewHolder implements  View
             }else {
                 txtEstadoTarea.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_grey_600));
             }
-            txtNombreCreador.setText("Tarea " + position);
+            txtNombreCreador.setText("Tarea " + position + tareasUI.getNombreSesion());
             txtFechaCreacion.setText(Utils.f_fecha_letras(tareasUI.getFechaCreacionTarea()));
 
             if (!TextUtils.isEmpty(tareasUI.getDescripcion()))txtContenidoTarea.setText(tareasUI.getDescripcion());
@@ -245,6 +252,24 @@ class ViewHolderTareas extends SectioningAdapter.ItemViewHolder implements  View
                     droppyMenu.show();
                 }
             });
+
+            animationView.setAnimation("progress_portal_alumno.json");
+            if(tareasUI.isProgress()){
+                contenProgress.setVisibility(View.VISIBLE);
+                animationView.setRepeatCount(ValueAnimator.INFINITE);
+                animationView.playAnimation();
+                txtEstadoTarea.setVisibility(View.GONE);
+            }else {
+                contenProgress.setVisibility(View.GONE);
+                animationView.cancelAnimation();
+                txtEstadoTarea.setVisibility(View.VISIBLE);
+            }
+
+            /*if(tareasUI.isExportado()){
+                txtTituloTarea.setTextColor(Color.BLACK);
+            }else {
+                txtTituloTarea.setTextColor(Color.RED);
+            }*/
         }
     }
 
@@ -257,7 +282,7 @@ class ViewHolderTareas extends SectioningAdapter.ItemViewHolder implements  View
                 if(tareasUI.isCalendarioVigente()){
                     Log.d(TAG,"estado: " + tareasUI.getEstado());
                     String estado = "";
-                    switch (tareasUI.getEstado()){
+                    /*switch (tareasUI.getEstado()){
                         case Creado:
                             estado = TareasUI.Estado.Publicado.getNombre().toUpperCase();
                             txtEstadoTarea.setText(estado.toUpperCase());
@@ -276,7 +301,7 @@ class ViewHolderTareas extends SectioningAdapter.ItemViewHolder implements  View
                          default:
                              txtEstadoTarea.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_grey_600));
                              break;
-                    }
+                    }*/
                     listener.onClikEstado(tareasUI);
                 }
                 break;

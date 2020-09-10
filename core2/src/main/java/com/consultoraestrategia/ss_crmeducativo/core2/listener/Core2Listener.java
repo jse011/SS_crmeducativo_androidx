@@ -10,4 +10,6 @@ public interface Core2Listener {
     void onLoad(int count);
     void onFinish();
     void onFinishSimple();
+    void onLoadFirebase(int count);
+    void onFinishFirebase();
 }

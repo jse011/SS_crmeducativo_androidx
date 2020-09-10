@@ -60,7 +60,15 @@ public class RubroProcesoUi extends FormulaCelda {
     public int formaEvaluacionId;
     public PublicarEval publicarEval = PublicarEval.NINGUNO;
     public int estrategiaId;
+    public boolean exportado;
 
+    public boolean isExportado() {
+        return exportado;
+    }
+
+    public void setExportado(boolean exportado) {
+        this.exportado = exportado;
+    }
 
     public RubroProcesoUi() {
         this.rubroProcesoUis = new ArrayList<>();

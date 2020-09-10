@@ -13,9 +13,11 @@ import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.Creat
 import com.consultoraestrategia.ss_crmeducativo.dao.rubroEvalRNPFormula.RubroEvalRNPFormulaDaoImpl;
 import com.consultoraestrategia.ss_crmeducativo.dao.rubroProceso.RubroProcesoDaoImpl;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.RubricasAbstractFragment;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.data.source.RubricaBidRepository;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.data.source.local.RubricaBidLocal;
+import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.EliminarRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.GetActualizasRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.PublicarTodasEvaluacion;
@@ -64,7 +66,8 @@ public class RubricaBidFragment extends RubricasAbstractFragment<RubricaBidFragm
                 new GetActualizasRubricas(actualizarRubricaBidRepository),
                 new EliminarRubricas(actualizarRubricaBidRepository),
                 new PublicarTodasEvaluacion(actualizarRubricaBidRepository),
-                new GetRubricaBidLista(repository));
+                new GetRubricaBidLista(repository),
+                new ChangeEstadoActualizacion(actualizarRubricaBidRepository));
     }
 
     public int getCalendarioPeriodoId() {
@@ -95,6 +98,7 @@ public class RubricaBidFragment extends RubricasAbstractFragment<RubricaBidFragm
         if(refrescarListener!=null)refrescarListener.succesDelete();
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.RUBROEVALUACION);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
     }
 
     @Override
@@ -139,7 +143,6 @@ public class RubricaBidFragment extends RubricasAbstractFragment<RubricaBidFragm
     }
 
     public void onActualizarRubricaPeriodo(String idCalendarioPeriodo, boolean status) {
-
         CRMBundle crmBundle= new CRMBundle(getArguments());
         crmBundle.setCalendarioPeriodoId(Integer.parseInt(idCalendarioPeriodo));
         crmBundle.setCalendarioActivo(status);
@@ -147,8 +150,5 @@ public class RubricaBidFragment extends RubricasAbstractFragment<RubricaBidFragm
         getArguments().putAll(crmBundle.instanceBundle());
         presenter.onResumeFragment(idCalendarioPeriodo);
     }
-
-
-
 
 }

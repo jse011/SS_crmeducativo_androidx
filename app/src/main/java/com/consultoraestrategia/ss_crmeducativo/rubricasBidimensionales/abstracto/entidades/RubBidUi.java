@@ -16,6 +16,16 @@ import java.util.List;
 @Parcel
 public class RubBidUi {
 
+    public boolean exportado;
+
+    public boolean isExportado() {
+        return exportado;
+    }
+
+    public void setExportado(boolean exportado) {
+        this.exportado = exportado;
+    }
+
     public enum Forma{GRUPAL,INDIVIDUAL}
     public enum PublicarEval{TODOS, PARCIAL, NINGUNO}
     public int id;

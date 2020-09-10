@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.login2.service2;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,14 +9,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.widget.NestedScrollView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-import androidx.appcompat.widget.Toolbar;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
@@ -32,17 +28,35 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.WorkManager;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
+import com.consultoraestrategia.ss_crmeducativo.core2.application.Core2;
+import com.consultoraestrategia.ss_crmeducativo.core2.listener.Core2Listener;
 import com.consultoraestrategia.ss_crmeducativo.login2.adapter.AdapterServicioEnvio;
 import com.consultoraestrategia.ss_crmeducativo.login2.adapter.AdapterServicioRecibir;
 import com.consultoraestrategia.ss_crmeducativo.login2.adapter.AnioCalendarioAdapter;
+import com.consultoraestrategia.ss_crmeducativo.login2.data.preferent.LoginPreferentRepository;
+import com.consultoraestrategia.ss_crmeducativo.login2.data.preferent.LoginPreferentRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
+import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.Firebase.GetListaCambiosFB;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeridoList;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetListActualizar;
@@ -56,7 +70,9 @@ import com.consultoraestrategia.ss_crmeducativo.login2.entities.AlarmaUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.CalendarioPeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.fastData.FastData;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServiceFB;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.Calendar;
 import java.util.List;
@@ -65,7 +81,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresenter> implements ServicesView, CompoundButton.OnCheckedChangeListener, AdapterServicioRecibir.ActualizarListener, AdapterServicioEnvio.EnviarListener, AnioCalendarioAdapter.Listener {
+public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresenter> implements ServicesView, CompoundButton.OnCheckedChangeListener, AdapterServicioRecibir.ActualizarListener, AdapterServicioEnvio.EnviarListener, AnioCalendarioAdapter.Listener, Core2Listener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -84,7 +100,7 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     @BindView(R.id.root)
     CoordinatorLayout root;
     @BindView(R.id.img_actualizar_service)
-    ImageView imgActualizarService;
+    LottieAnimationView imgActualizarService;
     @BindView(R.id.txt_bimestre)
     TextView txtBimestre;
     @BindView(R.id.txt_titulo_eviar_cambios)
@@ -105,10 +121,44 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     RecyclerView rcAnioCalendario;
     @BindView(R.id.cont_anio_acdemico)
     CardView contAnioAcdemico;
-
+    @BindView(R.id.img_ping_restaurar)
+    ImageView imgPingRestaurar;
+    @BindView(R.id.fr_fondo_restaurar)
+    FrameLayout frFondoRestaurar;
+    @BindView(R.id.con_cabecera_actualizar)
+    CardView conCabeceraActualizar;
+    @BindView(R.id.appBarLayout)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.textView157)
+    TextView textView157;
+    @BindView(R.id.textView158)
+    View textView158;
+    @BindView(R.id.textView161)
+    TextView textView161;
+    @BindView(R.id.textView162)
+    View textView162;
+    @BindView(R.id.txt_titulo_mantenimiento)
+    TextView txtTituloMantenimiento;
+    @BindView(R.id.txt_descripcion_mantenimiento)
+    TextView txtDescripcionMantenimiento;
+    @BindView(R.id.cardView3)
+    CardView cardView3;
+    @BindView(R.id.cont_pa)
+    CardView contPa;
+    @BindView(R.id.txt_titulo_pa)
+    TextView txtTituloPa;
+    @BindView(R.id.txt_descripcion_pa)
+    TextView txtDescripcionPa;
+    @BindView(R.id.txt_descripcion_2_pa)
+    TextView txtDescripcion2Pa;
+    @BindView(R.id.img_actualizar)
+    ImageView imgActualizar;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
 
     private ObjectAnimator animationBtnRevisionDatos;
     private AnioCalendarioAdapter anioAcademicoAdapter;
+    private ObjectAnimator animationImagePA;
 
     public static Intent start(Context context, int usuarioId, int empleadoId, int programaEducativoId, int cargaCursoId, int calendarioPeriodoId, int idGeoreferenciaId, int idEntidad, int silaboId, int idCurso, int cargaAcademica, int anioAcademicoId, boolean cursoComplejo) {
         CRMBundle crmBundle = new CRMBundle();
@@ -146,7 +196,7 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     @Override
     protected ServicesPresenter getPresenter() {
         LoginDataRepository service2Repositorio = new LoginDataRepositoryImpl(ApiRetrofit.getInstance(), InjectorUtils.provideSessionUserDao(), InjectorUtils.provideParametrosDisenioDao(), InjectorUtils.provideCursoDao(), InjectorUtils.provideAlumnoDao());
-
+        LoginPreferentRepository preferentRepository = new LoginPreferentRepositoryImpl(getApplicationContext());
         return new ServicesPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(),
                 new GetListActualizar(service2Repositorio),
                 new GetListServicioEnvio(service2Repositorio),
@@ -155,7 +205,8 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
                 new SaveDatosServidor(service2Repositorio),
                 new SavePlanificarSinck(service2Repositorio),
                 new GetPlanificarSinck(service2Repositorio),
-                new GetCalendarioPeridoList(service2Repositorio));
+                new GetCalendarioPeridoList(service2Repositorio),
+                new GetListaCambiosFB(service2Repositorio, preferentRepository, this));
     }
 
     @Override
@@ -175,6 +226,21 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
         setupToolbar();
         setupCheckListener();
         setupAdapter();
+        setupCore2();
+        SynckServiceFB.start(this);
+        // Iniciar la tarea asíncrona al revelar el indicador
+        swipeRefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        presenter.onRefresh();
+                    }
+                }
+        );
+    }
+
+    private void setupCore2() {
+        Core2.getCore2(this).addCore2Listener(this);
     }
 
     private void setupToolbar() {
@@ -240,30 +306,27 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     public void showListServicioEnvio(List<ServiceEnvioUi> serviceEnvioUiList) {
         if (cradEnviarCambios.getVisibility() != View.VISIBLE)
             cradEnviarCambios.setVisibility(View.VISIBLE);
-        if (txtTituloEviarCambios.getVisibility() != View.VISIBLE)
-            txtTituloEviarCambios.setVisibility(View.VISIBLE);
 
         adapterEnvio.setList(serviceEnvioUiList);
     }
 
     @Override
-    public void showListServicioActualizar(List<ActualizarUi> actualizarUiList) {
+    public void showListServicioActualizar() {
+        imgPingRestaurar.animate().rotation(180);
         if (contActualizar.getVisibility() != View.VISIBLE)
             contActualizar.setVisibility(View.VISIBLE);
-
-        adapterActualizar.setList(actualizarUiList);
     }
 
     @Override
     public void girarBtnRevisionDatos() {
         if (animationBtnRevisionDatos == null) {
-            animationBtnRevisionDatos = ObjectAnimator.ofFloat(imgActualizarService, "rotation", 360f, 0.0f);
-            animationBtnRevisionDatos.setDuration(2500);
-            animationBtnRevisionDatos.setRepeatCount(ObjectAnimator.INFINITE);
+           // animationBtnRevisionDatos = ObjectAnimator.ofFloat(imgActualizarService, "rotation", 360f, 0.0f);
+            //animationBtnRevisionDatos.setDuration(2500);
+            //animationBtnRevisionDatos.setRepeatCount(ObjectAnimator.INFINITE);
             //animation.setRepeatMode(ObjectAnimator.RESTART);
-            animationBtnRevisionDatos.setInterpolator(new AccelerateDecelerateInterpolator());
+            //animationBtnRevisionDatos.setInterpolator(new AccelerateDecelerateInterpolator());
         }
-        animationBtnRevisionDatos.start();
+        //animationBtnRevisionDatos.start();
 
     }
 
@@ -275,7 +338,7 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
 
     @Override
     public void stopGirarBtnRevisionDatos() {
-        if (animationBtnRevisionDatos != null) animationBtnRevisionDatos.end();
+       // if (animationBtnRevisionDatos != null) animationBtnRevisionDatos.end();
     }
 
     @Override
@@ -360,13 +423,13 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
 
     @Override
     public void hideServicioActualizar() {
+        imgPingRestaurar.animate().rotation(0);
         contActualizar.setVisibility(View.GONE);
     }
 
     @Override
     public void hideListServicioEnvio() {
         cradEnviarCambios.setVisibility(View.GONE);
-        txtTituloEviarCambios.setVisibility(View.GONE);
     }
 
     @Override
@@ -426,7 +489,7 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
 
     @Override
     public void changeSelectedProgramaHorario(boolean change) {
-          //in some cases, it will prevent unwanted situations
+        //in some cases, it will prevent unwanted situations
         switchProgEnvio.setOnCheckedChangeListener(null);
         switchProgEnvio.setChecked(change);
         switchProgEnvio.setOnCheckedChangeListener(this);
@@ -450,9 +513,87 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
 
     @Override
     public void showFastData(int usuarioId, int anioAcademicoId, int calendarioId, int programaEducativoId) {
-        FastData.start(this, anioAcademicoId, usuarioId, calendarioId,programaEducativoId);
+        FastData.start(this, anioAcademicoId, usuarioId, calendarioId, programaEducativoId);
     }
 
+    @Override
+    public void setListServicioActualizar(List<ActualizarUi> actualizarUiList) {
+        adapterActualizar.setList(actualizarUiList);
+    }
+
+    @Override
+    public void setTitleMantenimiento(String titulo) {
+        txtTituloMantenimiento.setText(titulo);
+    }
+
+    @Override
+    public void showBtnMantenimiento() {
+        //txtTituloMantenimiento.setVisibility(View.VISIBLE);
+        txtDescripcionMantenimiento.setVisibility(View.VISIBLE);
+        imgActualizarService.setAnimation("delete-animation.json");
+        imgActualizarService.setRepeatCount(ValueAnimator.INFINITE);
+        imgActualizarService.playAnimation();
+        imgActualizarService.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideBtnMantenimiento() {
+        //txtTituloMantenimiento.setVisibility(View.GONE);
+        imgActualizarService.cancelAnimation();
+        txtDescripcionMantenimiento.setVisibility(View.GONE);
+        imgActualizarService.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showContentStarFirebase() {
+        txtTituloPa.setVisibility(View.VISIBLE);
+        contPa.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideContentStarFirebase() {
+        contPa.setVisibility(View.GONE);
+        txtTituloPa.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void changeDescripcionStarFirebase(String descripcion1, String descripcion2) {
+        txtDescripcionPa.setText(descripcion1);
+        txtDescripcion2Pa.setText(descripcion2);
+    }
+
+    @Override
+    public void girarImagePA() {
+        if (animationImagePA == null) {
+            animationImagePA = ObjectAnimator.ofFloat(imgActualizar, "rotation", 360f, 0.0f);
+            animationImagePA.setDuration(2500);
+            animationImagePA.setRepeatCount(ObjectAnimator.INFINITE);
+            //animation.setRepeatMode(ObjectAnimator.RESTART);
+            animationImagePA.setInterpolator(new AccelerateDecelerateInterpolator());
+        }
+        if (!animationImagePA.isRunning()) animationImagePA.start();
+    }
+
+    @Override
+    public void stopGirarImagePA() {
+        if (animationImagePA != null) animationImagePA.end();
+    }
+
+    @Override
+    public void starSynckFB() {
+        SynckServiceFB.start(this);
+    }
+
+    @Override
+    public void closeRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefresh.setRefreshing(false);
+            }
+        }, 2000);
+
+    }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -469,10 +610,18 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     @OnClick(R.id.img_actualizar_service)
     public void onViewClicked() {
         presenter.onClickRevisionDatos();
+        txtDescripcionMantenimiento.setTextColor(ContextCompat.getColor(this,R.color.md_deep_purple_700));
+    }
+
+    @OnClick(R.id.txt_descripcion_mantenimiento)
+    public void onTxtDescripcionMantenimientoClicked() {
+        presenter.onClickRevisionDatos();
+        txtDescripcionMantenimiento.setTextColor(ContextCompat.getColor(this,R.color.md_deep_purple_700));
     }
 
     @Override
     protected void onDestroy() {
+        Core2.getCore2(this).removeCore2Listener(this);
         if (animationBtnRevisionDatos != null) animationBtnRevisionDatos.end();
         animationBtnRevisionDatos = null;
         super.onDestroy();
@@ -581,7 +730,6 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     }
 
 
-
     @OnClick(R.id.card_prog_envio)
     public void onViewClickedCardProgEnvio() {
         presenter.onViewClickedCardProgEnvio();
@@ -619,5 +767,46 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
     @Override
     public void onClickAnioCalendario(CalendarioPeriodoUi calendarioPeriodoUi) {
         presenter.onClicAnioCalendario(calendarioPeriodoUi);
+    }
+
+    @OnClick(R.id.con_cabecera_actualizar)
+    public void onContRestaurarClicked() {
+        presenter.onClickContRestaurar();
+    }
+
+    @Override
+    public void onStart(Class<?> aClass) {
+
+    }
+
+    @Override
+    public void onLoad(int count) {
+
+    }
+
+    @Override
+    public void onFinish() {
+
+    }
+
+    @Override
+    public void onFinishSimple() {
+
+    }
+
+    @Override
+    public void onLoadFirebase(int count) {
+        presenter.onLoadFirebase(count);
+        Log.d(getTag(), "onLoadFirebase " + count);
+    }
+
+    @Override
+    public void onFinishFirebase() {
+        presenter.onFinishFirebase();
+    }
+
+    @OnClick(R.id.img_actualizar)
+    public void onClickedImgActualizar() {
+        presenter.onClickedImgActualizar();
     }
 }

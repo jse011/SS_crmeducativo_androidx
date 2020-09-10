@@ -36,12 +36,12 @@
                         android:id="@+id/nav_bar_content_profile"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:layout_marginStart="80dp"
                         android:layout_marginTop="18dp"
                         android:layout_marginBottom="2dp"
                         android:background="@drawable/circle_borde_perfil"
                         android:padding="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -61,6 +61,18 @@
                             app:layout_constraintTop_toTopOf="parent"
                             tools:srcCompat="@tools:sample/avatars" />
 
+                        <ProgressBar
+                            android:id="@+id/progress_succes2"
+                            style="@style/Widget.AppCompat.ProgressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/RepositorioSuccessCircularProgress"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,6 +83,7 @@
                         android:layout_marginBottom="2dp"
                         android:background="@drawable/circle_borde_perfil"
                         android:padding="4dp"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/nav_bar_content_profile">
 
@@ -202,7 +215,7 @@
                             android:textColor="#a9a9b0"
                             android:textSize="14sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/celularPerson"
                             style="@style/Widget.AppCompat.EditText"
                             android:layout_width="match_parent"
@@ -210,7 +223,6 @@
                             android:layout_marginTop="-6dp"
                             android:layout_marginEnd="35dp"
                             android:layout_marginRight="10dp"
-                            android:enabled="false"
                             android:hint="Teléfono no registrado"
                             android:textColor="#272727"
                             android:textSize="16sp" />
@@ -303,7 +315,7 @@
                             android:textColor="#a9a9b0"
                             android:textSize="14sp" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/correoPerson"
                             style="@style/Widget.AppCompat.EditText"
                             android:layout_width="match_parent"
@@ -311,7 +323,6 @@
                             android:layout_marginTop="-6dp"
                             android:layout_marginEnd="35dp"
                             android:layout_marginRight="10dp"
-                            android:enabled="false"
                             android:hint="Correo Electrónico no registrado"
                             android:textColor="#272727"
                             android:textSize="16sp" />
@@ -330,16 +341,43 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btn_aceptar"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:text="Guardar"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toStartOf="@+id/btn_cancelar"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
+
+            <Button
                 android:id="@+id/btn_cancelar"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                android:text="Cancelar"
+                android:layout_marginBottom="16dp"
+                android:text="Salir"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
+
+            <ProgressBar
+                android:id="@+id/progressBar7"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

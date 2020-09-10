@@ -38,6 +38,7 @@ import com.consultoraestrategia.ss_crmeducativo.comportamiento.domain.useCase.Ge
 import com.consultoraestrategia.ss_crmeducativo.comportamiento.domain.useCase.UpdateSuccesDowloadCasoArchivo;
 import com.consultoraestrategia.ss_crmeducativo.comportamiento.entities.ComportamientoUi;
 import com.consultoraestrategia.ss_crmeducativo.lib.autoColumnGrid.AutoColumnGridLayoutManager;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.adapterDownload.adapter.DownloadItemListener;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.RepositorioRepository;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.local.RepositorioLocalDataSource;
@@ -203,6 +204,7 @@ public class FragmentComportAlumnoC extends BaseFragment<ComportAlumnoCview, Com
         comportamientoAlumnoAdapter.delete(comportamientoUi);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
+        SynckService.start(getContext(),programaEducativoId);
     }
     @Override
     public void showEmptyText() {

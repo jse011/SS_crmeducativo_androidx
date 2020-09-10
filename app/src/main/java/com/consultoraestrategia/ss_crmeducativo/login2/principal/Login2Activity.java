@@ -26,6 +26,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
 import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
+import com.consultoraestrategia.ss_crmeducativo.login2.data.preferent.LoginPreferentRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.principal.correo.CorreoFragment;
 import com.consultoraestrategia.ss_crmeducativo.login2.principal.correo.CorreoView;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.preferent.LoginPreferentRepositoryImpl;
@@ -89,7 +90,7 @@ public class Login2Activity extends BaseActivity<Login2View, Login2Presenter> im
     @Override
     protected Login2Presenter getPresenter() {
         LoginDataRepository loginDataRepository = new LoginDataRepositoryImpl(ApiRetrofit.getInstance(),InjectorUtils.provideSessionUserDao(), InjectorUtils.provideParametrosDisenioDao(), InjectorUtils.provideCursoDao(), InjectorUtils.provideAlumnoDao());
-
+        LoginPreferentRepository loginPreferentRepository = new LoginPreferentRepositoryImpl(this);
         return new Login2PresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(),
                 new GetUsuarioExterno(loginDataRepository),
                 new SaveUrlSevidorLocal(loginDataRepository),
@@ -98,7 +99,7 @@ public class Login2Activity extends BaseActivity<Login2View, Login2Presenter> im
                 new GetUsuarioLocal(loginDataRepository),
                 new GetPersonaLocal(loginDataRepository),
                 new LoginPreferentRepositoryImpl(this),
-                new GetDatosInicioSesion(loginDataRepository),
+                new GetDatosInicioSesion(loginDataRepository, loginPreferentRepository),
                 new GeAllListActualizar(loginDataRepository),
                 new GetDatosServidor(loginDataRepository),
                 new GetDatosPreFastData(loginDataRepository));

@@ -20,6 +20,8 @@ public class ArchivosRubroProceso extends BaseEntity {
     private String evaluacionProcesoId;
     @Column
     private String localpath;
+    @Column
+    private int delete;
 
     public ArchivosRubroProceso() { }
 
@@ -61,5 +63,13 @@ public class ArchivosRubroProceso extends BaseEntity {
 
     public String getLocalpath() {
         return localpath;
+    }
+
+    public void setDelete(int delete) {
+        this.delete = delete;
+    }
+
+    public int getDelete() {
+        return delete;
     }
 }

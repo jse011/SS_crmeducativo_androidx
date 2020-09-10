@@ -9,4 +9,14 @@ public interface ChangePerfilView {
     void close();
 
     void showFaceDectecion(int georeferenciaId, PersonaUi personaId);
+
+    void updatePersona(PersonaUi personaUi);
+
+    void disabledButtons();
+
+    void showProgress();
+
+    void enabledButtons();
+
+    void hideProgress();
 }

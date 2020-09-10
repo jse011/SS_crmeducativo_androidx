@@ -22,6 +22,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.BaseTabFragmentView;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.services.daemon.util.CallService;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoExportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.syncIntentService.SimpleSyncIntenService;
@@ -155,8 +156,9 @@ public class FragmentUnidades extends Fragment implements AdapterUnidades.Unidad
         super.onDestroyView();
         CRMBundle crmBundle = new CRMBundle(getArguments());
         if (changeUnidades){
-        CallService.jobServiceExportarTipos(getContext(), TipoExportacion.SESIONES);
-        SimpleSyncIntenService.start(getContext(), crmBundle.getProgramaEducativoId());
+            CallService.jobServiceExportarTipos(getContext(), TipoExportacion.SESIONES);
+            SimpleSyncIntenService.start(getContext(), crmBundle.getProgramaEducativoId());
+            SynckService.start(getContext(),crmBundle.getProgramaEducativoId());
         }
     }
 

@@ -3,26 +3,26 @@
     package="com.consultoraestrategia.ss_crmeducativo">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:name=".CMRE"
         android:allowBackup="false"
         android:allowClearUserData="true"
-        android:icon="@mipmap/ic_launcher_v2"
-        android:roundIcon="@mipmap/ic_launcher_circle"
+        android:icon="@mipmap/ic_educar"
         android:supportsRtl="true"
         android:testOnly="false"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup"
-        tools:targetApi="n">
+        android:requestLegacyExternalStorage="true"
+        tools:targetApi="q">
 
         <activity android:name=".comportamiento.comportamientoAlumno.ComportamientoAlumnoActivity"
             android:label=""
@@ -32,8 +32,6 @@
             >
 
         </activity>
-        <activity android:name=".graficos.DesempenoActivity" />
-        <activity android:name=".graficos.OthersActivity" />
 
         <activity
             android:theme="@style/SplashTheme"
@@ -214,13 +212,6 @@
             </intent-filter>
         </service>
         <service
-            android:name=".services.importar.ui.ImportarJobService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-            </intent-filter>
-        </service>
-        <service
             android:name=".services.loginService.ui.LoginJobService"
             android:exported="false">
             <intent-filter>
@@ -287,6 +278,7 @@
         <service android:name=".services.syncIntentService.ComplejoSyncIntenService"
             android:theme="@style/AppTheme.NoActionBar"/>
         <service android:name=".services.syncIntentService.SimpleSyncIntenService" />
+        <service android:name=".login2.service2.worker.SynckService" />
 
         <service android:name=".services.syncIntentService.ContratoAlumnoSyncIntenService" />
 
@@ -330,9 +322,9 @@
             android:label="@string/activity_login_title"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="fullSensor"/>
         <activity android:name=".login2.service2.ServicesActivity" />
-        <activity android:name=".cameraReconocimiento.camera.CameraReconocimientoActivity" />
+
         <activity android:name=".login2.fastData.FastData"
             android:theme="@style/AppTheme.NoActionBar"/>
 

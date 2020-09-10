@@ -27,7 +27,6 @@ import com.consultoraestrategia.ss_crmeducativo.dao.tareasDao.TareasDao;
 import com.consultoraestrategia.ss_crmeducativo.dao.tipoNotaDao.TipoNotaDao;
 import com.consultoraestrategia.ss_crmeducativo.dao.rubroEvaluacionDao.TiposDao;
 import com.consultoraestrategia.ss_crmeducativo.dao.evaluacionProceso.EvaluacionProcesoDao;
-import com.consultoraestrategia.ss_crmeducativo.entities.AnioAcademico;
 import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.CriterioRubroEvaluacionC;
 import com.consultoraestrategia.ss_crmeducativo.entities.CriterioRubroEvaluacionC_Table;
@@ -55,7 +54,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoCampotematicoC;
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoCampotematicoC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.TipoNotaC;
@@ -808,10 +806,12 @@ public class CreateRubBidLocalDataSource implements CreateRubBidDataSource {
                 proceso.setTipoEvaluacionId(tipoEvaluacion.getId());
                 proceso.setSilaboEventoId(silaboEventoId);
                 proceso.setEstadoId(237);
-                proceso.setSyncFlag(LocalEntity.FLAG_ADDED);
+                proceso.setSyncFlag(formaEvaluacion.getId()== 478?BaseEntity.FLAG_PREADD:BaseEntity.FLAG_ADDED);
                 proceso.setCountIndicador(requestValues.getIndicadorListSelected().size());
                 proceso.setEstrategiaEvaluacionId(requestValues.getIdEstrategiaEvaluacion());
-
+                if (!TextUtils.isEmpty(tareaId)) {
+                    proceso.setTareaId(tareaId);
+                }
                 boolean succes = proceso.save();
 
                 Log.d(TAG, "idProcesoCabecera: " + proceso.getKey());
@@ -923,13 +923,6 @@ public class CreateRubBidLocalDataSource implements CreateRubBidDataSource {
                 }
 
                 if (!TextUtils.isEmpty(tareaId)) {
-                    TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = new TareaRubroEvaluacionProceso();
-                    tareaRubroEvaluacionProceso.setRubroEvalProcesoId(proceso.getKey());
-                    tareaRubroEvaluacionProceso.setTareaId(tareaId);
-                    tareaRubroEvaluacionProceso.setSyncFlag(TareaRubroEvaluacionProceso.FLAG_ADDED);
-                    boolean succesTarea = tareaRubroEvaluacionProceso.save();
-                    if (!succesTarea)
-                        throw new Error("Error al guardar TareaRubroEvaluacionProceso");
                     TareasC tareasC = SQLite.select()
                             .from(TareasC.class)
                             .where(TareasC_Table.key.eq(tareaId))

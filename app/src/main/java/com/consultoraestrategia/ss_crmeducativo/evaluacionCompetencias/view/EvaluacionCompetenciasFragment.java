@@ -49,6 +49,7 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.entidades
 import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.filtroDialog.FiltroDialog;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.filtroDialog.FiltroView;
 import com.consultoraestrategia.ss_crmeducativo.evaluacion_resultado.ui.EvaluacionResultadoActivity;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.services.data.source.util.RepositoryInjector;
 import com.consultoraestrategia.ss_crmeducativo.services.syncIntentService.SimpleSyncIntenService;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.view.activities.TabsCursoDocenteActivity;
@@ -284,6 +285,7 @@ public class EvaluacionCompetenciasFragment extends BaseFragment<EvaluacionCompe
     public void simpleSyncIntenService(int programaEducativoId) {
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
+        SynckService.start(getContext(),programaEducativoId);
     }
 
     @Override

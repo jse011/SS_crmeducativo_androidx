@@ -3,7 +3,6 @@ package com.consultoraestrategia.ss_crmeducativo.model.docentementor;
 import com.consultoraestrategia.ss_crmeducativo.entities.Archivo;
 import com.consultoraestrategia.ss_crmeducativo.entities.RecursoArchivo;
 import com.consultoraestrategia.ss_crmeducativo.entities.RecursoDidacticoEventoC;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasRecursosC;
 
@@ -22,7 +21,7 @@ public class BEDatosTarea {
 
     private List<Archivo> archivo;
 
-    private List<TareaRubroEvaluacionProceso> tareaRubroEvaluacion;
+    //private List<TareaRubroEvaluacionProceso> tareaRubroEvaluacion;
 
     public List<TareasC> getTarea() {
         return tarea;
@@ -72,11 +71,4 @@ public class BEDatosTarea {
         this.archivo = archivo;
     }
 
-    public List<TareaRubroEvaluacionProceso> getTareaRubroEvaluacion() {
-        return tareaRubroEvaluacion;
-    }
-
-    public void setTareaRubroEvaluacion(List<TareaRubroEvaluacionProceso> tareaRubroEvaluacion) {
-        this.tareaRubroEvaluacion = tareaRubroEvaluacion;
-    }
 }

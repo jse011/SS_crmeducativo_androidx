@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_horario"
+        android:icon="@drawable/ic_document_message_white"
+        android:orderInCategory="100"
+        android:title="@string/ListaCurso.menu.horario"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_refrescar"
         android:icon="@drawable/ic_refresh2"
         android:orderInCategory="100"

@@ -19,5 +19,5 @@ public interface EventosDataSource {
     void getEventosColegio(int idUsuario, int idGeoreferencia, TiposEventosUi tiposEventosUi, SucessCallback<List<EventosUi>> listSucessCallback);
     RetrofitCancel deleteEvento(EventosUi eventoUi, SucessCallback<Boolean> booleanSucessCallback);
     RetrofitCancel enviarEvento(EventosUi eventoUi, SucessCallback<Boolean> booleanSucessCallback);
-    List<Object> getListaUsuarios(String calendarioId);
+    List<Object> getListaUsuarios(String calendarioId, String idEvento);
 }

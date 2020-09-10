@@ -17,6 +17,13 @@ import android.os.Bundle;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
+import com.consultoraestrategia.ss_crmeducativo.eventos.EventosActivty;
+import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
+import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
+import com.consultoraestrategia.ss_crmeducativo.login2.fastData.FastData;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -74,7 +81,6 @@ import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.listener.RubroPr
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.silabo.RubroResultadoSilaboFragment;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.listener.RubroSilaboListener;
 import com.consultoraestrategia.ss_crmeducativo.services.cloudDataBase.crmeNotification.CrmeNotificationServiceImpl;
-import com.consultoraestrategia.ss_crmeducativo.services.data.local.ServiceLocalDataRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.importarActividad.ui.ImportarActivity;
@@ -168,12 +174,13 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
     @Override
     protected TabCursoDocentePresenter getPresenter() {
         TabsCursoRepository tabsCursoRepository = new TabsCursoRepository(new TabsCursoLocalDataSource(InjectorUtils.provideCalendarioPeriodo(), InjectorUtils.provideDimensionObservadaDao()));
+        LoginDataRepository service2Repositorio = new LoginDataRepositoryImpl(ApiRetrofit.getInstance(), InjectorUtils.provideSessionUserDao(), InjectorUtils.provideParametrosDisenioDao(), InjectorUtils.provideCursoDao(), InjectorUtils.provideAlumnoDao());
         return new TabCursoDocentePresenteV2Impl(
                 new UseCaseHandler(new UseCaseThreadPoolScheduler()),
                 getResources(),
                 new GetPeriodoList(tabsCursoRepository),
                 new GetIsAprendizajeColegio(tabsCursoRepository),
-                new ChangeDataBaseDocenteMentor(new ServiceLocalDataRepositoryImpl(InjectorUtils.provideSessionUserDao())),
+                new ChangeDataBaseDocenteMentor(service2Repositorio),
                 new GetIsTutor(tabsCursoRepository),
                 new GetParametroDisenio(tabsCursoRepository),
                 new PrimeravesCursoDocente(tabsCursoRepository)
@@ -301,6 +308,9 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_horario:
+                presenter.onClickCalendario();
+                return true;
             case R.id.menu_refrescar:
                 presenter.onClickRefrescar();
                 return true;
@@ -811,10 +821,11 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
 
     private <T extends Fragment> T getFragment(Class<T> tClass) {
         List<Fragment> fragments = getFragments();
-        for (Fragment fragment :
-                fragments) {
+        for (Fragment fragment : fragments) {
             if (tClass.isInstance(fragment)) {
-                return (T) fragment;
+                if (fragment.isVisible()) {
+                    return (T) fragment;
+                }
             }
         }
         return null;
@@ -992,7 +1003,6 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        presenter.onChangeFull(true);
         presenter.onFinishSynck();
 
     }
@@ -1017,6 +1027,16 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
             e.printStackTrace();
         }
         presenter.onFinishSynck();
+    }
+
+    @Override
+    public void onLoadFirebase(int count) {
+
+    }
+
+    @Override
+    public void onFinishFirebase() {
+
     }
 
     @Override
@@ -1148,6 +1168,7 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
             @Override
             public void run() {
                SimpleSyncIntenService.start(getApplicationContext(), programaEducativoId);
+                SynckService.start(getApplicationContext(),programaEducativoId);
             }
         },1000);
     }
@@ -1188,9 +1209,37 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
     }
 
     @Override
-    public void showProgressService2(int usuarioId, int empleadoId, int idProgramaEducativo, int idCargaCurso, int idCalendarioPeriodo, int idGeoreferenciaId, int idEntidad, int silaboId, int idCurso, int idCargaAcademica, boolean cursoComplejo) {
-        progressDialogFragment = ProgressDialogFragment.newInstance(usuarioId, empleadoId, idProgramaEducativo, idCargaCurso, idCalendarioPeriodo, idGeoreferenciaId, idEntidad,silaboId, idCurso,idCargaAcademica, cursoComplejo);
-        progressDialogFragment.show(getSupportFragmentManager(), "ProgressDialogFragment");
+    public void showProgressService2(int usuarioId, int empleadoId, int idProgramaEducativo, int idCargaCurso, int idCalendarioPeriodo, int idGeoreferenciaId, int idEntidad, int silaboId, int idCurso, int idCargaAcademica, boolean cursoComplejo, int anioAcademicoId) {
+        FastData.start(this, anioAcademicoId, usuarioId, idCalendarioPeriodo,idProgramaEducativo);
+        //progressDialogFragment = ProgressDialogFragment.newInstance(usuarioId, empleadoId, idProgramaEducativo, idCargaCurso, idCalendarioPeriodo, idGeoreferenciaId, idEntidad,silaboId, idCurso,idCargaAcademica, cursoComplejo);
+        //progressDialogFragment.show(getSupportFragmentManager(), "ProgressDialogFragment");
+    }
+
+    @Override
+    public void comprobarSiActulizaronCorrectementeRubros() {
+        List<Fragment> fragments = getFragments();
+        for (Fragment fragment : fragments) {
+            if(fragment instanceof RubricaBidFragment && fragment.isVisible())
+                ((RubricaBidFragment) fragment).comprobarActualizacionRubros();
+            else if(fragment instanceof RubroResultadoSilaboFragment && fragment.isVisible()){
+                ((RubroResultadoSilaboFragment)fragment).comprobarActualizacionRubros();
+            }
+
+        }
+    }
+
+    @Override
+    public void showActivityAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId, int cargaCursoId) {
+        CRMBundle crmBundle = new CRMBundle();
+        crmBundle.setUsuarioId(idUsuario);
+        crmBundle.setGeoreferenciaId(georeferenciaId);
+        crmBundle.setEmpleadoId(empleadoId);
+        crmBundle.setAnioAcademico(anioAcademicoIdFinal);
+        crmBundle.setEntidadId(entidadId);
+        crmBundle.setCargaCursoId(cargaCursoId);
+        Intent intent = new Intent(this, EventosActivty.class);
+        intent.putExtras(crmBundle.instanceBundle());
+        startActivity(intent);
     }
 
     @Override

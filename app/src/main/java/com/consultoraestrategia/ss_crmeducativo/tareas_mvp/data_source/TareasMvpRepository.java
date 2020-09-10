@@ -2,9 +2,11 @@ package com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source;
 
 
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
+import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.callbacks.GetTareasListCallback;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.local.TareasLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.remote.RemoteMvpDataSource;
+import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.TareasUI;
 
 import java.util.List;
 

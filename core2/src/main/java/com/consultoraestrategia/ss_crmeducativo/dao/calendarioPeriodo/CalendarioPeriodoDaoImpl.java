@@ -224,6 +224,6 @@ public class CalendarioPeriodoDaoImpl extends BaseIntegerDaoImpl<CalendarioPerio
             status = false;
         }finally {
         }
-        return status;
+        return true;
     }
 }

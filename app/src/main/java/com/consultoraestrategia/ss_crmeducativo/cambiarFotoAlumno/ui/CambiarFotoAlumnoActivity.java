@@ -38,6 +38,7 @@ import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.data.local.Cam
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.data.remote.CambiarFotoRemoteDataSource;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase.GetPersona;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase.GetUploadImagen;
+import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase.Save;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase.SavePersona;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.entities.PersonaUi;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.listener.RepositorioItemUpdateListener;
@@ -45,7 +46,6 @@ import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-import com.whatsappcamera.Save;
 
 import java.io.IOException;
 import java.util.List;

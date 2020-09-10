@@ -20,13 +20,15 @@ public class CMRE extends Core2 {
     private CrmeNotificationServiceImpl crmeNotification;
     private final static String PREFERENCIA = "SyncIntenService";
     private final static String PREFERENCIA_KEY = "changeDataBase";
-    private CalendarioPeridoService calendarioPeridoService;
+
     @Override
     public void onCreate() {
         super.onCreate();
         if(crmeNotification!=null)crmeNotification.onDestroy();
         crmeNotification = CrmeNotificationServiceImpl.init(this);
-        calendarioPeridoService = CalendarioPeridoService.getInstance();
+        
+        CalendarioPeridoService calendarioPeridoService = CalendarioPeridoService.getInstance();
+        calendarioPeridoService.execute();
     }
 
     @Override
@@ -36,7 +38,6 @@ public class CMRE extends Core2 {
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-        calendarioPeridoService.execute();
         super.onActivitySaveInstanceState(activity, bundle);
     }
 

@@ -1,6 +1,8 @@
 package com.consultoraestrategia.ss_crmeducativo.crearEvento;
 
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenter;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AgendaUi;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AlumnoUi;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.TipoCalendarioUi;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.seleccionarCalendario.SeleccionarCalendarioView;
 
@@ -32,4 +34,21 @@ public interface CrearEventoPresenter extends BasePresenter<CrearEventoView> {
     void attachView(SeleccionarCalendarioView seleccionarCalendarioView);
 
     void onSalirSelectPiket(ArrayList<String> photoPaths);
+
+    void onClickItem(AlumnoUi alumnoUi);
+
+    void onChangePadres(AlumnoUi alumnoUi);
+
+    void onChangeAlumno(AlumnoUi alumnoUi);
+
+    void onClickAllPadres();
+
+    void onClickAllAlumnos();
+
+    void onChangeSearch(String search);
+
+    void onBtnPublicarClicked(String nombre, String descripcion);
+
+    void onClickCloseImage();
+
 }

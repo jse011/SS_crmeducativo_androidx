@@ -10,9 +10,11 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.dao.rubroEvalRNPFormula.RubroEvalRNPFormulaDaoImpl;
 import com.consultoraestrategia.ss_crmeducativo.dao.rubroProceso.RubroProcesoDaoImpl;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.RubricasAbstractFragment;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.data.source.RubricaBidRepository;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.data.source.local.RubricaBidLocal;
+import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.EliminarRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.GetActualizasRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.GetCalendarioPeriodo;
@@ -62,7 +64,8 @@ public class RubricaSesionFragment extends RubricasAbstractFragment<RubricaSesio
                 new EliminarRubricas(actualizarRubricaBidRepository),
                 new PublicarTodasEvaluacion(actualizarRubricaBidRepository),
                 new GetRubricaSesionLista(rubricaSesionRepository),
-                new GetCalendarioPeriodo(actualizarRubricaBidRepository));
+                new GetCalendarioPeriodo(actualizarRubricaBidRepository),
+                new ChangeEstadoActualizacion(actualizarRubricaBidRepository));
     }
 
     @Override
@@ -97,6 +100,7 @@ public class RubricaSesionFragment extends RubricasAbstractFragment<RubricaSesio
         if(refrescarListener!=null)refrescarListener.succesDelete();
         CallService.jobServiceExportarTipos(getContext(), TipoExportacion.RUBROEVALUACION);
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
+        SynckService.start(getContext(),programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
     }
 

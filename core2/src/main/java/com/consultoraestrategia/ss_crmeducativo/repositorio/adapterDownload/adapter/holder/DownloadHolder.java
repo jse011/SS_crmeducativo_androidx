@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,7 +62,7 @@ public class DownloadHolder extends RecyclerView.ViewHolder implements View.OnCl
         this.repositorioFileUi = repositorioFileUi;
         this.listener = repositorioItemListener;
         txtNombreRecurso.setText(repositorioFileUi.getNombreRecurso());
-        txtdescripcion.setText(repositorioFileUi.getNombreArchivo());
+        txtdescripcion.setText(!TextUtils.isEmpty(repositorioFileUi.getNombreArchivo())?repositorioFileUi.getNombreArchivo():repositorioFileUi.getUrl());
         setupEstado(repositorioFileUi.getEstadoFileU());
         setupIcono(repositorioFileUi.getTipoFileU());
     }

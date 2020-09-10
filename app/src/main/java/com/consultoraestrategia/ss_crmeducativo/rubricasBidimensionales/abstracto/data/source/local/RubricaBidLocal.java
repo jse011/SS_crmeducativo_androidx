@@ -1,5 +1,6 @@
 package com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.data.source.local;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.TipoUi;
@@ -17,8 +18,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION;
 import com.consultoraestrategia.ss_crmeducativo.entities.T_RN_MAE_TIPO_EVALUACION_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
-import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos_Table;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.RubricasAbstractPresenterImpl;
@@ -51,6 +50,27 @@ public class RubricaBidLocal implements RubricaBidDataSource {
         this.rubroProcesoDao = rubroProcesoDao;
         this.tareaRubroEvaluacionProcesoDao = tareaRubroEvaluacionProcesoDao;
         this.calendarioPeriodoDao = calendarioPeriodoDao;
+    }
+
+    @Override
+    public void changeEstadoActualizacion(List<RubBidUi> rubBidUiList) {
+        List<String> rubrosIdList = new ArrayList<>();
+        for (RubBidUi rubBidUi: rubBidUiList)rubrosIdList.add(rubBidUi.getKey());
+
+        List<RubroEvaluacionProcesoC> rubroEvaluacionProcesoCList = SQLite.select()
+                .from(RubroEvaluacionProcesoC.class)
+                .where(RubroEvaluacionProcesoC_Table.key.in(rubrosIdList))
+                .queryList();
+
+        for (RubroEvaluacionProcesoC rubroEvaluacionProcesoC : rubroEvaluacionProcesoCList){
+            for (RubBidUi rubBidUi : rubBidUiList){
+                if(rubroEvaluacionProcesoC.getKey().equals(rubBidUi.getKey())){
+                    rubBidUi.setExportado(rubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                            rubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                            rubroEvaluacionProcesoC.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
+                }
+            }
+        }
     }
 
     @Override
@@ -90,19 +110,16 @@ public class RubricaBidLocal implements RubricaBidDataSource {
             rubBidUi.setAlias(proceso.getSubtitulo());
             rubBidUi.setFormaEvaluacion(formaEvaluacion);
             rubBidUi.setTipoEvaluacion(tipoEvaluacion);
-
+            rubBidUi.setExportado(proceso.getSyncFlag()!=BaseEntity.FLAG_ADDED&&
+                    proceso.getSyncFlag()!=BaseEntity.FLAG_UPDATED&&
+                    proceso.getSyncFlag()!=BaseEntity.FLAG_ERROREXPORTED);
             if(rubBidUi.getSesionAprendizajeId()!=0){
                 rubBidUi.setOrigenUi(OrigenUi.SESION);
             }else {
                 rubBidUi.setOrigenUi(OrigenUi.AREA);
             }
 
-            TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = SQLite.select()
-                    .from(TareaRubroEvaluacionProceso.class)
-                    .where(TareaRubroEvaluacionProceso_Table.rubroEvalProcesoId.eq(proceso.getKey()))
-                    .querySingle();
-
-            if(tareaRubroEvaluacionProceso!=null){
+            if(!TextUtils.isEmpty(proceso.getTareaId())){
                 rubBidUi.setOrigenUi(OrigenUi.TAREA);
             }
 
@@ -137,8 +154,6 @@ public class RubricaBidLocal implements RubricaBidDataSource {
                 boolean validacion =  result.size() == 0;
                 if (validacion) {
                     onActualizarRubricaPrincipal(keyRubro);
-                    TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso = tareaRubroEvaluacionProcesoDao.getTareaRubroPorRubroId(keyRubro);
-                    if(tareaRubroEvaluacionProceso!=null)tareaRubroEvaluacionProcesoDao.elimarTareaRubroEvaluacionProceso(keyRubro);
                     for (RubroEvalRNPFormulaC formulaC : procUiList) {
                         onActualizarRubrosEliminados(formulaC);
                     }

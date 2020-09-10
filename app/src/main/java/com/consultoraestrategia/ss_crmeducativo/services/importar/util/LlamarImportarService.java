@@ -2,11 +2,17 @@ package com.consultoraestrategia.ss_crmeducativo.services.importar.util;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.importar.ui.ImportarJobService;
 import com.consultoraestrategia.ss_crmeducativo.util.IdGenerator;
+import com.consultoraestrategia.ss_crmeducativo.utils.AppMessengetNotification;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -25,24 +31,19 @@ public class LlamarImportarService {
     public static final String JOBSERVICE_IMPORTAR_TIPOS = "jobServiceExportarTipos";
 
     public static void jobServiceExportarTipos(Context context, TipoImportacion tipoImportacion, BEVariables beVariables){
-
-        Bundle jobParameters = new Bundle();
+        Log.d("LlamarImportarService", tipoImportacion.toString());
        if(beVariables==null)return;
-        jobParameters.putSerializable(ImportarJobService.ENUM_TIPOIMPORTACION, tipoImportacion.toString());
-        beVariables.convertBundle(jobParameters);
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
-        Job job = dispatcher.newJobBuilder().
-                setService(ImportarJobService.class).
-                setLifetime(Lifetime.FOREVER).
-                setExtras(jobParameters).
-                setRecurring(false).
-                setTag(IdGenerator.generateId()).
-                setRetryStrategy(RetryStrategy.DEFAULT_LINEAR).
-                setReplaceCurrent(false)
-                //.setTrigger (Trigger. executionWindow(0, 1))
-                .setConstraints(Constraint.ON_ANY_NETWORK)
+        Data data = new Data.Builder()
+                .putAll(beVariables.convertData())
+                .putString(ImportarJobService.ENUM_TIPOIMPORTACION, tipoImportacion.toString())
                 .build();
-        dispatcher.mustSchedule(job);
+
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(ImportarJobService.class)
+                .setInputData(data)
+                .build();
+
+        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+
     }
 
 

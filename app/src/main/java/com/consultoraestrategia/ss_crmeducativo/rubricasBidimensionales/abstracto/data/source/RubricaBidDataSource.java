@@ -13,6 +13,8 @@ import java.util.List;
 public interface RubricaBidDataSource {
 
 
+    void changeEstadoActualizacion(List<RubBidUi> rubBidUiList);
+
     interface CallBackRubricaBid{
         void onActualizacionRubricaBid(RubBidUi rubBidUi);
     }

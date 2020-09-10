@@ -280,7 +280,7 @@
         <item name="android:windowIsFloating">false</item>
 
         <!-- This is important! Don't forget to set window background -->
-        <item name="android:windowBackground">@color/colorWhite</item>
+        <item name="android:windowBackground">@color/white</item>
 
         <!-- Additionally if you want animations when dialog opening -->
         <item name="android:windowEnterAnimation">@anim/slide_up</item>

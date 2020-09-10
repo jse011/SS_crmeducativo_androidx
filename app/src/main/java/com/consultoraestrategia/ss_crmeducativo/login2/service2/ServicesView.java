@@ -15,7 +15,7 @@ public interface ServicesView extends BaseView<ServicesPresenter> {
 
     void showListServicioEnvio(List<ServiceEnvioUi> serviceEnvioUiList);
 
-    void showListServicioActualizar(List<ActualizarUi> actualizarUiList);
+    void showListServicioActualizar();
 
     void girarBtnRevisionDatos();
 
@@ -60,4 +60,26 @@ public interface ServicesView extends BaseView<ServicesPresenter> {
     void hideListAnioCalendario();
 
     void showFastData(int usuarioId, int anioAcademicoId, int calendarioId, int programaEducativoId);
+
+    void setListServicioActualizar(List<ActualizarUi> actualizarUiList);
+
+    void setTitleMantenimiento(String titulo);
+
+    void showBtnMantenimiento();
+
+    void hideBtnMantenimiento();
+
+    void showContentStarFirebase();
+
+    void hideContentStarFirebase();
+
+    void changeDescripcionStarFirebase(String descripcion1, String descripcion2);
+
+    void girarImagePA();
+
+    void stopGirarImagePA();
+
+    void starSynckFB();
+
+    void closeRefresh();
 }

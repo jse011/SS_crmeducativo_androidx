@@ -3,7 +3,6 @@ package com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.princip
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.R;
@@ -11,12 +10,16 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.RubricasView;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.RubricasAbstractPresenterImpl;
+import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.EliminarRubricas;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.GetActualizasRubricas;
 
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.domain.useCase.PublicarTodasEvaluacion;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.entidades.RubBidUi;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.principal.domain.useCase.GetRubricaBidLista;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by CCIE on 07/03/2018.
@@ -35,8 +38,8 @@ public class RubricaBidPresenterImpl extends RubricasAbstractPresenterImpl {
 
 
 
-    public RubricaBidPresenterImpl(UseCaseHandler handler, Resources res, GetActualizasRubricas getActualizasRubricas, EliminarRubricas eliminarRubricas, PublicarTodasEvaluacion publicarTodasEvaluacion,GetRubricaBidLista getRubricaBidLista) {
-        super(handler, getActualizasRubricas, eliminarRubricas,publicarTodasEvaluacion);
+    public RubricaBidPresenterImpl(UseCaseHandler handler, Resources res, GetActualizasRubricas getActualizasRubricas, EliminarRubricas eliminarRubricas, PublicarTodasEvaluacion publicarTodasEvaluacion, GetRubricaBidLista getRubricaBidLista, ChangeEstadoActualizacion changeEstadoActualizacion) {
+        super(handler, getActualizasRubricas, eliminarRubricas,publicarTodasEvaluacion, changeEstadoActualizacion);
         this.getRubricaBidLista = getRubricaBidLista;
         this.res = res;
     }
@@ -67,13 +70,12 @@ public class RubricaBidPresenterImpl extends RubricasAbstractPresenterImpl {
                             Log.d(RUBRICA_BID_PRESENTER_IMPL_TAG, "if ");
                             Log.d(RUBRICA_BID_PRESENTER_IMPL_TAG, "CountListRubrica " + response.getList().size());
                             if (view != null)view.mostrarListaRubricas(response.getList());
-                            if (view != null)view.mostrarListaRubrica();
                             if (view != null)view.ocultarProgressBar();
                             if (view != null) view.ocultarMensaje();
                         } else {
                             Log.d(RUBRICA_BID_PRESENTER_IMPL_TAG, "else ");
                             if (view != null) {
-                                view.ocultarListaRubrica();
+                                view.mostrarListaRubricas(new ArrayList<>());
                                 view.mostrarMensaje(res.getString(R.string.empty_data2));
                                 view.ocultarProgressBar();
                             }
@@ -165,6 +167,5 @@ public class RubricaBidPresenterImpl extends RubricasAbstractPresenterImpl {
      }
 
     }
-
 
 }

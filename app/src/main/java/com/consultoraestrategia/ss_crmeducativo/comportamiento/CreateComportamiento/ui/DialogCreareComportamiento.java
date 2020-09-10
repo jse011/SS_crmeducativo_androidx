@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -300,6 +301,7 @@ public class DialogCreareComportamiento extends BaseDialogFragment<CreateComport
         Log.d(TAG,"sincronizar" );
         SimpleSyncIntenService.start(getContext(), programaEducativoId);
         CMRE.saveNotifyChangeDataBase(getContext());
+        SynckService.start(getContext(),programaEducativoId);
     }
 
     @Override

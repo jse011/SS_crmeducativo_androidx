@@ -50,6 +50,7 @@ public class InfoRubroDataLocalSource implements InfoRubroDataSource {
         List<RubroEvaluacionProcesoComentario> rubroEvaluacionProcesoComentarios = SQLite.select()
                 .from(RubroEvaluacionProcesoComentario.class)
                 .where(RubroEvaluacionProcesoComentario_Table.evaluacionProcesoId.eq(evaluacionProcesoC.getKey()))
+                .and(RubroEvaluacionProcesoComentario_Table.delete.withTable().notEq(1))
                 .queryList();
 
         for (RubroEvaluacionProcesoComentario rubroEvaluacionProcesoComentario : rubroEvaluacionProcesoComentarios){
@@ -80,6 +81,7 @@ public class InfoRubroDataLocalSource implements InfoRubroDataSource {
         List<ArchivosRubroProceso> archivosRubroProcesoList = SQLite.select()
                 .from(ArchivosRubroProceso.class)
                 .where(ArchivosRubroProceso_Table.evaluacionProcesoId.eq(evaluacionProcesoC.getKey()))
+                .and(ArchivosRubroProceso_Table.delete.notEq(1))
                 .queryList();
 
         for (ArchivosRubroProceso archivosRubroProceso: archivosRubroProcesoList){
@@ -144,8 +146,8 @@ public class InfoRubroDataLocalSource implements InfoRubroDataSource {
         rubroEvaluacionProcesoComentario.setEvaluacionProcesoId(evaluacionProcesoC.getKey());
         rubroEvaluacionProcesoComentario.setSyncFlag(BaseEntity.FLAG_ADDED);
 
-        evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        evaluacionProcesoC.save();
+        //evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
+        //evaluacionProcesoC.save();
         return rubroEvaluacionProcesoComentario.save();
     }
 
@@ -159,8 +161,8 @@ public class InfoRubroDataLocalSource implements InfoRubroDataSource {
                 .querySingle();
 
         if(evaluacionProcesoC==null)return false;
-        evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        evaluacionProcesoC.save();
+        //evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
+        //evaluacionProcesoC.save();
 
         RubroEvaluacionProcesoC rubroEvaluacionProcesoC =  SQLite.select()
                 .from(RubroEvaluacionProcesoC.class)
@@ -172,13 +174,16 @@ public class InfoRubroDataLocalSource implements InfoRubroDataSource {
             rubroEvaluacionProcesoC.save();
         }
 
-
-        SQLite.delete()
+        RubroEvaluacionProcesoComentario rubroEvaluacionProcesoComentario = SQLite.select()
                 .from(RubroEvaluacionProcesoComentario.class)
                 .where(RubroEvaluacionProcesoComentario_Table.key.eq(mensajeUi.getId()))
-                .execute();
+                .querySingle();
 
-
+        if(rubroEvaluacionProcesoComentario!=null){
+            rubroEvaluacionProcesoComentario.setSyncFlag(BaseEntity.FLAG_UPDATED);
+            rubroEvaluacionProcesoComentario.setDelete(1);
+            rubroEvaluacionProcesoComentario.save();
+        }
         return true;
     }
 
@@ -192,8 +197,8 @@ public class InfoRubroDataLocalSource implements InfoRubroDataSource {
                 .querySingle();
 
         if(evaluacionProcesoC==null)return false;
-        evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        evaluacionProcesoC.save();
+        //evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
+        //evaluacionProcesoC.save();
 
         RubroEvaluacionProcesoC rubroEvaluacionProcesoC =  SQLite.select()
                 .from(RubroEvaluacionProcesoC.class)
@@ -237,8 +242,8 @@ public class InfoRubroDataLocalSource implements InfoRubroDataSource {
                 .querySingle();
 
         if(evaluacionProcesoC==null)return false;
-        evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        evaluacionProcesoC.save();
+        //evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
+        //evaluacionProcesoC.save();
 
         RubroEvaluacionProcesoC rubroEvaluacionProcesoC =  SQLite.select()
                 .from(RubroEvaluacionProcesoC.class)
@@ -250,10 +255,16 @@ public class InfoRubroDataLocalSource implements InfoRubroDataSource {
             rubroEvaluacionProcesoC.save();
         }
 
-        SQLite.delete()
+        ArchivosRubroProceso archivosRubroProceso = SQLite.select()
                 .from(ArchivosRubroProceso.class)
                 .where(ArchivosRubroProceso_Table.key.eq(archivoComentarioUi.getArchivoId()))
-                .execute();
+                .querySingle();
+
+        if(archivosRubroProceso!=null){
+            archivosRubroProceso.setSyncFlag(BaseEntity.FLAG_UPDATED);
+            archivosRubroProceso.setDelete(1);
+            archivosRubroProceso.save();
+        }
 
         return true;
     }

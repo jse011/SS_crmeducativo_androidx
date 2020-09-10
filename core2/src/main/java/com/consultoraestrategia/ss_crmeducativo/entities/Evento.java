@@ -42,6 +42,8 @@ public class Evento extends BaseEntity {
     public int likeCount;
     @Column
     public boolean like;
+    @Column
+    public boolean envioPersonalizado;
 
     private String image64;
 
@@ -181,5 +183,13 @@ public class Evento extends BaseEntity {
 
     public void setNewPathImagen(String newPathImagen) {
         this.newPathImagen = newPathImagen;
+    }
+
+    public boolean isEnvioPersonalizado() {
+        return envioPersonalizado;
+    }
+
+    public void setEnvioPersonalizado(boolean envioPersonalizado) {
+        this.envioPersonalizado = envioPersonalizado;
     }
 }

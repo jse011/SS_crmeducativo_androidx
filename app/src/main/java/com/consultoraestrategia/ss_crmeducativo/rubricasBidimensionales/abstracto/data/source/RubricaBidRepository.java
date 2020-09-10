@@ -4,6 +4,8 @@ import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstract
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.entidades.PeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.rubricasBidimensionales.abstracto.entidades.RubBidUi;
 
+import java.util.List;
+
 /**
  * Created by CCIE on 20/03/2018.
  */
@@ -13,6 +15,11 @@ public class RubricaBidRepository implements RubricaBidDataSource {
 
     public RubricaBidRepository(RubricaBidLocal rubricaBidLocal) {
         this.rubricaBidLocal = rubricaBidLocal;
+    }
+
+    @Override
+    public void changeEstadoActualizacion(List<RubBidUi> rubBidUiList) {
+        rubricaBidLocal.changeEstadoActualizacion(rubBidUiList);
     }
 
     @Override

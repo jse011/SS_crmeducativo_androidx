@@ -30,6 +30,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.Rutas;
 import com.consultoraestrategia.ss_crmeducativo.entities.Seccion;
 import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
+import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
 
 import java.util.List;
 
@@ -65,6 +66,8 @@ public class BEDatosAnioAcademico {
     private List<Dia> dia;
     private List<HorarioDia> horarioDia;
     private List<CursosDetHorario> cursosDetHorario;
+
+    private List<WebConfig> webConfigs;
 
 
     public List<Aula> getAulas() {
@@ -297,5 +300,13 @@ public class BEDatosAnioAcademico {
 
     public void setHorario(List<Horario> horario) {
         this.horario = horario;
+    }
+
+    public List<WebConfig> getWebConfigs() {
+        return webConfigs;
+    }
+
+    public void setWebConfigs(List<WebConfig> webConfigs) {
+        this.webConfigs = webConfigs;
     }
 }

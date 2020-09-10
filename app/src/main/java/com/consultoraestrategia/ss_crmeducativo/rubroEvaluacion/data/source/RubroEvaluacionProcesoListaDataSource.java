@@ -23,6 +23,8 @@ public interface RubroEvaluacionProcesoListaDataSource {
 
     boolean editarFormula(RubroProcesoUi rubroProcesoUi);
 
+    void changeEstadoActualizacion(List<RubroProcesoUi> rubroProcesoUiList);
+
     interface ListCallback<T> {
         void onLoaded(List<T> list);
     }

@@ -21,7 +21,7 @@ public class BaseEntity extends BaseModel {
     public static final int FLAG_UPDATED = 2;
     public static final int FLAG_DELETED = 3;
     public static final int FLAG_ERROREXPORTED = 5;
-
+    public static final int FLAG_PREADD = 6;
     @Column
     public int androidId;
     @Column

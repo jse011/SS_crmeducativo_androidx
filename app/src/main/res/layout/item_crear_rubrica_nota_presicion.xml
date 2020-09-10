@@ -15,7 +15,7 @@
         android:layout_marginBottom="2dp"
         android:background="@drawable/ic_circle_precision_rubrica"
         android:gravity="center"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/white"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

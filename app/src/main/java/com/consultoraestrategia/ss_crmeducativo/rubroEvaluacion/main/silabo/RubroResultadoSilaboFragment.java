@@ -22,9 +22,11 @@ import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.adapters.Compete
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.data.source.RubroEvaluacionProcesoListaRepository;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.data.source.local.RubroEvaluacionProcesoListaLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.data.source.remote.RubroEvaluacionProcesoListaRemoteDataSource;
+import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.ChangeEstadoActualizacion;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.GetRubroProceso;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.domain.useCase.AutoSaveFormulaCapacidad;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.CapacidadUi;
+import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.CompetenciaUi;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.entities.RubroProcesoUi;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.plantilla.data.source.CasoUsoRepository;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.plantilla.data.source.local.CasoUsoLocalDataSource;
@@ -40,7 +42,9 @@ import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.listener.RubroSi
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -93,7 +97,8 @@ public class RubroResultadoSilaboFragment extends FragmentAbstract<RubroResultad
                 new ChangeToogle(casoUsoRepository),
                 new DesanclarFormula(rubroResultadoSilaboRepository),
                 new PublicarTodasEvaluacion(rubroEvaluacionProcesoListaRepository),
-                new AutoSaveFormulaCapacidad(rubroResultadoSilaboRepository)
+                new AutoSaveFormulaCapacidad(rubroResultadoSilaboRepository),
+                new ChangeEstadoActualizacion(rubroResultadoSilaboRepository)
         );
     }
 
@@ -268,5 +273,23 @@ public class RubroResultadoSilaboFragment extends FragmentAbstract<RubroResultad
     public void clearPositionList() {
         super.clearPositionList();
         adapter.clearPositionList();
+    }
+
+    public void comprobarActualizacionRubros() {
+        Map<RubroProcesoUi, CapacidadUi> rubroProcesoUiList = new HashMap<>();
+        CompetenciaAdapter competenciaAdapter = (CompetenciaAdapter)rcRubroEvaluacionResultado.getAdapter();
+        if(competenciaAdapter!=null){
+           for (Object o : competenciaAdapter.getItems()){
+               if(o instanceof CompetenciaUi){
+                   CompetenciaUi competenciaUi = (CompetenciaUi)o;
+                   for (CapacidadUi capacidadUi : competenciaUi.getCapacidadUis()){
+                       for (RubroProcesoUi rubroProcesoUi : capacidadUi.getRubroProcesoUis()){
+                           rubroProcesoUiList.put(rubroProcesoUi, capacidadUi);
+                       }
+                   }
+               }
+           }
+        }
+        presenter.comprobarActualizacionRubros(rubroProcesoUiList);
     }
 }

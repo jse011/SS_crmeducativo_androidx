@@ -97,6 +97,9 @@ public class CalendarioPeridoService {
                             TransaccionUtils.fastStoreListInsert(Tipos.class, response.getTipos(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(CalendarioAcademico.class, response.getCalendarioAcademico(), databaseWrapper, true);
 
+
+                            //
+
                         }
                     }).success(new Transaction.Success() {
                         @Override

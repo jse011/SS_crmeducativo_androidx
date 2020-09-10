@@ -3,6 +3,7 @@ package com.consultoraestrategia.ss_crmeducativo.eventos
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import android.util.Log
 import com.consultoraestrategia.ss_crmeducativo.R
 import com.consultoraestrategia.ss_crmeducativo.base.UseCase.UseCaseCallback
@@ -30,6 +31,8 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
                            var getListaUsuario: GetListaUsuario) : BasePresenterImpl<EventosView>(handler, res), EventosPresenter{
 
 
+    private var tutorCargaAcademicaId: Int = 0
+    private var cargaCursoId: Int = 0
     private var listaUsuarioView: ListaUsuarioView? = null
     private var informacionEventoDialogView: InformacionEventoDialogView? = null
     private var initial: Boolean = false
@@ -108,6 +111,8 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
         empleadoId = crmBundle.empleadoId
         anioAcademicoId = crmBundle.anioAcademico
         entidadId = crmBundle.entidadId
+        tutorCargaAcademicaId = crmBundle.cargaAcademicaId;
+        cargaCursoId = crmBundle.cargaCursoId;
     }
 
     override fun onClickTipoEvento(tiposEventosUi: TiposEventosUi) {
@@ -143,7 +148,7 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
     }
 
     override fun onclikInfoEventos(eventosUi: EventosUi) {
-        if(eventosUi.tiposUi.tipos==TiposUi.NOTICIA||eventosUi.tiposUi.tipos==TiposUi.EVENTOS){
+        if(eventosUi.tiposUi.tipos==TiposUi.NOTICIA||eventosUi.tiposUi.tipos==TiposUi.EVENTOS||(eventosUi.tiposUi.tipos == TiposUi.AGENDA && !TextUtils.isEmpty(eventosUi.imagen))){
             eventosUiSelected = eventosUi
             if (view != null) view.showDialogInfoEvento()
         }else{
@@ -179,7 +184,7 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
     }
 
     override fun onClickCrearAsistencia() {
-        if(view!=null)view.showCrearEventos(usuarioId,georeferenciaId, empleadoId, anioAcademicoId, entidadId)
+        if(view!=null)view.showCrearEventos(usuarioId,georeferenciaId, empleadoId, anioAcademicoId, entidadId, tutorCargaAcademicaId, cargaCursoId)
     }
 
     override fun onItemOpcionElimnarEvento(eventosUi: EventosUi) {
@@ -222,7 +227,7 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
     override fun attachView(listaUsuarioView: ListaUsuarioView?) {
         this.listaUsuarioView = listaUsuarioView
         if(eventosUiSelected!=null){
-            listaUsuarioView?.setListUsuarios(getListaUsuario.execute(eventosUiSelected?.calendarioId))
+            listaUsuarioView?.setListUsuarios(getListaUsuario.execute(eventosUiSelected?.calendarioId, eventosUiSelected?.idEvento))
             listaUsuarioView?.hideProgress()
         }
     }

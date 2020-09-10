@@ -3,11 +3,13 @@ package com.consultoraestrategia.ss_crmeducativo.login2.service2;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenterImpl;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
+import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.Firebase.GetListaCambiosFB;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeridoList;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetPlanificarSinck;
@@ -23,6 +25,7 @@ import com.consultoraestrategia.ss_crmeducativo.login2.entities.CasosEnviarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.GrupoEnviarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ResultadoEnvioUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.RubroEnviarUi;
+import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioFbUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.SesionesEnviarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.TareaEnviarUi;
@@ -37,14 +40,15 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
     private boolean notificacion = false;
     private boolean programarHorarioEnvio = false;
     private GetListActualizar getListServicioActualizar;
+    private GetListaCambiosFB getListaCambiosFB;
     private GetListServicioEnvio getListServicioEnvio;
     private GetCalendarioPeriodo getCalendarioPeriodo;
     private GetDatosServidor getDatos;
     private int cargaCursoId;
     private int calendarioPeriodoId;
     private List<ServiceEnvioUi> serviceEnvioUiList = new ArrayList<>();
+    private List<ServiceEnvioUi> serviceEnvioUiFBList = new ArrayList<>();
     private List<ActualizarUi> actualizarUiList = new ArrayList<>();
-    private boolean revisionDatos = false;
     private static final String TAG = ServicesPresenterImpl.class.getSimpleName();
     private int usuarioId;
     private int empleadoId;
@@ -68,11 +72,14 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
     private int minutoTimePicker;
     private GetCalendarioPeridoList getCalendarioPeridoList;
     private CalendarioPeriodoUi calendarioPeriodoUiVerificationSelect;
+    private boolean isServices;
+    private boolean showRestaurar;
+    private boolean starLoadFirebse;
 
     public ServicesPresenterImpl(UseCaseHandler handler, Resources res,
                                  GetListActualizar getListServicioActualizar,
                                  GetListServicioEnvio getListServicioEnvio, GetCalendarioPeriodo getCalendarioPeriodo, GetDatosServidor getDatos, SaveDatosServidor saveDatosServidor,
-                                 SavePlanificarSinck savePlanificarSinck, GetPlanificarSinck getPlanificarSinck, GetCalendarioPeridoList getCalendarioPeridoList) {
+                                 SavePlanificarSinck savePlanificarSinck, GetPlanificarSinck getPlanificarSinck, GetCalendarioPeridoList getCalendarioPeridoList, GetListaCambiosFB getListaCambiosFB) {
         super(handler, res);
         this.getListServicioActualizar = getListServicioActualizar;
         this.getListServicioEnvio = getListServicioEnvio;
@@ -82,6 +89,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
         this.savePlanificarSinck = savePlanificarSinck;
         this.getPlanificarSinck = getPlanificarSinck;
         this.getCalendarioPeridoList = getCalendarioPeridoList;
+        this.getListaCambiosFB = getListaCambiosFB;
     }
 
     @Override
@@ -91,28 +99,50 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
             getCalendarioPeriodo();
             if(view!=null)view.showNombreCalendario(calendarioPeriodoUi.getNombre());
             getListServicioActualizar();
-            showServicioActualizar();
+
+            if(showRestaurar){
+                showServicioActualizar();
+                if(view!=null)view.setListServicioActualizar(actualizarUiList);
+            }else {
+                hideServicioActualizar();
+                if(view!=null)view.setListServicioActualizar(new ArrayList<>());
+            }
+
             hideListAnioCalendario();
-            new Handler().postDelayed(new Runnable() {
+            /*new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     starActualizacion();
                 }
-            }, 2000);
+            }, 2000);*/
         }else {
             if(view!=null)view.hideNombreCalendario();
             hideServicioActualizar();
             List<CalendarioPeriodoUi> calendarioPeriodoUiList = getCalendarioPeridoList.execute(anioAcademicoId, programaEducativoId);
             showListAnioCalendario(calendarioPeriodoUiList);
         }
-
+        showListaCambiosFB();
         getListServicioEnvio();
-
         showServicioEnvio();
-
         setDescripcionNotificacion();
         setDescripcionProgramarHorarioEnvio();
 
+    }
+
+    private void showListaCambiosFB() {
+        getListaCambiosFB.execute(usuarioId, false, new GetListaCambiosFB.Callback() {
+            @Override
+            public void onLoad(boolean success, List<ServiceEnvioFbUi> serviceEnvioUiList) {
+                if(serviceEnvioUiList.isEmpty()){
+                    if(view!=null)view.hideContentStarFirebase();
+                    if(view!=null)view.stopGirarImagePA();
+                }else {
+                    if(view!=null)view.changeDescripcionStarFirebase("Existe cambios", "Buscando cambios en sus evaluaciones");
+                    if(view!=null)view.showContentStarFirebase();
+                    if(view!=null)view.stopGirarImagePA();
+                }
+            }
+        });
     }
 
     private void showListAnioCalendario(List<CalendarioPeriodoUi> calendarioPeriodoUiList){
@@ -174,8 +204,8 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
         }
     }
 
-
-    private void starEnviarCambios() {
+    //Si el servicio es iniciado por un Worker es nesario que que el envio se asyncron y no syncrono
+    private void starEnviarCambios(boolean modoSyncrono) {
        serviceEnviarUiSelected = null;
         for (ServiceEnvioUi item: serviceEnvioUiList){
             if(item.isEncoloa()){
@@ -183,8 +213,15 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
                 break;
             }
         }
+
         if(serviceEnviarUiSelected!=null){
+            Log.d(TAG, serviceEnviarUiSelected.getNombre() + " " + serviceEnviarUiSelected.getDescripcion());
+            Log.d(TAG, " modoSyncrono: " + modoSyncrono);
+            Log.d(TAG, " programaEducativoId: " + programaEducativoId);
+            if(serviceEnviarUiSelected instanceof RubroEnviarUi)Log.d(TAG, " Lista: " + ((RubroEnviarUi)serviceEnviarUiSelected).getRubroEvaluacionIdList());
             serviceEnviarUiSelected.setActivo(true);
+            serviceEnviarUiSelected.setSyncrono(modoSyncrono);
+            serviceEnviarUiSelected.setProgramaEducativoId(programaEducativoId);
             retrofitCancel = saveDatosServidor.execute(serviceEnviarUiSelected, new UseCaseLoginSincrono.Callback<SaveDatosServidor.Response>() {
                 @Override
                 public void onResponse(boolean success, SaveDatosServidor.Response value) {
@@ -205,7 +242,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
                             value.getServiceEnvioUi().setActivo(false);
                             value.getServiceEnvioUi().setEncoloa(false);
 
-                            starEnviarCambios();
+                            starEnviarCambios(isServices);
                         }
 
                     }catch (Exception e){
@@ -213,7 +250,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
                         value.getServiceEnvioUi().setActivo(false);
                         value.getServiceEnvioUi().setEncoloa(false);
                         if(view!=null)view.updateListaEnviar(value.getServiceEnvioUi());
-                        starEnviarCambios();
+                        starEnviarCambios(isServices);
                     }
 
 
@@ -242,20 +279,33 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
     }
 
     private void showServicioEnvio() {
-        if(!serviceEnvioUiList.isEmpty()){
-            if(view!=null)view.showListServicioEnvio(serviceEnvioUiList);
-        }else {
+
+        if(serviceEnvioUiList.isEmpty()){
+            if(view!=null)view.setTitleMantenimiento("No se encontraron problemas");
+            if(view!=null)view.hideBtnMantenimiento();
             if(view!=null)view.hideListServicioEnvio();
+        }else {
+            if(serviceEnvioUiList.size() == 1){
+                if(view!=null)view.setTitleMantenimiento("Se encontró un problema");
+            }else {
+                if(view!=null)view.setTitleMantenimiento("Se encontraron " +(serviceEnvioUiList.size())+ " problemas");
+            }
+
+            if(view!=null)view.showBtnMantenimiento();
+            if(view!=null)view.showListServicioEnvio(this.serviceEnvioUiList);
         }
 
     }
+
+
     private void showServicioActualizar() {
-        if(view!=null)view.showListServicioActualizar(actualizarUiList);
+        if(view!=null)view.showListServicioActualizar();
     }
 
     private void getListServicioEnvio() {
         serviceEnvioUiList.clear();
-        serviceEnvioUiList .addAll(getListServicioEnvio.execute(anioAcademicoId, cargaCursoId, calendarioPeriodoId, silaboEventoId,programaEducativoId));
+        serviceEnvioUiList .addAll(getListServicioEnvio.execute(0, 0, 0, 0,0));
+        //serviceEnvioUiList .addAll(getListServicioEnvio.execute(anioAcademicoId, cargaCursoId, calendarioPeriodoId, silaboEventoId,programaEducativoId));
     }
 
     @Override
@@ -274,6 +324,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
         this.cargaAcademicaId = crmBundle.getCargaAcademicaId();
         this.cursoComplejo = crmBundle.isComplejo();
         this.anioAcademicoId = crmBundle.getAnioAcademico();
+        this.isServices = extras.getBoolean("IsServices", false);
     }
 
     private void getListServicioActualizar() {
@@ -288,7 +339,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
             this.horaTimePicker = alarmaUi.getHora();
             this.minutoTimePicker = alarmaUi.getMinute();
             if(view!=null)view.changeSelectedProgramaHorario(true);
-            if(view!=null)view.setDescripcionProgramarHorarioEnvio("Todo los dias a las "+getHoraAmPm(alarmaUi.getHora()) + getMinuto(alarmaUi.getMinute()) + " " + getAmPm(alarmaUi.getHora()));
+            if(view!=null)view.setDescripcionProgramarHorarioEnvio("Todo los días a las "+getHoraAmPm(alarmaUi.getHora()) + getMinuto(alarmaUi.getMinute()) + " " + getAmPm(alarmaUi.getHora()));
         }else {
             if(view!=null)view.changeSelectedProgramaHorario(false);
             if(view!=null)view.setDescripcionProgramarHorarioEnvio(res.getString(R.string.txt_prog_horario_envio_desactivado));
@@ -366,29 +417,35 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
 
     @Override
     public void onClickRevisionDatos() {
-        if(revisionDatos){
+
+        if(revisionDatos()){
             if(view!=null)view.showStopMensajeRevision();
         }else {
             if(serviceEnvioUiList.isEmpty()){
                if(view!=null)view.showMessage("No existen cambios que enviar");
             }else {
-                if(view!=null)view.showStartMensajeRevision();
+                //if(view!=null)view.showStartMensajeRevision();
+                onSelectedStartRevisionDatos();
             }
         }
+    }
+
+    private boolean revisionDatos() {
+        boolean result = false;
+        for(ServiceEnvioUi serviceEnvioUi : serviceEnvioUiList)
+            if(serviceEnvioUi.getSuccess()==0&&serviceEnvioUi.isActivo()){
+                result = true;
+                break;
+            }
+        return result;
     }
 
     @Override
     public void onSelectedStartRevisionDatos() {
         for (ActualizarUi actualizarUi:  actualizarUiList)actualizarUi.setEncoloa(false);
-        for (ServiceEnvioUi serviceEnvioUi: serviceEnvioUiList)serviceEnvioUi.setEncoloa(false);
-        if(retrofitCancel!=null)retrofitCancel.cancel();
-
-        revisionDatos = true;
-        if(view!=null)view.girarBtnRevisionDatos();
         for (ServiceEnvioUi serviceEnvioUi: serviceEnvioUiList)serviceEnvioUi.setEncoloa(true);
-        showServicioEnvio();
 
-        starEnviarCambios();
+        starEnviarCambios(isServices);
         //for (ActualizarUi actualizarUi: actualizarUiList)actualizarUi.setActivate(revisionDatos);
         //if(view!=null)view.showListServicioActualizar(actualizarUiList);
 
@@ -400,7 +457,6 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
         if(retrofitCancel!=null)retrofitCancel.cancel();
 
         if(view!=null)view.stopGirarBtnRevisionDatos();
-        revisionDatos = false;
 
         showServicioEnvio();
 
@@ -483,7 +539,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
     public void onClickEnviarItem(ServiceEnvioUi serviceEnvioUi) {
 
         if(serviceActualizarActivo()){
-            if(view!=null)view.showMessage("Acción denegada, cancelar las actualizaciones pendientes");
+                if(view!=null)view.showMessage("Acción denegada, cancelar las actualizaciones pendientes");
         }else {
             if(serviceEnvioUi.isActivo()){
                 if(retrofitCancel!=null){
@@ -501,7 +557,7 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
 
                 if(!activo){
                     serviceEnvioUi.setEncoloa(true);
-                    starEnviarCambios();
+                    starEnviarCambios(isServices);
                 }else {
                     serviceEnvioUi.setEncoloa(true);
                 }
@@ -593,6 +649,71 @@ public class ServicesPresenterImpl extends BasePresenterImpl<ServicesView> imple
         }else {
             if(view!=null)view.showFastData(usuarioId, anioAcademicoId,calendarioPeriodoUi.getCalendarioId(), programaEducativoId);
         }
+    }
+
+    @Override
+    public void onStartSynckService() {
+        getListServicioEnvio();
+        Log.d(TAG, "getListServicioEnvio size: " + serviceEnvioUiList.size() );
+        for (ServiceEnvioUi serviceEnvioUi : serviceEnvioUiList)serviceEnvioUi.setEncoloa(true);
+        starEnviarCambios(isServices);
+    }
+
+    @Override
+    public void onClickContRestaurar() {
+        showRestaurar = !showRestaurar;
+        if(showRestaurar){
+            showServicioActualizar();
+            if(view!=null)view.setListServicioActualizar(actualizarUiList);
+        }else {
+            hideServicioActualizar();
+            if(view!=null)view.setListServicioActualizar(new ArrayList<>());
+        }
+    }
+
+    @Override
+    public void onLoadFirebase(int count) {
+        starLoadFirebse = true;
+        if(count==-1){
+            if(view!=null)view.changeDescripcionStarFirebase("Buscando", "Buscando cambios en sus evaluaciones");
+            if(view!=null)view.girarImagePA();
+        }else {
+            if(view!=null)view.changeDescripcionStarFirebase("Actualización en curso", "Se a detectado cambios en sus evaluaciones");
+            if(view!=null)view.girarImagePA();
+        }
+        if(view!=null)view.showContentStarFirebase();
+        Log.d(getTag(),"onLoadFirebase " + count );
+    }
+
+    @Override
+    public void onFinishFirebase() {
+        starLoadFirebse = false;
+        showListaCambiosFB();
+    }
+
+    @Override
+    public void onClickedImgActualizar() {
+        if(starLoadFirebse){
+            if(view!=null)view.showMessage("Actualización en curso");
+        }else {
+            if(view!=null)view.starSynckFB();
+        }
+    }
+
+    @Override
+    public void onSelectedMensageStopSynckFB() {
+        starLoadFirebse = false;
+    }
+
+    @Override
+    public void onRefresh() {
+        if(!starLoadFirebse){
+            if(view!=null)view.starSynckFB();
+        }else {
+            if(view!=null)view.showMessage("Actualización en curso");
+        }
+
+        if(view!=null)view.closeRefresh();
     }
 
     @Override

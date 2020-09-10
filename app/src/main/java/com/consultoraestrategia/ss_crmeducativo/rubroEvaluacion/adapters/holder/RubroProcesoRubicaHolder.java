@@ -5,6 +5,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+
+import android.graphics.Color;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,6 +244,11 @@ public class RubroProcesoRubicaHolder extends ViewHolder implements View.OnClick
         txtMedia.setText(rubroProcesoUiFormula.getMedia() + "(" + rubroProcesoUiFormula.getDesviacionE() + ")");
         String tituloRubrica = "<b>Rúbrica:</b> "+rubroProcesoUiFormula.getTituloRubrica();
         txtTituloRubrica.setText(Html.fromHtml(tituloRubrica));
+        if(rubroProcesoUiFormula.isExportado()){
+            txtTitulo.setTextColor(Color.BLACK);
+        }else {
+            txtTitulo.setTextColor(Color.RED);
+        }
     }
 
     private void validarListener(RubroEvaluacionProcesoListener listener) {
