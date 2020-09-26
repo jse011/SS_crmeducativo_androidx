@@ -13,6 +13,8 @@ public class ParametrosChangePortalAlumno extends ApiRetrofit.Parameters {
     private long fechaCambio;
     @SerializedName("vlst_RubroEvaluacionId")
     private List<String> rubroEvaluacionidList;
+    @SerializedName("vercion")
+    private int vercion;
 
     public int getUsuarioId() {
         return usuarioId;
@@ -36,5 +38,13 @@ public class ParametrosChangePortalAlumno extends ApiRetrofit.Parameters {
 
     public List<String> getRubroEvaluacionidList() {
         return rubroEvaluacionidList;
+    }
+
+    public int getVercion() {
+        return vercion;
+    }
+
+    public void setVercion(int vercion) {
+        this.vercion = vercion;
     }
 }

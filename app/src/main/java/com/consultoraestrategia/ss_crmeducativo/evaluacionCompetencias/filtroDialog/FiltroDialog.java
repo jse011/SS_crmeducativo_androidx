@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class FiltroDialog extends BottomSheetDialogFragment implements FiltradoCheckItemListener,FiltroView {
+public class  FiltroDialog extends BottomSheetDialogFragment implements FiltradoCheckItemListener,FiltroView {
 
     private static final double SLIDEOFFSETHIDEN = -0.9f;
 

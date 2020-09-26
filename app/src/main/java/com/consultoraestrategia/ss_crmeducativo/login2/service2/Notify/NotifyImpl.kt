@@ -104,5 +104,54 @@ class NotifyImpl {
          fun Cancel(indentificador: Int, context: Context){
              Notify.cancelNotification(context, indentificador)
          }
+
+         fun ServiceProgressResultadoAcademico(context: Context):Int{
+             return Notify
+                     .with(context)
+                     .header {
+
+                         icon = if (context.resources.getString(R.string.app_name) == "Educar Teacher") R.mipmap.ic_educar else R.mipmap.ic_launcher_v2
+                     }
+                     .alerting(channelProgressKey,{
+                         channelImportance = Notify.IMPORTANCE_LOW
+                     })
+                     .asBigText  {
+                         title = "Actualización en curso!"
+                         expandedText = "Gestión de programas"
+                         bigText = "Se a detectado cambios por el académico en sus resultados"
+                     }
+                     .progress {
+                         showProgress = true
+                         //For determinate progress
+                         //enablePercentage = true
+                         //progressPercent = 0
+                     }.show()
+
+
+         }
+
+         fun ResultadosActualizados(context: Context, arrayList: ArrayList<String>) {
+             Notify
+                     .with(context)
+                     .header {
+                         icon = if (context.resources.getString(R.string.app_name) == "Educar Teacher") R.mipmap.ic_educar else R.mipmap.ic_launcher_v2
+                     }.asTextList { // this: Payload.Content.TextList
+                         // The lines that are shown when the notification is expanded.
+                         if(arrayList.size>1)
+                             lines = arrayList
+                         // The title of the collapsed notification.
+                         title = "Resultados modificados por el académico"
+                         // The second line of the collapsed notification.
+                         if(arrayList.size>1)
+                             text = lines.size.toString() + " cursos actualizados."
+                         else if(arrayList.size==1)
+                             text = arrayList[0] + " sé ha actualizado"
+
+                     }
+                     .show()
+         }
      }
+
+
+
 }

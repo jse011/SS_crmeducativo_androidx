@@ -33,7 +33,15 @@ public interface LoginPreferentRepository {
 
     long getFechaCambiosFirebase();
 
+    long getFechaCambiosResultados();
+
     void clearCambiosFirebase();
 
     void saveFechaCambiosFirebase(long fecha);
+
+    void saveFechaCambiosResultados(long fecha);
+
+    void saveCambiosFirebaseResultados(List<ServiceEnvioFbUi> serviceEnvioUi);
+
+    List<ServiceEnvioFbUi> getListaCambiosResultados();
 }

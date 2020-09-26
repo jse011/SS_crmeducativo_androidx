@@ -163,7 +163,7 @@ public class EvaluacionCompetenciaLocal implements EvaluacionCompetenciaDataSour
                 Log.d(EVALUACION_COMPETENCIA_TAG, "cargaCursoId : " + cargaCursoId);
                 competenciaUi.setParametroDisenioUi(parametroDisenioUi);
                 competenciaUi.setCargaCursoId(cargaCursoId);
-           /*Lista de Evaluacion Competencia-Hijo - Capacidad*/
+                /*Lista de Evaluacion Competencia-Hijo - Capacidad*/
                 List<RubroEvaluacionResultado> capacidadList = SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES))
                         .from(RubroEvaluacionResultado.class)
                         .innerJoin(SilaboEvento.class)
@@ -179,7 +179,6 @@ public class EvaluacionCompetenciaLocal implements EvaluacionCompetenciaDataSour
                         .and(RubroEvaluacionResultado_Table.evaluable.withTable().eq(1))
                         .and(RubroEvaluacionResultado_Table.estadoId.withTable().notEq(RubroEvaluacionResultado.ELIMINADO))
                         .queryList();
-
 
               //  Log.d(EVALUACION_COMPETENCIA_TAG, "competenciaList : " + capacidadList.size());
 
@@ -273,9 +272,7 @@ public class EvaluacionCompetenciaLocal implements EvaluacionCompetenciaDataSour
                 }
 
                 //Lista de Hijos
-                List<RubroEvaluacionResultado> listHijosFinalesBimestre = SQLite.select(RubroEvaluacionResultado_Table.titulo,
-                        RubroEvaluacionResultado_Table.subtitulo,
-                        RubroEvaluacionResultado_Table.fechaAccion)
+                List<RubroEvaluacionResultado> listHijosFinalesBimestre = SQLite.select((Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES)))
                         .from(RubroEvaluacionResultado.class)
                         .where(RubroEvaluacionResultado_Table.competenciaId.is(compentenciaQueryModel.getCompetenciaId()))
                         .and(RubroEvaluacionResultado_Table.calendarioPeriodoId.is(periodoId))
@@ -293,6 +290,7 @@ public class EvaluacionCompetenciaLocal implements EvaluacionCompetenciaDataSour
 
                     long dateHijosPadre = listHijosFinalesBim.getFechaAccion();
                     rnrFormulaUiList = getListaRubroEvalFormula(rubroEvaluacionResultado);
+
                     String media = listHijosFinalesBim.getPromedio()+"("+listHijosFinalesBim.getDesviacionEstandar()+")";
                     hijosFinalBimestres.add(new HijosFinalBimestreUi(contadorFinalBimestre,
                             listHijosFinalesBim.getRubroEvalResultadoId(),
@@ -319,9 +317,7 @@ public class EvaluacionCompetenciaLocal implements EvaluacionCompetenciaDataSour
 
 
             /*Nota Final del Bimestre*/
-            RubroEvaluacionResultado listNotaFinalBimestre = SQLite.select(RubroEvaluacionResultado_Table.titulo,
-                    RubroEvaluacionResultado_Table.subtitulo,
-                    RubroEvaluacionResultado_Table.fechaAccion, RubroEvaluacionResultado_Table.rubroEvalResultadoId)
+            RubroEvaluacionResultado listNotaFinalBimestre = SQLite.select((Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES)))
                     .from(RubroEvaluacionResultado.class)
                     .innerJoin(CalendarioPeriodo.class)
                     .on(CalendarioPeriodo_Table.calendarioPeriodoId.withTable().eq(RubroEvaluacionResultado_Table.calendarioPeriodoId.withTable()))
@@ -358,7 +354,15 @@ public class EvaluacionCompetenciaLocal implements EvaluacionCompetenciaDataSour
             padreFinalBimestre.setHijosBimestreList(hijosFinalBimestres);
 
             padreFinalBimestre.setContador(" * ");
-            items.add(padreFinalBimestre);
+            boolean competenciaBase = false;
+            for (FiltradoUi filtradoUi: filtradoUiList){
+                competenciaBase = filtradoUi.getTipo() == FiltradoUi.Tipo.COMPETENCIA_BASE &&  filtradoUi.isaBoolean();
+                if(competenciaBase)break;
+            }
+            if(competenciaBase){
+                items.add(padreFinalBimestre);
+            }
+
           //  Log.d(EVALUACION_COMPETENCIA_TAG,"CompetenciaBaseId" + listNotaFinalBimestre.getRubroEvalResultadoId() + " " + listNotaFinalBimestre.getTitulo() + " " + listNotaFinalBimestre.getSubtitulo()+" " + hijosFinalBimestreNotaFinal.getMedia());
         }
         callBack.onLista(items);

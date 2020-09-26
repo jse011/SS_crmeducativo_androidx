@@ -26,7 +26,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.GlobalSettings;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
 import com.consultoraestrategia.ss_crmeducativo.entities.Usuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
-import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubricaPortalAlumnoFb;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BECambiosMovilFb;
 import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubroEvalEnvioSimple;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosCasos;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosContacto;
@@ -68,7 +68,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
@@ -488,7 +487,7 @@ public class ApiRetrofit {
         return service.getWebConfig(apiRequestBody);
     }
 
-    public Call<RestApiResponse<List<BERubricaPortalAlumnoFb>>> getCambiosFirebase(int usuarioid, long fechaCambio) {
+    public Call<RestApiResponse<List<BECambiosMovilFb>>> getCambiosFirebase(int usuarioid, long fechaCambio) {
         ParametrosChangePortalAlumno parametrosChangePortalAlumno = new ParametrosChangePortalAlumno();
         parametrosChangePortalAlumno.setUsuarioId(usuarioid);
         parametrosChangePortalAlumno.setFechaCambio(fechaCambio);
@@ -497,6 +496,17 @@ public class ApiRetrofit {
         final String representacionJSON = gson.toJson(apiRequestBody);
         Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.getCambiosFirebase(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<List<BECambiosMovilFb>>> getCambiosResultado(int usuarioId, long fechaCambiosResultados) {
+        ParametrosChangePortalAlumno parametrosChangePortalAlumno = new ParametrosChangePortalAlumno();
+        parametrosChangePortalAlumno.setUsuarioId(usuarioId);
+        parametrosChangePortalAlumno.setFechaCambio(fechaCambiosResultados);
+        ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody = new ApiRequestBody<>("getCambiosResultado", parametrosChangePortalAlumno);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.getCambiosResultado(apiRequestBody);
     }
 
     public class ApiRequestBody<T extends Parameters>{

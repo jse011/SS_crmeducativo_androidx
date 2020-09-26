@@ -38,7 +38,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.work.WorkManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.consultoraestrategia.ss_crmeducativo.R;
@@ -70,7 +69,8 @@ import com.consultoraestrategia.ss_crmeducativo.login2.entities.AlarmaUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.CalendarioPeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.fastData.FastData;
-import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServiceFB;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServiceEvaFB;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServiceResultadoFB;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -227,7 +227,8 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
         setupCheckListener();
         setupAdapter();
         setupCore2();
-        SynckServiceFB.start(this);
+        SynckServiceEvaFB.start(this);
+        SynckServiceResultadoFB.start(this);
         // Iniciar la tarea asíncrona al revelar el indicador
         swipeRefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -581,7 +582,8 @@ public class ServicesActivity extends BaseActivity<ServicesView, ServicesPresent
 
     @Override
     public void starSynckFB() {
-        SynckServiceFB.start(this);
+        SynckServiceEvaFB.start(this);
+        SynckServiceResultadoFB.start(this);
     }
 
     @Override

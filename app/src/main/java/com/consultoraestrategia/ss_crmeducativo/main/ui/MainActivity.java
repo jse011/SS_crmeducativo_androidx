@@ -28,7 +28,8 @@ import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
-import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServiceFB;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServiceEvaFB;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServiceResultadoFB;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetUploadImagen;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.SavePersona;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.UpdatePersonaServidor;
@@ -463,7 +464,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void callSynckServiceFB() {
-        SynckServiceFB.start(this);
+        SynckServiceEvaFB.start(this);
+        SynckServiceResultadoFB.start(this);
     }
 
     @Override
@@ -1398,6 +1400,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void onResume() {
         Log.d(TAG, "onResume f");
         super.onResume();
+
 
     }
 

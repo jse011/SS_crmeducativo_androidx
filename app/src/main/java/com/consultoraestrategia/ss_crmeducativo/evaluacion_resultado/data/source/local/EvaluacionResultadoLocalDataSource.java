@@ -78,8 +78,7 @@ public class EvaluacionResultadoLocalDataSource implements EvaluacionResultadoDa
                                 .eq(EvaluacionResultadoC_Table.rubroEvalResultadoId.withTable()))
                         .innerJoin(Competencia.class)
                         .on(RubroEvaluacionResultado_Table.competenciaId.withTable()
-                                .eq(Competencia_Table.competenciaId.withTable()))
-                        ;
+                                .eq(Competencia_Table.competenciaId.withTable()));
 
 
                 Where<EvaluacionResultadoC> evaluacionResultadoWhere = null;

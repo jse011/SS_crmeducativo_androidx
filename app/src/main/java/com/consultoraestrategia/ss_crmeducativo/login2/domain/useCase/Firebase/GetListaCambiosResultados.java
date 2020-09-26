@@ -10,14 +10,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class GetListaCambiosFB  {
+public class GetListaCambiosResultados {
 
     private final Context context;
     private LoginDataRepository loginDataRepository;
     private LoginPreferentRepository loginPreferentRepository;
     private static ValueEventListener mListener;
 
-    public GetListaCambiosFB(LoginDataRepository loginDataRepository, LoginPreferentRepository loginPreferentRepository, Context context) {
+    public GetListaCambiosResultados(LoginDataRepository loginDataRepository, LoginPreferentRepository loginPreferentRepository, Context context) {
         this.loginDataRepository = loginDataRepository;
         this.loginPreferentRepository = loginPreferentRepository;
         this.context = context;
@@ -25,17 +25,17 @@ public class GetListaCambiosFB  {
 
     public RetrofitCancel execute(int usuarioId, boolean online, Callback callback){
         if(!online){
-            callback.onLoad(false, loginPreferentRepository.getListaCambios());
+            callback.onLoad(false, loginPreferentRepository.getListaCambiosResultados());
             return null;
         }
-        return loginDataRepository.getCambiosFirebase(usuarioId, loginPreferentRepository.getFechaCambiosFirebase(), false, new LoginDataRepository.Callback<List<ServiceEnvioFbUi>>() {
+        return loginDataRepository.getCambiosFirebaseResultados(usuarioId, loginPreferentRepository.getFechaCambiosResultados(), false, new LoginDataRepository.Callback<List<ServiceEnvioFbUi>>() {
             @Override
             public void onResponse(boolean success, List<ServiceEnvioFbUi> value) {
                 if(success){
-                    loginPreferentRepository.saveCambiosFirebase(value);
-                    callback.onLoad(true, loginPreferentRepository.getListaCambios());
+                    loginPreferentRepository.saveCambiosFirebaseResultados(value);
+                    callback.onLoad(true, loginPreferentRepository.getListaCambiosResultados());
                 }else {
-                    callback.onLoad(false, loginPreferentRepository.getListaCambios());
+                    callback.onLoad(false, loginPreferentRepository.getListaCambiosResultados());
                 }
             }
         });

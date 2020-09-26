@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LinkUtils {
+public class LinkAppUtils {
     public static final Pattern URL_PATTERN =
             Pattern.compile("((https?|ftp)(:\\/\\/[-_.!~*\\'()a-zA-Z0-9;\\/?:\\@&=+\\$,%#]+))");
 

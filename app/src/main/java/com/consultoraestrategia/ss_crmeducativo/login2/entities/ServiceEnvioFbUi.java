@@ -15,6 +15,10 @@ public class ServiceEnvioFbUi extends ServiceEnvioUi {
         this.tareaId = tareaId;
     }
     public String nombreSesionDocenteId;
+    private int silaboEventoId;
+    private int cargaCursoId;
+    private int rubroFormal;
+    private int calendarioPeriodoId;
 
     public String getTareaId() {
         return tareaId;
@@ -88,6 +92,38 @@ public class ServiceEnvioFbUi extends ServiceEnvioUi {
 
     public void setNombreSesionDocenteId(String nombreSesionDocenteId) {
         this.nombreSesionDocenteId = nombreSesionDocenteId;
+    }
+
+    public int getSilaboEventoId() {
+        return silaboEventoId;
+    }
+
+    public void setSilaboEventoId(int silaboEventoId) {
+        this.silaboEventoId = silaboEventoId;
+    }
+
+    public int getCargaCursoId() {
+        return cargaCursoId;
+    }
+
+    public void setCargaCursoId(int cargaCursoId) {
+        this.cargaCursoId = cargaCursoId;
+    }
+
+    public int getRubroFormal() {
+        return rubroFormal;
+    }
+
+    public void setRubroFormal(int rubroFormal) {
+        this.rubroFormal = rubroFormal;
+    }
+
+    public int getCalendarioPeriodoId() {
+        return calendarioPeriodoId;
+    }
+
+    public void setCalendarioPeriodoId(int calendarioPeriodoId) {
+        this.calendarioPeriodoId = calendarioPeriodoId;
     }
 
     public static class Detalle{

@@ -17,7 +17,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.AdminService;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
 import com.consultoraestrategia.ss_crmeducativo.entities.Usuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
-import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubricaPortalAlumnoFb;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BECambiosMovilFb;
 import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubroEvalEnvioSimple;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosCasos;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosContacto;
@@ -207,9 +207,11 @@ public interface Service {
     @POST(" ")
     Call<RestApiResponse<List<WebConfig>>> getWebConfig(@Body ApiRetrofit.ApiRequestBody<ParametrosExportarGlobal> apiRequestBody);
     @POST(" ")
-    Call<RestApiResponse<List<BERubricaPortalAlumnoFb>>> getCambiosFirebase(@Body ApiRetrofit.ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody);
+    Call<RestApiResponse<List<BECambiosMovilFb>>> getCambiosFirebase(@Body ApiRetrofit.ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<BEDatosRubro>> flst_getDatosRubroIds(@Body ApiRetrofit.ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<BEEventos>> flst_saveEvento2(@Body ApiRetrofit.ApiRequestBody<ParametrosEventos> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<List<BECambiosMovilFb>>> getCambiosResultado(@Body ApiRetrofit.ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody);
 }

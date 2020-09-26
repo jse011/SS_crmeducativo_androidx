@@ -66,7 +66,7 @@ public class ServiceEnvioUi {
         return syncrono;
     }
 
-    public enum Tipo{TipoNota, Rubrica, Resultado, Rubro, Formula, Unidades, Grupos, Tareas, Casos, Asistencias, Estudiantes, CerrarCurso, SessionAlumno, TareaAlumno}
+    public enum Tipo{TipoNota, Rubrica, Resultado, Rubro, Formula, Unidades, Grupos, Tareas, Casos, Asistencias, Estudiantes, CerrarCurso, SessionAlumno, TareaAlumno, ResultadosAcademico}
 
     private String nombre;
     private Tipo tipo = Tipo.Rubrica;

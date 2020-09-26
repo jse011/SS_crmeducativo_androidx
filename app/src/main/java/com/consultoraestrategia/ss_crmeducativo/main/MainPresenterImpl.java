@@ -1162,5 +1162,4 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         if(view!=null)view.startAlarm(currCalendar, programaEducativoUi.getIdPrograma());
     }
 
-
 }

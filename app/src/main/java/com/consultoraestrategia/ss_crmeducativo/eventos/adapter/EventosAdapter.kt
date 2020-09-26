@@ -27,7 +27,7 @@ import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventosUi
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposUi
 import com.consultoraestrategia.ss_crmeducativo.util.IntentHelper
 import com.consultoraestrategia.ss_crmeducativo.util.Utils
-import com.consultoraestrategia.ss_crmeducativo.utils.LinkUtils
+import com.consultoraestrategia.ss_crmeducativo.utils.LinkAppUtils
 import com.shehabic.droppy.DroppyMenuItem
 import com.shehabic.droppy.DroppyMenuPopup
 import com.shehabic.droppy.animations.DroppyFadeInAnimation
@@ -250,7 +250,7 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
             setProgresEnviar(eventosUi)
 
             txt_titulo_calendario.text = eventosUi.nombreCalendario
-            LinkUtils.autoLink(text_contenido, object: LinkUtils.OnClickListener{
+            LinkAppUtils.autoLink(text_contenido, object: LinkAppUtils.OnClickListener{
                 override fun onLinkClicked(v: View?, link: String?) {
 
                 }

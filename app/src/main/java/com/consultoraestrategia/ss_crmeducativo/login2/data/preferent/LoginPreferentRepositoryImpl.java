@@ -23,6 +23,9 @@ public class LoginPreferentRepositoryImpl implements LoginPreferentRepository {
     private final String KEYCAMBIOSFB = "CambiosFirebase";
     private final String KEYFECHACAMBIOSFB = "FechaCambiosFirebase";
 
+    private final String KEYCAMBIOSFB_RESULTADOS = "CambiosResultado";
+    private final String KEYFECHACAMBIOSFB_RESULTADOS = "FechaCambiosResultado";
+
     public LoginPreferentRepositoryImpl(Context context) {
         this.context = context;
     }
@@ -155,6 +158,13 @@ public class LoginPreferentRepositoryImpl implements LoginPreferentRepository {
         return gson.<List<ServiceEnvioFbUi>>fromJson(json, new TypeToken<List<ServiceEnvioFbUi>>(){}.getType());
     }
 
+    private List<ServiceEnvioFbUi> getListaCambiosResultadoSinFiltro() {
+        SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
+        String json = miPreferencia.getString(KEYCAMBIOSFB_RESULTADOS, "[]");
+        Gson gson = new Gson();
+        return gson.<List<ServiceEnvioFbUi>>fromJson(json, new TypeToken<List<ServiceEnvioFbUi>>(){}.getType());
+    }
+
     @Override
     public void eliminarCambios() {
         SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
@@ -199,6 +209,12 @@ public class LoginPreferentRepositoryImpl implements LoginPreferentRepository {
     }
 
     @Override
+    public long getFechaCambiosResultados() {
+        SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
+        return miPreferencia.getLong(KEYFECHACAMBIOSFB_RESULTADOS, 0L);
+    }
+
+    @Override
     public void clearCambiosFirebase() {
         SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = miPreferencia.edit();
@@ -219,6 +235,63 @@ public class LoginPreferentRepositoryImpl implements LoginPreferentRepository {
         }
 
 
+    }
+
+    @Override
+    public void saveFechaCambiosResultados(long fecha) {
+        try {
+            SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = miPreferencia.edit();
+            editor.putLong(KEYFECHACAMBIOSFB_RESULTADOS, fecha);
+            editor.apply();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveCambiosFirebaseResultados(List<ServiceEnvioFbUi> serviceEnvioUis) {
+        SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = miPreferencia.edit();
+        Gson gson = new Gson();
+        List<ServiceEnvioFbUi> serviceEnvioUiList = getListaCambiosResultadoSinFiltro();
+
+        for (ServiceEnvioFbUi item : serviceEnvioUis){
+            int position = serviceEnvioUiList.indexOf(item);
+            if(position!=-1){
+                serviceEnvioUiList.set(position, item);
+            }else {
+                serviceEnvioUiList.add(item);
+            }
+        }
+
+        Collections.sort(serviceEnvioUiList, new Comparator<ServiceEnvioFbUi>() {
+            @Override
+            public int compare(ServiceEnvioFbUi o1, ServiceEnvioFbUi o2) {
+                return Long.compare(o2.getFechaModificacion(), o1.getFechaModificacion());
+            }
+        });
+
+        String json = gson.toJson(serviceEnvioUiList);
+        editor.putString(KEYCAMBIOSFB_RESULTADOS, json);
+        editor.apply();
+    }
+
+    @Override
+    public List<ServiceEnvioFbUi> getListaCambiosResultados() {
+        SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
+        String json = miPreferencia.getString(KEYCAMBIOSFB_RESULTADOS, "[]");
+        long fechaCambio = getFechaCambiosResultados();
+
+        Gson gson = new Gson();
+        List<ServiceEnvioFbUi> serviceEnvioFbUiList = new ArrayList<>();
+        for (ServiceEnvioFbUi serviceEnvioFbUi : gson.<List<ServiceEnvioFbUi>>fromJson(json, new TypeToken<List<ServiceEnvioFbUi>>(){}.getType())){
+            if(fechaCambio < serviceEnvioFbUi.getFechaModificacion()){
+                serviceEnvioFbUiList.add(serviceEnvioFbUi);
+            }
+        }
+
+        return serviceEnvioFbUiList;
     }
 
 

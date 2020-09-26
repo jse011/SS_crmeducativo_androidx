@@ -1,7 +1,5 @@
 package com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio;
 
-import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
-import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubricaPortalAlumnoFb;
 import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubroEvalEnvioSimple;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.AlarmaUi;
@@ -70,6 +68,10 @@ public interface LoginDataRepository {
     RetrofitCancel updateRubroEvalaucionServidor(List<String> rubroEvalaucionIds, Callback<Throwable> callback);
 
     String changeEstadoSesionEjecutado(int sesionAprendizajeDocenteId);
+
+    RetrofitCancel getCambiosFirebaseResultados(int usuarioId, long fechaCambiosResultados, boolean modoSynck, Callback<List<ServiceEnvioFbUi>> listCallback);
+
+    String getNombreCurso(int silaboEventoId);
 
     interface Callback<S>{
         void onResponse(boolean success, S value);

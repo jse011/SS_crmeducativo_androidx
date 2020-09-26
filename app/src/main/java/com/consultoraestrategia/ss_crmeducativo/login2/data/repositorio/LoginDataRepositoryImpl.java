@@ -14,7 +14,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.*;
 import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.CalendarioPeriodoModel;
 import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.UnidadAprendizajeCargaCursoModel;
 import com.consultoraestrategia.ss_crmeducativo.entities.queryCustomList.CursoCustom;
-import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubricaPortalAlumnoFb;
+import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BECambiosMovilFb;
 import com.consultoraestrategia.ss_crmeducativo.entities.retrofit.BERubroEvalEnvioSimple;
 import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarTipoUi;
@@ -2113,12 +2113,12 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 .readTimeout(30, TimeUnit.SECONDS);
         apiRetrofit.setOkHttpClient(builder.build());
 
-        Call<RestApiResponse<List<BERubricaPortalAlumnoFb>>> responseCall = apiRetrofit.getCambiosFirebase(usuarioid, fechaCambio);
-        RetrofitCancel<List<BERubricaPortalAlumnoFb>> retrofitCancel = new RetrofitCancelImpl<>(responseCall);
+        Call<RestApiResponse<List<BECambiosMovilFb>>> responseCall = apiRetrofit.getCambiosFirebase(usuarioid, fechaCambio);
+        RetrofitCancel<List<BECambiosMovilFb>> retrofitCancel = new RetrofitCancelImpl<>(responseCall);
         if(!modoSynck){
-            retrofitCancel.enqueue(new RetrofitCancel.Callback<List<BERubricaPortalAlumnoFb>>() {
+            retrofitCancel.enqueue(new RetrofitCancel.Callback<List<BECambiosMovilFb>>() {
                 @Override
-                public void onResponse(final List<BERubricaPortalAlumnoFb> response) {
+                public void onResponse(final List<BECambiosMovilFb> response) {
                     if(response == null){
                         callback.onResponse(false, null);
                         Log.d(TAG,"response getWebConfig null");
@@ -2137,12 +2137,12 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             });
         }else {
             try {
-                Response<RestApiResponse<List<BERubricaPortalAlumnoFb>>> response = responseCall.execute();
+                Response<RestApiResponse<List<BECambiosMovilFb>>> response = responseCall.execute();
                 if (!response.isSuccessful()){
                     callback.onResponse(false, null);
                     Log.d(TAG, "getWebConfig Response: false");
                 }else {
-                    RestApiResponse<List<BERubricaPortalAlumnoFb>> body = response.body();
+                    RestApiResponse<List<BECambiosMovilFb>> body = response.body();
                     if(body == null){
                         callback.onResponse(false, null);
                         Log.d(TAG, "Successful getWebConfig null ");
@@ -2241,17 +2241,132 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         return nombreSesionModiciada;
     }
 
-    private List<ServiceEnvioFbUi> convert(List<BERubricaPortalAlumnoFb> beRubricaPortalAlumnoFbList){
+    @Override
+    public RetrofitCancel getCambiosFirebaseResultados(int usuarioId, long fechaCambiosResultados, boolean modoSynck, Callback<List<ServiceEnvioFbUi>> callback) {
+        OkHttpClient.Builder builder = ProgressManager.getInstance().with(new OkHttpClient.Builder());
+        builder.connectTimeout(10, TimeUnit.SECONDS) // connect timeout
+                .writeTimeout(30, TimeUnit.SECONDS) // write timeout
+                .readTimeout(30, TimeUnit.SECONDS);
+        apiRetrofit.setOkHttpClient(builder.build());
+
+        Call<RestApiResponse<List<BECambiosMovilFb>>> responseCall = apiRetrofit.getCambiosResultado(usuarioId, fechaCambiosResultados);
+        RetrofitCancel<List<BECambiosMovilFb>> retrofitCancel = new RetrofitCancelImpl<>(responseCall);
+        if(!modoSynck){
+            retrofitCancel.enqueue(new RetrofitCancel.Callback<List<BECambiosMovilFb>>() {
+                @Override
+                public void onResponse(final List<BECambiosMovilFb> response) {
+                    if(response == null){
+                        callback.onResponse(false, null);
+                        Log.d(TAG,"response getWebConfig null");
+                    }else {
+                        callback.onResponse(true, convert(response));
+                        Log.d(TAG,"response getWebConfig true");
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    callback.onResponse(false, null);
+                    Log.d(TAG,"response getWebConfig Throwable");
+                    t.printStackTrace();
+                }
+            });
+        }else {
+            try {
+                Response<RestApiResponse<List<BECambiosMovilFb>>> response = responseCall.execute();
+                if (!response.isSuccessful()){
+                    callback.onResponse(false, null);
+                    Log.d(TAG, "getWebConfig Response: false");
+                }else {
+                    RestApiResponse<List<BECambiosMovilFb>> body = response.body();
+                    if(body == null){
+                        callback.onResponse(false, null);
+                        Log.d(TAG, "Successful getWebConfig null ");
+                    } else if(body.isSuccessful()){
+                        Log.d(TAG, "Successful getWebConfig true");
+                        callback.onResponse(true, convert(body.getValue()));
+                    }else {
+                        callback.onResponse(false, null);
+                        Log.d(TAG, "getWebConfig : false");
+                    }
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.d(TAG, "getWebConfig Throwable : false - "+e.getMessage());
+                callback.onResponse(false, null);
+            }
+        }
+
+        return retrofitCancel;
+    }
+
+    @Override
+    public String getNombreCurso(int silaboEventoId) {
+        CursoCustom cursoCustom =  SQLite.select(
+                Cursos_Table.cursoId.withTable(),
+                Cursos_Table.alias.withTable(),
+                Cursos_Table.entidadId.withTable(),
+                Cursos_Table.estadoId.withTable(),
+                Cursos_Table.nivelAcadId.withTable(),
+                Cursos_Table.nombre.withTable(),
+                Cursos_Table.tipoCursoId.withTable(),
+                CargaCursos_Table.cargaCursoId.withTable(),
+                CargaAcademica_Table.cargaAcademicaId.withTable(),
+                CargaAcademica_Table.seccionId.withTable(),
+                CargaAcademica_Table.periodoId.withTable(),
+                CargaAcademica_Table.aulaId.withTable(),
+                CargaAcademica_Table.idPlanEstudio.withTable(),
+                Seccion_Table.nombre.withTable().as("seccion"),
+                Periodo_Table.alias.withTable().as("periodo"),
+                NivelAcademico_Table.nombre.withTable().as("nivelAcademico"))
+                .from(CargaCursos.class)
+                .innerJoin(CargaAcademica.class)
+                .on(CargaCursos_Table.cargaAcademicaId.withTable().eq(CargaAcademica_Table.cargaAcademicaId.withTable()))
+                .innerJoin(Seccion.class)
+                .on(CargaAcademica_Table.seccionId.withTable().eq(Seccion_Table.seccionId.withTable()))
+                .innerJoin(Periodo.class)
+                .on(CargaAcademica_Table.periodoId.withTable().eq(Periodo_Table.periodoId.withTable()))
+                .innerJoin(PlanEstudios.class)
+                .on(CargaAcademica_Table.idPlanEstudio.withTable().eq(PlanEstudios_Table.planEstudiosId.withTable()))
+                .innerJoin(ProgramasEducativo.class)
+                .on(PlanEstudios_Table.programaEduId.withTable().eq(ProgramasEducativo_Table.programaEduId.withTable()))
+                .innerJoin(NivelAcademico.class)
+                .on(ProgramasEducativo_Table.nivelAcadId.withTable().eq(NivelAcademico_Table.nivelAcadId.withTable()))
+                .innerJoin(PlanCursos.class)
+                .on(CargaCursos_Table.planCursoId.withTable().eq(PlanCursos_Table.planCursoId.withTable()))
+                .innerJoin(Cursos.class)
+                .on(PlanCursos_Table.cursoId.withTable().eq(Cursos_Table.cursoId.withTable()))
+                .innerJoin(SilaboEvento.class)
+                .on(CargaCursos_Table.cargaCursoId.withTable().eq(SilaboEvento_Table.cargaCursoId.withTable()))
+                .where(SilaboEvento_Table.silaboEventoId.withTable().eq(silaboEventoId))
+                .queryCustomSingle(CursoCustom.class);
+
+        String nombre = "";
+        if(cursoCustom!=null){
+            nombre = cursoCustom.getNombre() + " " +cursoCustom.getPeriodo() + " " + cursoCustom.getSeccion();
+        }
+        return nombre;
+    }
+
+    private List<ServiceEnvioFbUi> convert(List<BECambiosMovilFb> beRubricaPortalAlumnoFbList){
         List<ServiceEnvioFbUi> serviceEnvioFbUiList = new ArrayList<>();
-        for (BERubricaPortalAlumnoFb beRubricaPortalAlumnoFb : beRubricaPortalAlumnoFbList){
+        for (BECambiosMovilFb beRubricaPortalAlumnoFb : beRubricaPortalAlumnoFbList){
             ServiceEnvioFbUi serviceEnvioFbUi = new ServiceEnvioFbUi();
             serviceEnvioFbUi.setKey(beRubricaPortalAlumnoFb.getKey());
+            serviceEnvioFbUi.setNombre(beRubricaPortalAlumnoFb.getNombre());
             serviceEnvioFbUi.setNombre(beRubricaPortalAlumnoFb.getNombre());
             if("SESIONALUMNO".equals(beRubricaPortalAlumnoFb.getTipo())){
                 serviceEnvioFbUi.setTipo(ServiceEnvioUi.Tipo.SessionAlumno);
             }else if("TAREAALUMNO".equals(beRubricaPortalAlumnoFb.getTipo())){
                 serviceEnvioFbUi.setTipo(ServiceEnvioUi.Tipo.TareaAlumno);
+            } if("RESULTADO_ACADEMICO".equals(beRubricaPortalAlumnoFb.getTipo())){
+                serviceEnvioFbUi.setTipo(ServiceEnvioUi.Tipo.ResultadosAcademico);
             }
+            serviceEnvioFbUi.setCargaCursoId(beRubricaPortalAlumnoFb.getCargaCursoId());
+            serviceEnvioFbUi.setSilaboEventoId(beRubricaPortalAlumnoFb.getSilaboEventoId());
+            serviceEnvioFbUi.setCalendarioPeriodoId(beRubricaPortalAlumnoFb.getCalendarioPeriodoId());
+            serviceEnvioFbUi.setRubroFormal(beRubricaPortalAlumnoFb.getRubroFormal());
             serviceEnvioFbUi.setFechaModificacion(beRubricaPortalAlumnoFb.getFechaModificacion());
             serviceEnvioFbUi.setSesionAprendizajeId(beRubricaPortalAlumnoFb.getSesionAprendizajeId());
             serviceEnvioFbUi.setSesionAprendizajeId(beRubricaPortalAlumnoFb.getSesionAprendizajeId());
@@ -2260,7 +2375,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             serviceEnvioFbUi.setTareaId(beRubricaPortalAlumnoFb.getTareaId());
             List<ServiceEnvioFbUi.Detalle> detalleList =  new ArrayList<>();
             if(beRubricaPortalAlumnoFb.getDetalles()!=null){
-                for (BERubricaPortalAlumnoFb.Detalle detalleFb : beRubricaPortalAlumnoFb.getDetalles()){
+                for (BECambiosMovilFb.Detalle detalleFb : beRubricaPortalAlumnoFb.getDetalles()){
                     ServiceEnvioFbUi.Detalle detalle =  new ServiceEnvioFbUi.Detalle();
                     detalle.setInstrumentoEvalId(detalleFb.getInstrumentoEvalId());
                     detalle.setNombre(TextUtils.isEmpty(detalleFb.getNombre())? detalleFb.getPregunta(): detalleFb.getNombre());
@@ -4817,6 +4932,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 rubroEnviarRubricaLocalUi.setNombre("Rúbrica evaluación");
                 rubroEnviarRubricaLocalUi.setRubroEvaluacionIdList(rubricaEvaluacionLocalList);
                 rubroEnviarRubricaLocalUi.setBimestre(true);
+                rubroEnviarRubricaLocalUi.setTipo(ServiceEnvioUi.Tipo.Rubrica);
                 //String descripcion = "Existen " + rubricaEvaluacionLocalList.size() + " rúbricas modificados a enviar";
                 String descripcion2 =  rubricaEvaluacionLocalList.size() + (rubricaEvaluacionLocalList.size()==1?" rúbrica evaluación no se guardó correctamente": " rúbricas evaluación no se guardaron correctamente");
                 rubroEnviarRubricaLocalUi.setDescripcion(descripcion2);
@@ -4828,6 +4944,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 rubroEnviarLocalUi.setNombre("Rubro evaluación");
                 rubroEnviarLocalUi.setRubroEvaluacionIdList(rubroEvaluacionLocalList);
                 rubroEnviarLocalUi.setBimestre(true);
+                rubroEnviarLocalUi.setTipo(ServiceEnvioUi.Tipo.Rubro);
                 //String descripcion = "Existen " + rubroEvaluacionLocalList.size() + " rubro modificados a enviar";
                 String descripcion2 =  rubroEvaluacionLocalList.size() + (rubroEvaluacionLocalList.size()==1?" rubro evaluación no se guardó correctamente": " rubros evaluación no se guardaron correctamente");
                 rubroEnviarLocalUi.setDescripcion(descripcion2);
@@ -4839,6 +4956,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                 rubroEnviarFormulaLocalUi.setNombre("Fórmula evaluación");
                 rubroEnviarFormulaLocalUi.setRubroEvaluacionIdList(rubroFormulaLocalList);
                 rubroEnviarFormulaLocalUi.setBimestre(true);
+                rubroEnviarFormulaLocalUi.setTipo(ServiceEnvioUi.Tipo.Formula);
                 //String descripcion = "Existen " + rubroFormulaLocalList.size() + " fórmulas modificados a enviar";
                 String descripcion2 =  rubroFormulaLocalList.size() + (rubroFormulaLocalList.size()==1?" fórmula evaluación no se guardó correctamente": " fórmulas evaluación no se guardaron correctamente");
                 rubroEnviarFormulaLocalUi.setDescripcion(descripcion2);
@@ -5371,11 +5489,10 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             String descripcion = "Periodo del curso no se guardó correctamente";
             cerrarCursoEnviarUi.setDescripcion(descripcion);
             cerrarCursoEnviarUi.setCargaCursoCalendarioPeriodoIdList(cargaCursoCalendarioPeriodoIdList);
+            cerrarCursoEnviarUi.setTipo(ServiceEnvioUi.Tipo.CerrarCurso);
             cerrarCursoEnviarUiList.add(cerrarCursoEnviarUi);
 
         }
-
-
 
         return cerrarCursoEnviarUiList;
     }

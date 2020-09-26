@@ -151,7 +151,7 @@ public class CrearEventoRemoteDataSource implements CrearEventoDataSource {
         SessionUser sessionUser = SessionUser.getCurrentUser();
         Persona persona = SQLite.select()
                 .from(Persona.class)
-                .where(Persona_Table.personaId.eq(sessionUser!=null?sessionUser.getUserId():0))
+                .where(Persona_Table.personaId.eq(sessionUser!=null?sessionUser.getPersonaId():0))
                 .querySingle();
         String nombreDocente = "";
         if(persona!=null){

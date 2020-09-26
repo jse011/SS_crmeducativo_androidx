@@ -2,14 +2,11 @@ package com.consultoraestrategia.ss_crmeducativo.login2.service2.worker;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.concurrent.futures.CallbackToFutureAdapter;
-import androidx.concurrent.futures.ResolvableFuture;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -18,12 +15,9 @@ import androidx.work.ListenableWorker;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.Worker;
-import androidx.work.WorkerFactory;
 import androidx.work.WorkerParameters;
 
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
-import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
 import com.consultoraestrategia.ss_crmeducativo.core2.application.Core2;
 import com.consultoraestrategia.ss_crmeducativo.dao.sessionUser.SessionUserDao;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
@@ -32,31 +26,24 @@ import com.consultoraestrategia.ss_crmeducativo.login2.data.preferent.LoginPrefe
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.Firebase.GetListaCambiosFB;
-import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeridoList;
-import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetCalendarioPeriodo;
-import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetListActualizar;
-import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetListServicioEnvio;
-import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.GetPlanificarSinck;
-import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.SavePlanificarSinck;
-import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.servidorData.GetDatosServidor;
-import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.servidorData.SaveDatosServidor;
 import com.consultoraestrategia.ss_crmeducativo.login2.domain.useCase.servidorData.UpdateRubroEvaluacion;
+import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarTipoUi;
+import com.consultoraestrategia.ss_crmeducativo.login2.entities.ActualizarUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.entities.ServiceEnvioFbUi;
 import com.consultoraestrategia.ss_crmeducativo.login2.service2.Notify.NotifyImpl;
-import com.consultoraestrategia.ss_crmeducativo.login2.service2.ServicesPresenter;
-import com.consultoraestrategia.ss_crmeducativo.login2.service2.ServicesPresenterImpl;
 import com.consultoraestrategia.ss_crmeducativo.services.usecase.login.UseCaseLoginSincrono;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 
-public class SynckServiceFB extends ListenableWorker implements ImportarCountThread.ImportarCountDownTimerCallback {
+public class SynckServiceEvaFB extends ListenableWorker implements ImportarCountThread.ImportarCountDownTimerCallback {
     private final static String TAG = "SynckServiceFBTAG";
     public final static String NAME_SERVICE_FIREBASE = "SERVICIO_UPDATE_PORTAL_ALUMNO";
     public final static String NAME_SERVICE_TAG_FIREBASE = "SERVICIO_UPDATE_PORTAL_ALUMNO_TAG";
@@ -65,7 +52,7 @@ public class SynckServiceFB extends ListenableWorker implements ImportarCountThr
     private RetrofitCancel cancel;
     private int indentificador;
 
-    public SynckServiceFB(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public SynckServiceEvaFB(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
@@ -149,7 +136,7 @@ public class SynckServiceFB extends ListenableWorker implements ImportarCountThr
 
                         }
                     });
-                }else{
+                }else {
                     Log.d(TAG, "Sin cambios cancelar service");
                     completer.set(Result.success());
                     sendFinish();
@@ -185,7 +172,7 @@ public class SynckServiceFB extends ListenableWorker implements ImportarCountThr
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
-        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(SynckServiceFB.class)
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(SynckServiceEvaFB.class)
                 .setInputData(data)
                 //.addTag(NAME_SERVICE_TAG_FIREBASE)
                 //.setConstraints(constraints)

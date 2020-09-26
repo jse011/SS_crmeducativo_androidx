@@ -3,7 +3,7 @@ package com.consultoraestrategia.ss_crmeducativo.entities.retrofit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BERubricaPortalAlumnoFb {
+public class BECambiosMovilFb {
     private long fechaModificacion;
     private String key;
     private int sesionAprendizajeId;
@@ -13,6 +13,10 @@ public class BERubricaPortalAlumnoFb {
     private String tipo;
     private List<Detalle> detalles = new ArrayList<>();
     private int sesionAprendizajeDocenteId;
+    private int silaboEventoId;
+    private int cargaCursoId;
+    private int rubroFormal;
+    private int calendarioPeriodoId;
 
     public long getFechaModificacion() {
         return fechaModificacion;
@@ -84,6 +88,38 @@ public class BERubricaPortalAlumnoFb {
 
     public void setSesionAprendizajeDocenteId(int sesionAprendizajeDocenteId) {
         this.sesionAprendizajeDocenteId = sesionAprendizajeDocenteId;
+    }
+
+    public int getSilaboEventoId() {
+        return silaboEventoId;
+    }
+
+    public void setSilaboEventoId(int silaboEventoId) {
+        this.silaboEventoId = silaboEventoId;
+    }
+
+    public int getCargaCursoId() {
+        return cargaCursoId;
+    }
+
+    public void setCargaCursoId(int cargaCursoId) {
+        this.cargaCursoId = cargaCursoId;
+    }
+
+    public int getRubroFormal() {
+        return rubroFormal;
+    }
+
+    public void setRubroFormal(int rubroFormal) {
+        this.rubroFormal = rubroFormal;
+    }
+
+    public int getCalendarioPeriodoId() {
+        return calendarioPeriodoId;
+    }
+
+    public void setCalendarioPeriodoId(int calendarioPeriodoId) {
+        this.calendarioPeriodoId = calendarioPeriodoId;
     }
 
     public static class Detalle {

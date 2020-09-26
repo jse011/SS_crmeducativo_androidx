@@ -9,7 +9,7 @@ android {
         applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Parents
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 57//UPS Educar Parents
+        versionCode 63//UPS Educar Parents
         //versionCode 52//CATA DocenteMentor3.0
         versionName "1.1.4"
         multiDexEnabled true
@@ -57,7 +57,7 @@ dependencies {
     //        exclude group: 'com.android.support'
     //    }
     //    compile 'com.code-troopers.betterpickers:library:3.1.0'
-    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation  'com.android.support:multidex:1.0.1'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
     implementation 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
     implementation 'de.hdodenhof:circleimageview:2.2.0'

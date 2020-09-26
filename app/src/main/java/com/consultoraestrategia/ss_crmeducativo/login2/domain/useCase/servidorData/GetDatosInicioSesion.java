@@ -23,6 +23,7 @@ public class GetDatosInicioSesion implements UseCaseLoginSincrono<GetDatosInicio
             public void onResponse(boolean success, DatosProgressUi value) {
                 if(success){
                     loginPreferentRepository.saveFechaCambiosFirebase(value.getFechaServidor());
+                    loginPreferentRepository.saveFechaCambiosResultados(value.getFechaServidor());
                     callback.onResponse(true, new Response(value.getAnioAcademicoId()));
                 }else {
                     callback.onResponse(false, null);
