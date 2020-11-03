@@ -10,16 +10,16 @@ public interface ChatView extends BaseView<ChatPresenter> {
     void setConstantSalaId(String salaId);
     void setCabecera(String nombre, String descripcion, String url);
     void clearSend();
-    void setListMessage(List<Object> response, int personaId);
+    void setListMessage(List<Object> response, int personaId, boolean notify);
     void refreshList(List<Object> response);
     void addMessage(List<Object> messageUiList);
-    void scrollToPositionBotton();
+    void scrollToPositionBotton(boolean delay);
     void scrollToPosition(int position);
     void showFloatingButton();
     void hideFloatingButton();
     void showEmoticon();
-    void changeBtnIconTeclado();
-    void changeBtnIconEmoticon();
+    //void changeBtnIconTeclado();
+    //void changeBtnIconEmoticon();
     void showTeclado();
     void showConutMessage(int countMessage);
     void hideConutMessage();
@@ -49,4 +49,14 @@ public interface ChatView extends BaseView<ChatPresenter> {
     void hideAnclarMessage();
 
     void showOnPickImage(PersonaUi personaUiExterna);
+
+    void showAnclarMessage(int emisorId, int personaId, String nombre, String imagenFcm, String mensaje);
+
+    void onInitListener();
+
+    void updateList(MessageUi2 messageUi2);
+
+    void updateListPosition(int posicion, MessageUi2 messageUi1);
+
+    void addList(Object add);
 }

@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root"
     android:background="@color/md_black_1000">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
                 android:src="@drawable/input_emoji"
-                app:backgroundTint="@color/white"
+                app:backgroundTint="@color/emoji_white"
                 app:elevation="0dp"
                 app:fabCustomSize="30dip"
                 app:fab_stroke_visible="false" />
@@ -80,7 +81,7 @@
                 android:paddingEnd="0dp"
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
-                android:textColor="@color/white"
+                android:textColor="@color/emoji_white"
                 android:textColorHint="#A8FFFFFF" />
 
 
@@ -138,7 +139,7 @@
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text="Colegio  CATA PRI-SEC"
-                android:textColor="@color/white"
+                android:textColor="@color/emoji_white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/conten_perfil"

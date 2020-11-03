@@ -17,6 +17,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.Message_Table;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancelImpl;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
+import com.consultoraestrategia.ss_crmeducativo.util.UtilsFirebase;
 import com.consultoraestrategia.ss_crmeducativo.utils.ReferenceFirestore;
 import com.consultoraestrategia.ss_crmeducativo.utils.UtilsAppMessenger;
 import com.consultoraestrategia.ss_crmeducativo.utils.firebase.ListenerFirebase;
@@ -61,7 +62,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ChatRemoteDataSource implements ChatDataSource {
     private static final int GUARDADO_LOCAL = 4,GUARDADO = 1,ENVIADO = 2, VISTO = 3, ELIMINADO = 0;
-    private static final String IMAGEN = "img", TEXTO = "text";
+    private static final String IMAGEN = "img", TEXTO = "text", STICKER = "sticker";
 
     //private CollectionReference collectionReferenceMessage= ReferenceFirestore.getMessage();
     private CollectionReference collectionReferenceChat= ReferenceFirestore.getInstanceChat();
@@ -117,6 +118,8 @@ public class ChatRemoteDataSource implements ChatDataSource {
         message.put("messageIdReplik",messageUi.getMensajeReplickId());
         message.put("messageImagenReplik",messageUi.getImagenReplick());
         message.put("messageEmisorReplik",messageUi.getPersonaReplick());
+        message.put("messageEmisorIdReplik",messageUi.getPersonaIdReplick());
+
         return message;
     }
 
@@ -141,7 +144,7 @@ public class ChatRemoteDataSource implements ChatDataSource {
     @Override
     public void saveMensaje(final MessageUi2 messageUi, final MessageCallback messageCallback) {
 
-        collectionReferenceChat.document(messageUi.getSalaId()).collection("message").add(getMessage(messageUi, TEXTO)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+        collectionReferenceChat.document(messageUi.getSalaId()).collection("message").add(getMessage(messageUi, (messageUi.getTipo()!= MessageUi2.TIPO.STICKER)?TEXTO:STICKER)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 Log.d(TAG, "create chat success  "+ task.isSuccessful());
@@ -160,8 +163,9 @@ public class ChatRemoteDataSource implements ChatDataSource {
     }
 
     @Override
-    public ListenerFirebase getListaMessage(String salaId, final int personaId, final ListaMessageCallback callback) {
+    public ListenerFirebase getListaMessage(final String salaId, final int personaId, final ListaMessageCallback callback) {
 
+        final List<ListenerFirebase> listenerFirebaseList = new ArrayList<>();
         Query query  = collectionReferenceChat.document(salaId).collection("message")
                 //.whereEqualTo("reference", salaId)
                 //.whereEqualTo("idchat", emisor+"_"+reseptor)
@@ -188,43 +192,49 @@ public class ChatRemoteDataSource implements ChatDataSource {
                     }else {
                         callback.onLoad(false, null,null);
                     }
-
                 }else {
                     callback.onLoad(false, null,null);
                 }
+
+                Query queryChatReciver = collectionReferenceChat.document(salaId).collection("message")
+                        //.whereArrayContains("reference", salaId)
+                        //.whereEqualTo("idreceiver", emisor)
+                        .whereEqualTo("view", false)
+                        .orderBy("date", Query.Direction.DESCENDING);
+
+                Log.d(TAG, "MesListenerFirebaseImpl");
+                listenerFirebaseList.add(new ListenerFirebaseImpl(queryChatReciver.addSnapshotListener(MetadataChanges.INCLUDE,new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            e.printStackTrace();
+                            callback.onLoad(false, null, null);
+                            return;
+                        }
+                        Log.d(TAG, "queryDocumentSnapshots");
+
+                        if (queryDocumentSnapshots != null) {
+                            String source2 = queryDocumentSnapshots.getMetadata().hasPendingWrites()
+                                    ? "Local" : "Server";
+                            Log.d(TAG, "source2 " + source2);
+                            Log.d(TAG, "messageUi source2"+ source2);
+                            List<MessageUi2> messageUiList = getListaMessage(personaId, queryDocumentSnapshots,callback);
+                            Collections.reverse(messageUiList);
+                            callback.onRecivedMessage(messageUiList);
+
+                        }
+
+                    }
+                })));
             }
         });
 
-        Query queryChatReciver = collectionReferenceChat.document(salaId).collection("message")
-                //.whereArrayContains("reference", salaId)
-                //.whereEqualTo("idreceiver", emisor)
-                .whereEqualTo("view", false)
-                .orderBy("date", Query.Direction.DESCENDING);
-
-        Log.d(TAG, "MesListenerFirebaseImpl");
-        return new ListenerFirebaseImpl(queryChatReciver.addSnapshotListener(MetadataChanges.INCLUDE,new EventListener<QuerySnapshot>() {
+        return new ListenerFirebase() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    e.printStackTrace();
-                    callback.onLoad(false, null, null);
-                    return;
-                }
-                Log.d(TAG, "queryDocumentSnapshots");
-
-                if (queryDocumentSnapshots != null) {
-                    String source2 = queryDocumentSnapshots.getMetadata().hasPendingWrites()
-                            ? "Local" : "Server";
-                    Log.d(TAG, "source2 " + source2);
-                    Log.d(TAG, "messageUi source2"+ source2);
-                    List<MessageUi2> messageUiList = getListaMessage(personaId, queryDocumentSnapshots,callback);
-                    Collections.reverse(messageUiList);
-                    callback.onRecivedMessage(messageUiList);
-
-                }
-
+            public void onStop() {
+                for (ListenerFirebase listenerFirebase : listenerFirebaseList)listenerFirebase.onStop();
             }
-        }));
+        };
     }
 
     @Override
@@ -294,16 +304,20 @@ public class ChatRemoteDataSource implements ChatDataSource {
                 messageUi.setView(doc.getBoolean("view"));
                 messageUi.setImagenFcm(doc.getString("imageFcm"));
                 String tipo = TextUtils.isEmpty(doc.getString("imageType"))?TEXTO:doc.getString("imageType");
+
                 if(TEXTO.equals(tipo)){
                     messageUi.setTipo(MessageUi2.TIPO.TEXTO);
                 }else if(IMAGEN.equals(tipo)){
                     messageUi.setTipo(MessageUi2.TIPO.IMAGEN);
+                }else if(STICKER.equals(tipo)){
+                    messageUi.setTipo(MessageUi2.TIPO.STICKER);
                 }
 
                 messageUi.setMensajeReplick(doc.getString("messageReplik"));
                 messageUi.setMensajeReplickId(doc.getString("messageIdReplik"));
                 messageUi.setImagenReplick(doc.getString("messageImagenReplik"));
                 messageUi.setPersonaReplick(doc.getString("messageEmisorReplik"));
+                messageUi.setPersonaIdReplick(UtilsFirebase.convert(doc.get("messageEmisorIdReplik"),0));
 
                 switch (state){
                     case GUARDADO_LOCAL:

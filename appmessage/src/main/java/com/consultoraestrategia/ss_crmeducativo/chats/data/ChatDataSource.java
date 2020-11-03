@@ -27,4 +27,5 @@ public interface ChatDataSource {
     ListenerFirebase getPersonaChats(int personaId, Callback<List<ChatUi>> listCallback);
     RetrofitCancel getDatosChat(int personaId, List<ChatUi> chatUiList, Callback<List<ChatUi>> listCallback);
     ListenerFirebase getGrupoChats(int docenteId, int personaId, Callback<List<ChatUi>> listCallback);
+    RetrofitCancel sincronizarInformacion(SuccessCallback callBack);
 }

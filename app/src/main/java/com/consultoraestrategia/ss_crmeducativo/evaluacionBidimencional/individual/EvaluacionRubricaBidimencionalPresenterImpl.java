@@ -17,7 +17,6 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.GetRubBid;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.SearchAlumnoConProc;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UpdateEvaluacionFormula;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionRubroEvaluacion;
 
 /**
  * Created by SCIEV on 8/03/2018.
@@ -28,9 +27,9 @@ public class EvaluacionRubricaBidimencionalPresenterImpl extends EvaluacionRubri
     private SearchAlumnoConProc searchAlumnoConProc;
     private EvalProcUi evalProcUiSelected;
 
-    public EvaluacionRubricaBidimencionalPresenterImpl(UseCaseHandler handler, Resources res, GetRubBid getRubBid, GetAlumnoConProc getAlumnConProc, EvalAlumnosProcesoBid evalAlumnosProcesoBid, GetIndicadorRubro getIndicador, GetFechaCreacionRubroEvaluacion getFechaCreacionRubroEvaluacion, UpdateEvaluacionFormula updateEvaluacionFormula, SearchAlumnoConProc searchAlumnoConProc,
+    public EvaluacionRubricaBidimencionalPresenterImpl(UseCaseHandler handler, Resources res, GetRubBid getRubBid, GetAlumnoConProc getAlumnConProc, EvalAlumnosProcesoBid evalAlumnosProcesoBid, GetIndicadorRubro getIndicador, UpdateEvaluacionFormula updateEvaluacionFormula, SearchAlumnoConProc searchAlumnoConProc,
                                                        EvaluacionRubroFormula evaluacionRubroFormula, CalcularMediaDesviacion calcularMediaDesviacion) {
-        super(handler, res, getRubBid, evalAlumnosProcesoBid,getIndicador, getFechaCreacionRubroEvaluacion, updateEvaluacionFormula, evaluacionRubroFormula, calcularMediaDesviacion);
+        super(handler, res, getRubBid, evalAlumnosProcesoBid,getIndicador, updateEvaluacionFormula, evaluacionRubroFormula, calcularMediaDesviacion);
         this.getAlumnConProc = getAlumnConProc;
         this.searchAlumnoConProc = searchAlumnoConProc;
     }

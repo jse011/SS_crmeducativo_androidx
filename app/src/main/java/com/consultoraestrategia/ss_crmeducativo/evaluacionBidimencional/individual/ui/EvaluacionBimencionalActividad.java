@@ -26,8 +26,6 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.SearchAlumnoConProc;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UpdateEvaluacionFormula;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.utils.InjectorRepositoryRubroList;
-import com.consultoraestrategia.ss_crmeducativo.services.data.source.util.RepositoryInjector;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionRubroEvaluacion;
 
 /**
  * Created by SCIEV on 8/03/2018.
@@ -67,7 +65,6 @@ public class EvaluacionBimencionalActividad extends EvaluacionBimencionalAbstrac
                 new GetAlumnoConProc(repository),
                 new EvalAlumnosProcesoBid(repository),
                 new GetIndicadorRubro(repository),
-                new GetFechaCreacionRubroEvaluacion(RepositoryInjector.getGEDatosRubroEvaluacionProcesoRepositoryInjectorConTareas()),
                 new UpdateEvaluacionFormula(repository),
                 new SearchAlumnoConProc(repository),
                 new EvaluacionRubroFormula(InjectorRepositoryRubroList.getEvaluacionFormulaRepository())

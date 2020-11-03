@@ -16,8 +16,6 @@ import com.consultoraestrategia.ss_crmeducativo.entities.Persona_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.entities.Usuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.Usuario_Table;
-import com.consultoraestrategia.ss_crmeducativo.login.Login;
-import com.consultoraestrategia.ss_crmeducativo.login.entity.UsuarioUi;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
@@ -59,17 +57,12 @@ public class ComentariosLocalDataSource implements ComentariosDataSource {
                         .where(Usuario_Table.usuarioId.eq(interaccionTextual.getUsuarioId()))
                         .querySingle();
                 if (u != null) {
-                    UsuarioUi usuarioUi = new UsuarioUi();
-                    usuarioUi.setPersonaId(u.getPersonaId());
-                    usuarioUi.setUserName(u.getUsuario());
-                    usuarioUi.setPasswordEncrypted(u.getPassword());
-                    usuarioUi.setUsuarioId(u.getUsuarioId());
 
                     ComentarioUi comentarioUi = new ComentarioUi();
                     comentarioUi.setId(interaccionTextual.getKey());
                     comentarioUi.setContenido(interaccionTextual.getContenido());
                     comentarioUi.setFechaCreacion(interaccionTextual.getFechaCreacion());
-                    comentarioUi.setUsuarioid(usuarioUi.getUsuarioId());
+                    comentarioUi.setUsuarioid(u.getUsuarioId());
 
 
                     TipoUi tipoUi = new TipoUi();

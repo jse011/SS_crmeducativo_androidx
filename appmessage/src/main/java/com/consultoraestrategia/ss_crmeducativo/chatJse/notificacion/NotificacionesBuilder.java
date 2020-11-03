@@ -9,12 +9,13 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.Person;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.ChatActivity;

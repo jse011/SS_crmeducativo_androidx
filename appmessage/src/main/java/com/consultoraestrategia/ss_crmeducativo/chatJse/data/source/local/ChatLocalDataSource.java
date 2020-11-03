@@ -7,8 +7,6 @@ import com.consultoraestrategia.ss_crmeducativo.chatJse.entites.MessageUi2;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.entites.PersonaUi;
 import com.consultoraestrategia.ss_crmeducativo.entities.Contrato;
 import com.consultoraestrategia.ss_crmeducativo.entities.Contrato_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.Directivos;
-import com.consultoraestrategia.ss_crmeducativo.entities.Directivos_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Relaciones;
@@ -22,6 +20,9 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import java.util.Date;
 import java.util.List;
 
+//import com.consultoraestrategia.ss_crmeducativo.entities.Directivos;
+//import com.consultoraestrategia.ss_crmeducativo.entities.Directivos_Table;
+
 public class ChatLocalDataSource implements ChatDataSource {
     private static final String TAG = "ChatLocalDataSourceTAG";
 
@@ -33,20 +34,20 @@ public class ChatLocalDataSource implements ChatDataSource {
                 .where(Persona_Table.personaId.eq(personaId))
                 .querySingle();
 
-        Directivos directivos = SQLite.select()
+        /*Directivos directivos = SQLite.select()
                 .from(Directivos.class)
                 .where(Directivos_Table.personaId.eq(personaId))
-                .querySingle();
+                .querySingle();*/
 
         if(persona!=null){
-            String nombre = Utils.capitalize(persona.getFirstName())+ " "+Utils.capitalize(persona.getApellidoPaterno())+" "+Utils.capitalize(persona.getApellidoMaterno());
+            String nombre = Utils.capitalize(persona.getFirstName())+ " "+ Utils.capitalize(persona.getApellidoPaterno())+" "+ Utils.capitalize(persona.getApellidoMaterno());
             personaUi.setNombre(nombre);
             personaUi.setFoto(persona.getFoto());
-        }else if(directivos!=null){
-            String nombre = Utils.capitalize(Utils.getFirstWord(directivos.getNombre()))+ " "+Utils.capitalize(directivos.getApellidoPaterno())+" "+Utils.capitalize(directivos.getApellidoMaterno());
+        }/*else if(directivos!=null){
+            String nombre = Utils.capitalize(Utils.getFirstWord(directivos.getNombre()))+ " "+ Utils.capitalize(directivos.getApellidoPaterno())+" "+ Utils.capitalize(directivos.getApellidoMaterno());
             personaUi.setNombre(nombre);
             personaUi.setFoto(directivos.getFoto());
-        }else {
+        }*/else {
             personaUi.setNombre("Desconocido");
         }
 
@@ -144,8 +145,8 @@ public class ChatLocalDataSource implements ChatDataSource {
     }
 
     @Override
-    public void getListlastMessage(int emisor, int reseptor, Date date, Callback<List<Object>> callback) {
-
+    public ListenerFirebase getListlastMessage(int emisor, int reseptor, Date date, ListaMessageCallback messageCallback) {
+        return null;
     }
 
     @Override

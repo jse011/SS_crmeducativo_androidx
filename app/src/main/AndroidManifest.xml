@@ -15,7 +15,7 @@
         android:name=".CMRE"
         android:allowBackup="false"
         android:allowClearUserData="true"
-        android:icon="@mipmap/ic_educar"
+        android:icon="@mipmap/ic_launcher_v2"
         android:supportsRtl="true"
         android:testOnly="false"
         android:usesCleartextTraffic="true"
@@ -123,12 +123,7 @@
             android:name=".tabUnidad.view.UnidadActivity"
             android:launchMode="singleTop"
             android:label="Unidad Activity" />
-        <activity
-            android:name=".login.Login"
-            android:label="@string/activity_login_title"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".createRubricaBidimensional.CreateRubBidActivity"
             android:label="@string/activity_create_rub_bid_name"
@@ -203,21 +198,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".tabsCursoDocente.view.activities.TabsCursoDocenteActivity" />
         <activity android:name=".rubroEvaluacion.tipoNotaLista.TipoNotaListActivity" />
-
-        <service
-            android:name=".services.daemon.ui.ExportarIntentService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".services.loginService.ui.LoginJobService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-            </intent-filter>
-        </service>
 
         <activity android:name=".rubricasBidimensionales.abstracto.editarRubricasBid.EditarRubricasBidActivity"
             android:theme="@style/AppTheme.NoActionBar"/>

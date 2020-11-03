@@ -12,43 +12,76 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
+import com.consultoraestrategia.ss_crmeducativo.appmessage.R2;
 import com.consultoraestrategia.ss_crmeducativo.chats.entities.GroupUi;
 import com.consultoraestrategia.ss_crmeducativo.chats.view.ChatListener;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class GroupCourseHolder extends RecyclerView.ViewHolder {
+    @BindView(R2.id.circle)
+    ImageView circle2;
 
+    TextView section;
 
-    TextView sectionName;
+    @BindView(R2.id.name)
     TextView name;
-    ImageView circle;
+    @BindView(R2.id.root)
     ConstraintLayout root;
+    @BindView(R2.id.fondo)
+    ImageView fondo;
+
+
 
     public GroupCourseHolder(@NonNull View itemView) {
         super(itemView);
-        sectionName=(TextView)itemView.findViewById(R.id.section);
-        name=(TextView)itemView.findViewById(R.id.name);
-        circle=(ImageView)itemView.findViewById(R.id.circle);
-        root=(ConstraintLayout)itemView.findViewById(R.id.root);
-
+        section = (TextView)itemView.findViewById(R.id.section21);
+        ButterKnife.bind(this, itemView);
     }
+
     public void bind(final GroupUi groupUi, final ChatListener chatListener){
-        String j="";
+        StringBuilder j= new StringBuilder();
         for(int i=0;groupUi.getNameCourse().length()>i; i++){
-            j=j+groupUi.getNameCourse().charAt(i);
+            j.append(groupUi.getNameCourse().charAt(i));
             if(i==2)break;
         }
-        sectionName.setText(j);
-        name.setText(groupUi.getName());
-        sectionName.setTextColor(Color.WHITE);
+        section.setText(j.toString());
+        switch (groupUi.getGrupo()){
+            case Padre:
+                name.setText("Grupo de Padres");
+                break;
+            case Alumno:
+                name.setText("Grupo de Alumnos");
+                break;
+            default:
+                name.setText("Grupo Oficial");
+                break;
+        }
+        //name.setText(groupUi.getName());
+        section.setTextColor(Color.WHITE);
         try {
             ColorStateList csl = ColorStateList.valueOf(Color.parseColor(groupUi.getColor()));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                circle.setImageTintList(csl);
+                circle2.setImageTintList(csl);
             }
         }catch (Exception e){
             Log.d(getClass().getSimpleName(),"error "+ e.getMessage());
         }
+
+        Glide.with(fondo)
+                .load(groupUi.getPhoto())
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(fondo);
+        fondo.setVisibility(View.VISIBLE);
+        fondo.setAlpha(0.4f);
+
         root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

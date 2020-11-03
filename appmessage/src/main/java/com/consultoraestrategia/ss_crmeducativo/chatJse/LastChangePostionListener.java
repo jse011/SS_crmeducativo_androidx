@@ -1,8 +1,9 @@
 package com.consultoraestrategia.ss_crmeducativo.chatJse;
 
+import android.view.View;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 public class LastChangePostionListener extends  RecyclerView.OnScrollListener implements View.OnLayoutChangeListener {
 
@@ -10,6 +11,8 @@ public class LastChangePostionListener extends  RecyclerView.OnScrollListener im
     private int lastItem = -1;
     private CallBack callBack;
     private LinearLayoutManager linearLayoutManager;
+    private boolean prevent = false;
+
     public LastChangePostionListener(CallBack callBack) {
         this.callBack = callBack;
     }
@@ -17,7 +20,9 @@ public class LastChangePostionListener extends  RecyclerView.OnScrollListener im
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-
+        if(prevent){
+            return;
+        }
         // Find the adapter position of the first fully visible item
         // May return RecyclerView.NO_POSITION that is not handled here.
         if(linearLayoutManager==null){
@@ -45,6 +50,10 @@ public class LastChangePostionListener extends  RecyclerView.OnScrollListener im
         }else {
             callBack.onKeyboardClose();
         }
+    }
+
+    public void preventEvent(boolean prevent) {
+        this.prevent = prevent;
     }
 
     public interface CallBack{

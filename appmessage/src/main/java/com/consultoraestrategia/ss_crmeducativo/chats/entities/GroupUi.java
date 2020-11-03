@@ -6,6 +6,7 @@ import java.util.List;
 public class GroupUi  implements Serializable {
 
     public enum Type{ACADEMIC, TEAM, COURSE}
+    public enum Grupo{ Todos, Alumno, Padre }
     private int cargaCursoId;
     private int cargaAcademicaId;
     private String grupoEquipoId;
@@ -22,6 +23,7 @@ public class GroupUi  implements Serializable {
     private int idSender;
     private String nameCourse;
     private int idCourse;
+    private Grupo grupo = Grupo.Todos;
 
     public int getCargaCursoId() {
         return cargaCursoId;
@@ -151,5 +153,11 @@ public class GroupUi  implements Serializable {
         this.nameCourse = nameCourse;
     }
 
+    public Grupo getGrupo() {
+        return grupo;
+    }
 
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
 }

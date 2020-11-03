@@ -18,7 +18,6 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.GetIndicadorRubro;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.GetRubBid;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UpdateEvaluacionFormula;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionRubroEvaluacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +31,9 @@ public class EvaluacionRubricaBidimencionalGrupalPresenterImpl extends Evaluacio
     private EvalProcUi evalProcUiSelected;
     private String TAG= EvaluacionRubricaBidimencionalGrupalPresenterImpl.class.getSimpleName();
 
-    public EvaluacionRubricaBidimencionalGrupalPresenterImpl(UseCaseHandler handler, Resources res, GetRubBid getRubBid, GetGrupoConProc getAlumnConProc, EvalAlumnosProcesoBid evalAlumnosProcesoBid, GetIndicadorRubro getIndicador, GetFechaCreacionRubroEvaluacion getFechaCreacionRubroEvaluacion, UpdateEvaluacionFormula updateEvaluacionFormula,
+    public EvaluacionRubricaBidimencionalGrupalPresenterImpl(UseCaseHandler handler, Resources res, GetRubBid getRubBid, GetGrupoConProc getAlumnConProc, EvalAlumnosProcesoBid evalAlumnosProcesoBid, GetIndicadorRubro getIndicador, UpdateEvaluacionFormula updateEvaluacionFormula,
                                                              EvaluacionRubroFormula evaluacionRubroFormula, CalcularMediaDesviacion calcularMediaDesviacion) {
-        super(handler, res, getRubBid, evalAlumnosProcesoBid,getIndicador, getFechaCreacionRubroEvaluacion,updateEvaluacionFormula,evaluacionRubroFormula, calcularMediaDesviacion);
+        super(handler, res, getRubBid, evalAlumnosProcesoBid,getIndicador,updateEvaluacionFormula,evaluacionRubroFormula, calcularMediaDesviacion);
         this.getAlumnConProc = getAlumnConProc;
     }
 

@@ -36,7 +36,8 @@ import java.util.List;
 public class AppDatabase {
     public static final String NAME = "CRMEfinal";
    // public static final int VERSION = 13;//Playstore 12
-    public static final int VERSION = 14;//Playstore 13
+    //public static final int VERSION = 14;//Playstore 13
+   public static final int VERSION = 15;//Playstore 14 se creo uns tabla webconfig
 
     @Migration(version = 9, database = AppDatabase.class)
     public static class MigrationRubroEvaluacionResultadoTwo extends AlterTableMigration<EvaluacionResultadoC> {

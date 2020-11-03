@@ -364,6 +364,8 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
                                         TransaccionUtils.fastStoreListInsert(CursosDetHorario.class, response.getCursosDetHorario(), databaseWrapper, true);
                                         TransaccionUtils.fastStoreListInsert(Horario.class, response.getHorario(), databaseWrapper, true);
 
+                                        TransaccionUtils.fastStoreListInsert(WebConfig.class, response.getWebConfigs(), databaseWrapper, true);
+
                                         datosProgressUi.setAnioAcademicoId(beDatosInicioSesion.getAnioAcademicoId());
                                         datosProgressUi.setFechaServidor(beDatosInicioSesion.getFechaServidor());
                                     }

@@ -1,24 +1,49 @@
 package com.consultoraestrategia.ss_crmeducativo.chatJse.entites;
 
-import com.google.firebase.firestore.Blob;
-
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class MessageUi2 {
-    public enum TIPO{TEXTO, IMAGEN}
+
+    private String nameChat;
+    private String imagenChat;
+
+    public String getNameChat() {
+        return nameChat;
+    }
+
+    public void setNameChat(String nameChat) {
+        this.nameChat = nameChat;
+    }
+
+    public void setImagenChat(String imagenChat) {
+        this.imagenChat = imagenChat;
+    }
+
+    public String getImagenChat() {
+        return imagenChat;
+    }
+
+    public enum TIPO{TEXTO, IMAGEN, STICKER}
     private boolean pendingWrites;
     private boolean view;
     private long dataTime;
     private boolean enviarNotificacion;
     private List<String> mensajes;
     private String tokenFcm;
-    private MessageUi2.TIPO tipo = TIPO.TEXTO;
+    private TIPO tipo = TIPO.TEXTO;
     private transient String imagen;
     private transient String imagenFcm;
     private transient boolean selected;
+    private int personaIdReplick;
 
+    public void setPersonaIdReplick(int personaIdReplick) {
+        this.personaIdReplick = personaIdReplick;
+    }
+
+    public int getPersonaIdReplick() {
+        return personaIdReplick;
+    }
     public TIPO getTipo() {
         return tipo;
     }
@@ -200,6 +225,77 @@ public class MessageUi2 {
 
     public void setPersonaReplick(String personaReplick) {
         this.personaReplick = personaReplick;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MessageUi2 that = (MessageUi2) o;
+
+        if (pendingWrites != that.pendingWrites) return false;
+        if (view != that.view) return false;
+        if (dataTime != that.dataTime) return false;
+        if (enviarNotificacion != that.enviarNotificacion) return false;
+        if (selected != that.selected) return false;
+        if (personaIdReplick != that.personaIdReplick) return false;
+        if (emisorId != that.emisorId) return false;
+        if (receptorId != that.receptorId) return false;
+        if (nameChat != null ? !nameChat.equals(that.nameChat) : that.nameChat != null)
+            return false;
+        if (imagenChat != null ? !imagenChat.equals(that.imagenChat) : that.imagenChat != null)
+            return false;
+        if (mensajes != null ? !mensajes.equals(that.mensajes) : that.mensajes != null)
+            return false;
+        if (tokenFcm != null ? !tokenFcm.equals(that.tokenFcm) : that.tokenFcm != null)
+            return false;
+        if (tipo != that.tipo) return false;
+        if (imagen != null ? !imagen.equals(that.imagen) : that.imagen != null) return false;
+        if (imagenFcm != null ? !imagenFcm.equals(that.imagenFcm) : that.imagenFcm != null)
+            return false;
+        if (Id != null ? !Id.equals(that.Id) : that.Id != null) return false;
+        if (mensaje != null ? !mensaje.equals(that.mensaje) : that.mensaje != null) return false;
+        if (referencia != null ? !referencia.equals(that.referencia) : that.referencia != null)
+            return false;
+        if (fecha != null ? !fecha.equals(that.fecha) : that.fecha != null) return false;
+        if (estado != that.estado) return false;
+        if (mensajeReplickId != null ? !mensajeReplickId.equals(that.mensajeReplickId) : that.mensajeReplickId != null)
+            return false;
+        if (mensajeReplick != null ? !mensajeReplick.equals(that.mensajeReplick) : that.mensajeReplick != null)
+            return false;
+        if (imagenReplick != null ? !imagenReplick.equals(that.imagenReplick) : that.imagenReplick != null)
+            return false;
+        return personaReplick != null ? personaReplick.equals(that.personaReplick) : that.personaReplick == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nameChat != null ? nameChat.hashCode() : 0;
+        result = 31 * result + (imagenChat != null ? imagenChat.hashCode() : 0);
+        result = 31 * result + (pendingWrites ? 1 : 0);
+        result = 31 * result + (view ? 1 : 0);
+        result = 31 * result + (int) (dataTime ^ (dataTime >>> 32));
+        result = 31 * result + (enviarNotificacion ? 1 : 0);
+        result = 31 * result + (mensajes != null ? mensajes.hashCode() : 0);
+        result = 31 * result + (tokenFcm != null ? tokenFcm.hashCode() : 0);
+        result = 31 * result + (tipo != null ? tipo.hashCode() : 0);
+        result = 31 * result + (imagen != null ? imagen.hashCode() : 0);
+        result = 31 * result + (imagenFcm != null ? imagenFcm.hashCode() : 0);
+        result = 31 * result + (selected ? 1 : 0);
+        result = 31 * result + personaIdReplick;
+        result = 31 * result + (Id != null ? Id.hashCode() : 0);
+        result = 31 * result + emisorId;
+        result = 31 * result + receptorId;
+        result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);
+        result = 31 * result + (referencia != null ? referencia.hashCode() : 0);
+        result = 31 * result + (fecha != null ? fecha.hashCode() : 0);
+        result = 31 * result + (estado != null ? estado.hashCode() : 0);
+        result = 31 * result + (mensajeReplickId != null ? mensajeReplickId.hashCode() : 0);
+        result = 31 * result + (mensajeReplick != null ? mensajeReplick.hashCode() : 0);
+        result = 31 * result + (imagenReplick != null ? imagenReplick.hashCode() : 0);
+        result = 31 * result + (personaReplick != null ? personaReplick.hashCode() : 0);
+        return result;
     }
 
     @Override

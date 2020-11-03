@@ -354,7 +354,7 @@ public class EvaluacionCompetenciasPresenterImpl extends BaseFragmentPresenterIm
                 cargaCursoCalendarioPeriodo.save();
             }
             //if(view!=null)view.simpleSyncIntenService(programaEducativoId); no es nesario la actividad lo ejecuta
-            if(view!=null)view.reloadActivity();
+            if(view!=null)view.reloadActivity(programaEducativoId);
         }catch (Exception e){
             e.printStackTrace();
         }

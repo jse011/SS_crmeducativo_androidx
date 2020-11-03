@@ -3,20 +3,9 @@ package com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.domain.u
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
-import com.consultoraestrategia.ss_crmeducativo.entities.Empleado;
-import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
-import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento;
-import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.modelViews.SilaboEventoCargaCursoModel;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.data.Source.EvaluacionCompetenciaDataSource;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.data.Source.EvaluacionCompetenciaRepository;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.entidades.FiltradoUi;
-import com.consultoraestrategia.ss_crmeducativo.services.data.source.base.ServiceDataSource;
-import com.consultoraestrategia.ss_crmeducativo.services.data.source.servidor.datosEvaluacionResultado.BEDatosEvaluacionResultadoRepository;
-import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
-import com.consultoraestrategia.ss_crmeducativo.services.entidad.servidor.BEDatosEvaluacionResultado;
-import com.consultoraestrategia.ss_crmeducativo.util.Utils;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +17,9 @@ import java.util.List;
 public class GetCompetenciasLista extends UseCase<GetCompetenciasLista.ResquestValues, GetCompetenciasLista.ResponseValue> {
     private static final String TAG = GetCompetenciasLista.class.getSimpleName();
     private EvaluacionCompetenciaRepository repository;
-    private BEDatosEvaluacionResultadoRepository resultadoRepository;
 
-    public GetCompetenciasLista(EvaluacionCompetenciaRepository repository, BEDatosEvaluacionResultadoRepository resultadoRepository) {
+    public GetCompetenciasLista(EvaluacionCompetenciaRepository repository) {
         this.repository = repository;
-        this.resultadoRepository = resultadoRepository;
     }
 
     @Override

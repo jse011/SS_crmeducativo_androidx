@@ -27,39 +27,6 @@ public class ServiceRemoteDataRepositoryImpl implements ServiceRemoteDataReposit
     }
 
     @Override
-    public void SendDatosGlobal(final BEGuardarEntidadesGlobal item, final RespuestaCallBack<BEGuardarEntidadesGlobal, BERespuesta> callBack) {
-        ApiRetrofit apiRetrofit = utilServidor.getApiRetrofit();
-        apiRetrofit.changeSetTime(10,60,60, TimeUnit.SECONDS);
-        Call<RestApiResponse<BERespuesta>> responseCall = apiRetrofit.fins_GuardarEntidades_Global(item);
-        try {
-
-            Response<RestApiResponse<BERespuesta>> response = responseCall.execute();
-            if (!response.isSuccessful()){
-                callBack.onResponse(false,item,null);
-                Log.d(TAG, "SendDatos Response: false");
-            }else {
-                RestApiResponse<BERespuesta> body = response.body();
-                if(body == null){
-                    callBack.onResponse(false,item,null);
-                    Log.d(TAG, "SendDatos Successful body null ");
-                } else if(body.isSuccessful()){
-                    callBack.onResponse(true,item,body.getValue());
-                    Log.d(TAG, "SendDatos Successful : true");
-                }else {
-                    callBack.onResponse(false,item, body.getValue());
-                    Log.d(TAG, "SendDatos Successful : false");
-                }
-            }
-
-
-        }catch (Throwable t){
-            t.printStackTrace();
-            Log.d(TAG, "getDatosLogin Throwable : false - "+t.getMessage());
-            callBack.onResponse(false,item,null);
-        }
-    }
-
-    @Override
     public void SendDatosGlobalSimple(BEGuardarEntidadesGlobal item, RespuestaCallBack<BEGuardarEntidadesGlobal, BERespuesta> callBack) {
         ApiRetrofit apiRetrofit = utilServidor.getApiRetrofit();
         apiRetrofit.changeSetTime(10,60,60, TimeUnit.SECONDS);

@@ -37,8 +37,8 @@ public class ChatRepository implements ChatDataSource {
     }
 
     @Override
-    public void getListlastMessage(int emisor, int reseptor, Date date, Callback<List<Object>> callback) {
-        chatRemoteDataSource.getListlastMessage(emisor,reseptor, date, callback);
+    public ListenerFirebase getListlastMessage(int emisor, int reseptor, Date date, ListaMessageCallback messageCallback) {
+        return chatRemoteDataSource.getListlastMessage(emisor, reseptor, date, messageCallback);
     }
 
     @Override

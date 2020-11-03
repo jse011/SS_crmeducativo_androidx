@@ -20,7 +20,6 @@ import com.consultoraestrategia.ss_crmeducativo.createTeamList.ui.CreateTeamList
 import com.consultoraestrategia.ss_crmeducativo.grouplist.entities.Group;
 import com.consultoraestrategia.ss_crmeducativo.grouplist.entities.Team;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionGrupoEquipo;
 import com.consultoraestrategia.ss_crmeducativo.util.IdGenerator;
 
 import java.util.ArrayList;
@@ -45,14 +44,13 @@ public class CreateTeamListPresenterImpl implements CreateTeamListPresenter {
     private int tipoId;
     private int programaEducativoId;
     private List<Team> deleteTeamUis;
-    private GetFechaCreacionGrupoEquipo getFechaCreacionGrupoEquipo;
     private long f_CreacionServidor;
     private long f_CreacionLocal;
     private boolean tipoDinamico;
     private int tipoCreacionGrupo;
     private final int GRUPO_DINAMICO=1, GRUPO_ESTATICO=2, GRUPO_UNICO_APRENDIZAJE=4, GRUPO_DIFERENTE_APRENDIZAJE=3;
 
-    public CreateTeamListPresenterImpl(UseCaseHandler useCaseHandler, GetAutoincrementedId getAutoincrementedId, CreateGroup createGroup, GetGroup getGroup, DeleteTeam deleteTeam, CreateTeam createTeam, Resources resources, GetFechaCreacionGrupoEquipo getFechaCreacionGrupoEquipo, GenerateTeamList generateTeamList) {
+    public CreateTeamListPresenterImpl(UseCaseHandler useCaseHandler, GetAutoincrementedId getAutoincrementedId, CreateGroup createGroup, GetGroup getGroup, DeleteTeam deleteTeam, CreateTeam createTeam, Resources resources, GenerateTeamList generateTeamList) {
         this.useCaseHandler = useCaseHandler;
         this.getAutoincrementedId = getAutoincrementedId;
         this.createGroup = createGroup;
@@ -61,7 +59,6 @@ public class CreateTeamListPresenterImpl implements CreateTeamListPresenter {
         this.createTeam = createTeam;
         this.resources = resources;
         this.deleteTeamUis = new ArrayList<>();
-        this.getFechaCreacionGrupoEquipo = getFechaCreacionGrupoEquipo;
         this.generateTeamList = generateTeamList;
     }
 
@@ -76,7 +73,6 @@ public class CreateTeamListPresenterImpl implements CreateTeamListPresenter {
         Log.d(TAG, "onCreate");
         if(view==null)return;
         checkGroup();
-        GetFechaCreacionRubroEvaluacion();
         if(grupoId!=null)
         switch (tipoCreacionGrupo){
             case GRUPO_ESTATICO:
@@ -501,24 +497,6 @@ public class CreateTeamListPresenterImpl implements CreateTeamListPresenter {
         }
     }
 
-
-    private void GetFechaCreacionRubroEvaluacion() {
-        useCaseHandler.execute(getFechaCreacionGrupoEquipo,
-                new GetFechaCreacionGrupoEquipo.RequestValues(grupoId),
-                new UseCase.UseCaseCallback<GetFechaCreacionGrupoEquipo.ResponseValue>() {
-                    @Override
-                    public void onSuccess(GetFechaCreacionGrupoEquipo.ResponseValue response) {
-                        f_CreacionServidor = response.getF_Servidor();
-                        f_CreacionLocal = response.getF_Local();
-                        comprobarFechaRubroEvaluacion();
-                    }
-
-                    @Override
-                    public void onError() {
-                        ocultarMsgActualizacion();
-                    }
-                });
-    }
 
     private void comprobarFechaRubroEvaluacion() {
         Log.d(TAG, "comprobarFechaGrupoEquipo: " + f_CreacionServidor + " > " + f_CreacionLocal);

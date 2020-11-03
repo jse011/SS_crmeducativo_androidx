@@ -67,7 +67,7 @@ public class BEDatosAnioAcademico {
     private List<HorarioDia> horarioDia;
     private List<CursosDetHorario> cursosDetHorario;
 
-    private List<WebConfig> webConfigs;
+    private List<WebConfig> bEWebConfigs;
 
 
     public List<Aula> getAulas() {
@@ -303,10 +303,10 @@ public class BEDatosAnioAcademico {
     }
 
     public List<WebConfig> getWebConfigs() {
-        return webConfigs;
+        return bEWebConfigs;
     }
 
     public void setWebConfigs(List<WebConfig> webConfigs) {
-        this.webConfigs = webConfigs;
+        this.bEWebConfigs = webConfigs;
     }
 }

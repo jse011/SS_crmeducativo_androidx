@@ -28,8 +28,6 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.GetRubBid;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UpdateEvaluacionFormula;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.utils.InjectorRepositoryRubroList;
-import com.consultoraestrategia.ss_crmeducativo.services.data.source.util.RepositoryInjector;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionRubroEvaluacion;
 
 /**
  * Created by SCIEV on 5/04/2018.
@@ -68,7 +66,6 @@ public class EvaluacionBimencionalGrupalActividad extends EvaluacionBimencionalA
                 new GetGrupoConProc(repository),
                 new EvalAlumnosProcesoBid(repository),
                 new GetIndicadorRubro(repository),
-                new GetFechaCreacionRubroEvaluacion(RepositoryInjector.getGEDatosRubroEvaluacionProcesoRepositoryInjectorConTareas()),
                 new UpdateEvaluacionFormula(repository),
                 new EvaluacionRubroFormula(InjectorRepositoryRubroList.getEvaluacionFormulaRepository())
         ,       new CalcularMediaDesviacion(repository));

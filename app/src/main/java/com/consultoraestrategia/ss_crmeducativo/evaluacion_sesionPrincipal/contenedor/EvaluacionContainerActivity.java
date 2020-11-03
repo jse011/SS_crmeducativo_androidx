@@ -52,7 +52,6 @@ import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.importarActividad.ui.ImportarActivity;
 import com.consultoraestrategia.ss_crmeducativo.services.syncIntentService.SimpleSyncIntenService;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionRubroEvaluacion;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
 
 import java.util.List;
@@ -148,7 +147,6 @@ public class EvaluacionContainerActivity extends BaseActivity<EvaluacionContaine
                         InjectorUtils.provideIndicadorDao(), InjectorUtils.provideEvaluacionProcesoDao()),
                 new RubroRemoteDataSourse());
         return new EvaluacionContainerPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(),
-                new GetFechaCreacionRubroEvaluacion(RepositoryInjector.getGEDatosRubroEvaluacionProcesoRepositoryInjectorConTareas()),
                 new GetRubro(rubroRepository),
                 new CalcularMediaDesviacion(rubroRepository),
                 new UpdateEvaluacionFormulas(rubroRepository));

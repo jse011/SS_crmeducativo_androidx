@@ -71,5 +71,10 @@ public class ChatRepository  implements ChatDataSource {
         return chatDataRemoteSource.getGrupoChats(docenteId, personaId, listCallback);
     }
 
+    @Override
+    public RetrofitCancel sincronizarInformacion(SuccessCallback callBack) {
+        return chatDataRemoteSource.sincronizarInformacion(callBack);
+    }
+
 
 }

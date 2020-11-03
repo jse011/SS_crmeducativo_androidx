@@ -4,17 +4,18 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.card.MaterialCardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
@@ -24,10 +25,12 @@ import com.consultoraestrategia.ss_crmeducativo.chatJse.entites.MessageUi2;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.consultoraestrategia.ss_crmeducativo.utils.LinkUtils;
 import com.consultoraestrategia.ss_crmeducativo.utils.touchHelper.ItemTouchHelperViewHolder;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.vanniktech.emoji.EmojiTextView;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,26 +41,40 @@ public class MessageFotoHolder extends RecyclerView.ViewHolder implements LinkUt
     ImageView imgCompartir;
     @BindView(R2.id.background_view_stub)
     ConstraintLayout backgroundViewStub;
+    @BindView(R2.id.lay_placeholder_sender)
+    ShimmerFrameLayout layPlaceholderSender;
     @BindView(R2.id.img_sender)
     ImageView imgSender;
     @BindView(R2.id.conten_imagen_sender)
-    MaterialCardView contenImagenSender;
+    CardView contenImagenSender;
     @BindView(R2.id.textsender)
     EmojiTextView textsender;
     @BindView(R2.id.horaSen)
     TextView horaSen;
     @BindView(R2.id.contSender)
     LinearLayout contSender;
+    @BindView(R2.id.horaSenDelete)
+    TextView horaSenDelete;
+    @BindView(R2.id.contSenderEliminado)
+    LinearLayout contSenderEliminado;
+    @BindView(R2.id.imageView20)
+    ImageView imageView20;
+    @BindView(R2.id.lay_placeholder_reciver)
+    ShimmerFrameLayout layPlaceholderReciver;
     @BindView(R2.id.img_reciver)
     ImageView imgReciver;
     @BindView(R2.id.conten_imagen_reciver)
-    MaterialCardView contenImagenReciver;
+    CardView contenImagenReciver;
     @BindView(R2.id.textreceiver)
     EmojiTextView textreceiver;
     @BindView(R2.id.horaRec)
     TextView horaRec;
     @BindView(R2.id.contReceiver)
     LinearLayout contReceiver;
+    @BindView(R2.id.horaRecDelete)
+    TextView horaRecDelete;
+    @BindView(R2.id.contReceiverEliminado)
+    LinearLayout contReceiverEliminado;
     @BindView(R2.id.foreground_view)
     public LinearLayout foregroundView;
 
@@ -77,7 +94,7 @@ public class MessageFotoHolder extends RecyclerView.ViewHolder implements LinkUt
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) foregroundView.getLayoutParams();
 
         Calendar calendar= Calendar.getInstance();
-        calendar.setTime(messageUic.getFecha());
+        calendar.setTime(messageUic.getFecha()!=null?messageUic.getFecha():new Date());
 
         final int hora=calendar.get(Calendar.HOUR_OF_DAY);
         int minuto= calendar.get(Calendar.MINUTE);
@@ -85,17 +102,19 @@ public class MessageFotoHolder extends RecyclerView.ViewHolder implements LinkUt
         if(messageUic.getEmisorId()== personaId)
         {
 
-            layoutParams.setMarginStart((int)Utils.convertDpToPixel(32, itemView.getContext()));
-            layoutParams.setMarginEnd((int)Utils.convertDpToPixel(0, itemView.getContext()));
+            layoutParams.setMarginStart((int) Utils.convertDpToPixel(32, itemView.getContext()));
+            layoutParams.setMarginEnd((int) Utils.convertDpToPixel(0, itemView.getContext()));
             foregroundView.setLayoutParams(layoutParams);
 
             contReceiver.setVisibility(View.GONE);
+            contReceiverEliminado.setVisibility(View.GONE);
             contSender.setVisibility(View.VISIBLE);
+            contSenderEliminado.setVisibility(View.GONE);
             textsender.setText(messageUic.getMensaje());
             horaSen.setText(tiempo);
 
             textsender.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-            textsender.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.md_black_1000));
+            textsender.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_black_1000));
             Log.d(MessageFotoHolder.class.getSimpleName(),"estado: " + messageUic.getEstado().toString());
             switch (messageUic.getEstado())
             {
@@ -119,11 +138,15 @@ public class MessageFotoHolder extends RecyclerView.ViewHolder implements LinkUt
                 default:
                     String mensaje = "Eliminaste este mensaje";
                     textsender.setText(mensaje);
-                    textsender.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.md_grey_500));
+                    textsender.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_grey_500));
                     textsender.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_block, 0, 0, 0);
+
+                    contSender.setVisibility(View.GONE);
+                    contSenderEliminado.setVisibility(View.VISIBLE);
+                    horaSenDelete.setText(tiempo);
                     break;
             }
-
+            textsender.setVisibility(TextUtils.isEmpty(textsender.getText())?View.GONE:View.VISIBLE);
             if(messageUic.getEstado()!= MessageUi2.ESTADO.ELIMINADO){
                 imgSender.setImageDrawable(null);
                 contenImagenSender.setVisibility(View.VISIBLE);
@@ -161,12 +184,14 @@ public class MessageFotoHolder extends RecyclerView.ViewHolder implements LinkUt
         }
         else
         {
-            layoutParams.setMarginStart((int)Utils.convertDpToPixel(0, itemView.getContext()));
-            layoutParams.setMarginEnd((int)Utils.convertDpToPixel(32, itemView.getContext()));
+            layoutParams.setMarginStart((int) Utils.convertDpToPixel(0, itemView.getContext()));
+            layoutParams.setMarginEnd((int) Utils.convertDpToPixel(32, itemView.getContext()));
             foregroundView.setLayoutParams(layoutParams);
 
             contSender.setVisibility(View.GONE);
+            contSenderEliminado.setVisibility(View.GONE);
             contReceiver.setVisibility(View.VISIBLE);
+            contReceiverEliminado.setVisibility(View.GONE);
             textreceiver.setText(messageUic.getMensaje());
             horaRec.setText(tiempo);
 
@@ -175,11 +200,15 @@ public class MessageFotoHolder extends RecyclerView.ViewHolder implements LinkUt
                 textreceiver.setText(mensaje);
                 textreceiver.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_grey_500));
                 textreceiver.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_block, 0, 0, 0);
+
+                contReceiver.setVisibility(View.VISIBLE);
+                contReceiverEliminado.setVisibility(View.GONE);
+                horaRecDelete.setText(tiempo);
             }else {
                 textreceiver.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_black_1000));
                 textreceiver.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
             }
-
+            textreceiver.setVisibility(TextUtils.isEmpty(textreceiver.getText())?View.GONE:View.VISIBLE);
 
 
             if(messageUic.getEstado()!= MessageUi2.ESTADO.ELIMINADO){
@@ -233,7 +262,7 @@ public class MessageFotoHolder extends RecyclerView.ViewHolder implements LinkUt
     @Override
     public boolean onLongClick(View view) {
         listener.onLongClick(messageUi2);
-        return false;
+        return true;
     }
 
 

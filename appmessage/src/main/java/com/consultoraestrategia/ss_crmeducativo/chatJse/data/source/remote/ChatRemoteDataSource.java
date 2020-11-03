@@ -1,10 +1,11 @@
 package com.consultoraestrategia.ss_crmeducativo.chatJse.data.source.remote;
 
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.data.source.ChatDataSource;
@@ -15,11 +16,13 @@ import com.consultoraestrategia.ss_crmeducativo.entities.Message_Table;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancelImpl;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
+import com.consultoraestrategia.ss_crmeducativo.util.UtilsFirebase;
 import com.consultoraestrategia.ss_crmeducativo.utils.ReferenceFirestore;
 import com.consultoraestrategia.ss_crmeducativo.utils.UtilsAppMessenger;
 import com.consultoraestrategia.ss_crmeducativo.utils.firebase.ListenerFirebase;
 import com.consultoraestrategia.ss_crmeducativo.utils.firebase.ListenerFirebaseImpl;
 import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,9 +31,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -58,8 +61,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ChatRemoteDataSource implements ChatDataSource {
-    private static final int GUARDADO_LOCAL = 4,GUARDADO = 1,ENVIADO = 2, VISTO = 3, ELIMINADO = 0;
-    private static final String IMAGEN = "img", TEXTO = "text";
+    private static final int GUARDADO = 1,ENVIADO = 2, VISTO = 3, ELIMINADO = 0;
+    private static final String IMAGEN = "img", TEXTO = "text", STICKER = "sticker";
     //private CollectionReference collectionReferenceMessage= ReferenceFirestore.getMessage();
     private CollectionReference collectionReferenceChat= ReferenceFirestore.getInstanceChat();
 //    private CollectionReference collectionReferencePerson= ReferenceFirestore.getPersons();
@@ -82,7 +85,8 @@ public class ChatRemoteDataSource implements ChatDataSource {
             salaId = messageUi.getReceptorId()+"_"+messageUi.getEmisorId();
         }
 
-        Map<String, Object> message = getMessage(messageUi, TEXTO);
+
+        Map<String, Object> message = getMessage(messageUi, (messageUi.getTipo()!= MessageUi2.TIPO.STICKER)?TEXTO:STICKER);
 
         final String finalSalaId = salaId;
 
@@ -108,7 +112,7 @@ public class ChatRemoteDataSource implements ChatDataSource {
 
     private Map<String, Object> getMessage(MessageUi2 messageUi, String tipo){
         Map<String, Object> message = new HashMap<>();
-        message.put("date", messageUi.getFecha());
+        message.put("date", FieldValue.serverTimestamp());
         message.put("idsender",messageUi.getEmisorId());
         message.put("idreceiver",messageUi.getReceptorId());
         message.put("message",messageUi.getMensaje());
@@ -116,7 +120,7 @@ public class ChatRemoteDataSource implements ChatDataSource {
         message.put("idchat",messageUi.getEmisorId()+"_"+messageUi.getReceptorId());//No es nesacario
         message.put("view",false);
         message.put("typePerson",0);
-        message.put("state", GUARDADO_LOCAL);
+        message.put("state", GUARDADO);
         message.put("tokenFcm", messageUi.getTokenFcm());
         message.put("imageFcm", messageUi.getImagenFcm());
         message.put("imageType", tipo);
@@ -124,6 +128,8 @@ public class ChatRemoteDataSource implements ChatDataSource {
         message.put("messageIdReplik",messageUi.getMensajeReplickId());
         message.put("messageImagenReplik",messageUi.getImagenReplick());
         message.put("messageEmisorReplik",messageUi.getPersonaReplick());
+        message.put("messageEmisorIdReplik",messageUi.getPersonaIdReplick());
+
         return message;
     }
 
@@ -133,13 +139,59 @@ public class ChatRemoteDataSource implements ChatDataSource {
         chat.put("idreceiver", messageUi.getReceptorId());
         chat.put("reference", messageUi.getReferencia());
         chat.put("lastmessage", messageUi.getMensaje());
+        chat.put("nameReceiver", messageUi.getNameChat());
+        chat.put("imageReceiver", messageUi.getImagenChat());
         chat.put("state", GUARDADO);
-        chat.put("lastdate", messageUi.getFecha());
+        chat.put("lastdate",  FieldValue.serverTimestamp());
         chat.put("typeChatGroup",false );
         chat.put("idmessage", messageUi.getId());
         return chat;
     }
 
+   List<ListenerFirebase> listenerFirebaseList = new ArrayList<>();
+    private void realtimeMessage(final String salaId , final int emisor, List<MessageUi2> messageUiList, final ListaMessageCallback messageCallback){
+        Query queryChatReciver = null;
+
+        if(!messageUiList.isEmpty()){
+            queryChatReciver = collectionReferenceChat.document(salaId).collection("message")
+
+                    .whereGreaterThanOrEqualTo("date", messageUiList.get(0).getFecha())
+                    //.whereArrayContains("reference", emisor+"_"+reseptor)
+                    //.whereEqualTo("idreceiver", emisor)
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(2000);
+        }else {
+            queryChatReciver = collectionReferenceChat.document(salaId).collection("message")
+                    //.whereGreaterThan("date", messageUiList.get(0).getFecha().getTime())
+                    //.whereArrayContains("reference", emisor+"_"+reseptor)
+                    //.whereEqualTo("idreceiver", emisor)
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(2000);
+        }
+
+        Log.d(TAG, "MesListenerFirebaseImpl");
+        listenerFirebaseList.add(new ListenerFirebaseImpl(queryChatReciver.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "queryDocumentSnapshots");
+
+                if (queryDocumentSnapshots != null) {
+                    String source2 = queryDocumentSnapshots.getMetadata().hasPendingWrites()
+                            ? "Local" : "Server";
+                    Log.d(TAG, "source2 " + source2);
+                    Log.d(TAG, "messageUi source2" + source2);
+                    List<MessageUi2> messageUiList = getListaMessage(salaId, emisor, queryDocumentSnapshots);
+                    Collections.reverse(messageUiList);
+                    messageCallback.onRecivedMessage(messageUiList);
+                }
+
+            }
+        })));
+    }
     @Override
     public ListenerFirebase getListaMessage(final int emisor, final int reseptor, final ListaMessageCallback messageCallback) {
         String salaId = "";
@@ -155,85 +207,59 @@ public class ChatRemoteDataSource implements ChatDataSource {
                 .orderBy("date", Query.Direction.DESCENDING)
                 .limit(LIMIT_LIST);
 
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+        final String finalSalaId = salaId;
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
+                List<MessageUi2> messageUiList = new ArrayList<>();
+                if (task.isSuccessful()) {
                     QuerySnapshot queryDocumentSnapshots = task.getResult();
-                    if(queryDocumentSnapshots!=null){
-                            List<MessageUi2> messageUiList = getListaMessage(emisor, reseptor, queryDocumentSnapshots,null);
-                            Collections.reverse(messageUiList);
-                            Log.d(TAG, "messageUiList: " + messageUiList.size());
-                            Set<Object> objectList = new LinkedHashSet<>();
-                            for(MessageUi2 messageUi: messageUiList)
-                            {
-                                objectList.add(Utils.getDateChat(messageUi.getFecha()));
-                                objectList.add(messageUi);
-                            }
-                            messageCallback.onLoad(true, "",new ArrayList<Object>(objectList));
-                    }else {
-                        messageCallback.onLoad(false, null,null);
+                    if (queryDocumentSnapshots != null) {
+                        messageUiList.addAll(getListaMessage(finalSalaId, emisor, queryDocumentSnapshots));
+                        Collections.reverse(messageUiList);
+                        Log.d(TAG, "messageUiList: " + messageUiList.size());
+                        Set<Object> objectList = new LinkedHashSet<>();
+                        for (MessageUi2 messageUi : messageUiList) {
+                            objectList.add(Utils.getDateChat(messageUi.getFecha()));
+                            objectList.add(messageUi);
+                        }
+                        messageCallback.onLoad(true, "", new ArrayList<Object>(objectList));
+                    } else {
+                        messageCallback.onLoad(false, null, null);
                     }
 
-                }else {
-                    messageCallback.onLoad(false, null,null);
+                } else {
+                    messageCallback.onLoad(false, null, null);
                 }
+                realtimeMessage(finalSalaId, emisor,messageUiList, messageCallback);
             }
         });
 
-        Query queryChatReciver =  collectionReferenceChat.document(salaId).collection("message")
-                //.whereArrayContains("reference", emisor+"_"+reseptor)
-                //.whereEqualTo("idreceiver", emisor)
-                .whereEqualTo("view", false)
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(LIMIT_LIST);
-
-        Log.d(TAG, "MesListenerFirebaseImpl");
-        return new ListenerFirebaseImpl(queryChatReciver.addSnapshotListener(MetadataChanges.INCLUDE,new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        e.printStackTrace();
-                        messageCallback.onLoad(false, null, null);
-                        return;
-                    }
-                    Log.d(TAG, "queryDocumentSnapshots");
-
-                    if (queryDocumentSnapshots != null) {
-                        String source2 = queryDocumentSnapshots.getMetadata().hasPendingWrites()
-                                ? "Local" : "Server";
-                        Log.d(TAG, "source2 " + source2);
-                        Log.d(TAG, "messageUi source2"+ source2);
-                        List<MessageUi2> messageUiList = getListaMessage(emisor, reseptor, queryDocumentSnapshots,messageCallback);
-                        Collections.reverse(messageUiList);
-                        messageCallback.onRecivedMessage(messageUiList);
-
-                    }
-
-                }
-            }));
+        return new ListenerFirebase() {
+            @Override
+            public void onStop() {
+                for (ListenerFirebase firebaseFirestore : listenerFirebaseList)firebaseFirestore.onStop();
+                listenerFirebaseList.clear();
+            }
+        };
 
     }
 
     private List<String> cache = new ArrayList<>();
 
-    private List<MessageUi2> getListaMessage(int emisor, int reseptor, QuerySnapshot queryDocumentSnapshots, final ListaMessageCallback callback) {
+    private List<MessageUi2> getListaMessage(String salaId, int emisor, QuerySnapshot queryDocumentSnapshots) {
         boolean changeVisto = false;
-        String salaId = "";
-        if(emisor>reseptor){
-            salaId = emisor+"_"+reseptor;
-        }else {
-            salaId = reseptor+"_"+emisor;
-        }
 
         // Get a new write batch
-        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        final WriteBatch batch = FirebaseFirestore.getInstance().batch();
         final HashMap<MessageUi2,MessageUi2.ESTADO> messageIntegerList = new HashMap<>();
         List<MessageUi2> messageUis= new ArrayList<>();
         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
 
             try {
+                Date date = doc.getDate("date");
+                Object o = doc.get("date");
                 //   Log.d(TAG, " => " + doc.get("idchat") +  "  "+ doc.get("message"));
                 final MessageUi2 messageUi= new MessageUi2();
                 messageUi.setId(doc.getId());
@@ -252,15 +278,18 @@ public class ChatRemoteDataSource implements ChatDataSource {
                     messageUi.setTipo(MessageUi2.TIPO.TEXTO);
                 }else if(IMAGEN.equals(tipo)){
                     messageUi.setTipo(MessageUi2.TIPO.IMAGEN);
+                }else if(STICKER.equals(tipo)){
+                    messageUi.setTipo(MessageUi2.TIPO.STICKER);
                 }
 
                 messageUi.setMensajeReplick(doc.getString("messageReplik"));
                 messageUi.setMensajeReplickId(doc.getString("messageIdReplik"));
                 messageUi.setImagenReplick(doc.getString("messageImagenReplik"));
                 messageUi.setPersonaReplick(doc.getString("messageEmisorReplik"));
+                messageUi.setPersonaIdReplick(UtilsFirebase.convert(doc.get("messageEmisorIdReplik"),0));
 
                 switch (state){
-                    case GUARDADO_LOCAL:
+                    /*case GUARDADO_LOCAL:
                         messageUi.setEstado(MessageUi2.ESTADO.CREADO);
                         if(!messageUi.getPendingWrites()){
                             if(emisor == messageUi.getEmisorId()){
@@ -272,9 +301,10 @@ public class ChatRemoteDataSource implements ChatDataSource {
                                     batch.update(collectionReferenceChat.document(salaId).collection("message").document(doc.getId()), "state", GUARDADO);
                                     Log.d(TAG, "message 1");
                                     messageUi.setEnviarNotificacion(true);
-                                }
-                                messageIntegerList.put(messageUi,MessageUi2.ESTADO.GUARDADO);
+                                    messageIntegerList.put(messageUi,MessageUi2.ESTADO.GUARDADO);
 
+                                    messageUi.setEstado(MessageUi2.ESTADO.GUARDADO);
+                                }
                             }
                         }
 
@@ -287,13 +317,12 @@ public class ChatRemoteDataSource implements ChatDataSource {
                                     batch.update(collectionReferenceChat.document(salaId).collection("message").document(doc.getId()), "state", VISTO);
                                     changeVisto = true;
                                     Log.d(TAG, "message 2");
+                                    messageIntegerList.put(messageUi,MessageUi2.ESTADO.VISTO);
                                 }
-                                messageIntegerList.put(messageUi,MessageUi2.ESTADO.VISTO);
-
                             }
                         }
 
-                        break;
+                        break;*/
                     case GUARDADO:
                         if(!messageUi.getPendingWrites()){
                             if(emisor == messageUi.getReceptorId()){
@@ -304,8 +333,8 @@ public class ChatRemoteDataSource implements ChatDataSource {
                                     batch.update(collectionReferenceChat.document(salaId).collection("message").document(doc.getId()), "state", VISTO);
                                     changeVisto = true;
                                     Log.d(TAG, "message 3");
+                                    messageIntegerList.put(messageUi,MessageUi2.ESTADO.VISTO);
                                 }
-                                messageIntegerList.put(messageUi,MessageUi2.ESTADO.VISTO);
                             }
                         }
 
@@ -343,16 +372,9 @@ public class ChatRemoteDataSource implements ChatDataSource {
             }
         }
 
-        String id = "";
-        if(emisor>reseptor){
-            id = emisor+"_"+reseptor;
-        }else {
-            id = reseptor+"_"+emisor;
-        }
-
         SQLite.update(Message.class)
                 .set(Message_Table.estado.eq(1))
-                .where(Message_Table.chatId.eq(id))
+                .where(Message_Table.chatId.eq(salaId))
                 .execute();
 
         String source = queryDocumentSnapshots.getMetadata().isFromCache() ?
@@ -365,17 +387,26 @@ public class ChatRemoteDataSource implements ChatDataSource {
         }
 
         if(!messageIntegerList.isEmpty()){
-            // Commit the batch
-            batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            batch.commit()
+                    .addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            e.printStackTrace();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    for (Map.Entry<MessageUi2, MessageUi2.ESTADO> entry : messageIntegerList.entrySet()){
-                        entry.getKey().setEstado(entry.getValue());
-                    }
                     Log.d(TAG, "message Succes");
-                    if(callback!=null)callback.onChangeEstado();
+
                 }
             });
+
         }
 
 
@@ -383,7 +414,7 @@ public class ChatRemoteDataSource implements ChatDataSource {
     }
 
     @Override
-    public void getListlastMessage(final int emisor, final int reseptor, Date date, final Callback<List<Object>> messageCallback) {
+    public ListenerFirebase getListlastMessage(final int emisor, final int reseptor, Date date, final ListaMessageCallback messageCallback) {
         String salaId = "";
         if(emisor>reseptor){
             salaId = emisor+"_"+reseptor;
@@ -398,14 +429,16 @@ public class ChatRemoteDataSource implements ChatDataSource {
                 .orderBy("date", Query.Direction.DESCENDING)
                 .limit(LIMIT_LIST);
 
+        final String finalSalaId = salaId;
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<MessageUi2> messageUiList = new ArrayList<>();
                 if (task.isSuccessful()) {
                     QuerySnapshot queryDocumentSnapshots = task.getResult();
                     if (queryDocumentSnapshots != null) {
-                            List<MessageUi2> messageUiList = getListaMessage(emisor, reseptor, queryDocumentSnapshots, null);
+                        messageUiList.addAll(getListaMessage(finalSalaId,emisor, queryDocumentSnapshots));
                             Collections.reverse(messageUiList);
 
                             Set<Object> objectList = new LinkedHashSet<>();
@@ -413,17 +446,26 @@ public class ChatRemoteDataSource implements ChatDataSource {
                                 objectList.add(Utils.getDateChat(messageUi.getFecha()));
                                 objectList.add(messageUi);
                             }
-                            messageCallback.onLoad(true, new ArrayList<Object>(objectList));
+                            messageCallback.onLoad(true, finalSalaId,new ArrayList<Object>(objectList));
                     } else {
-                        messageCallback.onLoad(false, null);
+                        messageCallback.onLoad(false, finalSalaId,null);
                     }
 
                 } else {
-                    messageCallback.onLoad(false, null);
+                    messageCallback.onLoad(false, finalSalaId,null);
                 }
+
+                realtimeMessage(finalSalaId, emisor,messageUiList, messageCallback);
             }
         });
 
+        return new ListenerFirebase() {
+            @Override
+            public void onStop() {
+                for (ListenerFirebase firebaseFirestore : listenerFirebaseList)firebaseFirestore.onStop();
+                listenerFirebaseList.clear();
+            }
+        };
     }
 
     @Override

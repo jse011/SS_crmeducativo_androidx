@@ -25,8 +25,6 @@ public interface ChatPresenter extends BasePresenter<Chatview> {
 
     void onResumenChatsList();
 
-    void onResumContactsList();
-
     void onPageChanged(Class<? extends Fragment> aClass);
 
     void search(String toString);
@@ -36,10 +34,6 @@ public interface ChatPresenter extends BasePresenter<Chatview> {
     void showListFilter(ContactUi.TypeContact teacher);
 
     void onGroupsFragmentViewDestroyed();
-
-    void clickTextSearch();
-
-    void valideFragmentSearch();
 
     void activityCreatedContactsFragment();
 
@@ -52,6 +46,8 @@ public interface ChatPresenter extends BasePresenter<Chatview> {
     void activityGroupsFragment();
 
     void onRefreshChats();
+
+    void onRefreshContactos();
 
 
 //    void attachView(DetalleDirectivosFragment f);

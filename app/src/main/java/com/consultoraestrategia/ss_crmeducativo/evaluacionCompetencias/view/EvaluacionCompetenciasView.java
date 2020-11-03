@@ -54,5 +54,5 @@ public interface EvaluacionCompetenciasView extends BaseView<EvaluacionCompetenc
 
     void showFiltroDialog();
 
-    void reloadActivity();
+    void reloadActivity(int programaEducativoId);
 }

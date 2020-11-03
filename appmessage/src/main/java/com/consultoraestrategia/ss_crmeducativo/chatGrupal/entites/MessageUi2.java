@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MessageUi2 {
-    public enum TIPO{TEXTO, IMAGEN}
+    public enum TIPO{TEXTO, IMAGEN, STICKER}
     private boolean pendingWrites;
     private String salaId;
     private String salaTipo;
@@ -268,6 +268,7 @@ public class MessageUi2 {
     private transient String mensajeReplick;
     private transient String imagenReplick;
     private transient String personaReplick;
+    private transient int personaIdReplick;
 
     public String getMensajeReplickId() {
         return mensajeReplickId;
@@ -307,5 +308,13 @@ public class MessageUi2 {
 
     public void setImagenFcm(String imagenFcm) {
         this.imagenFcm = imagenFcm;
+    }
+
+    public int getPersonaIdReplick() {
+        return personaIdReplick;
+    }
+
+    public void setPersonaIdReplick(int personaIdReplick) {
+        this.personaIdReplick = personaIdReplick;
     }
 }

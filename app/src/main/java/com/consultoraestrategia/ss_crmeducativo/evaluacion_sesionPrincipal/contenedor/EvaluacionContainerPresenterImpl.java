@@ -16,14 +16,12 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacion_sesionPrincipal.entit
 import com.consultoraestrategia.ss_crmeducativo.evaluacion_sesionPrincipal.entities.RubroEvaluacionUi;
 import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.sesion.view.FragmentRubroEvalProcesoLista;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionRubroEvaluacion;
 
 /**
  * Created by SCIEV on 30/07/2018.
  */
 
 public class EvaluacionContainerPresenterImpl extends BasePresenterImpl<EvaluacionContainerView> implements EvaluacionContainerPresenter {
-    GetFechaCreacionRubroEvaluacion getFechaCreacionRubroEvaluacion;
     CalcularMediaDesviacion calcularMediaDesviacion;
     GetRubro getRubro;
     private String rubroEvaluacionId;
@@ -39,9 +37,8 @@ public class EvaluacionContainerPresenterImpl extends BasePresenterImpl<Evaluaci
     private boolean desavilitarEval;
     private UpdateEvaluacionFormulas updateEvaluacionFormulas;
 
-    public EvaluacionContainerPresenterImpl(UseCaseHandler handler, Resources res, GetFechaCreacionRubroEvaluacion getFechaCreacionRubroEvaluacion, GetRubro getRubro, CalcularMediaDesviacion calcularMediaDesviacion,UpdateEvaluacionFormulas updateEvaluacionFormulas) {
+    public EvaluacionContainerPresenterImpl(UseCaseHandler handler, Resources res, GetRubro getRubro, CalcularMediaDesviacion calcularMediaDesviacion,UpdateEvaluacionFormulas updateEvaluacionFormulas) {
         super(handler, res);
-        this.getFechaCreacionRubroEvaluacion = getFechaCreacionRubroEvaluacion;
         this.getRubro = getRubro;
         this.calcularMediaDesviacion=calcularMediaDesviacion;
         this.updateEvaluacionFormulas = updateEvaluacionFormulas;
@@ -218,24 +215,6 @@ public class EvaluacionContainerPresenterImpl extends BasePresenterImpl<Evaluaci
     public void onResume() {
         super.onResume();
         //getFechaCreacionRubroEvaluacion();
-    }
-
-    private void getFechaCreacionRubroEvaluacion(){
-        handler.execute(getFechaCreacionRubroEvaluacion,
-                new GetFechaCreacionRubroEvaluacion.RequestValues(rubroEvaluacionId),
-                new UseCase.UseCaseCallback<GetFechaCreacionRubroEvaluacion.ResponseValue>() {
-                    @Override
-                    public void onSuccess(GetFechaCreacionRubroEvaluacion.ResponseValue response) {
-                        f_CreacionServidor = response.getF_Servidor();
-                        f_CreacionLocal = response.getF_Local();
-                        comprobarFechaRubroEvaluacion();
-                    }
-
-                    @Override
-                    public void onError() {
-                        ocultarMsgActualizacion();
-                    }
-                });
     }
 
     private void comprobarFechaRubroEvaluacion() {

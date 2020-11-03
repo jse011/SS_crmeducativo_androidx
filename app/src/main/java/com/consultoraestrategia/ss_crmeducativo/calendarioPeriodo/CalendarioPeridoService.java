@@ -16,6 +16,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.Empleado_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
+import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
 import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosAnioAcademico;
 import com.consultoraestrategia.ss_crmeducativo.services.data.util.TransaccionUtils;
@@ -97,6 +98,8 @@ public class CalendarioPeridoService {
                             TransaccionUtils.fastStoreListInsert(Tipos.class, response.getTipos(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(CalendarioAcademico.class, response.getCalendarioAcademico(), databaseWrapper, true);
 
+
+                            TransaccionUtils.fastStoreListInsert(WebConfig.class, response.getWebConfigs(), databaseWrapper, true);
 
                             //
 

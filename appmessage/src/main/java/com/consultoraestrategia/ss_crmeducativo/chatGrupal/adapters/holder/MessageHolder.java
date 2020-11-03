@@ -55,6 +55,10 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
     TextView horaSen;
     @BindView(R2.id.contSender)
     LinearLayout contSender;
+    @BindView(R2.id.horaSenDelete)
+    TextView horaSenDelete;
+    @BindView(R2.id.contSenderEliminado)
+    LinearLayout contSenderEliminado;
     @BindView(R2.id.barra_reciver_replick)
     View barraReciverReplick;
     @BindView(R2.id.img_receiver_replick)
@@ -73,8 +77,15 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
     TextView horaRec;
     @BindView(R2.id.contReceiver)
     LinearLayout contReceiver;
+    @BindView(R2.id.txt_reciverRemove)
+    TextView txtReciverRemove;
+    @BindView(R2.id.horaRecDelete)
+    TextView horaRecDelete;
+    @BindView(R2.id.contReceiverEliminado)
+    LinearLayout contReceiverEliminado;
     @BindView(R2.id.foreground_view)
     public LinearLayout foregroundView;
+    
     private MessageUi2 messageUi2;
     private boolean seleccionado;
     private MessageAdapter.Listener listener;
@@ -107,7 +118,10 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
             foregroundView.setLayoutParams(layoutParams);
 
             contReceiver.setVisibility(View.GONE);
+            contReceiverEliminado.setVisibility(View.GONE);
             contSender.setVisibility(View.VISIBLE);
+            contSenderEliminado.setVisibility(View.GONE);
+            
             textsender.setText(messageUic.getMensaje());
             horaSen.setText(tiempo);
 
@@ -138,6 +152,10 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
                     textsender.setText(mensaje);
                     textsender.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.md_grey_500));
                     textsender.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_block, 0, 0, 0);
+
+                    contSender.setVisibility(View.GONE);
+                    contSenderEliminado.setVisibility(View.VISIBLE);
+                    horaSenDelete.setText(tiempo);
                     break;
             }
 
@@ -174,14 +192,18 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
             foregroundView.setLayoutParams(layoutParams);
 
             contSender.setVisibility(View.GONE);
+            contSenderEliminado.setVisibility(View.GONE);
+            contReceiverEliminado.setVisibility(View.GONE);
             contReceiver.setVisibility(View.VISIBLE);
             textreceiver.setText(messageUic.getMensaje());
             horaRec.setText(tiempo);
             PersonaUi personaUi = messageUic.getPersonaUi();
             if(personaUi!=null){
                 txtReciver.setText(personaUi.getNombre());
+                txtReciverRemove.setText(personaUi.getNombre());
             }else {
                 txtReciver.setText(messageUic.getNombreEmisor());
+                txtReciverRemove.setText(messageUic.getNombreEmisor());
             }
 
             if (messageUic.getEstado() == MessageUi2.ESTADO.ELIMINADO) {
@@ -189,6 +211,9 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
                 textreceiver.setText(mensaje);
                 textreceiver.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_grey_500));
                 textreceiver.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_block, 0, 0, 0);
+                contReceiverEliminado.setVisibility(View.VISIBLE);
+                contReceiver.setVisibility(View.GONE);
+                horaRecDelete.setText(tiempo);
             }else {
                 textreceiver.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
                 textreceiver.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.md_black_1000));

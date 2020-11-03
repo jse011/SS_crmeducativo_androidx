@@ -15,4 +15,5 @@ public class ChangeMessageEstadoEliminado {
     public void excute(List<MessageUi2> messageUi2List){
         chatRepository.changeEstadoEliminado(messageUi2List);
     }
+
 }

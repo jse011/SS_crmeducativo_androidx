@@ -14,16 +14,11 @@ public class GetListMessage {
         this.repository = repository;
     }
 
-    public ListenerFirebase execute(List<Object> mensajesList, int emisor, int reseptor, final Callback callback){
+    public ListenerFirebase execute(int emisor, int reseptor, final Callback callback){
         return repository.getListaMessage(emisor, reseptor, new ChatDataSource.ListaMessageCallback() {
             @Override
             public void onRecivedMessage(List<MessageUi2> messageUis) {
                 callback.onRecivedMessage(messageUis);
-            }
-
-            @Override
-            public void onChangeEstado() {
-                callback.onChangeEstado();
             }
 
             @Override
@@ -41,6 +36,5 @@ public class GetListMessage {
         void onRecivedMessage(List<MessageUi2> messageUis);
         void onSuccess(List<Object> item);
         void onError();
-        void onChangeEstado();
     }
 }

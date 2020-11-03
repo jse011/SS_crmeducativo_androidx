@@ -1,86 +1,117 @@
 package com.consultoraestrategia.ss_crmeducativo.chats.groups;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
+import com.consultoraestrategia.ss_crmeducativo.appmessage.R2;
 import com.consultoraestrategia.ss_crmeducativo.base.viewpager.ViewPagerItemListener;
 import com.consultoraestrategia.ss_crmeducativo.chatGrupal.ChatGrupalActivity;
 import com.consultoraestrategia.ss_crmeducativo.chats.adapters.groups.GroupAdapter;
 import com.consultoraestrategia.ss_crmeducativo.chats.entities.GroupUi;
 import com.consultoraestrategia.ss_crmeducativo.chats.presenter.ChatPresenter;
 import com.consultoraestrategia.ss_crmeducativo.chats.view.ChatListener;
-import com.consultoraestrategia.ss_crmeducativo.personalChat.chooseTypePerson.DialogFragmentChoosePerson;
-import com.consultoraestrategia.ss_crmeducativo.personalChat.entities.SendDataChatBundle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupsFragment extends Fragment implements GroupsView , ViewPagerItemListener<ChatPresenter>, ChatListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
+public class GroupsFragment extends Fragment implements GroupsView, ViewPagerItemListener<ChatPresenter>, ChatListener {
+
+    @BindView(R2.id.recy_groups)
+    RecyclerView recyGroups;
+    @BindView(R2.id.progress)
+    ProgressBar progress;
     private ChatPresenter presenter;
-    private String TAG=GroupsFragment.class.getSimpleName();
-    private RecyclerView recy_roups;
+    private String TAG = GroupsFragment.class.getSimpleName();
     private GroupAdapter groupAdapter;
-    private ProgressBar progressBar;
+    private Unbinder unbinder;
+
+
     @Override
     public void onAttach(ChatPresenter presenter) {
-        this.presenter=presenter;
+        this.presenter = presenter;
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groups, container, false);
         Log.e(TAG, "onCreateView");
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.e(TAG, "onViewCreated");
-        recy_roups=(RecyclerView) getActivity().findViewById(R.id.recy_groups);
-        progressBar=(ProgressBar) getActivity().findViewById(R.id.progress);
         initAdapter();
-
 
     }
 
     private void initAdapter() {
         groupAdapter = new GroupAdapter(new ArrayList<Object>(), this);
-        recy_roups.setLayoutManager(new LinearLayoutManager(getContext()));
-        recy_roups.setAdapter(groupAdapter);
+        recyGroups.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyGroups.setAdapter(groupAdapter);
     }
 
 
     @Override
     public void clickChat(Object object) {
-        if(object instanceof GroupUi){
-            GroupUi groupUi=(GroupUi)object;
+        if (object instanceof GroupUi) {
+            GroupUi groupUi = (GroupUi) object;
             List<Long> docenteId = groupUi.getDocenteId();
             int cargaAcademicaId = groupUi.getCargaAcademicaId();
             int cargaCursoId = groupUi.getCargaCursoId();
             String grupoEquipoId = groupUi.getGrupoEquipoId();
             int personaId = groupUi.getIdSender();
-            switch (groupUi.getType()){
-                case ACADEMIC:
-                    ChatGrupalActivity.start(getContext(), personaId, cargaCursoId, cargaAcademicaId, grupoEquipoId, docenteId, ChatGrupalActivity.TIPO_CLASSROON, ChatGrupalActivity.NIVEL_GENERAL);
+            int nivel;
+            switch (groupUi.getGrupo()){
+                case Alumno:
+                    nivel = ChatGrupalActivity.NIVEL_ALUMNO;
                     break;
-                case COURSE:
-                    ChatGrupalActivity.start(getContext(), personaId, cargaCursoId, cargaAcademicaId, grupoEquipoId, docenteId, ChatGrupalActivity.TIPO_COURSE, ChatGrupalActivity.NIVEL_GENERAL);
+                case Padre:
+                    nivel = ChatGrupalActivity.NIVEL_PADRES;
+                    break;
+                case Todos:
+                    nivel = ChatGrupalActivity.NIVEL_GENERAL;
                     break;
                 default:
-                    ChatGrupalActivity.start(getContext(), personaId, cargaCursoId, cargaAcademicaId, grupoEquipoId, docenteId, ChatGrupalActivity.TIPO_TEAM, ChatGrupalActivity.NIVEL_GENERAL);
+                    nivel = ChatGrupalActivity.NIVEL_GENERAL;
                     break;
             }
+
+            int tipo = 0;
+            switch (groupUi.getType()) {
+                case ACADEMIC:
+                    tipo = ChatGrupalActivity.TIPO_CLASSROON;
+                    break;
+                case COURSE:
+                    tipo = ChatGrupalActivity.TIPO_COURSE;
+                    break;
+                case TEAM:
+                    tipo = ChatGrupalActivity.TIPO_TEAM;
+                    nivel = ChatGrupalActivity.NIVEL_ALUMNO;
+                    break;
+
+            }
+
+            ChatGrupalActivity.start(getContext(), personaId, cargaCursoId, cargaAcademicaId, grupoEquipoId, docenteId, tipo, nivel);
 
             /*
             SendDataChatBundle sendDataChatBundle= new SendDataChatBundle();
@@ -113,7 +144,7 @@ public class GroupsFragment extends Fragment implements GroupsView , ViewPagerIt
     @Override
     public void onResume() {
         super.onResume();
-      //  presenter.onResumGroupsList();
+        //  presenter.onResumGroupsList();
     }
 
     @Override
@@ -122,14 +153,20 @@ public class GroupsFragment extends Fragment implements GroupsView , ViewPagerIt
     }
 
 
-
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
+        progress.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

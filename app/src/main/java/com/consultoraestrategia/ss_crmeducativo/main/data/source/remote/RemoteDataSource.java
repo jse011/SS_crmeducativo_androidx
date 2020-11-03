@@ -47,6 +47,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.Seccion;
 import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento;
 import com.consultoraestrategia.ss_crmeducativo.entities.SilaboEvento_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
+import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
 import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
 import com.consultoraestrategia.ss_crmeducativo.main.data.source.MainDataSource;
 import com.consultoraestrategia.ss_crmeducativo.main.data.source.callbacks.GetAccesosListCallback;
@@ -338,6 +339,7 @@ public class RemoteDataSource implements MainDataSource {
                             TransaccionUtils.fastStoreListInsert(CursosDetHorario.class, response.getCursosDetHorario(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(Horario.class, response.getHorario(), databaseWrapper, true);
 
+                            TransaccionUtils.fastStoreListInsert(WebConfig.class, response.getWebConfigs(), databaseWrapper, true);
 
                         }
                     }).success(new Transaction.Success() {

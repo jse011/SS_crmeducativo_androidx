@@ -631,8 +631,8 @@ public class TabsSesionesActivityV2 extends AppCompatActivity implements TabsSes
 
     @Override
     public void showActualizarRubrica(BEVariables beVariables) {
-        Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.RUBROEVALUACION_CALENDARIO, beVariables);
-        startActivityForResult(intent, UPDATE_RUBRICA);
+        //Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.RUBROEVALUACION_CALENDARIO, beVariables);
+        //startActivityForResult(intent, UPDATE_RUBRICA);
     }
 
     @Override
@@ -642,8 +642,8 @@ public class TabsSesionesActivityV2 extends AppCompatActivity implements TabsSes
 
     @Override
     public void showActualizarRubros(BEVariables beVariables) {
-        Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.RUBROEVALUACION_CALENDARIO, beVariables);
-        startActivityForResult(intent, UPDATE_RUBRICA);
+        //Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.RUBROEVALUACION_CALENDARIO, beVariables);
+        //startActivityForResult(intent, UPDATE_RUBRICA);
     }
 
     @Override

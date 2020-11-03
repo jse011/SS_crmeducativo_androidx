@@ -8,6 +8,11 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import com.aghajari.emojiview.AXEmojiManager;
+import com.aghajari.emojiview.emoji.iosprovider.AXIOSEmojiProvider;
+import com.consultoraestrategia.ss_crmeducativo.chats.useCase.UseCaseSincronizar;
+import com.consultoraestrategia.ss_crmeducativo.services.data.util.UtilServidor;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
@@ -72,7 +77,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.vanniktech.emoji.EmojiManager;
-import com.vanniktech.emoji.google.GoogleEmojiProvider;
+import com.vanniktech.emoji.ios.IosEmojiProvider;
 
 import java.io.Serializable;
 import java.util.List;
@@ -131,10 +136,14 @@ public class ChatsActivity extends BaseActivity<Chatview, ChatPresenter> impleme
 
     @Override
     protected ChatPresenter getPresenter() {
-        ChatRepository chatRepository = new ChatRepository(new ChatDataRemoteSource(InjectorUtils.provideParametrosDisenioDao()), new ChatDataLocalSource(InjectorUtils.provideCursoDao(), InjectorUtils.provideParametrosDisenioDao()));
+        ChatRepository chatRepository = new ChatRepository(new ChatDataRemoteSource( UtilServidor.getInstance(),InjectorUtils.provideParametrosDisenioDao()), new ChatDataLocalSource(InjectorUtils.provideCursoDao(), InjectorUtils.provideParametrosDisenioDao()));
         presenter = new ChatPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(), new GetSenderInformation(chatRepository)
                 , new GetChats(chatRepository), new GetContacts(chatRepository), new GetGroups(chatRepository), new GetListFilterGroups(chatRepository)
-                , new GetChatsGroups(chatRepository), new GetUsuario(chatRepository), new GetAllChats(chatRepository), new GetDatosChatAndUpdatePersonaGrupo(chatRepository));
+                , new GetChatsGroups(chatRepository),
+                new GetUsuario(chatRepository),
+                new GetAllChats(chatRepository),
+                new GetDatosChatAndUpdatePersonaGrupo(chatRepository),
+                new UseCaseSincronizar(chatRepository));
         return presenter;
     }
 
@@ -467,8 +476,8 @@ public class ChatsActivity extends BaseActivity<Chatview, ChatPresenter> impleme
     }
 
     @Override
-    public void showChatPersonal(int personaId, int personaExternaId) {
-        ChatActivity.start(this, personaId, personaExternaId);
+    public void showChatPersonal(int personaId, int personaExternaId, String name, String imageRec) {
+        ChatActivity.start(this, personaId, personaExternaId, name, imageRec);
     }
 
     @Override
@@ -539,7 +548,8 @@ public class ChatsActivity extends BaseActivity<Chatview, ChatPresenter> impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EmojiManager.install(new GoogleEmojiProvider());
+        EmojiManager.install(new IosEmojiProvider());
+        AXEmojiManager.install(this,new AXIOSEmojiProvider(this));
     }
 
     @Override

@@ -19,12 +19,6 @@ public interface LoginPreferentRepository {
 
     void elimarTodosUsuario(Callback<Boolean> usuarioCallback);
 
-    void guardarWebConfig(List<WebConfig> webConfigs);
-
-    void elimarWebConfig();
-
-    WebConfig getWebConfig(String key);
-
     List<ServiceEnvioFbUi> getListaCambios();
 
     void eliminarCambios();

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,9 +31,28 @@ public class GroupHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final GroupUi groupUi,final ChatListener chatListener){
-        sectionName.setText(groupUi.getSection());
-        Log.d(getClass().getSimpleName(), groupUi.getSection()+ ", "+ groupUi.getYear()+", "+ groupUi.getProgramEducate());
-        name.setText(groupUi.getSection()+ ", "+ groupUi.getYear()+", "+ groupUi.getProgramEducate());
+        StringBuilder j= new StringBuilder();
+        if(!TextUtils.isEmpty(groupUi.getSection())){
+            for(int i=0;groupUi.getSection().length()>i; i++){
+                j.append(groupUi.getSection().charAt(i));
+                if(i==2)break;
+            }
+        }
+        sectionName.setText(j.toString());
+        //name.setText(groupUi.getSection()+ ", "+ groupUi.getYear()+", "+ groupUi.getProgramEducate());
+
+        switch (groupUi.getGrupo()){
+            case Padre:
+                name.setText("Grupo de Padres");
+                break;
+            case Alumno:
+                name.setText("Grupo de Alumnos");
+                break;
+            default:
+                name.setText("Grupo Oficial");
+                break;
+        }
+
         sectionName.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.light_blank));
         root.setOnClickListener(new View.OnClickListener() {
             @Override

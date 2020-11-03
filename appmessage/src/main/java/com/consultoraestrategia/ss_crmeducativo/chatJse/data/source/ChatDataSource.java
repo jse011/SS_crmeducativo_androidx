@@ -19,9 +19,8 @@ public interface ChatDataSource {
         void onProgres(int progres);
     }
     interface ListaMessageCallback{
-        void onLoad(boolean success, String chatId,List<Object> item );
+        void onLoad(boolean success, String chatId, List<Object> item);
         void onRecivedMessage(List<MessageUi2> messageUis);
-        void onChangeEstado();
     }
     interface Callback<T>{
         void onLoad(boolean success, T item);
@@ -33,7 +32,7 @@ public interface ChatDataSource {
     PersonaUi getPersona(int personaId);
     void saveMensaje(MessageUi2 messageUi2, MessageCallback messageCallback);
     ListenerFirebase getListaMessage(int emisor, int reseptor, ListaMessageCallback callback);
-    void getListlastMessage(int emisor, int reseptor, Date date, Callback<List<Object>> callback);
+    ListenerFirebase getListlastMessage(final int emisor, final int reseptor, Date date, final ListaMessageCallback messageCallback);
     void saveKeyPress(int person, int personaExterna);
     ListenerFirebaseImpl getKeyPressEmisor(int personaId, int personaExternaId, CallbackKeyPressEmisor callback);
     void changeEstado(List<MessageUi2> messageUi2List, Callback<List<MessageUi2>> listCallback);

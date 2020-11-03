@@ -55,14 +55,9 @@ import com.consultoraestrategia.ss_crmeducativo.createTeamList.domain.usecase.Ge
 import com.consultoraestrategia.ss_crmeducativo.grouplist.adapter.TeamAdapter;
 import com.consultoraestrategia.ss_crmeducativo.grouplist.entities.Group;
 import com.consultoraestrategia.ss_crmeducativo.grouplist.entities.Team;
-import com.consultoraestrategia.ss_crmeducativo.services.daemon.util.CallService;
 import com.consultoraestrategia.ss_crmeducativo.services.data.source.util.RepositoryInjector;
-import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoExportacion;
-import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
-import com.consultoraestrategia.ss_crmeducativo.services.importarActividad.ui.ImportarActivity;
 import com.consultoraestrategia.ss_crmeducativo.services.syncIntentService.SimpleSyncIntenService;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionGrupoEquipo;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
 
 import org.parceler.Parcels;
@@ -294,7 +289,6 @@ public class CreateTeamListActivity extends AppCompatActivity implements CreateT
                     new DeleteTeam(repositoryTeam),
                     new CreateTeam(repositoryTeam),
                     getResources(),
-                    new GetFechaCreacionGrupoEquipo(RepositoryInjector.getBEDatosEnvioGrupoRepositoryInjector()),
                     new GenerateTeamList(repository)
             );
             presenter.setExtras(getIntent().getExtras());
@@ -467,8 +461,8 @@ public class CreateTeamListActivity extends AppCompatActivity implements CreateT
 
     @Override
     public void showActividadImportacion(BEVariables beVariables) {
-        Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.GRUPO, beVariables);
-        startActivityForResult(intent, UPDATE_TEAM_REQUEST);
+        //Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.GRUPO, beVariables);
+        //startActivityForResult(intent, UPDATE_TEAM_REQUEST);
     }
 
     @Override

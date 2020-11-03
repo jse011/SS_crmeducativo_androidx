@@ -23,7 +23,7 @@ public interface Chatview extends BaseView<ChatPresenter> {
 
     void hideSearch();
 
-    void showChatPersonal(int personaId, int personaExternaId);
+    void showChatPersonal(int personaId, int personaExternaId, String name, String imageRec);
 
     void showChatGrupal(int personaId, ChatUi chatUi);
 

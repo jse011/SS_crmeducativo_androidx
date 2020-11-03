@@ -1,6 +1,5 @@
 package com.consultoraestrategia.ss_crmeducativo.chatJse.domain.usecase;
 
-import com.consultoraestrategia.ss_crmeducativo.chatJse.data.source.ChatDataSource;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.data.source.ChatRepository;
 
 public class EstadoActivo {

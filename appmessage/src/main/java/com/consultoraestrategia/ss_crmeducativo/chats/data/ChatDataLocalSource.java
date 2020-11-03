@@ -68,6 +68,7 @@ import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.consultoraestrategia.ss_crmeducativo.utils.AppMessengetNotification;
 import com.consultoraestrategia.ss_crmeducativo.utils.firebase.ListenerFirebase;
+import com.google.gson.Gson;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -373,7 +374,7 @@ public class ChatDataLocalSource implements ChatDataSource {
         HashSet<Object>objects= new LinkedHashSet<>();
         //get academic charge
         Set<Integer> cargaCursoIdList = new LinkedHashSet<>();
-        objects.add("Grupos por carga Académica");
+
         Empleado empleado= SQLite.select().from(Empleado.class).where(Empleado_Table.personaId.withTable().eq(personaId)).querySingle();
         if(empleado!=null){
 
@@ -420,8 +421,10 @@ public class ChatDataLocalSource implements ChatDataSource {
                     .queryList();
 
             Log.d(TAG, "academicCharge size "+ academicCharge.size());
-            for(CargaAcademica academic:academicCharge){
 
+
+            for(CargaAcademica academic:academicCharge){
+                //objects.add("Grados");
                 List<CargaCursos> cargaCursos = SQLite.select()
                         .from(CargaCursos.class)
                         .where(CargaCursos_Table.cargaAcademicaId.eq(academic.getCargaAcademicaId()))
@@ -476,17 +479,32 @@ public class ChatDataLocalSource implements ChatDataSource {
                         .querySingle();
                 if(nivelAcademico!=null)groupUi.setProgramEducate(nivelAcademico.getNombre());
                 groupUi.setName(groupUi.getYear()+ " "+ groupUi.getSection()+" - "+ groupUi.getProgramEducate());
-                objects.add(groupUi);
+
+                objects.add(groupUi.getName());
+                Gson gson = new Gson();
+                String json = gson.toJson(groupUi);
+
+                GroupUi todos = gson.fromJson(json, GroupUi.class);
+                GroupUi padres = gson.fromJson(json, GroupUi.class);
+                GroupUi alumnos = gson.fromJson(json, GroupUi.class);
+
+                todos.setGrupo(GroupUi.Grupo.Todos);
+                padres.setGrupo(GroupUi.Grupo.Padre);
+                alumnos.setGrupo(GroupUi.Grupo.Alumno);
+                objects.add(todos);
+                objects.add(padres);
+                objects.add(alumnos);
+
+
             }
 
             //get courses
-            objects.add("Grupos por curso");
 
 
             List<CursoCustom>cursoCustoms=cursoDao.obtenerPorCargaCursos(new ArrayList<Integer>(cargaCursoIdList));
 
             for(CursoCustom course:cursoCustoms){
-
+                //objects.add("Cursos");
                 List<Long> docenteIdList = new ArrayList<>();
                 if(course.getComplejo()==1){
                     CargaCursoDocente cargaCursoDocente = SQLite.select()
@@ -507,7 +525,11 @@ public class ChatDataLocalSource implements ChatDataSource {
                 groupUi.setIdSender(personaId);
                 groupUi.setType(GroupUi.Type.COURSE);
                 ParametrosDisenio parametrosDisenio= parametrosDisenioDao.obtenerPorCargaCurso(course.getCargaCursoId());
-                if(parametrosDisenio!=null)  groupUi.setColor(String.valueOf(parametrosDisenio.getColor1()));
+                if(parametrosDisenio!=null){
+                    groupUi.setColor(String.valueOf(parametrosDisenio.getColor1()));
+                    groupUi.setPhoto(String.valueOf(parametrosDisenio.getPath()));
+                }
+
                 groupUi.setNameCourse(course.getNombre());
                 Seccion section=SQLite.select().from(Seccion.class).where(Seccion_Table.seccionId.withTable().eq(course.getSeccionId())).querySingle();
                 if(section!=null){
@@ -539,17 +561,34 @@ public class ChatDataLocalSource implements ChatDataSource {
                     groupUi.setProgramEducate(nivelAcademico.getNombre());
                 }
                 groupUi.setName(groupUi.getNameCourse() +", "+ groupUi.getYear()+ " "+ groupUi.getSection()+" - "+ groupUi.getProgramEducate());
-                objects.add(groupUi);
+
+                objects.add(groupUi.getName());
+
+                Gson gson = new Gson();
+                String json = gson.toJson(groupUi);
+
+                GroupUi todos = gson.fromJson(json, GroupUi.class);
+                GroupUi padres = gson.fromJson(json, GroupUi.class);
+                GroupUi alumnos = gson.fromJson(json, GroupUi.class);
+
+                todos.setGrupo(GroupUi.Grupo.Todos);
+                padres.setGrupo(GroupUi.Grupo.Padre);
+                alumnos.setGrupo(GroupUi.Grupo.Alumno);
+                objects.add(todos);
+                objects.add(padres);
+                objects.add(alumnos);
 
             }
+
             //get team for group course
-            objects.add("Equipos");
+
             List<GrupoEquipoC>groupTeams=SQLite.select().from(GrupoEquipoC.class)
                     .where(GrupoEquipoC_Table.cargaCursoId.withTable().in(cargaCursoIdList))
                     .and(GrupoEquipoC_Table.estado.notEq(GrupoEquipoC.ELIMINADO))
                     .queryList();
 
             for(GrupoEquipoC team: groupTeams){
+                objects.add("Equipos");
                 List<Long> docenteIdList = new ArrayList<>();
                 for (CursoCustom cursoCustom : cursoCustoms){
                     if(cursoCustom.getCargaCursoId()== team.getCargaCursoId()){
@@ -727,9 +766,6 @@ public class ChatDataLocalSource implements ChatDataSource {
                     .orderBy(Message_Table.lastdate.desc())
                     .querySingle();
 
-            Log.d(TAG,"message: " + Utils.f_fecha_letras_2(chatUi.getLastDate().getTime()));
-            Log.d(TAG,"id: " + chatUi.getId());
-
             Message message = SQLite.select()
                     .from(Message.class)
                     .where(Message_Table.id.eq(chatUi.getMensageId()))
@@ -812,9 +848,10 @@ public class ChatDataLocalSource implements ChatDataSource {
                     String nombre = Utils.capitalize(Utils.getFirstWord(directivos.getNombre()))+ " "+Utils.capitalize(directivos.getApellidoPaterno())+" "+Utils.capitalize(directivos.getApellidoMaterno());
                     chatUi.setName(nombre);
                     chatUi.setImageRec(directivos.getFoto());
-                }else {
+                }else if(TextUtils.isEmpty(chatUi.getName())){
                     chatUi.setName("Desconocido");
                 }
+
                 chatUi.setTypeChat(ChatUi.TypeChat.PERSONAL);
             }else {
                 int cargaCursoId = 0;
@@ -860,7 +897,7 @@ public class ChatDataLocalSource implements ChatDataSource {
                 }
 
                 chatUi.setTypeChat(ChatUi.TypeChat.GROUP);
-                chatUi.setName("Desconocido");
+                if(TextUtils.isEmpty(chatUi.getName())) chatUi.setName("Desconocido");
                 if (cargaCursoId != 0) {
                     CursoCustom cursoCustom = null;
                     for (CursoCustom item: cache1){
@@ -913,8 +950,11 @@ public class ChatDataLocalSource implements ChatDataSource {
 
                     chatUi.setName(cursoCustom != null ? cursoCustom.getNombre() + " " + cursoCustom.getPeriodo() + " " + cursoCustom.getSeccion() + " - " + cursoCustom.getNivelAcademico() : "");
                     ParametrosDisenio parametrosDisenio = parametrosDisenioDao.obtenerPorCargaCurso(cargaCursoId);
-                    if (parametrosDisenio != null)
+                    if (parametrosDisenio != null){
                         chatUi.setColor(String.valueOf(parametrosDisenio.getColor1()));
+                        chatUi.setImageRec(parametrosDisenio.getPath());
+
+                    }
                 }else if(cargaAcademicaId!=0){
                     CursoCustom cargaAcademicaCustom = null;
                     for (CursoCustom item: cache2){
@@ -1019,7 +1059,8 @@ public class ChatDataLocalSource implements ChatDataSource {
 
                     String nombre = grupoEquipoC!=null?grupoEquipoC.getNombre():"";
                     String descripcion = cursoCustomGrupo!=null?cursoCustomGrupo.getNombre()+" "+cursoCustomGrupo.getPeriodo()+" "+cursoCustomGrupo.getSeccion()+" - "+cursoCustomGrupo.getNivelAcademico():"";
-                    chatUi.setName(nombre+" "+descripcion);
+                    chatUi.setName(nombre);
+                    chatUi.setDescripcion(descripcion);
                 }
 
             }
@@ -1030,6 +1071,11 @@ public class ChatDataLocalSource implements ChatDataSource {
 
     @Override
     public ListenerFirebase getGrupoChats(int docenteId, int personaId, Callback<List<ChatUi>> listCallback) {
+        return null;
+    }
+
+    @Override
+    public RetrofitCancel sincronizarInformacion(SuccessCallback callBack) {
         return null;
     }
 

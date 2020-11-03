@@ -30,9 +30,6 @@ import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.importar.ImportarPresenter;
 import com.consultoraestrategia.ss_crmeducativo.services.importar.ImportarPresenterImpl;
-import com.consultoraestrategia.ss_crmeducativo.utils.AppMessengetNotification;
-import com.firebase.jobdispatcher.JobParameters;
-import com.firebase.jobdispatcher.JobService;
 
 /**
  * Created by SCIEV on 12/06/2018.
@@ -60,13 +57,8 @@ public class ImportarJobService extends Worker implements ImportarEvent {
     }
 
     private void setupPresenter() {
-        presenter = new ImportarPresenterImpl(RepositoryInjector.getBEDatosTareaRecursosRepositoryConRubros(),
-                RepositoryInjector.getGEDatosEnvioAsistenciaRepositoryInjector(),
-                RepositoryInjector.getGEDatosRubroEvaluacionProcesoRepositoryInjectorConTareas(),
-                RepositoryInjector.getBEDatosSesionAprendizajeRepository(),
-                RepositoryInjector.getBEDatosEnvioTipoNotaRepository(),
-                RepositoryInjector.getBEDatosEnvioMensajeriaRepository(),
-                RepositoryInjector.getBEDatosCargaAcademicaRepository()
+        presenter = new ImportarPresenterImpl(
+                RepositoryInjector.getBEDatosSesionAprendizajeRepository()
         );
 
         setPresenter(presenter);

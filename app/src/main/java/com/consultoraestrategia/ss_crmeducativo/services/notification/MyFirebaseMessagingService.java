@@ -12,6 +12,8 @@ import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.R;;
+//import com.consultoraestrategia.ss_crmeducativo.chatGrupal.notificacion.NotificacionesGrupoBuilder;
+//import com.consultoraestrategia.ss_crmeducativo.chatJse.notificacion.NotificacionesBuilder;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
@@ -35,8 +37,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onCreate() {
         super.onCreate();
-        //notificationGrupoBuilder = NotificacionesGrupoBuilder.newInstance(getApplicationContext());
-        //notificationBuilder = NotificacionesBuilder.newInstance(getApplicationContext());
+      //  notificationGrupoBuilder = NotificacionesGrupoBuilder.newInstance(getApplicationContext());
+      //  notificationBuilder = NotificacionesBuilder.newInstance(getApplicationContext());
     }
 
 
@@ -76,9 +78,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         if(data.containsKey("messageGrupo")){
-            //notificationGrupoBuilder.sendBundledNotification(data);
+        //    notificationGrupoBuilder.sendBundledNotification(data);
         }else if(data.containsKey("message")){
-            //notificationBuilder.sendBundledNotification(data);
+          //  notificationBuilder.sendBundledNotification(data);
         }
 
     }

@@ -9,16 +9,14 @@ import java.util.List;
 
 public interface ChatView extends BaseView<ChatPresenter> {
     void clearSend();
-    void setListMessage(List<Object> response, int personaId);
+    void setListMessage(List<Object> response, int personaId, boolean notify);
     void refreshList(List<Object> response);
     void addMessage(List<Object> messageUiList);
-    void scrollToPositionBotton();
+    void scrollToPositionBotton(boolean delay);
     void scrollToPosition(int position);
     void showFloatingButton();
     void hideFloatingButton();
     void showEmoticon();
-    void changeBtnIconTeclado();
-    void changeBtnIconEmoticon();
     void showTeclado();
     void showConutMessage(int countMessage);
     void hideConutMessage();
@@ -49,4 +47,8 @@ public interface ChatView extends BaseView<ChatPresenter> {
     void hideDeleteMessage();
 
     void setCountSelection(int countMessage);
+
+    void onInitListener();
+
+    void updateList(MessageUi2 messageUi2);
 }

@@ -54,7 +54,7 @@
             android:background="@drawable/balloon_outgoing_normal"
             android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/conten_imagen_sender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                     android:scaleType="centerCrop"
                     tools:src="@drawable/good_morning_img" />
 
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <com.vanniktech.emoji.EmojiTextView
                 android:id="@+id/textsender"
@@ -120,6 +120,53 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/contSenderEliminado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="4dp"
+            android:background="@drawable/balloon_outgoing_normal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_block" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eliminaste este mensaje"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/horaSenDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="10:45 PM "
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/contReceiver"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,7 +177,7 @@
             android:background="@drawable/balloon_incoming_normal"
             android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/conten_imagen_reciver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -172,7 +219,7 @@
                     android:scaleType="centerCrop"
                     tools:src="@drawable/good_morning_img" />
 
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
 
             <com.vanniktech.emoji.EmojiTextView
@@ -192,6 +239,48 @@
                 android:text="6:02 PM"
                 android:textSize="12sp"
                 app:layout_alignSelf="flex_end" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contReceiverEliminado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/balloon_incoming_normal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_block" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Este mensaje fue eliminado"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/horaRecDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="10:45 PM "
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 

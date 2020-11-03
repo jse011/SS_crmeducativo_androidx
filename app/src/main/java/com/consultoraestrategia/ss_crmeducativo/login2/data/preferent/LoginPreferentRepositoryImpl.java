@@ -92,48 +92,7 @@ public class LoginPreferentRepositoryImpl implements LoginPreferentRepository {
             usuarioCallback.onLoad(false, false);
         }
     }
-
-    @Override
-    public void guardarWebConfig(List<WebConfig> webConfigs) {
-        try {
-            SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = miPreferencia.edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(webConfigs);
-            editor.putString(KEYWEBCONFIG, json);
-            editor.apply();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void elimarWebConfig() {
-        try {
-            SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = miPreferencia.edit();
-            editor.putString(KEYWEBCONFIG, "[]");
-            editor.apply();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public WebConfig getWebConfig(String key) {
-        WebConfig webConfig = null;
-        SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);
-        String json = miPreferencia.getString(KEYWEBCONFIG, "[]");
-        Gson gson = new Gson();
-        List<WebConfig> webConfigList = gson.fromJson(json, new TypeToken<List<WebConfig>>(){}.getType());
-        int position = webConfigList.indexOf(new WebConfig(key));
-        if(position!=-1){
-            webConfig = webConfigList.get(position);
-        }
-        return webConfig;
-    }
-
+    
     @Override
     public List<ServiceEnvioFbUi> getListaCambios() {
         SharedPreferences miPreferencia = context.getSharedPreferences(PREFERENCIA, Context.MODE_PRIVATE);

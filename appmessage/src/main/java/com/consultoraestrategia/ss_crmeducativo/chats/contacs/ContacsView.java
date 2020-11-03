@@ -6,7 +6,8 @@ public interface ContacsView {
     void setListContacts(List<Object>listContacts);
     void  hideProgress();
     void showProgress();
-
+    void  hideProgress2();
+    void showProgress2();
     void searhContacts(String toString);
 
     void setOldListContacts();

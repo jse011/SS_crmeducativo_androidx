@@ -50,7 +50,6 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.filtroDia
 import com.consultoraestrategia.ss_crmeducativo.evaluacionCompetencias.filtroDialog.FiltroView;
 import com.consultoraestrategia.ss_crmeducativo.evaluacion_resultado.ui.EvaluacionResultadoActivity;
 import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
-import com.consultoraestrategia.ss_crmeducativo.services.data.source.util.RepositoryInjector;
 import com.consultoraestrategia.ss_crmeducativo.services.syncIntentService.SimpleSyncIntenService;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.view.activities.TabsCursoDocenteActivity;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
@@ -125,8 +124,7 @@ public class EvaluacionCompetenciasFragment extends BaseFragment<EvaluacionCompe
                 new EvaluacionCompetenciaRemote());
         return new EvaluacionCompetenciasPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()),
                 getResources(),
-                new GetCompetenciasLista(competenciaRepository,
-                        RepositoryInjector.getBEDatosEvaluacionResultadoRepository()),
+                new GetCompetenciasLista(competenciaRepository),
                 new GetEnfoqueTransVersalLista(competenciaRepository),
                 new UseEvaluado(competenciaRepository),
                 new ChangeToogle(competenciaRepository),
@@ -335,7 +333,8 @@ public class EvaluacionCompetenciasFragment extends BaseFragment<EvaluacionCompe
     }
 
     @Override
-    public void reloadActivity() {
+    public void reloadActivity(int programaEducativoId) {
+        SynckService.start(getContext(), programaEducativoId);
         TabsCursoDocenteActivity tabsCursoDocenteActivity = null;
         if(getActivity()!=null) tabsCursoDocenteActivity = (TabsCursoDocenteActivity)getActivity();
         if(tabsCursoDocenteActivity!=null){

@@ -36,4 +36,6 @@ public interface ChatPresenter extends BasePresenter<ChatView> {
     void onClickedBtnImagen();
 
     void onSeleccionList(ArrayList<String> returnValue, String descripcion);
+
+    void onSelectedSticker(String image);
 }

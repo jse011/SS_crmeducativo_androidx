@@ -7,11 +7,13 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,12 +35,12 @@ import java.util.Date;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatHolder extends RecyclerView.ViewHolder {
-
+    FrameLayout conten_rec;
     CircleImageView image_rec;
     TextView name;
     EmojiTextView lastmsg;
     TextView hour;
-    RelativeLayout root;
+    ConstraintLayout root;
     TextView unreadMessageCountTV;
 
     public ChatHolder(@NonNull View itemView) {
@@ -47,8 +49,9 @@ public class ChatHolder extends RecyclerView.ViewHolder {
         name=(TextView)itemView.findViewById(R.id.name);
         lastmsg=(EmojiTextView)itemView.findViewById(R.id.lastmsgchat);
         hour=(TextView)itemView.findViewById(R.id.hour);
-        root=(RelativeLayout)itemView.findViewById(R.id.root);
+        root=(ConstraintLayout)itemView.findViewById(R.id.root);
         unreadMessageCountTV = (TextView)itemView.findViewById(R.id.unreadMessageCountTV);
+        conten_rec = (FrameLayout)itemView.findViewById(R.id.conten_rec);
     }
     public void bind(final ChatUi chatUi, final ChatListener chatListener){
         if(chatUi.getCount()>0){
@@ -68,34 +71,47 @@ public class ChatHolder extends RecyclerView.ViewHolder {
         lastmsg.setTypeface(tf1);
         String url= chatUi.getImageRec();
 
-        if(TextUtils.isEmpty(chatUi.getImageRec())){
+        if(TextUtils.isEmpty(url)){
             Glide.with(image_rec)
                     .load(R.drawable.pic)
                     .into(image_rec);
+            conten_rec.setBackground(ContextCompat.getDrawable(conten_rec.getContext(), R.drawable.corner_circle_chat));
         }else {
-            Glide.with(image_rec)
-                    .load(url)
-                    .apply(Utils.getGlideRequestOptions(R.drawable.pic))
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            image_rec.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Glide.with(image_rec)
-                                            .load(R.drawable.pic)
-                                            .into(image_rec);
-                                }
-                            });
-                            return false;
-                        }
+            String filename=url.substring(url.lastIndexOf("/")+1);
+            if(!TextUtils.isEmpty(filename)&&"default.png".equals(filename)){
+                Glide.with(image_rec)
+                        .load(R.drawable.pic)
+                        .into(image_rec);
+                conten_rec.setBackground(ContextCompat.getDrawable(conten_rec.getContext(), R.drawable.corner_circle_chat));
+            }else {
+                conten_rec.setBackgroundColor(Color.TRANSPARENT);
+                Glide.with(image_rec)
+                        .load(url)
+                        .apply(Utils.getGlideRequestOptions(R.drawable.pic))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                image_rec.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        conten_rec.setBackgroundColor(Color.TRANSPARENT);
+                                        Glide.with(image_rec)
+                                                .load(R.drawable.pic)
+                                                .into(image_rec);
+                                    }
+                                });
+                                return false;
+                            }
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            return false;
-                        }
-                    })
-                    .into(image_rec);
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        })
+                        .into(image_rec);
+            }
+
+
         }
 
         switch (chatUi.getEstado())

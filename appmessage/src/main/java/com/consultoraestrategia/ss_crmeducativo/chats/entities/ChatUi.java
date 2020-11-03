@@ -12,6 +12,7 @@ public class ChatUi {
     private String id;
     private String mensageId;
     private long count;
+    private String descripcion;
 
     public void setCargaCursoId(int cargaCursoId) {
         this.cargaCursoId = cargaCursoId;
@@ -67,6 +68,14 @@ public class ChatUi {
 
     public long getCount() {
         return count;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
     }
 
     public enum ESTADO{ CREADO, GUARDADO, ENVIADO, VISTO , ELIMINADO}

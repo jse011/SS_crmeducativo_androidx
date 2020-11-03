@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase.Save;
+//import com.consultoraestrategia.ss_crmeducativo.chats.view.ChatsActivity;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
@@ -1764,6 +1765,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @OnClick(R.id.btn_chat)
     public void onViewClicked() {
-        startActivity(new Intent(this, ScremSplash.class));
+       // startActivity(new Intent(this, ChatsActivity.class));
     }
 }

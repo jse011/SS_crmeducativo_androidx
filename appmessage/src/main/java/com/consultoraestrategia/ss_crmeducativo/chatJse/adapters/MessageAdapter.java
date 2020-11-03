@@ -1,18 +1,19 @@
 package com.consultoraestrategia.ss_crmeducativo.chatJse.adapters;
 
 import android.annotation.SuppressLint;
-import androidx.annotation.NonNull;
-import androidx.core.view.MotionEventCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.adapters.holder.DateHolder;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.adapters.holder.MessageFotoHolder;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.adapters.holder.MessageHolder;
+import com.consultoraestrategia.ss_crmeducativo.chatJse.adapters.holder.MessageStikerHolder;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.entites.MessageUi2;
 import com.consultoraestrategia.ss_crmeducativo.utils.touchHelper.ItemTouchHelperAdapter;
 import com.consultoraestrategia.ss_crmeducativo.utils.touchHelper.OnStartDragListener;
@@ -23,15 +24,16 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHelperAdapter {
 
     private final OnStartDragListener mDragStartListener;
+
     private Listener listener;
-    private final int MESSAGE = 1, DATE = 2, MESSAGE_IMAGEN = 3;
+    private final int MESSAGE = 1, DATE = 2, MESSAGE_IMAGEN = 3, MESSAGE_STICKER = 4;
     private int personaId;
     private List<Object> messageUiList;
     private RecyclerView recyclerView;
 
-    public MessageAdapter(List<Object> messageUiList, RecyclerView recyclerView, OnStartDragListener dragStartListener, Listener listener ) {
+    public MessageAdapter(List<Object> messageUiList, RecyclerView recyclerView, OnStartDragListener dragStartListener, Listener listener) {
         this.messageUiList = messageUiList;
-        this.recyclerView=recyclerView;
+        this.recyclerView = recyclerView;
         this.mDragStartListener = dragStartListener;
         this.listener = listener;
     }
@@ -39,12 +41,13 @@ public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHel
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType)
-        {
+        switch (viewType) {
             case DATE:
                 return new DateHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_date, parent, false));
             case MESSAGE_IMAGEN:
                 return new MessageFotoHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_imagen, parent, false));
+            case MESSAGE_STICKER:
+                return new MessageStikerHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sticker, parent, false));
             default:
                 return new MessageHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false));
         }
@@ -54,19 +57,19 @@ public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHel
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Object object= messageUiList.get(position);
-        switch (holder.getItemViewType()){
+        Object object = messageUiList.get(position);
+        switch (holder.getItemViewType()) {
             case DATE:
-                DateHolder dateHolder=(DateHolder)holder;
+                DateHolder dateHolder = (DateHolder) holder;
                 dateHolder.bind((String) object);
                 break;
             case MESSAGE:
-                final MessageHolder messageHolder= (MessageHolder)holder;
-                messageHolder.bind((MessageUi2) object,personaId, listener);
+                final MessageHolder messageHolder = (MessageHolder) holder;
+                messageHolder.bind((MessageUi2) object, personaId, listener);
                 messageHolder.foregroundView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent event) {
-                        if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
                             mDragStartListener.onStartDrag(messageHolder);
                         }
                         return false;
@@ -79,7 +82,7 @@ public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHel
                 messageGrupoHolder.foregroundView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent event) {
-                        if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
                             mDragStartListener.onStartDrag(messageGrupoHolder);
                         }
                         return false;
@@ -87,6 +90,18 @@ public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHel
                 });
 
                 break;
+            case MESSAGE_STICKER:
+                final MessageStikerHolder messageStikerHolder = (MessageStikerHolder) holder;
+                messageStikerHolder.bind((MessageUi2) object, personaId, listener);
+                messageStikerHolder.foregroundView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            mDragStartListener.onStartDrag(messageStikerHolder);
+                        }
+                        return false;
+                    }
+                });
         }
 
     }
@@ -101,11 +116,11 @@ public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHel
         return messageUiList.size();
     }
 
-    public void setList(List<Object> messageUis, int personaId){
+    public void setList(List<Object> messageUis, int personaId, boolean notify) {
         this.personaId = personaId;
         this.messageUiList.clear();
         this.messageUiList.addAll(messageUis);
-        notifyDataSetChanged();
+        if (notify) notifyDataSetChanged();
     }
 
     public void addListMessages(List<Object> messageUis) {//Eliminar
@@ -124,6 +139,8 @@ public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHel
             switch (((MessageUi2) object).getTipo()) {
                 case IMAGEN:
                     return MESSAGE_IMAGEN;
+                case STICKER:
+                    return MESSAGE_STICKER;
                 default:
                     return MESSAGE;
             }
@@ -133,13 +150,11 @@ public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHel
 
     public void updatePosition(String messageId) {
 
-        for(Object object: messageUiList){
-            if(object instanceof MessageUi2)
-            {
-                MessageUi2 messageUi= (MessageUi2)object;
-                if(messageUi.getId().equals(messageId))
-                {
-                    int position=messageUiList.indexOf(object);
+        for (Object object : messageUiList) {
+            if (object instanceof MessageUi2) {
+                MessageUi2 messageUi = (MessageUi2) object;
+                if (messageUi.getId().equals(messageId)) {
+                    int position = messageUiList.indexOf(object);
                     recyclerView.scrollToPosition(position);
                     notifyDataSetChanged();
                     break;
@@ -177,9 +192,33 @@ public class MessageAdapter extends RecyclerView.Adapter implements ItemTouchHel
         notifyItemChanged(position);
     }
 
+    public void update(MessageUi2 messageUi2) {
+        int position = messageUiList.indexOf(messageUi2);
+        if (position != -1) {
+            messageUiList.set(position, messageUi2);
+            notifyItemChanged(position);
+        }
+    }
+
+    public void update(int position, MessageUi2 messageUi1) {
+        try {
+            messageUiList.set(position, messageUi1);
+            notifyItemChanged(position);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void add(Object add) {
+        messageUiList.add(add);
+        notifyItemInserted(messageUiList.size()-1);
+    }
+
     public interface Listener {
         void onSeleccionar(MessageUi2 messageUi2);
+
         void onLongClick(MessageUi2 messageUi2);
+
         void onClick(MessageUi2 messageUi2);
     }
 }

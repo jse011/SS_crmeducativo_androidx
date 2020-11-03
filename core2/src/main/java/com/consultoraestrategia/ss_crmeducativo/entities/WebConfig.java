@@ -1,15 +1,17 @@
 package com.consultoraestrategia.ss_crmeducativo.entities;
 
-public class WebConfig {
+import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
+@Table(database = AppDatabase.class)
+public class WebConfig extends BaseModel {
+    @PrimaryKey
     private String nombre;
+    @Column
     private String content;
-
-    public WebConfig() {
-    }
-
-    public WebConfig(String nombre) {
-        this.nombre = nombre;
-    }
 
     public String getNombre() {
         return nombre;
@@ -25,20 +27,5 @@ public class WebConfig {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        WebConfig webConfig = (WebConfig) o;
-
-        return nombre != null ? nombre.equals(webConfig.nombre) : webConfig.nombre == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return nombre != null ? nombre.hashCode() : 0;
     }
 }

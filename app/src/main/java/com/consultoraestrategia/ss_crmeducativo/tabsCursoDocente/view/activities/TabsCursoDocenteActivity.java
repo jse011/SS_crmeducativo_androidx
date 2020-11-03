@@ -420,8 +420,8 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
         if (rubroResultadoSilaboFragment == null) return;
         int calendarioId = rubroResultadoSilaboFragment.getCalendarioPeriodoId();
         beVariables.setCalendarioPeriodoId(calendarioId);
-        Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.RUBROEVALUACION_CALENDARIO, beVariables);
-        startActivityForResult(intent, UPDATE_RUBRICA);
+        //Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.RUBROEVALUACION_CALENDARIO, beVariables);
+       // startActivityForResult(intent, UPDATE_RUBRICA);
     }
 
     @Override
@@ -435,8 +435,8 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
         if (rubricaBidFragment == null) return;
         int calendarioId = rubricaBidFragment.getCalendarioPeriodoId();
         beVariables.setCalendarioPeriodoId(calendarioId);
-        Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.RUBROEVALUACION_CALENDARIO, beVariables);
-        startActivityForResult(intent, UPDATE_RUBRICA);
+        //Intent intent = ImportarActivity.launchImportarActivityIntent(this, TipoImportacion.RUBROEVALUACION_CALENDARIO, beVariables);
+        //startActivityForResult(intent, UPDATE_RUBRICA);
     }
 
     @Override
@@ -1249,13 +1249,14 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
     }
 
     public void reloadActivity() {
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+        //Intent intent = getIntent();
+        //overridePendingTransition(0, 0);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         finish();
-        overridePendingTransition(0, 0);
-        intent.putExtra(RELOAD_X_CERRAR_CURSO, true);
-        startActivity(intent);
+        //overridePendingTransition(0, 0);
+        //intent.putExtra(RELOAD_X_CERRAR_CURSO, true);
+        ///startActivity(intent);
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.consultoraestrategia.ss_crmeducativo.chats.useCase.GetGroups;
 import com.consultoraestrategia.ss_crmeducativo.chats.useCase.GetListFilterGroups;
 import com.consultoraestrategia.ss_crmeducativo.chats.useCase.GetSenderInformation;
 import com.consultoraestrategia.ss_crmeducativo.chats.useCase.GetUsuario;
+import com.consultoraestrategia.ss_crmeducativo.chats.useCase.UseCaseSincronizar;
 import com.consultoraestrategia.ss_crmeducativo.chats.view.Chatview;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.utils.firebase.ListenerFirebase;
@@ -33,6 +34,7 @@ import com.consultoraestrategia.ss_crmeducativo.utils.firebase.ListenerFirebase;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,24 +50,23 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
     private ContacsView contacsView;
     private GroupsView groupsView;
     private GetContacts getContacts;
-    private List<Object>objectListContacts;
     private Class<? extends Fragment> fragmentClassVisible;
     private GetGroups getGroups;
-    private List<Object>objectListGroups = new ArrayList<>();
     private GetListFilterGroups getListFilterGroups;
     private GetChatsGroups getChatsGroups;
     private GetUsuario getUsuario;
     private GetAllChats getAllChats;
-
+    private UseCaseSincronizar useCaseSincronizar;
     private int personaId;
     private RetrofitCancel retrofitCancel;
     private int empleadoId;
     private List<ListenerFirebase> listenerFirebaseList = new ArrayList<>();
     private boolean emoticon;
+    private RetrofitCancel retrofitCancelContactos;
 
     public ChatPresenterImpl(UseCaseHandler handler, Resources res,GetSenderInformation getSenderInformation,GetChats getChats,GetContacts getContacts,GetGroups getGroups,
                              GetListFilterGroups getListFilterGroups, GetChatsGroups getChatsGroups, GetUsuario getUsuario,
-                             GetAllChats getAllChats, GetDatosChatAndUpdatePersonaGrupo getDatosChatAndUpdatePersonaGrupo) {
+                             GetAllChats getAllChats, GetDatosChatAndUpdatePersonaGrupo getDatosChatAndUpdatePersonaGrupo, UseCaseSincronizar useCaseSincronizar) {
         super(handler, res);
         this.getSenderInformation=getSenderInformation;
         this.getChats=getChats;
@@ -76,6 +77,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
         this.getUsuario = getUsuario;
         this.getAllChats = getAllChats;
         this.getDatosChatAndUpdatePersonaGrupo = getDatosChatAndUpdatePersonaGrupo;
+        this.useCaseSincronizar = useCaseSincronizar;
     }
 
     @Override
@@ -100,8 +102,6 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
         UsuarioUi usuarioUi = getUsuario.execute();
         personaId = usuarioUi.getPersonaId();
         empleadoId = usuarioUi.getDocenteId();
-        objectListGroups.clear();
-        objectListGroups.addAll(getGroups.execute(personaId));
         if(view!=null)view.subscribeToTopic(usuarioUi.getPersonaId());
     }
 
@@ -181,7 +181,6 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
                     Log.d(TAG, "getListContacts size "+ response.getObjects().size());
                     contacsView.hideProgress();
                     contacsView.setListContacts(response.getObjects());
-                    objectListContacts=response.getObjects();
                 }
             }
 
@@ -197,12 +196,6 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
     @Override
     public void onResumenChatsList() {
 
-    }
-
-    @Override
-    public void onResumContactsList() {
-        Log.d(TAG, "onResumContactsList ");
-        getListContacts();
     }
 
     @Override
@@ -247,7 +240,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
 
     @Override
     public void showListFilter(ContactUi.TypeContact type) {
-        List<Object>objects= new ArrayList<>();
+        /*List<Object>objects= new ArrayList<>();
         for(Object object: objectListContacts){
             if(object instanceof ContactUi){
                 ContactUi contactUi=(ContactUi)object;
@@ -261,30 +254,12 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
         else if(type== ContactUi.TypeContact.EXECUTIVE)typeInt=2;
         else typeInt=3;
 
-       if(view!=null)view.sendListContacts(objects, typeInt);
+       if(view!=null)view.sendListContacts(objects, typeInt);*/
     }
 
     @Override
     public void onGroupsFragmentViewDestroyed() {
         this.groupsView=null;
-    }
-
-
-    @Override
-    public void clickTextSearch() {
-        if(fragmentClassVisible==GroupsFragment.class){
-            Log.d(TAG, "clickTextSearch  ");
-        }
-
-    }
-
-    @Override
-    public void valideFragmentSearch() {
-        if(fragmentClassVisible==GroupsFragment.class){
-           updateListGroups();
-        }else {
-            if(view!=null)view.showSearchDefault();
-        }
     }
 
     @Override
@@ -295,7 +270,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
     @Override
     public void onClickChatContacto(ContactUi contactUi) {
         int personaExternaId = contactUi.getIdPerson();
-        if(view!=null)view.showChatPersonal(personaId, personaExternaId);
+        if(view!=null)view.showChatPersonal(personaId, personaExternaId, null, null);
     }
 
     @Override
@@ -320,7 +295,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
 
                 Log.d(TAG, "personaExternaId: " + personaExternaId);
                 Log.d(TAG, "personaId: " + personaId);
-                if(view!=null)view.showChatPersonal(personaId, personaExternaId);
+                if(view!=null)view.showChatPersonal(personaId, personaExternaId, chatUi.getName(), chatUi.getImageRec());
                 break;
         }
         
@@ -328,13 +303,25 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
 
     @Override
     public void activityGroupsFragment() {
-        if(groupsView!=null)groupsView.setList(objectListGroups);
+        if(groupsView!=null)groupsView.setList(getGroups.execute(personaId));
     }
 
     @Override
     public void onRefreshChats() {
         chatUiListAll.clear();
         getListAllChats();
+    }
+
+    @Override
+    public void onRefreshContactos() {
+        if(retrofitCancelContactos!=null)retrofitCancelContactos.cancel();
+        retrofitCancelContactos = useCaseSincronizar.execute(new UseCaseSincronizar.Callback() {
+            @Override
+            public void onLoad(boolean success) {
+                getListContacts();
+                if(contacsView!=null)contacsView.hideProgress2();
+            }
+        });
     }
 
     private void getListAllChats() {
@@ -361,7 +348,9 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
 
                 Collections.sort(chatUiListAll, new Comparator<ChatUi>() {
                     public int compare(ChatUi obj1, ChatUi obj2) {
-                        return obj2.getLastDate().compareTo(obj1.getLastDate());
+                        Date t2 = obj2.getLastDate()!=null?obj2.getLastDate():new Date(0);
+                        Date t1 = obj1.getLastDate()!=null?obj1.getLastDate():new Date(0);
+                        return t2.compareTo(t1);
                     }
 
                 });
@@ -394,23 +383,6 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
 
     }
 
-    private void updateListGroups() {
-
-    handler.execute(getListFilterGroups, new GetListFilterGroups.RequestValues(personaId), new UseCase.UseCaseCallback<GetListFilterGroups.ResponseValue>() {
-        @Override
-        public void onSuccess(GetListFilterGroups.ResponseValue response) {
-            Log.d(TAG, "response filter size  "+ response.getObjects().size());
-            if(view!=null)view.setListFilterGroups(response.getObjects(), objectListGroups);
-        }
-
-        @Override
-        public void onError() {
-            Log.d(TAG, "updateListGroups onError ");
-        }
-    });
-
-    }
-
     @Override
     public void onChatsFragmentViewDestroyed() {
         this.chatsView=null;
@@ -425,6 +397,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<Chatview> implements Ch
     public void onDestroy() {
         super.onDestroy();
         if(retrofitCancel!=null)retrofitCancel.cancel();
+        if(retrofitCancelContactos!=null)retrofitCancelContactos.cancel();
         for(ListenerFirebase listenerFirebase : listenerFirebaseList)listenerFirebase.onStop();
         listenerFirebaseList.clear();
     }

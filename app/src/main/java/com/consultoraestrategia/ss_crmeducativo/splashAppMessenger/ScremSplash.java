@@ -22,7 +22,7 @@ import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
-import com.consultoraestrategia.ss_crmeducativo.chats.view.ChatsActivity;
+//import com.consultoraestrategia.ss_crmeducativo.chats.view.ChatsActivity;
 import com.consultoraestrategia.ss_crmeducativo.login2.principal.Login2Activity;
 import com.consultoraestrategia.ss_crmeducativo.services.data.util.UtilServidor;
 import com.consultoraestrategia.ss_crmeducativo.splashAppMessenger.data.source.ScreamSplashRepository;
@@ -114,7 +114,7 @@ public class ScremSplash extends BaseActivity<ScremSplashView, ScremSplashPresen
 
     @Override
     public void updateListaEnviar(final int progress) {
-
+/*
         runOnUiThread(new Runnable() {
 
             @Override
@@ -128,14 +128,14 @@ public class ScremSplash extends BaseActivity<ScremSplashView, ScremSplashPresen
 
             }
         });
-
+*/
     }
 
     @Override
     public void startMainActivity() {
         Log.d(getTag(), "startMainActivity");
-        Intent intent = new Intent(ScremSplash.this, ChatsActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(ScremSplash.this, ChatsActivity.class);
+        //startActivity(intent);
         finish();
     }
 
@@ -152,6 +152,7 @@ public class ScremSplash extends BaseActivity<ScremSplashView, ScremSplashPresen
 
     @Override
     public void startOfflineMainActivity() {
+        /**
         runOnUiThread(new Runnable() {
             public void run() {
                 Log.d(getTag(), "startOfflineMainActivity");
@@ -169,7 +170,7 @@ public class ScremSplash extends BaseActivity<ScremSplashView, ScremSplashPresen
                 },1000);
             }
         });
-
+        **/
     }
 
     public void starLoginActivity() {

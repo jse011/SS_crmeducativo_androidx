@@ -56,9 +56,11 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
     private ClipboardMessage clipboardMessage;
     private ChangeMessageEstadoEliminado changeMessageEstadoEliminado;
     private SaveImagenMessage saveImagenMessage;
+    private String nombreChat;
+    private String fotoChat;
 
-    ChatPresenterImpl(UseCaseHandler handler, Resources res, GetPersona getPersona,SaveMessage saveMessage,GetListMessage getListMessage,GetListLastMessage getListLastMessage,
-                      GetTokenSala getTokenSala, SendNotificacion sendNotificacion, ClipboardMessage clipboardMessage,ChangeMessageEstadoEliminado changeMessageEstadoEliminado,
+    ChatPresenterImpl(UseCaseHandler handler, Resources res, GetPersona getPersona, SaveMessage saveMessage, GetListMessage getListMessage, GetListLastMessage getListLastMessage,
+                      GetTokenSala getTokenSala, SendNotificacion sendNotificacion, ClipboardMessage clipboardMessage, ChangeMessageEstadoEliminado changeMessageEstadoEliminado,
                       SaveImagenMessage saveImagenMessage) {
         super(handler, res);
         this.getPersona = getPersona;
@@ -75,6 +77,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
     @Override
     public void onCreate() {
         super.onCreate();
+        emoticon = false;
         personaUi = getPersona.execute(personaId);
         personaUiExterna = getPersona.execute(personaExternaId);
         mensajesList.clear();
@@ -82,97 +85,96 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
         getMessage(true);
     }
 
+
+    public void _onRecivedMessage(List<MessageUi2> messageUis) {
+        boolean lasPosition = false;
+        if((mensajesList.size()-2)<= lastVisibleItem){
+            lasPosition = true;
+        }
+
+        boolean change = false;
+        Set<MessageUi2> addList = new LinkedHashSet<>();
+        for (MessageUi2 messageUi1 : messageUis){
+
+            //if(lastDateMessage!=null&&messageUi1.getFecha().compareTo(lastDateMessage)<=0)continue;
+
+            boolean nuevoMensaje = true;
+            int posicion = 0;
+            for (Object o : mensajesList){
+                if (o instanceof MessageUi2) {
+                    MessageUi2 messageUi2 = (MessageUi2) o;
+                    if(messageUi1.getId().equals(messageUi2.getId())){
+                        if(!messageUi1.equals(messageUi2)){
+                            mensajesList.set(posicion, messageUi1);
+                            if (view != null) view.updateListPosition(posicion, messageUi1);
+                            change = true;
+                        }
+                        nuevoMensaje = false;
+                        break;
+                    }
+                }
+                posicion++;
+            }
+
+            if(nuevoMensaje){
+                addList.add(messageUi1);
+            }
+        }
+
+        if(!addList.isEmpty()){
+            for (MessageUi2 add : addList){
+
+                if(add.getFecha()==null){
+                    add.setFecha(new Date());
+                    add.setEstado(MessageUi2.ESTADO.CREADO);
+                }
+                String fecha = Utils.getDateChat(add.getFecha());
+                int position = mensajesList.indexOf(fecha);
+                if(position==-1){
+                    mensajesList.add(fecha);
+                    if(view!=null)view.addList(fecha);
+                }
+                mensajesList.add(add);
+                if(view!=null)view.addList(add);
+                change = true;
+
+                if(add.getEmisorId()!=personaId){
+                    countMessage ++;
+                }
+            }
+        }
+
+        if(change){
+            if(lasPosition){
+                Log.d(getTag(), "ChatActivityTAG getMessage onRecivedMessage lasPosition");
+                //if (view != null) view.setListMessage(mensajesList, personaId, false);
+                if(view!=null)view.scrollToPositionBotton(true);
+                countMessage=0;
+                if(view!=null)view.hideConutMessage();
+            }else {
+                Log.d(getTag(), "ChatActivityTAG getMessage onRecivedMessage");
+                if(countMessage>0)if(view!=null)view.showConutMessage(countMessage);
+                if(view!=null)view.showFloatingButton();
+                //if (view != null) view.setListMessage(mensajesList, personaId, true);
+            }
+            notificarFirebase();
+        }
+
+
+    }
+
     private void getMessage(final boolean  scrollToPositionBotton){
         showProgress();
         if(listenerFirebase!=null)listenerFirebase.onStop();
-        listenerFirebase = getListMessage.execute(mensajesList, personaId, personaExternaId, new GetListMessage.Callback() {
+        listenerFirebase = getListMessage.execute(personaId, personaExternaId, new GetListMessage.Callback() {
             @Override
             public void onRecivedMessage(List<MessageUi2> messageUis) {
-                boolean lasPosition = false;
-                if((mensajesList.size()-2)<= lastVisibleItem){
-                    lasPosition = true;
-                }
-
-                boolean change = false;
-                List<MessageUi2> addList = new ArrayList<>();
-                for (MessageUi2 messageUi1 : messageUis){
-
-                    if(lastDateMessage!=null&&messageUi1.getFecha().compareTo(lastDateMessage)<=0)continue;
-
-                    int posicion = 0;
-                    for (Object o : mensajesList){
-                        if (o instanceof MessageUi2) {
-                            MessageUi2 messageUi2 = (MessageUi2) o;
-                            if(messageUi1.getId().equals(messageUi2.getId())||(messageUi1.getEmisorId()==personaId && messageUi2.getEmisorId()==personaId
-                                    &&messageUi1.getMensaje().equals(messageUi2.getMensaje())
-                                    &&messageUi1.getFecha().equals(messageUi2.getFecha()))){
-                                mensajesList.set(posicion, messageUi1);
-                                change = true;
-                                break;
-                            }
-                        }
-                        posicion++;
-                    }
-
-                    if(posicion==mensajesList.size()){
-                       addList.add(messageUi1);
-                        change = true;
-                    }
-
-                }
-
-                if(!addList.isEmpty()){
-                    Set<Object> list = new LinkedHashSet<>(mensajesList);
-                    for (MessageUi2 add : addList){
-                        list.add(Utils.getDateChat(add.getFecha()));
-                        list.add(add);
-                        if(add.getEmisorId()!=personaId){
-                            countMessage ++;
-                        }
-                    }
-                    mensajesList = new ArrayList<Object>(list);
-                }
-
-                if(change){
-                    if(lasPosition){
-                        Log.d(getTag(), "ChatActivityTAG getMessage onRecivedMessage lasPosition");
-                        if (view != null) view.setListMessage(mensajesList, personaId);
-                        if(view!=null)view.scrollToPositionBotton();
-                        countMessage=0;
-                        if(view!=null)view.hideConutMessage();
-                    }else {
-                        Log.d(getTag(), "ChatActivityTAG getMessage onRecivedMessage");
-                        if(countMessage>0)if(view!=null)view.showConutMessage(countMessage);
-                        if (view != null) view.setListMessage(mensajesList, personaId);
-                    }
-                    notificarFirebase();
-                }
-
+                _onRecivedMessage(messageUis);
             }
 
             @Override
             public void onSuccess(List<Object> response) {
                 Log.d(getTag(), "ChatActivityTAG getMessage onSuccess Init");
-
-                Iterator<Object> iteratorBand = mensajesList.iterator();
-                while(iteratorBand.hasNext()){
-                    Object o1 = iteratorBand.next();
-                    if (o1 instanceof MessageUi2) {
-                        MessageUi2 messageUi1 = (MessageUi2) o1;
-                        for (Object o2 : response) {
-                            if (o2 instanceof MessageUi2) {
-                                MessageUi2 messageUi2 = (MessageUi2) o2;
-                                if (messageUi1.getId().equals(messageUi2.getId())||
-                                        (messageUi1.getEmisorId()==messageUi2.getEmisorId()&&
-                                         messageUi1.getFecha().equals(messageUi2.getFecha()) &&
-                                        messageUi1.getMensaje().equals(messageUi2.getMensaje()))) {
-                                    iteratorBand.remove();
-                                    Log.d(getTag(), "Elminar");
-                                }
-                            }
-                        }
-                    }
-                }
 
                 int size = response.size();
                 Log.d(getTag(), "response " + size);
@@ -190,21 +192,22 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
                 mensajesList = new ArrayList<Object>(list);
                 notificarFirebase();
                 Log.d(getTag(), "ChatActivityTAG getMessage onSuccess");
-                if (view != null) view.setListMessage(new ArrayList<Object>(list), personaId);
-                if(scrollToPositionBotton)if (view != null)view.scrollToPositionBotton();
+
+                if(scrollToPositionBotton){
+                    if (view != null) view.setListMessage(new ArrayList<Object>(list), personaId, false);
+                    if (view != null)view.scrollToPositionBotton(false);
+                }else {
+                    if (view != null) view.setListMessage(new ArrayList<Object>(list), personaId, true);
+                }
                 hideProgress();
+
+                if(view!=null)view.onInitListener();
             }
 
             @Override
             public void onError() {
                 hideProgress();
                 Log.d(getTag(), "onError");
-            }
-
-            @Override
-            public void onChangeEstado() {
-                Log.d(getTag(), "ChatActivityTAG getMessage onChangeEstado");
-                if (view != null) view.setListMessage(mensajesList, personaId);
             }
         });
     }
@@ -236,6 +239,9 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
         super.setExtras(extras);
         personaId=extras.getInt("personaId");
         personaExternaId=extras.getInt("personaExternaId");
+        this.nombreChat = extras.getString("nombreChat");
+        this.fotoChat = extras.getString("fotoChat");
+
         Log.d(getTag(), "personaExternaId: " + personaExternaId);
         Log.d(getTag(), "personaId: " + personaId);
         String salaId = "";
@@ -267,17 +273,10 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
         }
         if(view!=null)view.clearSend();
 
-        MessageUi2 messageUi = getSaveMessage(text, null, replick);
+        MessageUi2 messageUi = getSaveMessage(text, null, null,replick);
 
         replick = null;
         if(view!=null)view.hideAnclarMessage();
-
-        Set<Object> list = new LinkedHashSet<>(mensajesList);
-        list.add(Utils.getDateChat(messageUi.getFecha()));
-        list.add(messageUi);
-        mensajesList = new ArrayList<Object>(list);
-        if(view!=null)view.addMessage(mensajesList);
-
 
 
         saveMessage.execute(messageUi,new SaveMessage.Callback(){
@@ -347,8 +346,6 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
     @Override
     public void onResume() {
         super.onResume();
-        emoticon = false;
-        setEmoticon(emoticon);
         String salaId = "";
         if(personaId>personaExternaId){
             salaId = personaId+"_"+personaExternaId;
@@ -391,7 +388,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
 
     @Override
     public void onBtnBajarClicked() {
-        if(view!=null)view.scrollToPositionBotton();
+        if(view!=null)view.scrollToPositionBotton(true);
     }
 
     @Override
@@ -399,8 +396,8 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
         Log.d(getTag(), "onKeyboardOpens");
         Log.d(getTag(), "lastVisibleItem: " + lastVisibleItem);
         Log.d(getTag(), "mensajesList.size(): " + mensajesList.size());
-        if((mensajesList.size()-2)<=lastVisibleItem){
-            if(view!=null)view.scrollToPositionBotton();
+        if((mensajesList.size()-2)<=lastVisibleItem||lastVisibleItem==-1){
+            if(view!=null)view.scrollToPositionBotton(true);
         }
     }
 
@@ -410,24 +407,17 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
         emoticon=!emoticon;
         if(emoticon){
             if(view!=null)view.showEmoticon();
-            if(view!=null)view.changeBtnIconTeclado();
+            //if(view!=null)view.changeBtnIconTeclado();
         }else {
             if(view!=null)view.showTeclado();
-            if(view!=null)view.changeBtnIconEmoticon();
+            //if(view!=null)view.changeBtnIconEmoticon();
         }
     }
 
-    private void setEmoticon(boolean emoticon){
-        if(emoticon){
-            if(view!=null)view.changeBtnIconTeclado();
-        }else {
-            if(view!=null)view.changeBtnIconEmoticon();
-        }
-    }
+
     @Override
     public void onKeyboardClose() {
-        emoticon = false;
-        setEmoticon(emoticon);
+
     }
 
     private void getMoreMessage() {
@@ -436,9 +426,16 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
             return;
         }
         showProgress();
-        getListLastMessage.execute(personaId, personaExternaId, lastDateMessage, new GetListLastMessage.Callback() {
+        if(listenerFirebase!=null)listenerFirebase.onStop();
+        listenerFirebase = getListLastMessage.execute(personaId, personaExternaId, lastDateMessage, new GetListLastMessage.Callback() {
             @Override
             public void onSuccess(List<Object> response) {
+                MessageUi2 messageUiFocus = null;
+                for (Object o : response){
+                    if(o instanceof MessageUi2){
+                        messageUiFocus = (MessageUi2)o;
+                    }
+                }
                 Iterator<Object> iteratorBand = mensajesList.iterator();
                 while(iteratorBand.hasNext()){
                     Object o1 = iteratorBand.next();
@@ -469,10 +466,16 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
                 mensajesList.addAll(0, response);
                 Set<Object> list = new LinkedHashSet<>(mensajesList);
                 mensajesList= new ArrayList<>(list);
-                if(view!=null)view.setListMessage(mensajesList, personaId);
-                int position = mensajesList.indexOf(objet);
+                if(view!=null)view.setListMessage(mensajesList, personaId, false);
+                int position = mensajesList.indexOf(messageUiFocus);
                 if(position!=-1){
-                    if(view!=null)view.scrollToPosition(position);
+                    int positionActual=position+2;
+                    if(mensajesList.size()<positionActual){
+                        if(view!=null)view.scrollToPosition(positionActual);
+                    }else {
+                        if(view!=null)view.scrollToPosition(position);
+                    }
+
                 }else {
                     if(view!=null)view.scrollToPosition(response.size());
                 }
@@ -487,9 +490,12 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
             public void onError() {
                 Log.d(getTag(), "onError get more messages");
             }
+
+            @Override
+            public void onRecivedMessage(List<MessageUi2> messageUis) {
+                _onRecivedMessage(messageUis);
+            }
         });
-
-
     }
 
     @Override
@@ -503,7 +509,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
         if(emoticon){
             emoticon=false;
             if(view!=null)view.showTeclado();
-            if(view!=null)view.changeBtnIconEmoticon();
+            //if(view!=null)view.changeBtnIconEmoticon();
         }
     }
 
@@ -511,18 +517,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
     public void onSeleccionarMessage(MessageUi2 messageUi2) {
         this.replick = messageUi2;
 
-        MessageUi2 clone = new MessageUi2();
-        if(messageUi2.getEmisorId()==personaId){
-            clone.setPersonaReplick("Tú");
-        }else {
-            clone.setPersonaReplick(personaUiExterna!=null?personaUiExterna.getNombre():"");
-        }
-
-        clone.setImagenReplick(replick.getImagenFcm());
-        clone.setMensajeReplickId(replick.getId());
-        clone.setMensajeReplick(replick.getMensaje());
-
-        if(view!=null)view.showAnclarMessage(clone);
+        if(view!=null)view.showAnclarMessage(messageUi2.getEmisorId(),personaId,(personaUiExterna!=null?personaUiExterna.getNombre():""),replick.getImagenFcm(), replick.getMensaje());
     }
 
     @Override
@@ -534,6 +529,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
         if(messageUi2.getEstado()== MessageUi2.ESTADO.ELIMINADO)return;
 
         messageUi2.setSelected(!messageUi2.isSelected());
+        if(view!=null)view.updateList(messageUi2);
         if(messageUi2.isSelected()){
             toolbarSelection = true;
             changeToolbarSelection();
@@ -579,7 +575,7 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
             if(view!=null)view.hideDeleteMessage();
         }
 
-        if(view!=null)view.changeList();
+        //if(view!=null)view.changeList();
         if(view!=null)view.setCountSelection(countSeleccionado);
         Log.d(getTag(), "Cou7nt "+ countSeleccionado);
 
@@ -638,6 +634,8 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
                 MessageUi2 item = ((MessageUi2)o);
                 if(item.isSelected()&&item.getEmisorId()==personaId){
                     messageUiList.add(item);
+                    item.setEstado(MessageUi2.ESTADO.ELIMINADO);
+                    if(view!=null)view.updateList(item);
                 }
             }
         }
@@ -659,24 +657,18 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
     @Override
     public void onSeleccionList(ArrayList<String> returnValue, String descripcion) {
         List<MessageUi2> messageUi2List = new ArrayList<>();
-        Set<Object> list = new LinkedHashSet<>(mensajesList);
         int count = 0;
         for (String image : returnValue){
             MessageUi2 messageUi2;
             if(count==0){
-                messageUi2 = getSaveMessage(descripcion, image,null);
+                messageUi2 = getSaveMessage(descripcion, image,null,null);
             }else {
-                messageUi2 = getSaveMessage("", image,null);
+                messageUi2 = getSaveMessage("", image,null,null);
             }
 
-            list.add(Utils.getDateChat(messageUi2.getFecha()));
-            list.add(messageUi2);
             messageUi2List.add(messageUi2);
             count++;
         }
-
-        mensajesList = new ArrayList<Object>(list);
-        if(view!=null)view.addMessage(mensajesList);
 
         saveImagenMessage.execute(messageUi2List, new SaveMessage.Callback(){
             @Override
@@ -692,11 +684,49 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
         });
     }
 
+    @Override
+    public void onSelectedSticker(String image) {
+        if(TextUtils.isEmpty(image)){
+            if(view!=null)view.showMessage("error");
+            return;
+        }
+        if(view!=null)view.clearSend();
 
-    private MessageUi2 getSaveMessage(String text, String imagen ,  MessageUi2 replick) {
+        MessageUi2 messageUi = getSaveMessage(null, null, image, replick);
+
+        replick = null;
+        if(view!=null)view.hideAnclarMessage();
+
+        saveMessage.execute(messageUi,new SaveMessage.Callback(){
+            @Override
+            public void onSuccess(MessageUi2 messageUi) {
+                Log.d(getTag(), "Save message success");
+            }
+
+            @Override
+            public void onError() {
+                Log.d(getTag(), "");
+                Log.d(getTag(), "Save message error");
+            }
+        });
+    }
+
+
+    private MessageUi2 getSaveMessage(String text, String imagen, String sticker, MessageUi2 replick) {
         MessageUi2 messageUi = new MessageUi2();
         messageUi.setId("");
-        messageUi.setFecha(new Date());
+        //messageUi.setFecha(new Date());
+        if(!TextUtils.isEmpty(nombreChat)){
+            messageUi.setNameChat(nombreChat);
+        }else {
+            messageUi.setNameChat(!TextUtils.isEmpty(personaUiExterna.getNombre())?personaUiExterna.getNombre():null);
+        }
+        if(!TextUtils.isEmpty(fotoChat)){
+            messageUi.setImagenChat(fotoChat);
+        }else {
+            messageUi.setImagenChat(!TextUtils.isEmpty(personaUiExterna.getFoto())?personaUiExterna.getFoto():null);
+        }
+
         messageUi.setEmisorId(personaId);
         messageUi.setReceptorId(personaExternaId);
         messageUi.setEstado(MessageUi2.ESTADO.CREADO);
@@ -717,15 +747,23 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
             }else {
                 messageUi.setPersonaReplick(personaUiExterna!=null?personaUiExterna.getNombre():"");
             }
-
+            messageUi.setPersonaIdReplick(replick.getEmisorId());
             messageUi.setImagenReplick(replick.getImagenFcm());
             messageUi.setMensajeReplickId(replick.getId());
             messageUi.setMensajeReplick(replick.getMensaje());
         }
 
-        messageUi.setTipo(TextUtils.isEmpty(imagen)? MessageUi2.TIPO.TEXTO: MessageUi2.TIPO.IMAGEN);
-        messageUi.setImagen(imagen);
+        if(!TextUtils.isEmpty(sticker)){
+            messageUi.setTipo(MessageUi2.TIPO.STICKER);
+            messageUi.setImagenFcm(sticker);
+            messageUi.setMensaje("\uD83D\uDC9F️ Sticker");
+        }else if(TextUtils.isEmpty(imagen)){
+            messageUi.setTipo(MessageUi2.TIPO.TEXTO);
+        }else {
+            messageUi.setTipo(MessageUi2.TIPO.IMAGEN);
+        }
 
+        messageUi.setImagen(imagen);
 
         return messageUi;
     }
@@ -735,12 +773,13 @@ public class ChatPresenterImpl extends BasePresenterImpl<ChatView> implements Ch
             if(o instanceof MessageUi2){
                 MessageUi2 item = ((MessageUi2)o);
                 item.setSelected(false);
+                if(view!=null)view.updateList(item);
             }
         }
         countSeleccionado = 0;
         toolbarSelection = false;
         changeToolbarSelection();
-        if(view!=null)view.changeList();
+        //if(view!=null)view.changeList();
     }
 
     private void changeToolbarSelection() {

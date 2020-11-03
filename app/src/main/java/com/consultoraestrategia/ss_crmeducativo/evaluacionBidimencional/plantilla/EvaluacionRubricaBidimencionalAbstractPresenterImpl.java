@@ -31,7 +31,6 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.GetRubBid;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UpdateEvaluacionFormula;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
-import com.consultoraestrategia.ss_crmeducativo.services.usecase.validacion.GetFechaCreacionRubroEvaluacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +58,6 @@ public abstract class EvaluacionRubricaBidimencionalAbstractPresenterImpl extend
     protected List<List<Cell>> cellLists;
     protected List<RowHeader> rowHeaderList;
     protected List<GrupoProcesoUi> grupoProcesoUis;
-    protected GetFechaCreacionRubroEvaluacion getFechaCreacionRubroEvaluacion;
     private EvaluacionRubroFormula evaluacionRubroFormula;
     private long f_CreacionServidor;
     private long f_CreacionLocal;
@@ -69,14 +67,13 @@ public abstract class EvaluacionRubricaBidimencionalAbstractPresenterImpl extend
     protected boolean isCalendarioVigente;
     protected EvalRubBidIndView evalRubBidIndView;
 
-    public EvaluacionRubricaBidimencionalAbstractPresenterImpl(UseCaseHandler handler, Resources res, GetRubBid getRubBid, EvalAlumnosProcesoBid evalAlumnosProcesoBid, GetIndicadorRubro getIndicador, GetFechaCreacionRubroEvaluacion getFechaCreacionRubroEvaluacion, UpdateEvaluacionFormula updateEvaluacionFormula,
+    public EvaluacionRubricaBidimencionalAbstractPresenterImpl(UseCaseHandler handler, Resources res, GetRubBid getRubBid, EvalAlumnosProcesoBid evalAlumnosProcesoBid, GetIndicadorRubro getIndicador, UpdateEvaluacionFormula updateEvaluacionFormula,
                                                                EvaluacionRubroFormula evaluacionRubroFormula, CalcularMediaDesviacion calcularMediaDesviacion) {
         super(handler, res);
         this.getRubBid = getRubBid;
         this.evalAlumnosProcesoBid = evalAlumnosProcesoBid;
         this.getIndicador = getIndicador;
         columnheaderList = new ArrayList<>();
-        this.getFechaCreacionRubroEvaluacion = getFechaCreacionRubroEvaluacion;
         this.updateEvaluacionFormula = updateEvaluacionFormula;
         this.evaluacionRubroFormula = evaluacionRubroFormula;
         this.calcularMediaDesviacion=calcularMediaDesviacion;
@@ -306,24 +303,6 @@ public abstract class EvaluacionRubricaBidimencionalAbstractPresenterImpl extend
         }
         Log.d(getTag(),filtroTableUi.toString());
         getAlumnConProc();
-    }
-
-    private void GetFechaCreacionRubroEvaluacion(){
-        handler.execute(getFechaCreacionRubroEvaluacion,
-                new GetFechaCreacionRubroEvaluacion.RequestValues(rubBidId),
-                new UseCase.UseCaseCallback<GetFechaCreacionRubroEvaluacion.ResponseValue>() {
-                    @Override
-                    public void onSuccess(GetFechaCreacionRubroEvaluacion.ResponseValue response) {
-                        f_CreacionServidor = response.getF_Servidor();
-                        f_CreacionLocal = response.getF_Local();
-                        comprobarFechaRubroEvaluacion();
-                    }
-
-                    @Override
-                    public void onError() {
-                        ocultarMsgActualizacion();
-                    }
-                });
     }
 
     private void comprobarFechaRubroEvaluacion() {

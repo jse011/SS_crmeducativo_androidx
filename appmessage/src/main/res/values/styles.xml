@@ -23,8 +23,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#007bce</item>
-        <item name="colorPrimaryDark">#0d629c</item>
+        <item name="colorPrimary">#173766</item>
+        <item name="colorPrimaryDark">#112747</item>
         <item name="colorAccent">#67c2ff</item>
     </style>
     <style name="ChatEditTextView" parent="@android:style/Widget.AutoCompleteTextView">

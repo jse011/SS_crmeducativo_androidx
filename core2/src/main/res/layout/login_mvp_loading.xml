@@ -5,8 +5,7 @@
     android:id="@+id/contendoPrincipal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.consultoraestrategia.ss_crmeducativo.login.ui.LoginActivity">
+    android:fitsSystemWindows="true">
 
     <ProgressBar
         android:id="@+id/pgr_progresshorizontal"

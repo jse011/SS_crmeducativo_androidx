@@ -10,12 +10,17 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.fxn.pix.Options;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -125,9 +130,26 @@ public class CameraPreviewCamera extends AppCompatActivity implements PreviewAda
         recPreview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         previewAdapter = new PreviewAdapter(this);
         recPreview.setAdapter(previewAdapter);
-        Pix.start(this,                    //Activity or Fragment Instance
-                RequestCodeImgen,                //Request code for activity results
-                8);    //Number of images to restict selection count
+                                         //Custom Path For media Storage
+
+        root.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Options options = Options.init()
+                        .setRequestCode(RequestCodeImgen)                                           //Request code for activity results
+                        .setCount(8)                                                   //Number of images to restict selection count
+                        .setFrontfacing(false)                                         //Front Facing camera on start
+                        //.setPreSelectedUrls(returnValue)                               //Pre selected Image Urls
+                        .setSpanCount(4)                                               //Span count for gallery min 1 & max 5
+                        .setExcludeVideos(true)                                       //Option to exclude videos
+                        .setVideoDurationLimitinSeconds(30)                            //Duration for video recording
+                        .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
+                        .setPath(getResources().getString(R.string.app_name)+"/images");
+
+                Pix.start(CameraPreviewCamera.this, options);
+            }
+        }, 50);
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -151,6 +173,7 @@ public class CameraPreviewCamera extends AppCompatActivity implements PreviewAda
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ChatGrupalActivity.RESULT_OK && requestCode == RequestCodeImgen) {
+            root.setVisibility(View.VISIBLE);
             ArrayList<String> returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS);
             previewAdapter.setLista(returnValue);
             if (returnValue.size() < 2) {
@@ -164,6 +187,8 @@ public class CameraPreviewCamera extends AppCompatActivity implements PreviewAda
             }
 
 
+        }else {
+            finish();
         }
 
     }

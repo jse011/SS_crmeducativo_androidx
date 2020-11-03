@@ -71,92 +71,29 @@ public interface Service {
     @POST(" ")
     Call<RestApiResponse<BEDatosRubroEvaluacionProceso>> flst_ObtenerRubroEvaluacionProceso(@Body RequestBody body);
     @POST(" ")
-    Call<RestApiResponse<BEDatosRubroEvaluacionProceso>> flst_ObtenerRubroEvaluacionProceso(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<BEObtenerDatosLogin>> flst_ObtenerDatosLogin(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<GEDatosSilaboEventoEnvio>> flst_ObtenerSilaboEvento(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEvaluacionResultado>> flst_ObtenerRubroEvaluacionResultado(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEnvioTipoNota>> flst_ObtenerTipoNota(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEnvioMensajeria>> flst_ObtenerMensajeria(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEnvioHorario>> flst_ObtenerHorario(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEnvioGrupo>> flst_ObtenerGrupo(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEnvioAsistencia>> flst_ObtenerAsistencia(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosCargaAcademica>> flst_ObtenerCargaAcademica(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> body);
-    @POST(" ")
     Call<RestApiResponse<Long>> fins_ListarSesion_FechaActualizacion(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData> body);
     @POST(" ")
-    Call<RestApiResponse<Long>> fins_ListarRubroEvaluacionProceso_FechaActualizacion(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData> body);
-    @POST(" ")
-    Call<RestApiResponse<Long>> fins_ListarGrupoEquipo_FechaActualizacion(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData> body);
-    @POST(" ")
     Call<RestApiResponse<BEDatosSesionAprendizaje>> flst_ObtenerSesionByUnidad(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<GEDatosRubroEvaluacionProceso>> fins_ListarRubroEvaluacionProcesoBYCALENDARIOPERIODO(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEnvioGrupo>> fins_ListarGruposBYUsuario(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosCargaAcademica>> flst_ObtenerCalendario_Acad_Per_PerDet(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<Persona>> flst_ObtenerPersona(@Body ApiRetrofit.ApiRequestBody<ParametroChangeUser> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<AdminService>> f_BuscarUsuarioCent(@Body ApiRetrofit.ApiRequestBody<ParametroChangeAdminService> apiRequestBody);
     @POST(" ")
-    Call<RestApiResponse<Usuario>> fobj_ObtenerUsuario(@Body ApiRetrofit.ApiRequestBody<ParametroChangeUser> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<List<Persona>>> flst_ObtenerPersonaByCorreoGmail(@Body ApiRetrofit.ApiRequestBody<ParametroChangeUser> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<GEDatosEnvioAsistencia>> fins_ListarEnvioAsistencia(@Body ApiRetrofit.ApiRequestBody<ParametrosImportar<BEVariables>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BERespuesta>> fins_GuardarGrupoEquipo_Android(@Body ApiRetrofit.ApiRequestBody<ParametrosExportar<BEDatosEnvioGrupo>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEnvioGrupo>> fins_ListarGrupoEquipo_Equipo_EquiIntegrante(@Body ApiRetrofit.ApiRequestBody<ParametrosImportar<BEVariables>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BERespuesta>> fins_GuardarMensajesProcesoAndroid(@Body ApiRetrofit.ApiRequestBody<ParametrosExportar<BEDatosEnvioMensajeria>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEnvioTipoNota>> fins_ListarTipoNotas(@Body ApiRetrofit.ApiRequestBody<ParametrosImportar<BEVariables>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosEvaluacionResultado>> fins_ListarRubroEvaluacionResultado(@Body ApiRetrofit.ApiRequestBody<ParametrosImportar<BEVariables>> apiRequestBody);
-    @POST(" ")
     Call<RestApiResponse<BERespuesta>> fins_GuardarSesion_Android(@Body ApiRetrofit.ApiRequestBody<ParametrosExportar<BEDatosSesionAprendizaje>> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<BEDatosSesionAprendizaje>> fins_ListarSesiones(@Body ApiRetrofit.ApiRequestBody<ParametrosImportar<BEVariables>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BERespuesta>> fins_GuardarTareRecursosAndroid(@Body ApiRetrofit.ApiRequestBody<ParametrosExportar<GEDatosTareasRecursos>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<GEDatosTareasRecursos>> fins_ListarTareRecursos(@Body ApiRetrofit.ApiRequestBody<ParametrosImportar<BEVariables>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BERespuesta>> fins_GuardarAsistencia_Android(@Body ApiRetrofit.ApiRequestBody<ParametrosExportar<GEDatosEnvioAsistencia>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BERespuesta>> fins_GuardarRubroEvaluacionProcesoAndroid(@Body ApiRetrofit.ApiRequestBody<ParametrosExportar<GEDatosRubroEvaluacionProceso>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<GEDatosRubroEvaluacionProceso>> fins_ListarRubroEvaluacionProceso(@Body ApiRetrofit.ApiRequestBody<ParametrosImportar<BEVariables>> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BEObtenerDatosLogin>> flst_Obtenerlistado_Personas(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> apiRequestBody);
-    @POST(" ")
-    Call<RestApiResponse<BERespuesta>> fins_GuardarMensajeria(@Body ApiRetrofit.ApiRequestBody<ParametrosExportar<BEDatosEnvioMensajeria>> apiRequestBody);
     @POST(" ")
     @Streaming
     Call<ResponseBody> flst_ObtenerRubroEvaluacionProceso2(@Body ApiRetrofit.ApiRequestBody<ParametroLogin> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<BERespuesta>> fins_GuardarEntidades_Global(@Body ApiRetrofit.ApiRequestBody<ParametrosExportarGlobal> apiRequestBody);
-    @POST(" ")
-    Call<ResponseBody> fins_GuardarEntidades_Global2(@Body ApiRetrofit.ApiRequestBody<ParametrosExportarGlobal> apiRequestBody);
+
     @POST(" ")
     @Multipart
     Call<String> uploadFile(@Part() MultipartBody.Part file, @Part("name") RequestBody name,  @Part("optionTipos") RequestBody tipo1, @Part("option") RequestBody tipo2);
     @Streaming
     @GET
     Call<ResponseBody> downloadFileByUrl(@Url String fileUrl);
-    @POST(" ")
-    Call<RestApiResponse<BEDatosCargaAcademica>> fins_ListarCalendarioP_PDet_CC_CDet(@Body ApiRetrofit.ApiRequestBody<ParametroChangeData> apiRequestBody);
     @POST(" ")
     @Multipart
     Call<String> uploadFileAlumno(@Part() MultipartBody.Part fileToUpload, @Part("url2") RequestBody url, @Part("alumnoId") RequestBody alumnoId, @Part("option") RequestBody tipo2);
@@ -214,4 +151,6 @@ public interface Service {
     Call<RestApiResponse<BEEventos>> flst_saveEvento2(@Body ApiRetrofit.ApiRequestBody<ParametrosEventos> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<List<BECambiosMovilFb>>> getCambiosResultado(@Body ApiRetrofit.ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<Usuario>> fobj_ObtenerUsuario(@Body ApiRetrofit.ApiRequestBody<ParametroChangeUser> apiRequestBody);
 }

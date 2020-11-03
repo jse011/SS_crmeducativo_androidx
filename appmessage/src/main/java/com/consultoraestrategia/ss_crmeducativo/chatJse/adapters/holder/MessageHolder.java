@@ -3,12 +3,8 @@ package com.consultoraestrategia.ss_crmeducativo.chatJse.adapters.holder;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +12,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.integration.webp.decoder.WebpDrawable;
+import com.bumptech.glide.integration.webp.decoder.WebpDrawableTransformation;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R2;
 import com.consultoraestrategia.ss_crmeducativo.chatJse.adapters.MessageAdapter;
@@ -27,6 +35,7 @@ import com.consultoraestrategia.ss_crmeducativo.utils.touchHelper.ItemTouchHelpe
 import com.vanniktech.emoji.EmojiTextView;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +61,10 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
     TextView horaSen;
     @BindView(R2.id.contSender)
     LinearLayout contSender;
+    @BindView(R2.id.horaSenDelete)
+    TextView horaSenDelete;
+    @BindView(R2.id.contSenderEliminado)
+    LinearLayout contSenderEliminado;
     @BindView(R2.id.barra_reciver_replick)
     View barraReciverReplick;
     @BindView(R2.id.img_receiver_replick)
@@ -68,6 +81,10 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
     TextView horaRec;
     @BindView(R2.id.contReceiver)
     LinearLayout contReceiver;
+    @BindView(R2.id.horaRecDelete)
+    TextView horaRecDelete;
+    @BindView(R2.id.contReceiverEliminado)
+    LinearLayout contReceiverEliminado;
     @BindView(R2.id.foreground_view)
     public LinearLayout foregroundView;
     private MessageUi2 messageUic;
@@ -84,7 +101,7 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
         this.messageUic = messageUic;
         this.seleccionado = false;
         Calendar calendar= Calendar.getInstance();
-        calendar.setTime(messageUic.getFecha());
+        calendar.setTime(messageUic.getFecha()!=null?messageUic.getFecha():new Date());
 
         imgReceiverReplick.setImageDrawable(null);
         imgSenderReplick.setImageDrawable(null);
@@ -96,15 +113,19 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
         if(messageUic.getEmisorId()== personaId)
         {
 
-            layoutParams.setMarginStart((int)Utils.convertDpToPixel(32, itemView.getContext()));
-            layoutParams.setMarginEnd((int)Utils.convertDpToPixel(0, itemView.getContext()));
+            layoutParams.setMarginStart((int) Utils.convertDpToPixel(32, itemView.getContext()));
+            layoutParams.setMarginEnd((int) Utils.convertDpToPixel(0, itemView.getContext()));
             foregroundView.setLayoutParams(layoutParams);
 
+            contReceiverEliminado.setVisibility(View.GONE);
             contReceiver.setVisibility(View.GONE);
+
             contSender.setVisibility(View.VISIBLE);
+            contSenderEliminado.setVisibility(View.GONE);
+
             textsender.setText(messageUic.getMensaje());
             horaSen.setText(tiempo);
-            textsender.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.md_black_1000));
+            textsender.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_black_1000));
             textsender.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
             switch (messageUic.getEstado())
             {
@@ -128,8 +149,11 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
                 default:
                     String mensaje = "Eliminaste este mensaje";
                     textsender.setText(mensaje);
-                    textsender.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.md_grey_500));
+                    textsender.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_grey_500));
                     textsender.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_block, 0, 0, 0);
+                    contSender.setVisibility(View.GONE);
+                    contSenderEliminado.setVisibility(View.VISIBLE);
+                    horaSenDelete.setText(tiempo);
                     break;
             }
 
@@ -140,16 +164,43 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
                     messageUic.getEstado()!= MessageUi2.ESTADO.ELIMINADO){
                 contentSenderReplick.setVisibility(View.VISIBLE);
                 textsenderReplick.setText(TextUtils.isEmpty(messageUic.getImagenReplick())?messageUic.getMensajeReplick():"\uD83D\uDCF7 Foto");
-                txtSenderReplick.setText(messageUic.getPersonaReplick());
+
+
+                if(messageUic.getPersonaIdReplick() == messageUic.getEmisorId()){
+                    txtSenderReplick.setTextColor(ContextCompat.getColor(textsenderReplick.getContext(), R.color.colorPrimary));
+                    txtSenderReplick.setText("Tú                       ");
+                    barraSenderReplick.setBackgroundColor(ContextCompat.getColor(textsenderReplick.getContext(), R.color.colorPrimary));
+                }else {
+                    txtSenderReplick.setTextColor(Color.parseColor("#1A7264"));
+                    txtSenderReplick.setText(messageUic.getPersonaReplick());
+                    barraSenderReplick.setBackgroundColor(Color.parseColor("#1A7264"));
+                }
 
                 if(!TextUtils.isEmpty(messageUic.getImagenReplick())){
                     imgSenderReplick.setVisibility(View.VISIBLE);
-                    Glide.with(itemView.getContext())
+                    Glide.with(imgSenderReplick)
+                            .asDrawable()
                             .load(messageUic.getImagenReplick())
                             .thumbnail(0.25f)
                             .apply(Utils.getGlideRequestOptionsSimple()
                                     .centerCrop())
-                            .into(imgSenderReplick);
+                            .optionalTransform(WebpDrawable.class, new WebpDrawableTransformation(new FitCenter()))
+                            .skipMemoryCache(true)
+                            //.into(imgSenderReplick);
+                            .into(new CustomTarget<Drawable>() {
+                                @Override
+                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                    imgSenderReplick.setImageDrawable(resource);
+                                    if (resource instanceof Animatable) {
+                                        ((Animatable)resource).stop();
+                                    }
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                }
+                            });
                 }else {
                     imgSenderReplick.setVisibility(View.GONE);
                 }
@@ -163,12 +214,14 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
         else
         {
 
-            layoutParams.setMarginStart((int)Utils.convertDpToPixel(0, itemView.getContext()));
-            layoutParams.setMarginEnd((int)Utils.convertDpToPixel(32, itemView.getContext()));
+            layoutParams.setMarginStart((int) Utils.convertDpToPixel(0, itemView.getContext()));
+            layoutParams.setMarginEnd((int) Utils.convertDpToPixel(32, itemView.getContext()));
             foregroundView.setLayoutParams(layoutParams);
 
             contSender.setVisibility(View.GONE);
+            contSenderEliminado.setVisibility(View.GONE);
             contReceiver.setVisibility(View.VISIBLE);
+            contReceiverEliminado.setVisibility(View.GONE);
             textreceiver.setText(messageUic.getMensaje());
             horaRec.setText(tiempo);
 
@@ -177,6 +230,9 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
                 textreceiver.setText(mensaje);
                 textreceiver.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_grey_500));
                 textreceiver.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_block, 0, 0, 0);
+                contReceiver.setVisibility(View.GONE);
+                contReceiverEliminado.setVisibility(View.VISIBLE);
+                horaRecDelete.setText(tiempo);
             }else {
                 textreceiver.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.md_black_1000));
                 textreceiver.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
@@ -187,16 +243,44 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
                     messageUic.getEstado()!= MessageUi2.ESTADO.ELIMINADO){
                 contetReciverReplick.setVisibility(View.VISIBLE);
                 textreceiverReplick.setText(messageUic.getMensajeReplick());
-                txtReciverReplick.setText(messageUic.getPersonaReplick());
+
+
+                if(messageUic.getPersonaIdReplick() == messageUic.getEmisorId()){
+                    txtReciverReplick.setTextColor(ContextCompat.getColor(textsenderReplick.getContext(), R.color.colorPrimary));
+                    txtReciverReplick.setText("Tú                       ");
+                    barraReciverReplick.setBackgroundColor(ContextCompat.getColor(textsenderReplick.getContext(), R.color.colorPrimary));
+                }else {
+                    txtReciverReplick.setTextColor(Color.parseColor("#1A7264"));
+                    txtReciverReplick.setText(messageUic.getPersonaReplick());
+                    barraReciverReplick.setBackgroundColor(Color.parseColor("#1A7264"));
+                }
 
                 if(!TextUtils.isEmpty(messageUic.getImagenReplick())){
                     imgReceiverReplick.setVisibility(View.VISIBLE);
-                    Glide.with(itemView.getContext())
+                    Glide.with(imgReceiverReplick)
+                            .asDrawable()
                             .load(messageUic.getImagenReplick())
                             .thumbnail(0.25f)
                             .apply(Utils.getGlideRequestOptionsSimple()
                                     .centerCrop())
-                            .into(imgReceiverReplick);
+                            //.asDrawable()
+                            .optionalTransform(WebpDrawable.class, new WebpDrawableTransformation(new FitCenter()))
+                            .skipMemoryCache(true)
+                            //.into(imgReceiverReplick);
+                            .into(new CustomTarget<Drawable>() {
+                                @Override
+                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                    imgReceiverReplick.setImageDrawable(resource);
+                                    if (resource instanceof Animatable) {
+                                        ((Animatable)resource).stop();
+                                    }
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                }
+                            });
                 }else {
                     imgReceiverReplick.setVisibility(View.GONE);
                 }
@@ -286,7 +370,7 @@ public class MessageHolder extends RecyclerView.ViewHolder implements LinkUtils.
     @Override
     public boolean onLongClick(View view) {
         listener.onLongClick(messageUic);
-        return false;
+        return true;
     }
 
     @Override

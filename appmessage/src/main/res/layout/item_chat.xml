@@ -1,52 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="5dp">
+    android:orientation="vertical">
 
-<de.hdodenhof.circleimageview.CircleImageView
-    android:id="@+id/image_rec"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="10dp"
-    android:src="@drawable/pic" />
+    <FrameLayout
+        android:id="@+id/conten_rec"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/corner_circle_chat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_rec"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:src="@drawable/pic"
+            android:visibility="visible" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/unreadMessageCountTV"
+        app:layout_constraintStart_toEndOf="@+id/conten_rec"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Vihaan"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="16sp" />
+
+        <com.vanniktech.emoji.EmojiTextView
+            android:id="@+id/lastmsgchat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginStart="10dp"
+            android:text="hello"
+            android:textSize="14sp"
+            app:emojiSize="18dp" />
+    </LinearLayout>
+
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@id/image_rec"
-        android:text="Vihaan"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="16sp" />
-
-    <com.vanniktech.emoji.EmojiTextView
-        android:id="@+id/lastmsgchat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@id/image_rec"
-        android:text="hello"
-        android:textSize="14sp"
-        app:emojiSize="18dp" />
-
-<TextView
-    android:id="@+id/hour"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentEnd="true"
-    android:layout_marginEnd="10dp"
-    android:layout_marginTop="15dp"
-    android:textColor="@color/md_grey_500"
-    android:text="5:30 PM"
-    android:textSize="12sp" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="5:30 PM"
+        android:textColor="@color/md_grey_500"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 <!--
 
@@ -57,24 +83,25 @@
         android:layout_height="22dp"
         android:layout_below="@id/hour"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/round_corner_green"
         android:gravity="center"
         android:minWidth="22dp"
         android:text="1"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hour" />
 
-<View
-    android:layout_width="match_parent"
-    android:layout_height="0.5dp"
-    android:background="#2faaaaaa"
-    android:layout_below="@id/image_rec"
-    android:layout_toEndOf="@id/image_rec"
-    android:layout_marginTop="5dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/conten_rec"
+        android:layout_toEndOf="@id/conten_rec"
+        android:background="#A1AAAAAA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/conten_rec" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

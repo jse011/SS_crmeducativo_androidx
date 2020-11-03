@@ -39,4 +39,6 @@ public interface ChatPresenter extends BasePresenter<ChatView> {
     void onClickInfo();
 
     void onClickCopy();
+
+    void onSelectedSticker(String data);
 }

@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.consultoraestrategia.ss_crmeducativo.appmessage.R;
 import com.consultoraestrategia.ss_crmeducativo.chats.entities.ChatUi;
 import com.consultoraestrategia.ss_crmeducativo.chats.view.ChatListener;
@@ -24,6 +27,7 @@ import java.util.Date;
 
 public class ChatHolderGroup extends RecyclerView.ViewHolder {
 
+    private final ImageView fondo;
     private ImageView circle;
     private TextView title_img;
     private TextView name;
@@ -36,6 +40,7 @@ public class ChatHolderGroup extends RecyclerView.ViewHolder {
     public ChatHolderGroup(@NonNull View itemView) {
         super(itemView);
         circle=(ImageView)itemView.findViewById(R.id.circle);
+        fondo=(ImageView)itemView.findViewById(R.id.fondo);
         title_img=(TextView)itemView.findViewById(R.id.title_img);
         name=(TextView)itemView.findViewById(R.id.name);
         date=(TextView)itemView.findViewById(R.id.date);
@@ -55,8 +60,8 @@ public class ChatHolderGroup extends RecyclerView.ViewHolder {
         }
 
         if(chatUi.getLastDate()!=null)date.setText(getHour(chatUi.getLastDate()));
-        Typeface tf = Typeface.createFromAsset(name.getContext().getAssets(), "fonts/Roboto-Medium.ttf");
-        name.setTypeface(tf);
+        Typeface tf = Typeface.createFromAsset(txtTipo.getContext().getAssets(), "fonts/Roboto-Medium.ttf");
+        txtTipo.setTypeface(tf);
         name.setText(chatUi.getName());
 
         String texto = " " + chatUi.getLastMsg();
@@ -64,6 +69,20 @@ public class ChatHolderGroup extends RecyclerView.ViewHolder {
         Typeface tf1 = Typeface.createFromAsset(lastMessage.getContext().getAssets(), "fonts/Roboto-Regular.ttf");
         lastMessage.setTypeface(tf1);
 
+        switch (chatUi.getTypePerson()){
+            case TEACHERS:
+                txtTipo.setText("Grupo Oficial");
+                break;
+            case PARENTS:
+                txtTipo.setText("Grupo de Padres");
+                break;
+            case STUDENTS:
+                txtTipo.setText("Grupo de Alumnos");
+                break;
+            default:
+                txtTipo.setText("");
+                break;
+        }
 
         switch (chatUi.getTypeGroup()){
             case COURSE:
@@ -83,30 +102,41 @@ public class ChatHolderGroup extends RecyclerView.ViewHolder {
                     e.printStackTrace();
                 }
                 circle.setImageDrawable(drawable);
+
+                Glide.with(fondo)
+                        .load(chatUi.getImageRec())
+                        .apply(new RequestOptions()
+                                .centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .into(fondo);
+                fondo.setVisibility(View.VISIBLE);
+                fondo.setAlpha(0.4f);
                 break;
             case ACADEMIC:
                 title_img.setText(chatUi.getImageRec());
                 title_img.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.light_blank));
                 circle.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.circle_backgroud));
+                fondo.setAlpha(1f);
+                fondo.setVisibility(View.GONE);
+                break;
+            case TEAM:
+                title_img.setText("");
+                circle.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.group));
+                fondo.setAlpha(1f);
+                fondo.setVisibility(View.GONE);
+                name.setText(chatUi.getDescripcion());
+                txtTipo.setText(chatUi.getName());
                 break;
             default:
                 title_img.setText("");
                 circle.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.group));
+                fondo.setAlpha(1f);
+                fondo.setVisibility(View.GONE);
                 break;
 
         }
 
-        switch (chatUi.getTypePerson()){
-            case TEACHERS:
-                txtTipo.setText("General");
-                break;
-            case PARENTS:
-                txtTipo.setText("Padres");
-                break;
-            case STUDENTS:
-                txtTipo.setText("Alumnos");
-                break;
-        }
+
 
         root.setOnClickListener(new View.OnClickListener() {
             @Override

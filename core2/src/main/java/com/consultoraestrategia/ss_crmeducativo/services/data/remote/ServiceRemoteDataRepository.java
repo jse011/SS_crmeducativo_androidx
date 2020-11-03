@@ -11,7 +11,6 @@ public interface ServiceRemoteDataRepository {
     interface RespuestaCallBack<T, R>{
         void onResponse(boolean success, T item, R respuesta);
     }
-    void SendDatosGlobal(BEGuardarEntidadesGlobal item, RespuestaCallBack<BEGuardarEntidadesGlobal, BERespuesta> callBack);
     void SendDatosGlobalSimple(BEGuardarEntidadesGlobal item,RespuestaCallBack<BEGuardarEntidadesGlobal, BERespuesta> callBack);
     void SendDatosGlobalUpdateContratoAlumno(BEGuardarEntidadesGlobal item,RespuestaCallBack<BEGuardarEntidadesGlobal, BERespuesta> callBack);
 }

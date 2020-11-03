@@ -8,8 +8,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.ColorInt;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.aghajari.emojiview.listener.OnStickerActions;
+import com.aghajari.emojiview.listener.SimplePopupAdapter;
+import com.aghajari.emojiview.sticker.Sticker;
+import com.aghajari.emojiview.view.AXEmojiPopup;
+import com.consultoraestrategia.ss_crmeducativo.stiker2.StikersComponet;
 import com.google.android.material.appbar.AppBarLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,6 +30,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
+
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +39,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -143,7 +156,7 @@ public class ChatGrupalActivity extends BaseActivity<ChatView, ChatPresenter> im
     private ItemTouchHelper mItemTouchHelper;
     private MessageAdapter adapter;
     private LastChangePostionListener firsthChangePostionListener;
-    private EmojiPopup emojiPopup;
+    private AXEmojiPopup emojiPopup;
     public static final int TIPO_CLASSROON = 1, TIPO_COURSE = 2, TIPO_TEAM = 3;
     public static final int NIVEL_ALUMNO = 1, NIVEL_PADRES = 2, NIVEL_GENERAL = 3;
     public static String salaId = null;
@@ -209,15 +222,42 @@ public class ChatGrupalActivity extends BaseActivity<ChatView, ChatPresenter> im
             firsthChangePostionListener = new LastChangePostionListener(this);
         }
 
-        emojiPopup = EmojiPopup.Builder.fromRootView(root).build(msg);
+        setupEmoji();
 
-        recyMsg.removeOnScrollListener(firsthChangePostionListener);
-        recyMsg.removeOnLayoutChangeListener(firsthChangePostionListener);
-
-        recyMsg.addOnScrollListener(firsthChangePostionListener);
-        recyMsg.addOnLayoutChangeListener(firsthChangePostionListener);
         setupEditex();
         initSearchBar();
+    }
+
+    private void setupEmoji() {
+        StikersComponet stikersComponet = new StikersComponet(this);
+        stikersComponet.setEditText(msg);
+        stikersComponet.initStikersFirebase(new OnStickerActions() {
+            @Override
+            public void onClick(View view, Sticker sticker, boolean fromRecent) {
+                if(sticker.getData() instanceof String){
+                    presenter.onSelectedSticker((String)sticker.getData());
+                }
+
+            }
+
+            @Override
+            public boolean onLongClick(View view, Sticker sticker, boolean fromRecent) {
+                return false;
+            }
+        });
+        // create emoji popup
+        emojiPopup = new AXEmojiPopup(stikersComponet);
+        emojiPopup.setPopupListener(new SimplePopupAdapter() {
+            @Override
+            public void onShow() {
+                changeBtnIconTeclado();
+            }
+
+            @Override
+            public void onDismiss() {
+                changeBtnIconEmoticon();
+            }
+        });
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -231,6 +271,33 @@ public class ChatGrupalActivity extends BaseActivity<ChatView, ChatPresenter> im
                 return false;
             }
         });
+        btnEmoticon.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP )  presenter.onBtnEmoticonClicked();
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onInitListener() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recyMsg.removeOnScrollListener(firsthChangePostionListener);
+                recyMsg.removeOnLayoutChangeListener(firsthChangePostionListener);
+
+                recyMsg.addOnScrollListener(firsthChangePostionListener);
+                recyMsg.addOnLayoutChangeListener(firsthChangePostionListener);
+            }
+        },1000);
+
+    }
+
+    @Override
+    public void updateList(MessageUi2 messageUi2) {
+        adapter.update(messageUi2);
     }
 
     private void setAdapter() {
@@ -272,8 +339,8 @@ public class ChatGrupalActivity extends BaseActivity<ChatView, ChatPresenter> im
     }
 
     @Override
-    public void setListMessage(List<Object> response, int personaId) {
-        adapter.setList(response, personaId);
+    public void setListMessage(List<Object> response, int personaId, boolean notify) {
+        adapter.setList(response, personaId, notify);
     }
 
     @Override
@@ -287,13 +354,18 @@ public class ChatGrupalActivity extends BaseActivity<ChatView, ChatPresenter> im
     }
 
     @Override
-    public void scrollToPositionBotton() {
-        recyMsg.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                adapter.scrollToPositionBotton();
-            }
-        }, 100);
+    public void scrollToPositionBotton(boolean delay) {
+        if(delay){
+            recyMsg.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.scrollToPositionBotton();
+                }
+            }, 100);
+        }else {
+            adapter.scrollToPositionBotton();
+        }
+
     }
 
     @Override
@@ -319,12 +391,12 @@ public class ChatGrupalActivity extends BaseActivity<ChatView, ChatPresenter> im
         // emojiPopup.isShowing(); // Returns true when Popup is showing.
     }
 
-    @Override
+
     public void changeBtnIconTeclado() {
         btnEmoticon.setImageResource(R.drawable.ic_keyboard);
     }
 
-    @Override
+
     public void changeBtnIconEmoticon() {
         btnEmoticon.setImageResource(R.drawable.input_emoji);
     }
@@ -460,12 +532,22 @@ public class ChatGrupalActivity extends BaseActivity<ChatView, ChatPresenter> im
 
     @Override
     public void changeToolbarSelection() {
+        changeColorStatussbar(ContextCompat.getColor(this,R.color.colorPrimary));
         if (layoutAppbarSearch.getVisibility() != View.VISIBLE) showSearchBar(positionFromRight);
     }
 
     @Override
     public void changeToolbarNormal() {
+        changeColorStatussbar(Color.parseColor("#112747"));
         if (layoutAppbarSearch.getVisibility() == View.VISIBLE) hideSearchBar(positionFromRight);
+    }
+
+    public void changeColorStatussbar(@ColorInt int  color){
+        Window window = this.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(color);
+        }
     }
 
     @Override
