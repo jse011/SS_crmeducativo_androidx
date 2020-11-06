@@ -35,7 +35,7 @@ public interface MainPresenter extends BasePresenter<MainView> {
 
     void onCerrarSesionClicked();
 
-    void validateRol(CursosUI cursosUI);
+    void onCursoSelected(CursosUI cursosUI);
 
     void onImgHijoClicked();
 
@@ -114,4 +114,12 @@ public interface MainPresenter extends BasePresenter<MainView> {
     void changeFile();
 
     void onCropImageActivityResult(String filePath);
+
+    void onClickResultadoCursoSelected(CursosUI cursosUI);
+
+    void onClickEvaCursoSelected(CursosUI cursosUI);
+
+    void onClickMovilCursoSelected(CursosUI cursosUI);
+
+    void onClickAgendaCursoSelected(CursosUI cursosUI);
 }

@@ -26,6 +26,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase.Save;
 //import com.consultoraestrategia.ss_crmeducativo.chats.view.ChatsActivity;
+import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.CentProcesoActivity;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
@@ -144,7 +145,6 @@ import com.consultoraestrategia.ss_crmeducativo.programahorario.simple.ui.Progra
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.importarActividad.ui.ImportarActivity;
-import com.consultoraestrategia.ss_crmeducativo.splashAppMessenger.ScremSplash;
 import com.consultoraestrategia.ss_crmeducativo.syncJobs.MyJobService;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.entities.PeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.listener.PeriodoListener;
@@ -477,6 +477,25 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void hideBtnAgenda() {
         if(itemAgenda!=null)itemAgenda.setVisible(false);
+    }
+
+    @Override
+    public void showActivityCursoAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId, int cargaCursoId) {
+        CRMBundle crmBundle = new CRMBundle();
+        crmBundle.setUsuarioId(idUsuario);
+        crmBundle.setGeoreferenciaId(georeferenciaId);
+        crmBundle.setEmpleadoId(empleadoId);
+        crmBundle.setAnioAcademico(anioAcademicoIdFinal);
+        crmBundle.setEntidadId(entidadId);
+        crmBundle.setCargaCursoId(cargaCursoId);
+        Intent intent = new Intent(this, EventosActivty.class);
+        intent.putExtras(crmBundle.instanceBundle());
+        startActivity(intent);
+    }
+
+    @Override
+    public void showCentroProcesoActivty() {
+        CentProcesoActivity.start(this);
     }
 
     private void subscribeToUser() {
@@ -960,7 +979,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     @Override
     public void onCursoSelected(CursosViewHolder.CursosUiRecurso cursosUiRecurso) {
-        presenter.validateRol(cursosUiRecurso);
+        presenter.onCursoSelected(cursosUiRecurso);
     }
 
     @Override
@@ -1387,6 +1406,26 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void onClickReconocimientoCursoSelected(CursosViewHolder.CursosUiRecurso cursosUiRecurso, int cargaCurso) {
         presenter.onClickReconocimientoCursoSelected(cursosUiRecurso, cargaCurso);
+    }
+
+    @Override
+    public void onClickResultadoCursoSelected(CursosUI cursosUI) {
+        presenter.onClickResultadoCursoSelected(cursosUI);
+    }
+
+    @Override
+    public void onClickEvaCursoSelected(CursosUI cursosUI) {
+        presenter.onClickEvaCursoSelected(cursosUI);
+    }
+
+    @Override
+    public void onClickMovilCursoSelected(CursosUI cursosUI) {
+        presenter.onClickMovilCursoSelected(cursosUI);
+    }
+
+    @Override
+    public void onClickAgendaCursoSelected(CursosUI cursosUI) {
+        presenter.onClickAgendaCursoSelected(cursosUI);
     }
 
 

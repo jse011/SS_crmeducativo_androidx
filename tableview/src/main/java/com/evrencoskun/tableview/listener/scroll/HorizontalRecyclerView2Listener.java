@@ -28,16 +28,39 @@ import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 /**
  * Created by evrencoskun on 19/06/2017.
  */
+/*
+ * Copyright (c) 2018. Evren Coşkun
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
 
-public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListener implements
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by evrencoskun on 19/06/2017.
+ */
+
+public class HorizontalRecyclerView2Listener extends RecyclerView.OnScrollListener implements
         RecyclerView.OnItemTouchListener {
 
-    private static final String LOG_TAG = HorizontalRecyclerViewListener.class.getSimpleName();
+    private static final String LOG_TAG = HorizontalRecyclerView2Listener.class.getSimpleName();
 
-    private CellRecyclerView mColumnHeaderRecyclerView;
+    private List<RecyclerView> mColumnHeaderRecyclerViewList = new ArrayList<>();
     private RecyclerView.LayoutManager mCellLayoutManager;
     private RecyclerView mLastTouchedRecyclerView;
-    private CellRecyclerView mRecyclerViewColumnAdd;
+
     // X position means column position
     private int mXPosition;
     private boolean mIsMoved;
@@ -49,8 +72,8 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
 
     private VerticalRecyclerViewListener mVerticalRecyclerViewListener;
 
-    public HorizontalRecyclerViewListener(ITableView tableView) {
-        this.mColumnHeaderRecyclerView = tableView.getColumnHeaderRecyclerView();
+    public HorizontalRecyclerView2Listener(ITableView tableView) {
+        this.mColumnHeaderRecyclerViewList.add(tableView.getColumnHeaderRecyclerView());
         this.mCellLayoutManager = tableView.getCellRecyclerView().getLayoutManager();
         this.mVerticalRecyclerViewListener = tableView.getVerticalRecyclerViewListener();
     }
@@ -69,46 +92,45 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             if (rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
 
                 if (mLastTouchedRecyclerView != null && rv != mLastTouchedRecyclerView) {
-                    if (mLastTouchedRecyclerView == mColumnHeaderRecyclerView) {
-                        mColumnHeaderRecyclerView.removeOnScrollListener(this);
-                        mColumnHeaderRecyclerView.stopScroll();
-                        Log.d(LOG_TAG, "Scroll listener  has been removed to " +
-                                "mColumnHeaderRecyclerView at last touch control");
-                    }else if(mLastTouchedRecyclerView == mRecyclerViewColumnAdd){
-                        mRecyclerViewColumnAdd.removeOnScrollListener(this);
-                        mRecyclerViewColumnAdd.stopScroll();
-                        Log.d(LOG_TAG, "Scroll listener  has been removed to " +
-                                "mColumnHeaderRecyclerView at last touch control");
-                    } else {
-                        int lastTouchedIndex = getIndex(mLastTouchedRecyclerView);
+                    for (RecyclerView mColumnHeaderRecyclerView : mColumnHeaderRecyclerViewList){
+                        if (mLastTouchedRecyclerView == mColumnHeaderRecyclerView) {
 
-                        // Control whether the last touched recyclerView is still attached or not
-                        if (lastTouchedIndex >= 0 && lastTouchedIndex < mCellLayoutManager
-                                .getChildCount()) {
-                            // Control the scroll listener is already removed. For instance; if user
-                            // scroll the parent recyclerView vertically, at that time,
-                            // ACTION_CANCEL
-                            // will be triggered that removes the scroll listener of the last
-                            // touched
-                            // recyclerView.
-                            if (!((CellRecyclerView) mLastTouchedRecyclerView)
-                                    .isHorizontalScrollListenerRemoved()) {
-                                // Remove scroll listener of the last touched recyclerView
-                                // Because user touched another recyclerView before the last one get
-                                // SCROLL_STATE_IDLE state that removes the scroll listener
-                                ((RecyclerView) mCellLayoutManager.getChildAt(lastTouchedIndex))
-                                        .removeOnScrollListener(this);
+                            mColumnHeaderRecyclerView.removeOnScrollListener(this);
+                            mColumnHeaderRecyclerView.stopScroll();
+                            Log.d(LOG_TAG, "Scroll listener  has been removed to " +
+                                    "mColumnHeaderRecyclerView at last touch control");
+                        } else {
+                            int lastTouchedIndex = getIndex(mLastTouchedRecyclerView);
 
-                                Log.d(LOG_TAG, "Scroll listener  has been removed to " +
-                                        mLastTouchedRecyclerView.getId() + " CellRecyclerView " +
-                                        "at last touch control");
+                            // Control whether the last touched recyclerView is still attached or not
+                            if (lastTouchedIndex >= 0 && lastTouchedIndex < mCellLayoutManager
+                                    .getChildCount()) {
+                                // Control the scroll listener is already removed. For instance; if user
+                                // scroll the parent recyclerView vertically, at that time,
+                                // ACTION_CANCEL
+                                // will be triggered that removes the scroll listener of the last
+                                // touched
+                                // recyclerView.
+                                if (!((CellRecyclerView) mLastTouchedRecyclerView)
+                                        .isHorizontalScrollListenerRemoved()) {
+                                    // Remove scroll listener of the last touched recyclerView
+                                    // Because user touched another recyclerView before the last one get
+                                    // SCROLL_STATE_IDLE state that removes the scroll listener
+                                    ((RecyclerView) mCellLayoutManager.getChildAt(lastTouchedIndex))
+                                            .removeOnScrollListener(this);
 
-                                // the last one scroll must be stopped to be sync with others
-                                ((RecyclerView) mCellLayoutManager.getChildAt(lastTouchedIndex))
-                                        .stopScroll();
+                                    Log.d(LOG_TAG, "Scroll listener  has been removed to " +
+                                            mLastTouchedRecyclerView.getId() + " CellRecyclerView " +
+                                            "at last touch control");
+
+                                    // the last one scroll must be stopped to be sync with others
+                                    ((RecyclerView) mCellLayoutManager.getChildAt(lastTouchedIndex))
+                                            .stopScroll();
+                                }
                             }
                         }
                     }
+
                 }
 
                 mXPosition = ((CellRecyclerView) rv).getScrolledX();
@@ -171,44 +193,33 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         // Column Header should be scrolled firstly. Because it is the compared recyclerView to
         // make column width fit.
+        for (RecyclerView mColumnHeaderRecyclerView : mColumnHeaderRecyclerViewList){
+            if (recyclerView == mColumnHeaderRecyclerView) {
+                super.onScrolled(recyclerView, dx, dy);
 
-        if (recyclerView == mColumnHeaderRecyclerView) {
-            super.onScrolled(recyclerView, dx, dy);
-
-            // Scroll each cell recyclerViews
-            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
-                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
-                // Scroll horizontally
-                child.scrollBy(dx, 0);
-            }
-            if(mRecyclerViewColumnAdd!=null)mRecyclerViewColumnAdd.scrollBy(dx, 0);
-        }else if(recyclerView == mRecyclerViewColumnAdd){
-            super.onScrolled(recyclerView, dx, dy);
-
-            // Scroll each cell recyclerViews
-            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
-                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
-                // Scroll horizontally
-                child.scrollBy(dx, 0);
-            }
-            mColumnHeaderRecyclerView.scrollBy(dx, 0);
-        } else {
-            // Scroll column header recycler view as well
-            //mColumnHeaderRecyclerView.scrollBy(dx, 0);
-
-            super.onScrolled(recyclerView, dx, dy);
-
-            // Scroll each cell recyclerViews except the current touched one
-            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
-                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
-                if (child != recyclerView) {
+                // Scroll each cell recyclerViews
+                for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
+                    CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
                     // Scroll horizontally
                     child.scrollBy(dx, 0);
                 }
-            }
+            } else {
+                // Scroll column header recycler view as well
+                //mColumnHeaderRecyclerView.scrollBy(dx, 0);
 
-            if(mRecyclerViewColumnAdd!=null)mRecyclerViewColumnAdd.scrollBy(dx, 0);
+                super.onScrolled(recyclerView, dx, dy);
+
+                // Scroll each cell recyclerViews except the current touched one
+                for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
+                    CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
+                    if (child != recyclerView) {
+                        // Scroll horizontally
+                        child.scrollBy(dx, 0);
+                    }
+                }
+            }
         }
+
     }
 
     @Override
@@ -223,13 +234,14 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
             Log.d(LOG_TAG, "Scroll listener has been removed to " + recyclerView.getId() + " at "
                     + "onScrollStateChanged");
             mIsMoved = false;
-
             // When a user scrolls horizontally, VerticalRecyclerView add vertical scroll
             // listener because of touching process.However, mVerticalRecyclerViewListener
             // doesn't know anything about it. So, it is necessary to remove the last touched
             // recyclerView which uses the mVerticalRecyclerViewListener.
-            boolean isNeeded = mLastTouchedRecyclerView != mColumnHeaderRecyclerView;
-            mVerticalRecyclerViewListener.removeLastTouchedRecyclerViewScrollListener(isNeeded);
+            for (RecyclerView mColumnHeaderRecyclerView : mColumnHeaderRecyclerViewList){
+                boolean isNeeded = mLastTouchedRecyclerView != mColumnHeaderRecyclerView;
+                mVerticalRecyclerViewListener.removeLastTouchedRecyclerViewScrollListener(isNeeded);
+            }
         }
     }
 
@@ -303,9 +315,5 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
      */
     public void setScrollPosition(int position) {
         this.mScrollPosition = position;
-    }
-
-    public void setRecyclerViewColumnAdd(CellRecyclerView recyclerView) {
-        this.mRecyclerViewColumnAdd = recyclerView;
     }
 }

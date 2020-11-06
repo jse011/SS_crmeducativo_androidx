@@ -17,4 +17,11 @@ public interface CursosListener {
     void onSelectedViewHolder(RecyclerView.ViewHolder holder);
     void onClickTutoriaCursoSelected(CursosUI cursosUI, int cargaCurso);
     void onClickReconocimientoCursoSelected(CursosViewHolder.CursosUiRecurso cursosUiRecurso, int cargaCurso);
+    void onClickResultadoCursoSelected(CursosUI cursosUI);
+
+    void onClickEvaCursoSelected(CursosUI cursosUI);
+
+    void onClickMovilCursoSelected(CursosUI cursosUI);
+
+    void onClickAgendaCursoSelected(CursosUI cursosUI);
 }

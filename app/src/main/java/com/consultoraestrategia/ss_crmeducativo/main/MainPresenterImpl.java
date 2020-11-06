@@ -337,6 +337,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         }*/
 
         if(view!=null)view.hideBtnEntidadSelect();
+        /*
         if(!successData){
             successData = succesData.execute();
             if(view!=null)view.showDialogFastData(anioAcademicoIdFinal, idUsuario);
@@ -348,7 +349,8 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
             },2000);
         }else {
             getCursosUIListCallback();
-        }
+        }*/
+        getCursosUIListCallback();
     }
 
     private void getUsuarioRolGeoReferencia() {
@@ -494,19 +496,8 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
 
     @Override
-    public void validateRol(CursosUI cursosUI) {
-        if(programaEducativoUi==null)return;
-        switch (cursosUI.getEstado()){
-            case CREADO:
-                if(view!=null)view.showMessage("El curso "+cursosUI.getNombreCurso()+" no esta autorizado");
-                break;
-            case AUTORIZADO:
-                if(view!=null)view.starActivityTabs(TabsCursoDocenteActivity.class, cursosUI,this.programaEducativoUi.getIdPrograma(),georeferenciaId, empleadoId,entidadId, anioAcademicoIdFinal, idUsuario, cursosUI.getComplejo());
-                break;
-            case SINSILABO:
-                if(view!=null)view.showMessage("El curso "+cursosUI.getNombreCurso()+" no tiene programa anual");
-                break;
-        }
+    public void onCursoSelected(CursosUI cursosUI) {
+       if(view!=null)view.showMessage("Aquí mostrar tips de los botones");
     }
 
     private List<Persona> hijoUIList;
@@ -1140,7 +1131,36 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         }
     }
 
+    @Override
+    public void onClickResultadoCursoSelected(CursosUI cursosUI) {
+        if(view!=null)view.showCentroProcesoActivty();
+    }
 
+    @Override
+    public void onClickEvaCursoSelected(CursosUI cursosUI) {
+        if(view!=null)view.showMessage("Abrir pagina del eva");
+    }
+
+    @Override
+    public void onClickMovilCursoSelected(CursosUI cursosUI) {
+        if(programaEducativoUi==null)return;
+        switch (cursosUI.getEstado()){
+            case CREADO:
+                if(view!=null)view.showMessage("El curso "+cursosUI.getNombreCurso()+" no esta autorizado");
+                break;
+            case AUTORIZADO:
+                if(view!=null)view.starActivityTabs(TabsCursoDocenteActivity.class, cursosUI,this.programaEducativoUi.getIdPrograma(),georeferenciaId, empleadoId,entidadId, anioAcademicoIdFinal, idUsuario, cursosUI.getComplejo());
+                break;
+            case SINSILABO:
+                if(view!=null)view.showMessage("El curso "+cursosUI.getNombreCurso()+" no tiene programa anual");
+                break;
+        }
+    }
+
+    @Override
+    public void onClickAgendaCursoSelected(CursosUI cursosUI) {
+        if(view!=null)view.showActivityCursoAgenda(idUsuario, georeferenciaId, empleadoId, anioAcademicoIdFinal, entidadId, cursosUI.getCargaCurso());
+    }
 
 
     private void changeDataBaseDocenteMentor(){

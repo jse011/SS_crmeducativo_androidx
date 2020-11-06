@@ -319,7 +319,8 @@
         <activity android:name=".cameraReconocimiento.preview.PreviewActivity" />
         <activity android:name=".cameraReconocimiento.listaAlumnos.ListaAlumnosActivity"
             android:label="Reconocimiento"/>
-
+        <activity android:name=".centroProcesamiento.CentProcesoActivity"
+            android:label="Registro de evaluaciones"/>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="face" />

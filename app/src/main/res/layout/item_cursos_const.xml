@@ -22,7 +22,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,23 +30,142 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/contItemView"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
+                android:layout_height="165dp"
                 android:background="#454545"
                 android:orientation="vertical">
+                <Button
+                    android:id="@+id/imgAccionClase"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:drawableEnd="@drawable/ic_date_white"
+                    android:drawableRight="@drawable/ic_date_white"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout18"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ImageView
+                        android:id="@+id/img_grupo"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/img_agenda"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_icono_foto_tutor"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageView
+                        android:id="@+id/img_agenda"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/img_eva"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_icono_agenda"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <TextView
+                        android:id="@+id/txtAlumno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="22"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView36"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSalon" />
+
+                    <TextView
+                        android:id="@+id/txtSalon"
+                        android:layout_width="70dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:text=" Miguel Angel"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textAlignment="viewEnd"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textSize="12sp"
+                        android:textStyle="italic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView36"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txtAlumno"
+                        app:srcCompat="@drawable/ic_people"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageView
+                        android:id="@+id/img_eva"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/img_resultado"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_ico_ray_sesion_virtual"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageView
+                        android:id="@+id/img_movil"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_ico_green_mobile"
+                        tools:ignore="VectorDrawableCompat" />
+
+                    <ImageView
+                        android:id="@+id/img_resultado"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/img_movil"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.52"
+                        app:srcCompat="@drawable/ic_icono_resultados"
+                        tools:ignore="VectorDrawableCompat" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
                     android:id="@+id/fondo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginBottom="0dp"
                     android:alpha="0.4"
                     android:scaleType="centerCrop"
                     android:textColor="#fff"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout18"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -58,12 +176,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginEnd="8dp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                     android:textColor="#fff"
-                    app:layout_constraintEnd_toStartOf="@+id/img_grupo"
+                    app:layout_constraintEnd_toStartOf="@+id/imgAccionClase"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -104,38 +222,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/txtPeriodo" />
 
                 <TextView
-                    android:id="@+id/txtSalon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtHorario"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="Salon"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="#fff"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/fondo"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    android:id="@+id/txtAlumno"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txtHorario"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="Alumno"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="#fff"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/fondo"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
                     android:id="@+id/txtNombreDocente"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -150,21 +236,6 @@
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent" />
-
-                <Button
-                    android:id="@+id/imgAccionClase"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
-                    android:drawableEnd="@drawable/ic_date_white"
-                    android:drawableRight="@drawable/ic_date_white"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imgDocente"
@@ -194,28 +265,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/img_grupo"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="8dp"
-                    android:padding="14dp"
-                    app:layout_constraintEnd_toStartOf="@+id/imgAccionClase"
-                    app:layout_constraintTop_toTopOf="@+id/fondo"
-                    app:srcCompat="@drawable/ic_andando_hacia_el_colegio"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageView
-                    android:id="@+id/img_reconocimiento"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:padding="14dp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@+id/imgAccionClase"
-                    app:layout_constraintTop_toBottomOf="@+id/img_grupo"
-                    app:srcCompat="@drawable/ic_atencion_block"
-                    tools:ignore="VectorDrawableCompat" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

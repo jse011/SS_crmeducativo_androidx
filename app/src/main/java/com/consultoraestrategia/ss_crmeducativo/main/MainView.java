@@ -17,7 +17,7 @@ import java.util.List;
  * Created by irvinmarin on 23/02/2017.
  */
 
-public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
+public interface MainView extends BaseView<MainPresenter>,MainConfiguracion {
 
     void showImgProfileUser(String UrlUser);
 
@@ -71,14 +71,21 @@ public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
     void viewActivityImportLogin(BEVariables beVariables);
 
     void callSynckService(int programaEducativoId);
+
     void changePeriodo(PeriodoUi oldSelected, PeriodoUi periodoSelected);
+
     void showPeriodoList(List<PeriodoUi> periodoList);
 
     void setGradosList(List<Object> objectUIList, CRMBundle crmBundle);
+
     void showContenAsistencia();
+
     void hideContenAsistencia();
+
     void showContenCurso();
+
     void hideContenCurso();
+
     void updateCalendar(CRMBundle crmbundle);
 
     void mostrarDialogoConfigAlarma();
@@ -88,6 +95,7 @@ public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
     void setNombreEntidad(String nombreEntidad, String nombreGeoreferencia);
 
     void showBtnEntidadSelect();
+
     void hideBtnEntidadSelect();
 
     void showPopListEntidad(final List<UsuarioRolGeoReferenciaUi> usuarioRolGeoReferenciaUis);
@@ -140,4 +148,9 @@ public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
     void showBtnAgenda();
 
     void hideBtnAgenda();
+
+    void showActivityCursoAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId, int cargaCursoId);
+
+    void showCentroProcesoActivty();
+
 }

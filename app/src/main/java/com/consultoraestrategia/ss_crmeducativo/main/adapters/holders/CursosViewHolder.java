@@ -41,7 +41,7 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
     @BindView(R.id.txtNombreDocente)
     TextView txtNombreDocente;
     @BindView(R.id.imgAccionClase)
-    Button imgAccionClase;
+    View imgAccionClase;
     @BindView(R.id.imgDocente)
     ImageView imgDocente;
     @BindView(R.id.contItemView)
@@ -52,9 +52,14 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
     ProgressBar progressCurso;
     @BindView(R.id.img_grupo)
     ImageView imgGrupo;
-    @BindView(R.id.img_reconocimiento)
-    ImageView imgReconocimiento;
-
+    @BindView(R.id.img_movil)
+    ImageView imgMovil;
+    @BindView(R.id.img_resultado)
+    ImageView imgResultado;
+    @BindView(R.id.img_eva)
+    ImageView imgEva;
+    @BindView(R.id.img_agenda)
+    ImageView imgAgenda;
     public CursosViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -72,7 +77,7 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
         txtHorario.setText(cursosUI.getDiaHora());
         txtSalon.setText(cursosUI.getNroSalon());
         txtNombreDocente.setText(cursosUI.getNombreDocente());
-        txtAlumno.setText(String.valueOf(cursosUI.getCantidadPersonas() + " Alumnos"));
+        txtAlumno.setText(String.valueOf(cursosUI.getCantidadPersonas()));
         if (!cursosUI.isNombreDocenteVisible()) {
             txtNombreDocente.setVisibility(View.GONE);
             imgDocente.setVisibility(View.GONE);
@@ -81,12 +86,13 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
             imgDocente.setVisibility(View.VISIBLE);
         }
 
-        if (cursosUI.getIdCursDetalleHorario() != 0) {
+        /*if (cursosUI.getIdCursDetalleHorario() != 0) {
             imgAccionClase.setVisibility(View.VISIBLE);
         } else {
             imgAccionClase.setVisibility(View.GONE);
 
-        }
+        }*/
+        imgAccionClase.setVisibility(View.VISIBLE);
 
         fondo.setAlpha((float) 0.2);
 
@@ -105,13 +111,15 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
             imgGrupo.setVisibility(View.GONE);
         }
 
-        cardviewCurso.setOnClickListener(this);
+        fondo.setOnClickListener(this);
 
         imgAccionClase.setOnClickListener(this);
 
         imgGrupo.setOnClickListener(this);
-
-        imgReconocimiento.setOnClickListener(this);
+        imgMovil.setOnClickListener(this);
+        imgResultado.setOnClickListener(this);
+        imgEva.setOnClickListener(this);
+        imgAgenda.setOnClickListener(this);
     }
 
 
@@ -133,7 +141,7 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.cardviewCurso:
+            case R.id.fondo:
                 listener.onCursoSelected(cursosUiRecurso);
                 break;
             case R.id.imgAccionClase:
@@ -142,9 +150,21 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
             case R.id.img_grupo:
                 listener.onClickTutoriaCursoSelected(cursosUiRecurso,cursosUiRecurso.getCargaCurso());
                 break;
-            case R.id.img_reconocimiento:
-                listener.onClickReconocimientoCursoSelected(cursosUiRecurso,cursosUiRecurso.getCargaCurso());
+            case R.id.img_resultado:
+                listener.onClickResultadoCursoSelected(cursosUiRecurso);
                 break;
+            case R.id.img_eva:
+                listener.onClickEvaCursoSelected(cursosUiRecurso);
+                break;
+            case R.id.img_movil:
+                listener.onClickMovilCursoSelected(cursosUiRecurso);
+                break;
+            case R.id.img_agenda:
+                listener.onClickAgendaCursoSelected(cursosUiRecurso);
+                break;
+            //case R.id.img_reconocimiento:
+                //listener.onClickReconocimientoCursoSelected(cursosUiRecurso,cursosUiRecurso.getCargaCurso());
+              //  break;
         }
     }
 
