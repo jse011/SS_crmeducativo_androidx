@@ -89,6 +89,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="visible"
+        android:background="@color/md_grey_200"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="55dp">
@@ -154,18 +155,18 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
             android:clickable="true"
-            android:visibility="visible"
-            app:cardCornerRadius="45dp"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/md_green_900"
+            app:cardCornerRadius="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="VectorDrawableCompat">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/icon_animed"
-                android:layout_margin="6dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp">
 
             </com.airbnb.lottie.LottieAnimationView>
 

@@ -1,1 +1,1 @@
-include ':app', ':core2', ':tableview', ':showcaseview', ':appmessage', ':filepicker'
+include ':app', ':core2', ':tableview', ':showcaseview', ':filepicker'

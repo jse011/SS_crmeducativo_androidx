@@ -619,7 +619,7 @@ public class LocalDataSource implements MainDataSource {
                     .where(Aula_Table.aulaId.is(cargaAcademica.getAulaId()))
                     .querySingle(databaseWrapper);
             if (aula != null) {
-                salon = (aula.getDescripcion() + ": " + aula.getNumero() + " ");
+                salon = (/*aula.getDescripcion() + ": " + */aula.getNumero());
             }
 
             if(empleado!=null)isTutor = cargaAcademica.getIdEmpleadoTutor() == empleado.getEmpleadoId();
