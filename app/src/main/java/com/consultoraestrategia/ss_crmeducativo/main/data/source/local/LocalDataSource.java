@@ -731,6 +731,8 @@ public class LocalDataSource implements MainDataSource {
 
         if(parametrosDisenio != null){
             cursosUI.setBackgroundSolidColor(parametrosDisenio.getColor1());
+            cursosUI.setBackgroundSolidColor2(parametrosDisenio.getColor2());
+            cursosUI.setBackgroundSolidColor3(parametrosDisenio.getColor3());
             cursosUI.setUrlBackgroundItem(parametrosDisenio.getPath());
             cursosUI.setParametroDisenioId(parametrosDisenio.getParametroDisenioId());
         }

@@ -19,7 +19,10 @@ package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
@@ -42,7 +45,10 @@ public class CellRecyclerView extends RecyclerView {
 
     public CellRecyclerView(Context context) {
         super(context);
+        inti(context);
+    }
 
+    private void inti(Context context) {
         // These are necessary.
         this.setHasFixedSize(false);
         this.setNestedScrollingEnabled(false);
@@ -51,6 +57,16 @@ public class CellRecyclerView extends RecyclerView {
                 .default_item_cache_size));
         this.setDrawingCacheEnabled(true);
         this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+    }
+
+    public CellRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        inti(context);
+    }
+
+    public CellRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        inti(context);
     }
 
     @Override

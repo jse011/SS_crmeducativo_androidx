@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="70dp"
+    android:layout_height="45dp"
+    android:orientation="horizontal">
+<FrameLayout
+    android:id="@+id/fondo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView182"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView183"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView183"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="|"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView181"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:text="AD"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toEndOf="@+id/textView183"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/text_nota"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AD"
+        android:visibility="visible"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView189"
+        android:layout_width="match_parent"
+        android:background="#B07BC1"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        android:text="Modificado"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView190"
+        android:layout_width="match_parent"
+        android:background="#53C7D6"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        android:text="Cerrado"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/icono_cerrado"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="4dp"
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_icono_candado"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/titulo_N_vigente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_red_A700"
+        android:text="B. no vigente"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="8sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/icono_N_vigente"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="3dp"
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_block_cent_procesamiento"
+        tools:ignore="VectorDrawableCompat" />
+</FrameLayout>

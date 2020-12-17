@@ -26,6 +26,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
 import com.consultoraestrategia.ss_crmeducativo.cambiarFotoAlumno.domain.usecase.Save;
 //import com.consultoraestrategia.ss_crmeducativo.chats.view.ChatsActivity;
+import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.CentProcesoActivity;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
@@ -104,7 +105,6 @@ import com.consultoraestrategia.ss_crmeducativo.main.adapters.CursosAdapter;
 import com.consultoraestrategia.ss_crmeducativo.main.adapters.MenuAdapter;
 import com.consultoraestrategia.ss_crmeducativo.main.adapters.RecyclerViewAnimator;
 import com.consultoraestrategia.ss_crmeducativo.main.adapters.decoration.EdgeDecorator;
-import com.consultoraestrategia.ss_crmeducativo.main.adapters.holders.CursosViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.main.adapters.holders.GradoHolder;
 import com.consultoraestrategia.ss_crmeducativo.main.changePerfil.ChangePerfilFragment;
 import com.consultoraestrategia.ss_crmeducativo.main.changePerfil.ChangePerfilView;
@@ -144,7 +144,6 @@ import com.consultoraestrategia.ss_crmeducativo.programahorario.simple.ui.Progra
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.importarActividad.ui.ImportarActivity;
-import com.consultoraestrategia.ss_crmeducativo.splashAppMessenger.ScremSplash;
 import com.consultoraestrategia.ss_crmeducativo.syncJobs.MyJobService;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.entities.PeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.listener.PeriodoListener;
@@ -477,6 +476,20 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @Override
     public void hideBtnAgenda() {
         if(itemAgenda!=null)itemAgenda.setVisible(false);
+    }
+
+    @Override
+    public void showCentroProcesoActivty(CursosUI cursosUiRecurso, int idPrograma, int anioAcademicoIdFinal) {
+        CRMBundle crmBundle = new CRMBundle();
+        crmBundle.setSilaboEventoId(cursosUiRecurso.getSilaboId());
+        crmBundle.setCargaCursoId(cursosUiRecurso.getCargaCurso());
+        crmBundle.setColor1(cursosUiRecurso.getBackgroundSolidColor());
+        crmBundle.setColor3(cursosUiRecurso.getBackgroundSolidColor2());
+        crmBundle.setColor2(cursosUiRecurso.getBackgroundSolidColor3());
+        crmBundle.setCursoTitulo(cursosUiRecurso.getNombreCurso());
+        crmBundle.setProgramaEducativoId(idPrograma);
+        crmBundle.setAnioAcademico(anioAcademicoIdFinal);
+        CentProcesoActivity.start(this, crmBundle);
     }
 
     private void subscribeToUser() {
@@ -959,8 +972,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
 
     @Override
-    public void onCursoSelected(CursosViewHolder.CursosUiRecurso cursosUiRecurso) {
-        presenter.validateRol(cursosUiRecurso);
+    public void onCursoSelected(CursosUI cursosUiRecurso) {
+        presenter.onCursoSelected(cursosUiRecurso);
     }
 
     @Override
@@ -1385,7 +1398,27 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     }
 
     @Override
-    public void onClickReconocimientoCursoSelected(CursosViewHolder.CursosUiRecurso cursosUiRecurso, int cargaCurso) {
+    public void onClickResultadoCursoSelected(CursosUI cursosUiRecurso) {
+        presenter.onClickResultadoCursoSelected(cursosUiRecurso);
+    }
+
+    @Override
+    public void onClickEvaCursoSelected(CursosUI cursosUiRecurso) {
+        presenter.onClickEvaCursoSelected(cursosUiRecurso);
+    }
+
+    @Override
+    public void onClickMovilCursoSelected(CursosUI cursosUiRecurso) {
+        presenter.onClickMovilCursoSelected(cursosUiRecurso);
+    }
+
+    @Override
+    public void onClickAgendaCursoSelected(CursosUI cursosUiRecurso) {
+        presenter.onClickAgendaCursoSelected(cursosUiRecurso);
+    }
+
+    @Override
+    public void onClickReconocimientoCursoSelected(CursosUI cursosUiRecurso, int cargaCurso) {
         presenter.onClickReconocimientoCursoSelected(cursosUiRecurso, cargaCurso);
     }
 

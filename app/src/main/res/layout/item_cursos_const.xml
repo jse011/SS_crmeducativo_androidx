@@ -155,14 +155,28 @@
                     android:id="@+id/imgAccionClase"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="45dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="8dp"
+                    android:drawableEnd="@drawable/ic_date_white"
+                    android:drawableRight="@drawable/ic_date_white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgResultado" />
+
+                <Button
+                    android:id="@+id/imgResultado"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="45dp"
                     android:layout_height="45dp"
+                    android:padding="14dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="8dp"
-                    android:drawableEnd="@drawable/ic_date_white"
-                    android:drawableRight="@drawable/ic_date_white"
+                    android:drawableEnd="@drawable/ic_icono_resultados_blanco_2"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -201,7 +215,7 @@
                     android:layout_height="45dp"
                     android:layout_marginTop="8dp"
                     android:padding="14dp"
-                    app:layout_constraintEnd_toStartOf="@+id/imgAccionClase"
+                    app:layout_constraintEnd_toStartOf="@+id/imgResultado"
                     app:layout_constraintTop_toTopOf="@+id/fondo"
                     app:srcCompat="@drawable/ic_andando_hacia_el_colegio"
                     tools:ignore="VectorDrawableCompat" />

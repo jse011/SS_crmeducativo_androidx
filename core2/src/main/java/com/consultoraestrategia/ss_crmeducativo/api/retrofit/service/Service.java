@@ -11,6 +11,7 @@ import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.Parametr
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosExportar;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosExportarGlobal;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosImportar;
+import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosRegistroEvaluacion;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.response.RestApiResponse;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametroLogin;
 import com.consultoraestrategia.ss_crmeducativo.entities.AdminService;
@@ -32,6 +33,8 @@ import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosTipoN
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosUnidades;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDimensionDesarrollo;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEEventos;
+import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEMatrizResultadoDocente;
+import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BETransResultResponse;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.response.BERespuesta;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.servidor.BEDatosCargaAcademica;
@@ -153,4 +156,10 @@ public interface Service {
     Call<RestApiResponse<List<BECambiosMovilFb>>> getCambiosResultado(@Body ApiRetrofit.ApiRequestBody<ParametrosChangePortalAlumno> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<Usuario>> fobj_ObtenerUsuario(@Body ApiRetrofit.ApiRequestBody<ParametroChangeUser> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<BEMatrizResultadoDocente>> flst_RegistroEvaluacion(@Body ApiRetrofit.ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<BETransResultResponse>> fupd_Resultado(@Body ApiRetrofit.ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<Boolean>> fupd_cerrarCursoDocente(@Body ApiRetrofit.ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody);
 }

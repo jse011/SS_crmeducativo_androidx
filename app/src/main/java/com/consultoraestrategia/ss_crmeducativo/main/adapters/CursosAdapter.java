@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.lib.ImageLoader;
 import com.consultoraestrategia.ss_crmeducativo.main.adapters.holders.CursosViewHolder;
+import com.consultoraestrategia.ss_crmeducativo.main.adapters.holders.CursosViewHolderV2;
 import com.consultoraestrategia.ss_crmeducativo.main.adapters.holders.GradoHolder;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.CursosUI;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.GradoUi;
@@ -64,15 +65,15 @@ public class CursosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Object  object = objectList.get(position);
-        if(holder instanceof CursosViewHolder){
+        if(holder.getItemViewType() == TIPO_GRADO){
+            Log.d(TAG , "onBindViewHolder GRADOUI");
+            GradoHolder gradoHolder= (GradoHolder)holder;
+            if(object instanceof GradoUi )gradoHolder.bind((GradoUi)object, listener, position);
+        }else{
             Log.d(TAG , "onBindViewHolder cursouI");
             CursosViewHolder cursosViewHolder= (CursosViewHolder)holder;
             if(object instanceof CursosUI)cursosViewHolder.bind((CursosUI) object, listener, imageLoader);
             if(mAnimator!=null)mAnimator.onBindViewHolder(holder.itemView, position);
-        }else{
-            Log.d(TAG , "onBindViewHolder GRADOUI");
-            GradoHolder gradoHolder= (GradoHolder)holder;
-            if(object instanceof GradoUi )gradoHolder.bind((GradoUi)object, listener, position);
         }
 
     }

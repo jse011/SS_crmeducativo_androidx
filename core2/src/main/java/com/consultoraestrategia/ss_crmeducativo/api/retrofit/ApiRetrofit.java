@@ -15,6 +15,7 @@ import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.Parametr
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosExportar;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosExportarGlobal;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosImportar;
+import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.ParametrosRegistroEvaluacion;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.parametros.UsuarioAdminService;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.response.RestApiResponse;
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.service.Service;
@@ -41,6 +42,8 @@ import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosTipoN
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosUnidades;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDimensionDesarrollo;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEEventos;
+import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEMatrizResultadoDocente;
+import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BETransResultResponse;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.response.BERespuesta;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.servidor.BEDatosCargaAcademica;
@@ -243,6 +246,35 @@ public class ApiRetrofit {
         final String representacionJSON = gson.toJson(apiRequestBody);
         Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.fupd_SimplePersonas(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<BETransResultResponse>> fupd_Resultado(int silaboEventoId, int cargaCursoId, int calendarioPeriodoId, int rubroFormal, int usuarioId) {
+        ParametrosRegistroEvaluacion parametroChangeData2 = new ParametrosRegistroEvaluacion();
+        parametroChangeData2.setSilaboEventoId(silaboEventoId);
+        parametroChangeData2.setCargaCursoId(cargaCursoId);
+        parametroChangeData2.setCalendarioPeriodId(calendarioPeriodoId);
+        parametroChangeData2.setRubroFormal(rubroFormal);
+        parametroChangeData2.setUsuarioId(usuarioId);
+        Log.d(TAG,"url: " + url);
+        ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody = new ApiRequestBody<>("fupd_Resultado",parametroChangeData2);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.fupd_Resultado(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<Boolean>> fupd_cerrarCursoDocente(int cargaCursoId, int calendarioPeriodoId, int usuarioId) {
+        ParametrosRegistroEvaluacion parametroChangeData2 = new ParametrosRegistroEvaluacion();
+
+        parametroChangeData2.setCargaCursoId(cargaCursoId);
+        parametroChangeData2.setCalendarioPeriodId(calendarioPeriodoId);
+        parametroChangeData2.setUsuarioId(usuarioId);
+        Log.d(TAG,"url: " + url);
+        ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody = new ApiRequestBody<>("fupd_cerrarCursoDocente",parametroChangeData2);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.fupd_cerrarCursoDocente(apiRequestBody);
     }
 
     public class ApiRequestBody<T extends Parameters>{
@@ -714,6 +746,20 @@ public class ApiRetrofit {
         final String representacionJSON = gson.toJson(apiRequestBody);
         Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.flst_getDatosContacto(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<BEMatrizResultadoDocente>> flst_RegistroEvaluacion(int vint_SilaboEventoId, int vint_CargaCursoId, int vint_CalendarioPeriodoId, int vint_RubroFormal) {
+        ParametrosRegistroEvaluacion parametroChangeData2 = new ParametrosRegistroEvaluacion();
+        parametroChangeData2.setSilaboEventoId(vint_SilaboEventoId);
+        parametroChangeData2.setCargaCursoId(vint_CargaCursoId);
+        parametroChangeData2.setCalendarioPeriodId(vint_CalendarioPeriodoId);
+        parametroChangeData2.setRubroFormal(vint_RubroFormal);
+        Log.d(TAG,"url: " + url);
+        ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody = new ApiRequestBody<>("flst_RegistroEvaluacion",parametroChangeData2);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.flst_RegistroEvaluacion(apiRequestBody);
     }
 
     ///******   Notificaciones    *****//

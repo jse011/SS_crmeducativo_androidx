@@ -25,7 +25,12 @@ public class CRMBundle {
     private static final String ANIO_ACADEMICO_ID= CRMBundle.class.getSimpleName()+ ".anioAcademicoId";
     private static final String CALENDARIO_EDITAR = CRMBundle.class.getSimpleName()+ ".calendarioEditar";
     private static final String USUARIOID = CRMBundle.class.getSimpleName()+ ".usuarioId";
-    private static final String CURSO_COMPLEJO = CRMBundle.class.getSimpleName()+ ".complejo";;
+    private static final String CURSO_COMPLEJO = CRMBundle.class.getSimpleName()+ ".complejo";
+    private static final String CURSO_COLOR1 = CRMBundle.class.getSimpleName()+ ".color1";
+    private static final String CURSO_COLOR2 = CRMBundle.class.getSimpleName()+ ".color2";
+    private static final String CURSO_COLOR3 = CRMBundle.class.getSimpleName()+ ".color3";
+    private static final String CURSO_IMAGEN = CRMBundle.class.getSimpleName()+ ".curso_imagen";
+    private static final String CURSO_TITULO = CRMBundle.class.getSimpleName()+ ".curso_titulo";
 
     private int programaEducativoId;
     private int cargaCursoId;
@@ -48,7 +53,11 @@ public class CRMBundle {
     private int anioAcademico;
     private int usuarioId;
     private boolean complejo;
-
+    private String color1;
+    private String color2;
+    private String color3;
+    private String cursoImagen;
+    private String cursoTitulo;
     public int getParametroDisenioId() {
         return parametroDisenioId;
     }
@@ -217,6 +226,46 @@ public class CRMBundle {
         this.complejo = complejo;
     }
 
+    public String getColor1() {
+        return color1;
+    }
+
+    public void setColor1(String color1) {
+        this.color1 = color1;
+    }
+
+    public String getColor2() {
+        return color2;
+    }
+
+    public void setColor2(String color2) {
+        this.color2 = color2;
+    }
+
+    public String getColor3() {
+        return color3;
+    }
+
+    public void setColor3(String color3) {
+        this.color3 = color3;
+    }
+
+    public String getCursoImagen() {
+        return cursoImagen;
+    }
+
+    public void setCursoImagen(String cursoImagen) {
+        this.cursoImagen = cursoImagen;
+    }
+
+    public String getCursoTitulo() {
+        return cursoTitulo;
+    }
+
+    public void setCursoTitulo(String cursoTitulo) {
+        this.cursoTitulo = cursoTitulo;
+    }
+
     public Bundle instanceBundle(){
         Bundle bundle = new Bundle();
         bundle.putInt(PROGRAMA_EDUCATIVOID, programaEducativoId);
@@ -240,6 +289,11 @@ public class CRMBundle {
         bundle.putInt(ANIO_ACADEMICO_ID, anioAcademico);
         bundle.putInt(USUARIOID, usuarioId);
         bundle.putBoolean(CURSO_COMPLEJO, complejo);
+        bundle.putString(CURSO_COLOR1, color1);
+        bundle.putString(CURSO_COLOR2, color2);
+        bundle.putString(CURSO_COLOR3, color3);
+        bundle.putString(CURSO_IMAGEN, cursoImagen);
+        bundle.putString(CURSO_TITULO, cursoTitulo);
         return bundle;
     }
 
@@ -269,6 +323,12 @@ public class CRMBundle {
         this.anioAcademico = bundle.getInt(ANIO_ACADEMICO_ID, 0);
         this.usuarioId = bundle.getInt(USUARIOID, 0);
         this.complejo = bundle.getBoolean(CURSO_COMPLEJO, false);
+        this.color1 = bundle.getString(CURSO_COLOR1, "");
+        this.color2 = bundle.getString(CURSO_COLOR2, "");
+        this.color3 = bundle.getString(CURSO_COLOR3, "");
+        this.cursoImagen = bundle.getString(CURSO_IMAGEN, "");
+        this.cursoTitulo = bundle.getString(CURSO_TITULO, "");
+
     }
 
     @Override

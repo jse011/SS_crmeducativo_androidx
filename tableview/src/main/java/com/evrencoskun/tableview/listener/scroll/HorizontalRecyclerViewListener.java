@@ -37,7 +37,8 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
     private CellRecyclerView mColumnHeaderRecyclerView;
     private RecyclerView.LayoutManager mCellLayoutManager;
     private RecyclerView mLastTouchedRecyclerView;
-
+    private CellRecyclerView mRecyclerViewColumnAdd;
+    private CellRecyclerView mRecyclerViewColumnAdd2;
     // X position means column position
     private int mXPosition;
     private boolean mIsMoved;
@@ -72,6 +73,16 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                     if (mLastTouchedRecyclerView == mColumnHeaderRecyclerView) {
                         mColumnHeaderRecyclerView.removeOnScrollListener(this);
                         mColumnHeaderRecyclerView.stopScroll();
+                        Log.d(LOG_TAG, "Scroll listener  has been removed to " +
+                                "mColumnHeaderRecyclerView at last touch control");
+                    }else if(mLastTouchedRecyclerView == mRecyclerViewColumnAdd){
+                        mRecyclerViewColumnAdd.removeOnScrollListener(this);
+                        mRecyclerViewColumnAdd.stopScroll();
+                        Log.d(LOG_TAG, "Scroll listener  has been removed to " +
+                                "mColumnHeaderRecyclerView at last touch control");
+                    }else if(mLastTouchedRecyclerView == mRecyclerViewColumnAdd2){
+                        mRecyclerViewColumnAdd2.removeOnScrollListener(this);
+                        mRecyclerViewColumnAdd2.stopScroll();
                         Log.d(LOG_TAG, "Scroll listener  has been removed to " +
                                 "mColumnHeaderRecyclerView at last touch control");
                     } else {
@@ -176,6 +187,21 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                 // Scroll horizontally
                 child.scrollBy(dx, 0);
             }
+            if(mRecyclerViewColumnAdd!=null)mRecyclerViewColumnAdd.scrollBy(dx, 0);
+            if(mRecyclerViewColumnAdd2!=null)mRecyclerViewColumnAdd2.scrollBy(dx, 0);
+        }else if(recyclerView == mRecyclerViewColumnAdd||recyclerView == mRecyclerViewColumnAdd2){
+            super.onScrolled(recyclerView, dx, dy);
+
+            // Scroll each cell recyclerViews
+            for (int i = 0; i < mCellLayoutManager.getChildCount(); i++) {
+                CellRecyclerView child = (CellRecyclerView) mCellLayoutManager.getChildAt(i);
+                // Scroll horizontally
+                child.scrollBy(dx, 0);
+            }
+            mColumnHeaderRecyclerView.scrollBy(dx, 0);
+
+            if(mRecyclerViewColumnAdd!=null&&recyclerView!=mRecyclerViewColumnAdd)mRecyclerViewColumnAdd.scrollBy(dx, 0);
+            if(mRecyclerViewColumnAdd2!=null&&recyclerView!=mRecyclerViewColumnAdd2)mRecyclerViewColumnAdd2.scrollBy(dx, 0);
         } else {
             // Scroll column header recycler view as well
             //mColumnHeaderRecyclerView.scrollBy(dx, 0);
@@ -190,6 +216,9 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
                     child.scrollBy(dx, 0);
                 }
             }
+
+            if(mRecyclerViewColumnAdd!=null)mRecyclerViewColumnAdd.scrollBy(dx, 0);
+            if(mRecyclerViewColumnAdd2!=null)mRecyclerViewColumnAdd2.scrollBy(dx, 0);
         }
     }
 
@@ -285,5 +314,13 @@ public class HorizontalRecyclerViewListener extends RecyclerView.OnScrollListene
      */
     public void setScrollPosition(int position) {
         this.mScrollPosition = position;
+    }
+
+    public void setRecyclerViewColumnAdd(CellRecyclerView recyclerView) {
+        this.mRecyclerViewColumnAdd = recyclerView;
+    }
+
+    public void setRecyclerViewColumnAdd2(CellRecyclerView recyclerView) {
+        this.mRecyclerViewColumnAdd2 = recyclerView;
     }
 }

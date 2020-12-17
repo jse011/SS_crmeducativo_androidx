@@ -54,17 +54,19 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
     ImageView imgGrupo;
     @BindView(R.id.img_reconocimiento)
     ImageView imgReconocimiento;
+    @BindView(R.id.imgResultado)
+    Button imgResultado;
 
     public CursosViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
-    private CursosUiRecurso cursosUiRecurso;
+    private CursosUI cursosUiRecurso;
     private CursosListener listener;
 
     public void bind(final CursosUI cursosUI, final CursosListener listener, ImageLoader imageLoader) {
-        this.cursosUiRecurso = new CursosUiRecurso(cursosUI);
+        this.cursosUiRecurso = cursosUI;
         this.listener = listener;
         txtNombreCurso.setText(cursosUI.getNombreCurso());
         String planPeriodo = cursosUI.getGradoSeccion() +" - "+ cursosUI.getNivelAcademico();
@@ -112,6 +114,8 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
         imgGrupo.setOnClickListener(this);
 
         imgReconocimiento.setOnClickListener(this);
+
+        imgResultado.setOnClickListener(this);
     }
 
 
@@ -145,6 +149,9 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
             case R.id.img_reconocimiento:
                 listener.onClickReconocimientoCursoSelected(cursosUiRecurso,cursosUiRecurso.getCargaCurso());
                 break;
+            case R.id.imgResultado:
+                listener.onClickResultadoCursoSelected(cursosUiRecurso);
+                break;
         }
     }
 
@@ -152,41 +159,4 @@ public class CursosViewHolder extends RecyclerView.ViewHolder implements View.On
         return fondo;
     }
 
-    public class CursosUiRecurso extends CursosUI {
-        Bitmap bitmap;
-
-        public CursosUiRecurso(CursosUI cursosUI) {
-            setIdCursDetalleHorario(cursosUI.getIdCursDetalleHorario());
-            setIdCurso(cursosUI.getIdCurso());
-            setCargaCurso(cursosUI.getCargaCurso());
-            setNombreCurso(cursosUI.getNombreCurso());
-            setGradoSeccion(cursosUI.getGradoSeccion());
-            setDiaHora(cursosUI.getDiaHora());
-            setNroSalon(cursosUI.getNroSalon());
-            setNombreDocente(cursosUI.getNombreDocente());
-            setUrlImgDoncente(cursosUI.getUrlImgDoncente());
-            setUrlBackgroundItem(cursosUI.getUrlBackgroundItem());
-            setBackgroundSolidColor(cursosUI.getBackgroundSolidColor());
-            setImgVisible(isImgVisible());
-            setNombreDocenteVisible(isNombreDocenteVisible());
-            setParametroDisenioId(cursosUI.getParametroDisenioId());
-            setCargaAcademicaId(cursosUI.getCargaAcademicaId());
-            setEstado(cursosUI.getEstado());
-            setSilaboId(cursosUI.getSilaboId());
-            setPeriodoAcademicoId(cursosUI.getPeriodoAcademicoId());
-            setGrupoAcademicoId(cursosUI.getGrupoAcademicoId());
-            setNivelAcademico(cursosUI.getNivelAcademico());
-            setTutor(cursosUI.isTutor());
-        }
-
-        public Bitmap getBitmap() {
-            return bitmap;
-        }
-
-        public void setBitmap(Bitmap bitmap) {
-            this.bitmap = bitmap;
-        }
-
-
-    }
 }

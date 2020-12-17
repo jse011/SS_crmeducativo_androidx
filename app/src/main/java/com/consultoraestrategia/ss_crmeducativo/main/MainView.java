@@ -140,4 +140,7 @@ public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
     void showBtnAgenda();
 
     void hideBtnAgenda();
+
+    void showCentroProcesoActivty(CursosUI cursosUiRecurso, int idPrograma, int anioAcademicoIdFinal);
+
 }

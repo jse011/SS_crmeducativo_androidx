@@ -339,7 +339,8 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         if(view!=null)view.hideBtnEntidadSelect();
         if(!successData){
             successData = succesData.execute();
-            if(view!=null)view.showDialogFastData(anioAcademicoIdFinal, idUsuario);
+            //if(view!=null)view.showDialogFastData(anioAcademicoIdFinal, idUsuario);
+            showProgress();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -494,7 +495,12 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
 
     @Override
-    public void validateRol(CursosUI cursosUI) {
+    public void onCursoSelected(CursosUI cursosUI) {
+        //if(view!=null)view.showMessage("Aquí mostrar tips de los botones");
+       validarRol(cursosUI);
+    }
+
+    private void validarRol(CursosUI cursosUI) {
         if(programaEducativoUi==null)return;
         switch (cursosUI.getEstado()){
             case CREADO:
@@ -1140,7 +1146,25 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
         }
     }
 
+    @Override
+    public void onClickResultadoCursoSelected(CursosUI cursosUiRecurso) {
+       if(view!=null)view.showCentroProcesoActivty(cursosUiRecurso, (programaEducativoUi!=null?programaEducativoUi.getIdPrograma():0), anioAcademicoIdFinal);
+    }
 
+    @Override
+    public void onClickEvaCursoSelected(CursosUI cursosUiRecurso) {
+        if(view!=null)view.showMessage("Abrir pagina del eva");
+    }
+
+    @Override
+    public void onClickMovilCursoSelected(CursosUI cursosUiRecurso) {
+        validarRol(cursosUiRecurso);
+    }
+
+    @Override
+    public void onClickAgendaCursoSelected(CursosUI cursosUiRecurso) {
+
+    }
 
 
     private void changeDataBaseDocenteMentor(){

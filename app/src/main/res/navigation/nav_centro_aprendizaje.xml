@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_centro_aprendizaje"
+    app:startDestination="@id/tutorial">
+    <fragment
+        android:id="@+id/registo_evaluacion"
+        android:name="com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.fragments.RegistroCentProcesamiento"
+        android:label="Registro de evaluaciones"
+        tools:layout="@layout/fragment_registro_cent_procesamiento" >
+        <action
+            android:id="@+id/action_registo_evaluacion_to_contenido_tutorial"
+            app:destination="@id/contenido_tutorial" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tutorial"
+        android:name="com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.fragments.TutorialCentProcesamiento"
+        android:label="Tutorial"
+        tools:layout="@layout/fragment_tutorial_cent_procesamiento" >
+        <action
+            android:id="@+id/action_tutorial_to_registo_evaluacion"
+            app:destination="@id/registo_evaluacion" />
+        <action
+            android:id="@+id/action_tutorial_to_contenido_tutorial"
+            app:destination="@id/contenido_tutorial" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_procesamiento"
+        android:name="com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.fragments.MenuCentProcesamiento"
+        android:label="Registro de evaluaciones"
+        tools:layout="@layout/fragment_menu_cent_procesamiento" />
+
+    <fragment android:id="@+id/contenido_tutorial"
+        android:name="com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.fragments.ContenidoTutorialCentProcesamiento"
+        android:label="Contenido tutorial"
+        tools:layout="@layout/fragment_cont_tutorial_cent_procesamiento"/>
+</navigation>

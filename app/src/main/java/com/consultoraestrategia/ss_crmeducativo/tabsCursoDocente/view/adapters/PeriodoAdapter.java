@@ -87,7 +87,7 @@ public class PeriodoAdapter extends RecyclerView.Adapter<PeriodoAdapter.ViewHold
 
         public void bind(final PeriodoUi periodo, final PeriodoListener listener, String color) {
             final boolean isSelected = periodo.isStatus();
-            LayerDrawable shape = (LayerDrawable) ContextCompat.getDrawable(itemView.getContext(),R.drawable.border_radius_left);
+            LayerDrawable shape = (LayerDrawable) ContextCompat.getDrawable(itemView.getContext(),R.drawable.border_radius_left).mutate();
             final GradientDrawable gradientDrawable = (GradientDrawable) shape.findDrawableByLayerId(R.id.shape);
             int colorFondo;
             try {

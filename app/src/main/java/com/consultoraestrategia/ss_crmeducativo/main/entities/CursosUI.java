@@ -13,6 +13,8 @@ public class CursosUI {
     private String nivelAcademico;
     private boolean tutor;
     private boolean complejo;
+    private String backgroundSolidColor2;
+    private String backgroundSolidColor3;
 
     public void setCantidadPersonas(int cantidadPersonas) {
         this.cantidadPersonas = cantidadPersonas;
@@ -76,6 +78,22 @@ public class CursosUI {
 
     public boolean getComplejo() {
         return complejo;
+    }
+
+    public void setBackgroundSolidColor2(String backgroundSolidColor2) {
+        this.backgroundSolidColor2 = backgroundSolidColor2;
+    }
+
+    public String getBackgroundSolidColor2() {
+        return backgroundSolidColor2;
+    }
+
+    public void setBackgroundSolidColor3(String backgroundSolidColor3) {
+        this.backgroundSolidColor3 = backgroundSolidColor3;
+    }
+
+    public String getBackgroundSolidColor3() {
+        return backgroundSolidColor3;
     }
 
     public enum Estado {CREADO, AUTORIZADO, SINSILABO}
