@@ -5,13 +5,13 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.consultoraestrategia.ss_crmeducativo.educar"//CATA DocenteMentor3.0
-        //applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Parents
+        //applicationId "com.consultoraestrategia.ss_crmeducativo.educar"//CATA DocenteMentor3.0
+        applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Parents
         minSdkVersion 19
         targetSdkVersion 29
-        //versionCode 63//UPS Educar Parents
-        versionCode 53//CATA DocenteMentor3.0
-        versionName "1.1.4"
+        versionCode 65//UPS Educar Parents
+        //versionCode 53//CATA DocenteMentor3.0
+        versionName "1.1.5"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -144,5 +144,8 @@ dependencies {
     //implementation 'com.loopeer.library:cardstack:1.0.2' revisar una buena animacion
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'
     implementation 'me.kaelaela:verticalviewpager:1.0.0@aar'
+    implementation 'com.github.princ-bhardwaj:TextInlineImage-Library:1.0.2'
+    implementation 'com.github.robohorse:gpversionchecker:1.7.1'
+    implementation 'org.jsoup:jsoup:1.9.2'
 }
 apply plugin: 'com.google.gms.google-services'

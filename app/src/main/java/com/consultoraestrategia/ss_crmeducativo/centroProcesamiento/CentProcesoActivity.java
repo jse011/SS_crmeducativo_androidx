@@ -35,6 +35,7 @@ import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.CentPro
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.CerrarCursoDialogView;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.GenerarNotasDialogView;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.TutorialCentView;
+import com.consultoraestrategia.ss_crmeducativo.utils.AndroidOnline.OnlineImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,7 +65,8 @@ public class CentProcesoActivity extends BaseActivity<CentProcesoView, CentProce
     @Override
     protected CentProcesoPresenter getPresenter() {
         CentroProcesamientoRepositorio centroProcesamientoRepositorio =  new CentroProcesamientoRepositorioImpl();
-        return new CentProcesoPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(), new GetMatrizResultado(centroProcesamientoRepositorio),
+        return new CentProcesoPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(), new OnlineImpl(this),
+        new GetMatrizResultado(centroProcesamientoRepositorio),
                 new GetCalendarioPeriodo(centroProcesamientoRepositorio),
                 new PromediarNotas(centroProcesamientoRepositorio),
                 new CerrarCursoResultado(centroProcesamientoRepositorio));

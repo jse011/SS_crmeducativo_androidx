@@ -66,8 +66,8 @@
         <item>Algebra</item>
     </array>
 
-    <string name="app_name">Docente Mentor 3.0</string>
-    <!--<string name="app_name">Educar Teacher</string>-->
+    <!--<string name="app_name">Docente Mentor 3.0</string>-->
+    <string name="app_name">Educar Teacher</string>
 
 
 <string name="login.progress.titulo">Iniciando</string>
@@ -382,4 +382,9 @@
     <string name="msg_remplasar_data_rubro">Existen cambios que no se guardaron correctamente que podrían ser remplazados, ¿estás seguro que desea obtener los cambios?</string>
     <string name="msg_unknow_internet_2">Por favor, revisa tu conexión a Internet.</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
+    <string name="gpvch_header">¡Nueva versión disponible!</string>
+    <string name="gpvch_button_positive">Actualizar la versión actual</string>
+    <string name="gpvch_button_negative">Recordar más tarde</string>
+    <string name="gpvch_new_version_info_title">Que hay de nuevo:</string>
 </resources>

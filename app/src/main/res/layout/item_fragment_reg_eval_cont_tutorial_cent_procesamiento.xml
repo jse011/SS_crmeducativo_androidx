@@ -49,7 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:orientation="vertical"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Ingresa al registro de evaluación de las notas seleccionando el tipo de Competencia Base ó Transversal."
+                    android:text="Ingresa al registro de evaluación seleccionando el tipo de Competencia Base ó Transversal."
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView199"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -126,7 +126,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:orientation="horizontal"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView5"
@@ -476,7 +476,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -484,7 +484,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:orientation="vertical"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -500,12 +500,12 @@
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <com.android.lib.textinlineimage.TextInlineImage
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Clic en botón amarillo ⚙️, ubicado en la parte superior del registro."
+                    android:text="Clic en botón amarillo [img src=ic_icono_procesar/]️, ubicado en la parte superior del registro."
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -548,7 +548,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="32dp"
             android:orientation="horizontal"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <FrameLayout
                 android:id="@+id/frameLayout4"
@@ -814,7 +814,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:orientation="vertical"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -836,12 +836,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.android.lib.textinlineimage.TextInlineImage
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="Clic en botón rojo �️, ubicado en la parte superior del registro."
+                        android:text="Clic en botón rojo [img src=ic_icono_cerrar_cursos/]️, ubicado en la parte superior del registro."
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView199"
                         app:layout_constraintTop_toTopOf="parent" />

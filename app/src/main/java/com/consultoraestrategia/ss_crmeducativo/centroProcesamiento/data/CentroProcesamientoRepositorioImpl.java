@@ -47,7 +47,7 @@ public class CentroProcesamientoRepositorioImpl implements CentroProcesamientoRe
             @Override
             public void onResponse(BEMatrizResultadoDocente response) {
                 if(response == null){
-                    callback.onLoad(true, null);
+                    callback.onLoad(false, null);
                     Log.d(TAG,"response usuario null");
                 }else {
                     Log.d(TAG,"response usuario true");
@@ -124,12 +124,7 @@ public class CentroProcesamientoRepositorioImpl implements CentroProcesamientoRe
 
             @Override
             public void onFailure(Throwable t) {
-                if(!TextUtils.isEmpty(t.getMessage())&&
-                        ("Socket closed".equals(t.getMessage())||"Canceled".equals(t.getMessage()))){
-                    callback.onLoad(false,null);
-                }else {
-                    callback.onLoad(true,null);
-                }
+                callback.onLoad(false,null);
 
                 Log.d(TAG,"onFailure ");
             }

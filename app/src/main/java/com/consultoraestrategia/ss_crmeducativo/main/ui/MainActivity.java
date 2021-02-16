@@ -35,6 +35,7 @@ import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServ
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetUploadImagen;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.SavePersona;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.UpdatePersonaServidor;
+import com.consultoraestrategia.ss_crmeducativo.main.nuevaVersion.NuevaVersionDisponible;
 import com.google.android.material.appbar.AppBarLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.navigation.NavigationView;
@@ -172,6 +173,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.robohorse.gpversionchecker.GPVersionChecker;
+import com.robohorse.gpversionchecker.domain.Version;
+import com.robohorse.gpversionchecker.domain.VersionInfoListener;
 import com.shehabic.droppy.DroppyClickCallbackInterface;
 import com.shehabic.droppy.DroppyMenuItem;
 import com.shehabic.droppy.DroppyMenuPopup;
@@ -318,6 +322,29 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void setContentView() {
         setContentView(R.layout.activity_main_final);
         ButterKnife.bind(this);
+        new GPVersionChecker.Builder(this)
+                .setVersionInfoListener(new VersionInfoListener() {
+
+                    @Override
+                    public void onErrorHandled(@Nullable Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onResulted(Version version) {
+                        if(version.isNeedToUpdate()){
+                            MainActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NuevaVersionDisponible.newInstance(version.getNewVersionCode(), version.getChanges())
+                                            .show(getSupportFragmentManager(),"NuevaVersionDisponible");
+                                }
+                            });
+                        }
+
+                    }
+                })
+                .create();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -336,7 +363,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 // ...
             }
         };
-        getAppVersion();
         setupGlideImageLoader();
         setupToolbar();
         setupTabMenu();
@@ -499,28 +525,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             String userId = String.valueOf(user.getUserId());
             FirebaseMessaging.getInstance().subscribeToTopic(userId);
         }
-    }
-
-    private void getAppVersion() {
-        FirebaseDatabase.getInstance().getReference()
-                .child("APP_VERSION").child("CRME").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: " + dataSnapshot);
-                if (dataSnapshot != null) {
-                    String version = dataSnapshot.getValue(String.class);
-
-                    if (version != null && !version.equals(BuildConfig.VERSION_NAME)) {
-                        showImportantMessage(getString(R.string.global_app_version_incompatible));
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e(TAG, "databaseError: " + databaseError);
-            }
-        });
     }
 
     @Override

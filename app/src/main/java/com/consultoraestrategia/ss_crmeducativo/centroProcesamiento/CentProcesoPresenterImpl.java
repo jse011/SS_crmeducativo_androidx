@@ -19,6 +19,7 @@ import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.CerrarC
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.GenerarNotasDialogView;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.TutorialCentView;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
+import com.consultoraestrategia.ss_crmeducativo.utils.AndroidOnline.Online;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +49,14 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
     private RetrofitCancel retrofitCancelGetMatriz;
     private RetrofitCancel retrofitCancelPromediarNotas;
     private RetrofitCancel retrofitCancelCerrarCursoResultado;
-
-    public CentProcesoPresenterImpl(UseCaseHandler handler, Resources res, GetMatrizResultado getMatrizResultado, GetCalendarioPeriodo getCalendarioPeriodo, PromediarNotas promediarNotas, CerrarCursoResultado cerrarCursoResultado) {
+    private Online online;
+    public CentProcesoPresenterImpl(UseCaseHandler handler, Resources res, Online online, GetMatrizResultado getMatrizResultado, GetCalendarioPeriodo getCalendarioPeriodo, PromediarNotas promediarNotas, CerrarCursoResultado cerrarCursoResultado) {
         super(handler, res);
         this.getMatrizResultado = getMatrizResultado;
         this.getCalendarioPeriodo = getCalendarioPeriodo;
         this.promediarNotas = promediarNotas;
         this.cerrarCursoResultado = cerrarCursoResultado;
+        this.online = online;
     }
 
     @Override
@@ -97,30 +99,38 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
         if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
         this.matrizResultadoUi = null;
         if(selectedPeriodoUi!=null){
-            retrofitCancelGetMatriz = getMatrizResultado.execute(silaboEventoId, cargaCursoId, selectedPeriodoUi.getIdCalendarioPeriodo(), rubroFormal, tituloCurso, new GetMatrizResultado.Callback() {
+            online.online(new Online.Callback() {
                 @Override
-                public void onSuccess(MatrizResultadoUi response) {
-                    showPromediar(response);
-                }
+                public void onLoad(boolean success) {
+                    if(success){
+                        
+                        retrofitCancelGetMatriz = getMatrizResultado.execute(silaboEventoId, cargaCursoId, selectedPeriodoUi.getIdCalendarioPeriodo(), rubroFormal, tituloCurso, new GetMatrizResultado.Callback() {
+                            @Override
+                            public void onSuccess(MatrizResultadoUi response) {
+                                showPromediar(response);
+                            }
 
-                @Override
-                public void onError() {
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.clearListMatrizResultado();
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideCorner();
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.showErrorInterno();
-                }
+                            @Override
+                            public void onError() {
+                                if(registroCentProcesamientoView!=null)registroCentProcesamientoView.clearListMatrizResultado();
+                                if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();
+                                if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideCorner();
+                                if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
+                                if(registroCentProcesamientoView!=null)registroCentProcesamientoView.showErrorInterno();
+                            }
 
-                @Override
-                public void onOffLine() {
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.clearListMatrizResultado();
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideCorner();
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
-                    if(registroCentProcesamientoView!=null)registroCentProcesamientoView.showErrorSinInternet();
+                        });
+                    }else {
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.clearListMatrizResultado();
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideCorner();
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.showErrorSinInternet();
+                    }
                 }
             });
+
+
         }else {
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.clearListMatrizResultado();
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();

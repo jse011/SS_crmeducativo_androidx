@@ -15,7 +15,7 @@
         android:name=".CMRE"
         android:allowBackup="false"
         android:allowClearUserData="true"
-        android:icon="@mipmap/ic_launcher_v2"
+        android:icon="@mipmap/ic_educar"
         android:supportsRtl="true"
         android:testOnly="false"
         android:usesCleartextTraffic="true"
