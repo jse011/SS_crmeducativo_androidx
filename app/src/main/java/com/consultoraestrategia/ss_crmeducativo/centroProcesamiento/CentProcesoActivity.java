@@ -10,7 +10,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -35,6 +37,8 @@ import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.CentPro
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.CerrarCursoDialogView;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.GenerarNotasDialogView;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.TutorialCentView;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SincronizarCentroAprendizaje;
+import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
 import com.consultoraestrategia.ss_crmeducativo.utils.AndroidOnline.OnlineImpl;
 
 import butterknife.BindView;
@@ -64,7 +68,7 @@ public class CentProcesoActivity extends BaseActivity<CentProcesoView, CentProce
 
     @Override
     protected CentProcesoPresenter getPresenter() {
-        CentroProcesamientoRepositorio centroProcesamientoRepositorio =  new CentroProcesamientoRepositorioImpl();
+        CentroProcesamientoRepositorio centroProcesamientoRepositorio =  new CentroProcesamientoRepositorioImpl(InjectorUtils.provideCalendarioPeriodo());
         return new CentProcesoPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(), new OnlineImpl(this),
         new GetMatrizResultado(centroProcesamientoRepositorio),
                 new GetCalendarioPeriodo(centroProcesamientoRepositorio),
@@ -80,6 +84,12 @@ public class CentProcesoActivity extends BaseActivity<CentProcesoView, CentProce
     @Override
     protected Bundle getExtrasInf() {
         return getIntent().getExtras();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        desbloqOrientation();
     }
 
     @Override
@@ -171,5 +181,10 @@ public class CentProcesoActivity extends BaseActivity<CentProcesoView, CentProce
     public void showDialogCerrarEvaluacion() {
         CerrarCurso cerrarCurso = new CerrarCurso();
         cerrarCurso.show(getSupportFragmentManager(), "GenerarNotas");
+    }
+
+    @Override
+    public void showMessage(CharSequence error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 }

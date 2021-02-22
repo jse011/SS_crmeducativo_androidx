@@ -42,6 +42,7 @@ import com.consultoraestrategia.ss_crmeducativo.main.entities.AnioAcademicoUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ConfiguracionUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.CursosUI;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.GradoUi;
+import com.consultoraestrategia.ss_crmeducativo.main.entities.NuevaVersionUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.PersonaUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ProgramaEduactivosUI;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.UsuarioAccesoUI;
@@ -120,6 +121,8 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
     private ArrayList<ConfiguracionUi> configuracionUiList = new ArrayList<>();
     private int menuSelected = 0;
     private int tutorCargaAdemicaId;
+    private boolean viewPause;
+    private NuevaVersionUi nuevaVersionUi;
 
     public MainPresenterImpl(UseCaseHandler handler, Resources res, GetProgramasEdcativosList getProgramasEdcativosUIList, GetAccesosUIList getAccesosUIList, GetCursosUIList getCursosUIList, GetUsuarioUI getUsuarioUI, GetHijosUIList getHijosUIList, GetPeriodosList getPeriodosList, GetGradosList getGradosList, SaveAlarma saveAlarma, GetAlarma getAlarma,
                              ChangeDataBaseDocenteMentor changeDataBaseDocenteMentor,GetAnioAcademicoList getAnioAcademicoList, GetDatosServidorLocal getDatosServidorLocal, SuccesData succesData,UpadateListAnioAcademico upadateListAnioAcademico, GetUploadImagen getUploadImagen, SavePersona savePersona, UpdatePersonaServidor updatePersonaServidor) {
@@ -168,6 +171,11 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
     @Override
     public void onStart() {
         Log.d(TAG, "onStart");
+        viewPause = false;
+        if(nuevaVersionUi!=null){
+            if(view!=null)view.showDialogNuevaVersion(nuevaVersionUi);
+            nuevaVersionUi  = null;
+        }
     }
 
     @Override
@@ -188,7 +196,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause");
+        viewPause = true;
     }
 
     @Override
@@ -1163,6 +1171,18 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
 
     @Override
     public void onClickAgendaCursoSelected(CursosUI cursosUiRecurso) {
+
+    }
+
+    @Override
+    public void onVersionChecker(NuevaVersionUi nuevaVersionUi) {
+        if(!viewPause){
+            if(view!=null)view.showDialogNuevaVersion(nuevaVersionUi);
+            this.nuevaVersionUi  = null;
+        }else {
+            this.nuevaVersionUi  = nuevaVersionUi;
+        }
+
 
     }
 

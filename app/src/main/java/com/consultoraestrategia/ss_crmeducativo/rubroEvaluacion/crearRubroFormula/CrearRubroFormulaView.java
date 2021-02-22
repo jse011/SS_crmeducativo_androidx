@@ -54,4 +54,6 @@ public interface CrearRubroFormulaView extends BaseView<CrearRubroFormulaPresent
     void success();
 
     void disabledListFormula();
+
+    void setTitulo(String title);
 }

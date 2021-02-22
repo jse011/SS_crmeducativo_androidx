@@ -35,4 +35,6 @@ public interface RegistroCentProcesamientoView {
     void showErrorInterno();
 
     void hideError();
+
+    void showSelecionCalendarioPerido();
 }

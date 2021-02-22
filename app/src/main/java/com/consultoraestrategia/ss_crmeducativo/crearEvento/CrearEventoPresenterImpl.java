@@ -280,7 +280,7 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
                     if(success){
                         if(view!=null)view.finishActivity();
                     }else {
-                        if(view!=null)view.showMessage("Server connection timeout");
+                        if(view!=null)view.showMessage("Tiempo de conexión agotado");
                         if(view!=null)view.viewsEnabled();
                         if(view!=null)view.hideDialogProgress();
                     }

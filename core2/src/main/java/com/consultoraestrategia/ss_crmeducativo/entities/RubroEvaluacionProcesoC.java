@@ -45,7 +45,7 @@ public class RubroEvaluacionProcesoC extends BaseEntity {
     @Column
     int valorRedondeoId;
     @Column
-    int rubroEvalResultadoId;//campo para eliminar
+    int rubroEvalResultadoId;
     @Column
     String tipoNotaId;
     @Column
@@ -84,6 +84,8 @@ public class RubroEvaluacionProcesoC extends BaseEntity {
     int estrategiaEvaluacionId;
     @Column
     private String tareaId;
+    @Column
+    private String resultadoTipoNotaId;
 
     public RubroEvaluacionProcesoC() {
         super();
@@ -359,6 +361,14 @@ public class RubroEvaluacionProcesoC extends BaseEntity {
 
     public void setEstrategiaEvaluacionId(int estrategiaEvaluacionId) {
         this.estrategiaEvaluacionId = estrategiaEvaluacionId;
+    }
+
+    public String getResultadoTipoNotaId() {
+        return resultadoTipoNotaId;
+    }
+
+    public void setResultadoTipoNotaId(String resultadoTipoNotaId) {
+        this.resultadoTipoNotaId = resultadoTipoNotaId;
     }
 
     public String getTareaId() {

@@ -1,10 +1,8 @@
 package com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.data;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
-import com.consultoraestrategia.ss_crmeducativo.api.retrofit.response.RestApiResponse;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.entities.CabeceraUi;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.entities.CellTableRegEvalUi;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.entities.ColumnTableRegEvalUi;
@@ -12,17 +10,15 @@ import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.entities.Mat
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.entities.PeriodoUi;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.entities.RespGenerarResultadoUi;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.entities.RowTableRegEvalUi;
-import com.consultoraestrategia.ss_crmeducativo.entities.AdminService;
+import com.consultoraestrategia.ss_crmeducativo.dao.calendarioPeriodo.CalendarioPeriodoDao;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioAcademico;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioAcademico_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo;
-import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodoDetalle;
-import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodoDetalle_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodo_Table;
+import com.consultoraestrategia.ss_crmeducativo.entities.SessionData2;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos_Table;
-import com.consultoraestrategia.ss_crmeducativo.login2.entities.UsuarioExternoUi;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEMatrizResultadoDocente;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BETransResultResponse;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
@@ -31,13 +27,17 @@ import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CentroProcesamientoRepositorioImpl implements CentroProcesamientoRepositorio{
     private static final String TAG = CentroProcesamientoRepositorioImpl.class.getSimpleName();
+    private CalendarioPeriodoDao calendarioPeriodoDao;
+
+    public CentroProcesamientoRepositorioImpl(CalendarioPeriodoDao calendarioPeriodoDao) {
+        this.calendarioPeriodoDao = calendarioPeriodoDao;
+    }
+
     @Override
     public RetrofitCancel getMatrizResultado(int silaboEveId, int cargaCursoId, int calendarioPerId, int rubroformal, Callback<MatrizResultadoUi> callback) {
         ApiRetrofit apiRetrofit = ApiRetrofit.getInstance();
@@ -133,7 +133,7 @@ public class CentroProcesamientoRepositorioImpl implements CentroProcesamientoRe
     }
 
     @Override
-    public List<PeriodoUi> getCalendarioPeriodo(int programaId, int anioAcademicoId) {
+    public List<PeriodoUi> getCalendarioPeriodo(int programaId, int anioAcademicoId, int cargaCursoId) {
         List<PeriodoUi> periodoUiList = new ArrayList<>();
         List<CalendarioPeriodo> calendarioPeriodoList = SQLite.select(Utils.f_allcolumnTable(CalendarioPeriodo_Table.ALL_COLUMN_PROPERTIES))
                 .from(CalendarioPeriodo.class)
@@ -155,30 +155,8 @@ public class CentroProcesamientoRepositorioImpl implements CentroProcesamientoRe
                     .querySingle();
 
             periodoUi.setTipoName(tipos!=null?tipos.getNombre():"");
-
-            Calendar hoy = Calendar.getInstance();
-            hoy.set(Calendar.MILLISECOND, 0);
-            hoy.set(Calendar.SECOND, 0);
-            hoy.set(Calendar.MINUTE, 0);
-            hoy.set(Calendar.HOUR_OF_DAY, 0);
-
-            Calendar a = Calendar.getInstance();
-            a.setTimeInMillis(calendarioPeriodo.getFechaInicio());
-            a.set(Calendar.MILLISECOND, 0);
-            a.set(Calendar.SECOND, 0);
-            a.set(Calendar.MINUTE, 0);
-            a.set(Calendar.HOUR_OF_DAY, 0);
-
-            Calendar b = Calendar.getInstance();
-            b.setTimeInMillis(calendarioPeriodo.getFechaFin());
-            b.set(Calendar.MILLISECOND, 0);
-            b.set(Calendar.SECOND, 0);
-            b.set(Calendar.MINUTE, 0);
-            b.set(Calendar.HOUR_OF_DAY, 0);
-
-            if(a.compareTo(hoy) * hoy.compareTo(b) >= 0){
-                periodoUi.setStatus(true);
-            }
+            boolean isvigente = calendarioPeriodoDao.isVigenteCalendarioCursoPeriodo(calendarioPeriodo.getCalendarioPeriodoId(), cargaCursoId, true,null);
+            periodoUi.setStatus(isvigente);
             periodoUiList.add(periodoUi);
         }
 
@@ -210,6 +188,11 @@ public class CentroProcesamientoRepositorioImpl implements CentroProcesamientoRe
                     callback.onLoad(false, null);
                 }
 
+                SessionData2 sessionData2 = new SessionData2();
+                sessionData2.setId(SessionData2.Key_CentroProcesamiento);
+                sessionData2.setCalendarioPeriodoId(calendarioPeriodoId);
+                sessionData2.setCargaCursoId(cargaCursoId);
+                sessionData2.save();
 
             }
 

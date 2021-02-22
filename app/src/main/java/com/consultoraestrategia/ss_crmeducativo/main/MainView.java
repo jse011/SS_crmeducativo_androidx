@@ -4,6 +4,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseView;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.CursosUI;
+import com.consultoraestrategia.ss_crmeducativo.main.entities.NuevaVersionUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ProgramaEduactivosUI;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.UsuarioAccesoUI;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.UsuarioRolGeoReferenciaUi;
@@ -143,4 +144,5 @@ public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
 
     void showCentroProcesoActivty(CursosUI cursosUiRecurso, int idPrograma, int anioAcademicoIdFinal);
 
+    void showDialogNuevaVersion(NuevaVersionUi nuevaVersionUi);
 }

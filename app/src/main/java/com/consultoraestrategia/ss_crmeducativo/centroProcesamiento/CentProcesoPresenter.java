@@ -38,4 +38,6 @@ public interface CentProcesoPresenter extends BasePresenter<CentProcesoView> {
     void attachView(CerrarCursoDialogView view);
 
     void onClickCerrarEvaluacion();
+
+    void onClickRefresh();
 }

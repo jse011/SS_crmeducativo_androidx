@@ -8,6 +8,7 @@ import androidx.multidex.MultiDex;
 
 import com.consultoraestrategia.ss_crmeducativo.calendarioPeriodo.CalendarioPeridoService;
 import com.consultoraestrategia.ss_crmeducativo.core2.application.Core2;
+import com.consultoraestrategia.ss_crmeducativo.main.ui.MainActivity;
 import com.consultoraestrategia.ss_crmeducativo.services.cloudDataBase.crmeNotification.CrmeNotificationServiceImpl;
 
 /**
@@ -20,15 +21,14 @@ public class CMRE extends Core2 {
     private CrmeNotificationServiceImpl crmeNotification;
     private final static String PREFERENCIA = "SyncIntenService";
     private final static String PREFERENCIA_KEY = "changeDataBase";
+    private CalendarioPeridoService calendarioPeridoService;
 
     @Override
     public void onCreate() {
         super.onCreate();
         if(crmeNotification!=null)crmeNotification.onDestroy();
         crmeNotification = CrmeNotificationServiceImpl.init(this);
-        
-        CalendarioPeridoService calendarioPeridoService = CalendarioPeridoService.getInstance();
-        calendarioPeridoService.execute();
+        calendarioPeridoService = CalendarioPeridoService.getInstance();
     }
 
     @Override
@@ -56,6 +56,21 @@ public class CMRE extends Core2 {
         super.onActivityCreated(activity, bundle);
         if(activity instanceof CrmeNotificationServiceImpl.EventNotificacion){
             crmeNotification.setEventNotificacion((CrmeNotificationServiceImpl.EventNotificacion)activity);
+        }
+    }
+
+    @Override
+    public void onActivityResumed(Activity activity) {
+        super.onActivityResumed(activity);
+        if(activity instanceof MainActivity){
+            try {
+                calendarioPeridoService.destroy();
+                calendarioPeridoService.refresh();
+                calendarioPeridoService.execute();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
     }
 

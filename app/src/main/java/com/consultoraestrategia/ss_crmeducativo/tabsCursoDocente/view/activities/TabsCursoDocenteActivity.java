@@ -23,7 +23,9 @@ import com.consultoraestrategia.ss_crmeducativo.eventos.EventosActivty;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepository;
 import com.consultoraestrategia.ss_crmeducativo.login2.data.repositorio.LoginDataRepositoryImpl;
 import com.consultoraestrategia.ss_crmeducativo.login2.fastData.FastData;
+import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SincronizarCentroAprendizaje;
 import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckService;
+import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.domain.UseCase.GetChangeCentroProcesamiento;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -183,7 +185,8 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
                 new ChangeDataBaseDocenteMentor(service2Repositorio),
                 new GetIsTutor(tabsCursoRepository),
                 new GetParametroDisenio(tabsCursoRepository),
-                new PrimeravesCursoDocente(tabsCursoRepository)
+                new PrimeravesCursoDocente(tabsCursoRepository),
+                new GetChangeCentroProcesamiento(tabsCursoRepository)
                 );
     }
 
@@ -636,7 +639,7 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
             Log.d(TAG,"idCalendarioPeriodo fragmentAdapter null");
             fragmentAdapter = new MyFragmentAdapter(getSupportFragmentManager());
             fragmentAdapter.addFragment(RubricaBidFragment.newInstance(args), "RÚBRICA");
-            fragmentAdapter.addFragment(EvaluacionCompetenciasFragment.newInstance(args), "RESULTADO");
+            //fragmentAdapter.addFragment(EvaluacionCompetenciasFragment.newInstance(args), "RESULTADO");
             fragmentAdapter.addFragment(RubroResultadoSilaboFragment.newInstance(args), "REGISTRO");
             fragmentAdapter.addFragment(FragmentUnidades.newInstance(args), "SESIONES");
             fragmentAdapter.addFragment(ListaGrupoFragment.newInstance(args,idCargaCurso, idCurso, idCargaAcademica, idProgramaEducativo, crmBundle.getEntidadId(), crmBundle.getGeoreferenciaId()), "GRUPOS");
@@ -1240,6 +1243,11 @@ public class TabsCursoDocenteActivity extends BaseActivity<TabCursoDocenteView, 
         Intent intent = new Intent(this, EventosActivty.class);
         intent.putExtras(crmBundle.instanceBundle());
         startActivity(intent);
+    }
+
+    @Override
+    public void startChangeCentroProcesamiento(int idCalendarioPeriodo, int silaboId, int idCargaCurso) {
+        SincronizarCentroAprendizaje.start(this, silaboId, idCalendarioPeriodo, idCargaCurso);
     }
 
     @Override

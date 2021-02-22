@@ -392,6 +392,11 @@ public class CrearRubroFormulaActivity extends BaseActivity<CrearRubroFormulaVie
     }
 
     @Override
+    public void setTitulo(String title) {
+        textViewTitulo.setText(title);
+    }
+
+    @Override
     public void mostrarListaTipoNota(String dialogTitle, List<Object> items, int positionSelected, int programaEducativoId) {
         Log.d(CREAR_RUBRO_FORMULA_TAG, "mostrarListaTipoNota : " + programaEducativoId);
         Intent intent = TipoNotaListActivity.getSeleccionarTipoNotaListaIntent(getActivity(), dialogTitle,

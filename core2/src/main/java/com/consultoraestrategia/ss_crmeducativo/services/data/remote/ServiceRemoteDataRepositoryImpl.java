@@ -30,7 +30,7 @@ public class ServiceRemoteDataRepositoryImpl implements ServiceRemoteDataReposit
     public void SendDatosGlobalSimple(BEGuardarEntidadesGlobal item, RespuestaCallBack<BEGuardarEntidadesGlobal, BERespuesta> callBack) {
         ApiRetrofit apiRetrofit = utilServidor.getApiRetrofit();
         apiRetrofit.changeSetTime(10,60,60, TimeUnit.SECONDS);
-        Call<RestApiResponse<BERespuesta>> responseCall = apiRetrofit.fins_GuardarEntidades_GlobalSimple(item);
+        Call<RestApiResponse<BERespuesta>> responseCall = apiRetrofit.fins_GuardarEntidadesGlobalSimplevJse(item);
         try {
 
             Response<RestApiResponse<BERespuesta>> response = responseCall.execute();

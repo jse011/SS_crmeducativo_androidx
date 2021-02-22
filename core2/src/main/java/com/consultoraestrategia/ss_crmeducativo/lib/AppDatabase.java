@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.Calendario;
+import com.consultoraestrategia.ss_crmeducativo.entities.CargaCursoCalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.entities.DimensionDesarrolloDetalle;
 import com.consultoraestrategia.ss_crmeducativo.entities.EstrategiaEvaluacion;
 import com.consultoraestrategia.ss_crmeducativo.entities.EvaluacionResultado;
@@ -37,8 +38,8 @@ public class AppDatabase {
     public static final String NAME = "CRMEfinal";
    // public static final int VERSION = 13;//Playstore 12
     //public static final int VERSION = 14;//Playstore 13
-   public static final int VERSION = 15;//Playstore 14 se creo uns tabla webconfig
-
+   //public static final int VERSION = 15;//Playstore 14 se creo uns tabla webconfig
+    public static final int VERSION = 16;//Playstore 15 se aumento resultadoTipoNotaId
     @Migration(version = 9, database = AppDatabase.class)
     public static class MigrationRubroEvaluacionResultadoTwo extends AlterTableMigration<EvaluacionResultadoC> {
 
@@ -131,5 +132,25 @@ public class AppDatabase {
         }
 
     }
+
+    @Migration(version = 16, database = AppDatabase.class)
+    public static class MigrationRubroEvaluacionProceso extends AlterTableMigration<RubroEvaluacionProcesoC> {
+
+        public MigrationRubroEvaluacionProceso(Class<RubroEvaluacionProcesoC> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            addColumn(SQLiteType.TEXT, "resultadoTipoNotaId");
+        }
+
+        @Override
+        public void onPostMigrate() {
+            super.onPostMigrate();
+        }
+
+    }
+
 
 }

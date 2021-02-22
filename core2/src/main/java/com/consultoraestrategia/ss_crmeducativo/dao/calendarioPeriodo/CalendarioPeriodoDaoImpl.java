@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.dao.calendarioPeriodo;
 
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.dao.baseDao.BaseIntegerDaoImpl;
@@ -113,6 +114,10 @@ public class CalendarioPeriodoDaoImpl extends BaseIntegerDaoImpl<CalendarioPerio
             fechaActual.set(Calendar.MINUTE, 0);
             fechaActual.set(Calendar.HOUR_OF_DAY, 0);
 
+            Calendar fechaActualHoraMinuto = Calendar.getInstance();
+            fechaActualHoraMinuto.set(Calendar.MILLISECOND, 0);
+            fechaActualHoraMinuto.set(Calendar.SECOND, 0);
+
             Where<CalendarioPeriodo> calendarioPeriodoWhere = SQLite.select()
                     .from(CalendarioPeriodo.class)
                     .where(CalendarioPeriodo_Table.calendarioPeriodoId.eq(calendarioPeridoId));
@@ -184,23 +189,31 @@ public class CalendarioPeriodoDaoImpl extends BaseIntegerDaoImpl<CalendarioPerio
                             status = false;
                         }else {
                             Log.d(TAG, "resutDetalleInicio");
+
                             /*if(cargaCursoCalendarioPeriodo.getEstadoId()==CargaCursoCalendarioPeriodo.PENDIENTE){*/
                             Calendar fechaCargaCursoInicio = Calendar.getInstance();
                             fechaCargaCursoInicio.setTimeInMillis(cargaCursoCalendarioPeriodo.getFechaInicio());
-                            fechaCargaCursoInicio.set(Calendar.MILLISECOND, 0);
+                            List<Integer> listHoraInicio = Utils.changeHourMinuto(cargaCursoCalendarioPeriodo.getHoraInicio());
+                            fechaCargaCursoInicio.set(Calendar.HOUR_OF_DAY, listHoraInicio.get(0));
+                            fechaCargaCursoInicio.set(Calendar.MINUTE, listHoraInicio.get(1));
+
                             fechaCargaCursoInicio.set(Calendar.SECOND, 0);
-                            fechaCargaCursoInicio.set(Calendar.MINUTE, 0);
-                            fechaCargaCursoInicio.set(Calendar.HOUR_OF_DAY, 0);
+                            fechaCargaCursoInicio.set(Calendar.MILLISECOND, 0);
+
+
 
                             Calendar fechaCargaCursoFin = Calendar.getInstance();
                             fechaCargaCursoFin.setTimeInMillis(cargaCursoCalendarioPeriodo.getFechaFin());
+                            List<Integer> listHoraFinal = Utils.changeHourMinuto(cargaCursoCalendarioPeriodo.getHoraFin());
+                            fechaCargaCursoFin.set(Calendar.HOUR_OF_DAY, listHoraFinal.get(0));
+                            fechaCargaCursoFin.set(Calendar.MINUTE, listHoraFinal.get(1));
+
                             fechaCargaCursoFin.set(Calendar.MILLISECOND, 0);
                             fechaCargaCursoFin.set(Calendar.SECOND, 0);
-                            fechaCargaCursoFin.set(Calendar.MINUTE, 0);
-                            fechaCargaCursoFin.set(Calendar.HOUR_OF_DAY, 0);
 
-                            int resutCargaCursoInicio = fechaActual.compareTo(fechaCargaCursoInicio);
-                            int resutCargaCursoFin = fechaActual.compareTo(fechaCargaCursoFin);
+
+                            int resutCargaCursoInicio = fechaActualHoraMinuto.compareTo(fechaCargaCursoInicio);
+                            int resutCargaCursoFin = fechaActualHoraMinuto.compareTo(fechaCargaCursoFin);
 
                             Log.d(TAG, "resutDetalleInicio ? "+ Utils.getFechaDiaMes(fechaActual.getTimeInMillis()) +" : " +  Utils.getFechaDiaMes(fechaCargaCursoInicio.getTimeInMillis()));
                             Log.d(TAG, "resutDetalleFin ? "+ Utils.getFechaDiaMes(fechaActual.getTimeInMillis())  +" : " + Utils.getFechaDiaMes(fechaCargaCursoFin.getTimeInMillis()));

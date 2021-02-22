@@ -633,6 +633,19 @@ public class ApiRetrofit {
         return service.fins_GuardarEntidades_Global(apiRequestBody);
 
     }
+
+    public Call<RestApiResponse<BERespuesta>> fins_GuardarEntidadesGlobalSimplevJse(BEGuardarEntidadesGlobal beGuardarEntidadesGlobal) {
+        ParametrosExportarGlobal parametrosExportarGlobal = new ParametrosExportarGlobal();
+        parametrosExportarGlobal.setBeGuardarEntidadesGlobal(beGuardarEntidadesGlobal);
+        Log.d(TAG,"url: " + url);
+        ApiRequestBody<ParametrosExportarGlobal> apiRequestBody = new ApiRequestBody<>("fins_GuardarEntidadesGlobalSimplevJse",parametrosExportarGlobal);
+        final Gson gson = new Gson();
+        final String representacionJSON = gson.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
+        return service.fins_GuardarEntidadesGlobalSimplevJse(apiRequestBody);
+
+    }
+
     public Call<RestApiResponse<List<BERubroEvalEnvioSimple>>> fins_GuardarRubroEvaluacion(List<BERubroEvalEnvioSimple> beRubroEvalEnvioSimpleList) {
         ParametrosExportarGlobal parametrosExportarGlobal = new ParametrosExportarGlobal();
         parametrosExportarGlobal.setBeRubroEvalEnvioSimpleList(beRubroEvalEnvioSimpleList);

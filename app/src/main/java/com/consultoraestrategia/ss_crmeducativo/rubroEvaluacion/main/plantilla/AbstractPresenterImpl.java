@@ -227,12 +227,12 @@ public abstract class AbstractPresenterImpl implements FragmentAbstractPresenter
                 if (view != null)view.startEditFormual(rubroProcesoUi.getKey());
                 break;
             case 2:
-                boolean diableAncla = capacidadUi.isTieneResultado();
-                if(diableAncla){
+                //boolean diableAncla = capacidadUi.isTieneResultado();
+                //if(diableAncla){
                     if (view != null) view.mostrarDialogoAnclar(capacidadUi, rubroProcesoUi);
-                }else {
-                    if (view != null) view.showMessage("El rubro resultado a anclar no existe.");
-                }
+                //}else {
+                  //  if (view != null) view.showMessage("El rubro resultado a anclar no existe.");
+                //}
                 break;
             case 1:
                 if (view != null) view.showDialogDelete(capacidadUi, rubroProcesoUi, getProgramaEducativoId());

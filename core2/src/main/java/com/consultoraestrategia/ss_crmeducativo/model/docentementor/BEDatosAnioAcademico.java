@@ -23,6 +23,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.HorarioPrograma;
 import com.consultoraestrategia.ss_crmeducativo.entities.NivelAcademico;
 import com.consultoraestrategia.ss_crmeducativo.entities.ParametrosDisenio;
 import com.consultoraestrategia.ss_crmeducativo.entities.Periodo;
+import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
 import com.consultoraestrategia.ss_crmeducativo.entities.PlanCursos;
 import com.consultoraestrategia.ss_crmeducativo.entities.PlanEstudios;
 import com.consultoraestrategia.ss_crmeducativo.entities.ProgramasEducativo;
@@ -68,7 +69,7 @@ public class BEDatosAnioAcademico {
     private List<CursosDetHorario> cursosDetHorario;
 
     private List<WebConfig> bEWebConfigs;
-
+    private List<Persona> personas;
 
     public List<Aula> getAulas() {
         return aulas;
@@ -308,5 +309,13 @@ public class BEDatosAnioAcademico {
 
     public void setWebConfigs(List<WebConfig> webConfigs) {
         this.bEWebConfigs = webConfigs;
+    }
+
+    public List<Persona> getPersonas() {
+        return personas;
+    }
+
+    public void setPersonas(List<Persona> personas) {
+        this.personas = personas;
     }
 }

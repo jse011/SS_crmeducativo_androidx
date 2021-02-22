@@ -12,8 +12,8 @@ public class GetCalendarioPeriodo {
         this.repositorio = repositorio;
     }
 
-    public List<PeriodoUi> execute(int programaId, int anioAcademicoId){
-        return repositorio.getCalendarioPeriodo(programaId, anioAcademicoId);
+    public List<PeriodoUi> execute(int programaId, int anioAcademicoId, int cargaCursoId){
+        return repositorio.getCalendarioPeriodo(programaId, anioAcademicoId, cargaCursoId);
     }
 
 }

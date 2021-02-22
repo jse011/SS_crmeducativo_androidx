@@ -217,7 +217,7 @@ public class CrearRubroFormulaPresenterImpl extends BasePresenterImpl<CrearRubro
             capacidadUi.getTipoFormulaUi().setIdTipo(tipoFormulaSelected.getIdTipo());
             capacidadUi.getTipoFormulaUi().setNombre(tipoFormulaSelected.getNombre());
             if (view!=null)view.showTipoFormulaSelected(tipoFormulaSelected.getNombre());
-
+            if (view!=null)view.setTitulo(capacidadUi.getTitle());
             Log.d(getTag(), "tipoFormulaUi.getIdTipo() = " + tipoFormulaSelected.getIdTipo());
 
             if (tipoFormulaSelected.getIdTipo() == 413) {

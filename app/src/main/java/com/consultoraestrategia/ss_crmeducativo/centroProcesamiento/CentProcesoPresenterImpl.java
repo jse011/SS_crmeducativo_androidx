@@ -68,10 +68,11 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
     public void onCreate() {
         super.onCreate();
         this.calendarioPeriodoList.clear();
-        this.calendarioPeriodoList.addAll(getCalendarioPeriodo.execute(programaId, anioAcademicoId));
+        this.calendarioPeriodoList.addAll(getCalendarioPeriodo.execute(programaId, anioAcademicoId, cargaCursoId));
         for (PeriodoUi periodoUi : calendarioPeriodoList){
             if(periodoUi.isStatus())selectedPeriodoUi = periodoUi;
         }
+
 
     }
 
@@ -136,6 +137,7 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideCorner();
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
+            if(registroCentProcesamientoView!=null)registroCentProcesamientoView.showSelecionCalendarioPerido();
         }
 
     }
@@ -285,6 +287,7 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
                     if(generarNotasDialogView!=null)generarNotasDialogView.hideProgress();
                     if(generarNotasDialogView!=null)generarNotasDialogView.showButtonAction();
                     retrofitCancelPromediarNotas=null;
+                    if(view!=null)view.showMessage("Tiempo de conexión agotado");
                 }
             });
         }
@@ -343,9 +346,15 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
                     if(cerrarCursoDialogView!=null)cerrarCursoDialogView.hideProgress();
                     if(cerrarCursoDialogView!=null)cerrarCursoDialogView.showButtonAction();
                     retrofitCancelCerrarCursoResultado = null;
+                    if(view!=null)view.showMessage("Tiempo de conexión agotado");
                 }
             });
         }
+    }
+
+    @Override
+    public void onClickRefresh() {
+        getMatrizResultado();
     }
 
     @Override

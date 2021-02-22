@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -78,7 +79,8 @@ public class RegistroCentProcesamiento extends Fragment implements RegistroCentP
     ImageView bannerError;
     @BindView(R.id.conten_principal)
     ConstraintLayout contenPrincipal;
-
+    @BindView(R.id.btn_refresh)
+    Button btnRefresh;
 
     private Unbinder unbinder;
     private TableRegEvalAdapter adapter;
@@ -152,7 +154,7 @@ public class RegistroCentProcesamiento extends Fragment implements RegistroCentP
         adapter.setTema(color1, color2, color3);
     }
 
-    @OnClick({R.id.btn_tutorial, R.id.btn_back})
+    @OnClick({R.id.btn_tutorial, R.id.btn_back, R.id.btn_refresh})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_tutorial:
@@ -160,6 +162,9 @@ public class RegistroCentProcesamiento extends Fragment implements RegistroCentP
                 break;
             case R.id.btn_back:
                 getActivity().onBackPressed();
+                break;
+            case R.id.btn_refresh:
+                presenter.onClickRefresh();
                 break;
         }
     }
@@ -303,6 +308,7 @@ public class RegistroCentProcesamiento extends Fragment implements RegistroCentP
         contenBannerError.setVisibility(View.VISIBLE);
         contenPrincipal.setVisibility(View.GONE);
         bannerError.setImageDrawable(ContextCompat.getDrawable(bannerError.getContext(), R.drawable.ic_icono_sin_conexion));
+        btnRefresh.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -313,6 +319,7 @@ public class RegistroCentProcesamiento extends Fragment implements RegistroCentP
         contenBannerError.setVisibility(View.VISIBLE);
         contenPrincipal.setVisibility(View.GONE);
         bannerError.setImageDrawable(ContextCompat.getDrawable(bannerError.getContext(), R.drawable.ic_icono_error_interno));
+        btnRefresh.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -320,6 +327,15 @@ public class RegistroCentProcesamiento extends Fragment implements RegistroCentP
         contenBannerError.setVisibility(View.GONE);
         contenPrincipal.setVisibility(View.VISIBLE);
         catLottie.cancelAnimation();
+    }
+
+    @Override
+    public void showSelecionCalendarioPerido() {
+        catLottie.setVisibility(View.GONE);
+        contenBannerError.setVisibility(View.VISIBLE);
+        contenPrincipal.setVisibility(View.VISIBLE);
+        btnRefresh.setVisibility(View.GONE);
+        bannerError.setImageDrawable(ContextCompat.getDrawable(bannerError.getContext(), R.drawable.ic_icono_seleccione_bimestre));
     }
 
     private void changeColorHorizontalItemDecoration(String color3){

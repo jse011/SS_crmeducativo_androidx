@@ -162,4 +162,6 @@ public interface Service {
     Call<RestApiResponse<BETransResultResponse>> fupd_Resultado(@Body ApiRetrofit.ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<Boolean>> fupd_cerrarCursoDocente(@Body ApiRetrofit.ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<BERespuesta>> fins_GuardarEntidadesGlobalSimplevJse(@Body ApiRetrofit.ApiRequestBody<ParametrosExportarGlobal> apiRequestBody);
 }

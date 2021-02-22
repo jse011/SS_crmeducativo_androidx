@@ -45,4 +45,9 @@ public class TabsCursoRepository implements TabsCursoDataSource {
         return localDataSource.isfirstTimeHere(cargaCursoId, calendarioPeriodoId, silaboEventoId, programaEduId, usuarioId, empleadoId, cargaAcademicaId, georeferenciaId, entidadId, cursoId);
     }
 
+    @Override
+    public boolean getExistChangeCentroProcesamiento(int cargaCursoId, int calendarioPeriodoId) {
+        return localDataSource.getExistChangeCentroProcesamiento(cargaCursoId, calendarioPeriodoId);
+    }
+
 }

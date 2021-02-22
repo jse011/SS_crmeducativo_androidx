@@ -22,4 +22,6 @@ public interface TabsCursoDataSource {
     ParametroDisenioUi getParametroDisenio(int parametroDisenioId);
 
     boolean isfirstTimeHere(int cargaCursoId, int calendarioPeriodoId, int silaboEventoId, int programaEduId, int usuarioId, int empleadoId, int cargaAcademicaId, int georeferenciaId, int entidadId, int cursoId);
+
+    boolean getExistChangeCentroProcesamiento(int cargaCursoId, int calendarioPeriodoId);
 }

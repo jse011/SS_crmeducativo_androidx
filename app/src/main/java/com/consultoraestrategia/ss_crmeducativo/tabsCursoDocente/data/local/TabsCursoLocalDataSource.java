@@ -249,7 +249,7 @@ public class TabsCursoLocalDataSource implements TabsCursoDataSource {
 
         Log.d(TAG, "rubros: " + countSessionData);
 
-        ActualizarUi resultado = new ActualizarUi();
+        /*ActualizarUi resultado = new ActualizarUi();
         resultado.setNombre("Resultado evaluación");
         resultado.setTipo(ActualizarTipoUi.Resultado);
         resultado.setCargacursoId(cargaCursoId);
@@ -262,7 +262,7 @@ public class TabsCursoLocalDataSource implements TabsCursoDataSource {
                 .where(SessionData2_Table.id.eq(resultado.getId()))
                 .count();
 
-        Log.d(TAG, "resultado: " + countSessionData);
+        Log.d(TAG, "resultado: " + countSessionData);*/
 
         ActualizarUi grupos = new ActualizarUi();
         grupos.setNombre("Grupos");
@@ -353,6 +353,19 @@ public class TabsCursoLocalDataSource implements TabsCursoDataSource {
         Log.d(TAG, "dimencionDesarrollo: " + countSessionData);
 
 
-        return countSessionData < 9;
+        //return countSessionData < 9; por que ya no se trae los resultados
+        return countSessionData < 8;
     }
+
+    @Override
+    public boolean getExistChangeCentroProcesamiento(int cargaCursoId, int calendarioPeriodoId) {
+
+        return !SQLite.select()
+                .from(SessionData2.class)
+                .where(SessionData2_Table.id.eq(SessionData2.Key_CentroProcesamiento))
+                .and(SessionData2_Table.calendarioPeriodoId.eq(calendarioPeriodoId))
+                .and(SessionData2_Table.cargaCursoId.eq(cargaCursoId))
+                .queryList().isEmpty();
+    }
+
 }

@@ -38,6 +38,8 @@ public class TutorialCentProcesamiento extends Fragment implements TutorialCentV
     CardView btnCompBase;
     @BindView(R.id.btn_comp_transveral)
     CardView btnCompTransveral;
+    @BindView(R.id.btn_atras)
+    CardView btnAtras;
 
     private Unbinder unbinder;
     private CentProcesoPresenter presenter;
@@ -55,7 +57,7 @@ public class TutorialCentProcesamiento extends Fragment implements TutorialCentV
         super.onViewCreated(view, savedInstanceState);
     }
 
-    @OnClick({R.id.btn_comp_transveral, R.id.btn_comp_base, R.id.btn_tutorial})
+    @OnClick({R.id.btn_comp_transveral, R.id.btn_comp_base, R.id.btn_tutorial, R.id.btn_atras})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_comp_transveral:
@@ -68,6 +70,9 @@ public class TutorialCentProcesamiento extends Fragment implements TutorialCentV
                 break;
             case R.id.btn_tutorial:
                 Navigation.findNavController(getView()).navigate(R.id.action_tutorial_to_contenido_tutorial);
+                break;
+            case R.id.btn_atras:
+                getActivity().onBackPressed();
                 break;
         }
     }
@@ -90,6 +95,7 @@ public class TutorialCentProcesamiento extends Fragment implements TutorialCentV
             btnCompTransveral.setCardBackgroundColor(Color.parseColor(color3));
             btnTutorial.setCardBackgroundColor(Color.parseColor(color1));
             txtTutorial.setTextColor(Color.parseColor(color1));
+            btnAtras.setCardBackgroundColor(Color.parseColor(color3));
         }catch (Exception e){
             e.printStackTrace();
         }

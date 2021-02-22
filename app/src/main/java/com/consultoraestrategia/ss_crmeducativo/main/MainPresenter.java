@@ -11,6 +11,7 @@ import com.consultoraestrategia.ss_crmeducativo.main.entities.AnioAcademicoUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ConfiguracionUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.CursosUI;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.GradoUi;
+import com.consultoraestrategia.ss_crmeducativo.main.entities.NuevaVersionUi;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.ProgramaEduactivosUI;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.UsuarioAccesoUI;
 import com.consultoraestrategia.ss_crmeducativo.main.entities.UsuarioRolGeoReferenciaUi;
@@ -122,4 +123,6 @@ public interface MainPresenter extends BasePresenter<MainView> {
     void onClickMovilCursoSelected(CursosUI cursosUiRecurso);
 
     void onClickAgendaCursoSelected(CursosUI cursosUiRecurso);
+
+    void onVersionChecker(NuevaVersionUi nuevaVersionUi);
 }

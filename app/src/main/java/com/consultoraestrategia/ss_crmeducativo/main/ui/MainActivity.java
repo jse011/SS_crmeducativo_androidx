@@ -35,6 +35,7 @@ import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServ
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.GetUploadImagen;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.SavePersona;
 import com.consultoraestrategia.ss_crmeducativo.main.domain.usecases.UpdatePersonaServidor;
+import com.consultoraestrategia.ss_crmeducativo.main.entities.NuevaVersionUi;
 import com.consultoraestrategia.ss_crmeducativo.main.nuevaVersion.NuevaVersionDisponible;
 import com.google.android.material.appbar.AppBarLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -42,6 +43,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.fragment.app.DialogFragment;
 import androidx.transition.Slide;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -77,7 +80,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.consultoraestrategia.ss_crmeducativo.BuildConfig;
 import com.consultoraestrategia.ss_crmeducativo.CMRE;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.asistenciaAlumnos.curso.ui.AsistenciaCursoFragment;
@@ -165,10 +167,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.raizlabs.android.dbflow.config.FlowConfig;
@@ -288,6 +286,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     private String SHOWCASE_ID = "1";
     private ProgressDialog progressDialog;
     private MenuItem itemAgenda;
+    private NuevaVersionDisponible nuevaVersionDisponible;
 
     public static Intent launchMainActivity(Context context, int idUsuario) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -322,30 +321,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void setContentView() {
         setContentView(R.layout.activity_main_final);
         ButterKnife.bind(this);
-        new GPVersionChecker.Builder(this)
-                .setVersionInfoListener(new VersionInfoListener() {
-
-                    @Override
-                    public void onErrorHandled(@Nullable Throwable throwable) {
-
-                    }
-
-                    @Override
-                    public void onResulted(Version version) {
-                        if(version.isNeedToUpdate()){
-                            MainActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NuevaVersionDisponible.newInstance(version.getNewVersionCode(), version.getChanges())
-                                            .show(getSupportFragmentManager(),"NuevaVersionDisponible");
-                                }
-                            });
-                        }
-
-                    }
-                })
-                .create();
-
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -363,6 +338,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
                 // ...
             }
         };
+        validarVersion();
         setupGlideImageLoader();
         setupToolbar();
         setupTabMenu();
@@ -373,6 +349,34 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         setupCore2();
         setupRecyclerPeriodos();
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(new LifeCycleFragment(this), true);
+    }
+
+    private void validarVersion() {
+        new GPVersionChecker.Builder(this)
+                .setVersionInfoListener(new VersionInfoListener() {
+
+                    @Override
+                    public void onErrorHandled(@Nullable Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onResulted(Version version) {
+                        if(version.isNeedToUpdate()){
+                            MainActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    NuevaVersionUi nuevaVersionUi = new NuevaVersionUi();
+                                    nuevaVersionUi.setNuevaVersion(version.getNewVersionCode());
+                                    nuevaVersionUi.setCambios(version.getChanges());
+                                    presenter.onVersionChecker(nuevaVersionUi);
+                                }
+                            });
+                        }
+
+                    }
+                })
+                .create();
     }
 
     private void setupRecyclerCursos() {
@@ -516,6 +520,22 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
         crmBundle.setProgramaEducativoId(idPrograma);
         crmBundle.setAnioAcademico(anioAcademicoIdFinal);
         CentProcesoActivity.start(this, crmBundle);
+    }
+
+    @Override
+    public void showDialogNuevaVersion(NuevaVersionUi nuevaVersionUi) {
+        if (nuevaVersionDisponible != null
+                && nuevaVersionDisponible.getDialog() != null
+                && nuevaVersionDisponible.getDialog().isShowing()
+                && !nuevaVersionDisponible.isRemoving()) {
+            //dialog is showing so do something
+        } else {
+            //dialog is not showing
+            nuevaVersionDisponible = NuevaVersionDisponible.newInstance(nuevaVersionUi.getNuevaVersion(), nuevaVersionUi.getCambios());
+            nuevaVersionDisponible.show(getSupportFragmentManager(),"NuevaVersionDisponible");
+        }
+
+
     }
 
     private void subscribeToUser() {
@@ -1438,8 +1458,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     protected void onResume() {
         Log.d(TAG, "onResume f");
         super.onResume();
-
-
     }
 
     private <T extends Fragment> T getFragment(Class<T> tClass) {

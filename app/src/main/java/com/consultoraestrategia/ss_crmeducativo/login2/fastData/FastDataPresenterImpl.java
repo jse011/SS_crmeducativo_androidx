@@ -72,7 +72,7 @@ public class FastDataPresenterImpl extends BasePresenterImpl<FastDataView> imple
         this.tipoList.add(ActualizarTipoUi.Casos);
         this.tipoList.add(ActualizarTipoUi.Tareas);
         this.tipoList.add(ActualizarTipoUi.Grupos);
-        this.tipoList.add(ActualizarTipoUi.Resultado);
+        //this.tipoList.add(ActualizarTipoUi.Resultado);
         this.tipoList.add(ActualizarTipoUi.Rubros);
         this.tipoList.add(ActualizarTipoUi.Estudiantes);
         this.tipoList.add(ActualizarTipoUi.TipoNota);

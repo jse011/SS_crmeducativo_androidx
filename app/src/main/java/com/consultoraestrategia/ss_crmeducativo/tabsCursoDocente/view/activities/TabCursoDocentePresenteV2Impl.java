@@ -25,6 +25,7 @@ import com.consultoraestrategia.ss_crmeducativo.rubroEvaluacion.main.silabo.Rubr
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.TipoImportacion;
 import com.consultoraestrategia.ss_crmeducativo.sesiones.view.fragments.FragmentUnidades;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.domain.UseCase.ChangeDataBaseDocenteMentor;
+import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.domain.UseCase.GetChangeCentroProcesamiento;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.domain.UseCase.GetIsAprendizajeColegio;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.domain.UseCase.GetIsTutor;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.domain.UseCase.GetParametroDisenio;
@@ -77,12 +78,14 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
     private boolean reinicioxcerrarcurso;
     private boolean changeDataBase = false;
     private boolean isPrimeravesCursoDocente;
+    private boolean isChangeCentroAprendizaje;
     private int usuarioId;
     private int empleadoId;
     private boolean cursoComplejo;
     private boolean changeDataBaseFull = false;
+    private GetChangeCentroProcesamiento getChangeCentroProcesamiento;
 
-    public TabCursoDocentePresenteV2Impl(UseCaseHandler handler, Resources res, GetPeriodoList getPeriodoList,GetIsAprendizajeColegio getIsAprendizajeColegio, ChangeDataBaseDocenteMentor changeDataBaseDocenteMentor,GetIsTutor getIsTutor,GetParametroDisenio getParametroDisenio, PrimeravesCursoDocente primeravesCursoDocente) {
+    public TabCursoDocentePresenteV2Impl(UseCaseHandler handler, Resources res, GetPeriodoList getPeriodoList,GetIsAprendizajeColegio getIsAprendizajeColegio, ChangeDataBaseDocenteMentor changeDataBaseDocenteMentor,GetIsTutor getIsTutor,GetParametroDisenio getParametroDisenio, PrimeravesCursoDocente primeravesCursoDocente, GetChangeCentroProcesamiento getChangeCentroProcesamiento) {
         super(handler, res);
         this.getPeriodoList = getPeriodoList;
         this.getIsAprendizajeColegio = getIsAprendizajeColegio;
@@ -90,6 +93,7 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
         this.getIsTutor = getIsTutor;
         this.getParametroDisenio = getParametroDisenio;
         this.primeravesCursoDocente = primeravesCursoDocente;
+        this.getChangeCentroProcesamiento = getChangeCentroProcesamiento;
     }
 
     @Override
@@ -422,8 +426,9 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
             if(view!=null)view.showAutoHideProgress();
             showFragments();
             isPrimeravesCursoDocente = idCalendarioPeriodo != 0 && primeravesCursoDocente.execute(idCargaCurso, idCalendarioPeriodo,silaboId, idProgramaEducativo, usuarioId, empleadoId, idCargaAcademica, idGeoreferenciaId,idEntidad,idCurso);
+            isChangeCentroAprendizaje = idCalendarioPeriodo != 0 && getChangeCentroProcesamiento.execute(idCargaCurso, idCalendarioPeriodo);
             primeravesCursoDocente();
-
+            changeCentroAprendizaje();
         }else {
             changeDataBaseDocenteMentor();
 
@@ -462,6 +467,14 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
 
     }
 
+    private void changeCentroAprendizaje() {
+        if(!isPrimeravesCursoDocente){
+            if(isChangeCentroAprendizaje){
+                if(view!=null)view.startChangeCentroProcesamiento(idCalendarioPeriodo, silaboId, idCargaCurso);
+            }
+        }
+    }
+
     @Override
     public void setExtras(Bundle extras) {
         super.setExtras(extras);
@@ -487,6 +500,7 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
             empleadoId = crmBundle.getEmpleadoId();
             cursoComplejo = crmBundle.isComplejo();
             isPrimeravesCursoDocente = idCalendarioPeriodo != 0 && primeravesCursoDocente.execute(idCargaCurso, idCalendarioPeriodo,silaboId, idProgramaEducativo, usuarioId, empleadoId, idCargaAcademica, idGeoreferenciaId,idEntidad,idCurso);
+            isChangeCentroAprendizaje = idCalendarioPeriodo != 0 && getChangeCentroProcesamiento.execute(idCargaCurso, idCalendarioPeriodo);
         }
 
     }
@@ -663,7 +677,9 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
         validarCalendarioPeriodo();
         habilitarMenuUpdateAlumno();
         isPrimeravesCursoDocente = primeravesCursoDocente.execute(idCargaCurso, idCalendarioPeriodo,silaboId, idProgramaEducativo, usuarioId, empleadoId, idCargaAcademica, idGeoreferenciaId,idEntidad,idCurso);
+        isChangeCentroAprendizaje = getChangeCentroProcesamiento.execute(idCargaCurso, idCalendarioPeriodo);
         primeravesCursoDocente();
+        changeCentroAprendizaje();
 
         //continue PostDelaychangePeriodo
     }

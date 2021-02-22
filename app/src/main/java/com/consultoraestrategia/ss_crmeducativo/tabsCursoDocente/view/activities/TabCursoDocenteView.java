@@ -164,4 +164,6 @@ public interface TabCursoDocenteView extends BaseView<TabCursoDocentePresenter> 
     void comprobarSiActulizaronCorrectementeRubros();
 
     void showActivityAgenda(int idUsuario, int georeferenciaId, int empleadoId, int anioAcademicoIdFinal, int entidadId, int cargaCursoId);
+
+    void startChangeCentroProcesamiento(int idCalendarioPeriodo, int silaboId, int idCargaCurso);
 }

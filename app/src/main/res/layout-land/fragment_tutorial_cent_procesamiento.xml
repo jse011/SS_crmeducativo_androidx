@@ -9,7 +9,7 @@
         android:id="@+id/fondo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitEnd"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,7 +73,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="86dp"
+                android:layout_marginTop="65dp"
                 android:layout_marginEnd="32dp"
                 android:text="Matemátecia"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -170,7 +170,7 @@
                 android:layout_width="56dp"
                 android:layout_height="2dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:background="@color/md_grey_500"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -180,10 +180,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
                 android:text="Bienvenido a la nueva interfaz del módulo resultado. Para comenzar puede revisar nuestro tutorial o hacer clic en los siguientes botones."
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/btn_comp_transveral"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView173" />
 
@@ -192,11 +191,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 app:cardBackgroundColor="@color/md_blue_700"
                 app:cardCornerRadius="16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_comp_base">
+                app:layout_constraintStart_toEndOf="@+id/btn_comp_base"
+                app:layout_constraintTop_toBottomOf="@+id/textView187">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="180dp"

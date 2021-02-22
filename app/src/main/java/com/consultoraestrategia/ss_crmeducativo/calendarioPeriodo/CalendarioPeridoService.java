@@ -13,6 +13,8 @@ import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioPeriodoDetall
 import com.consultoraestrategia.ss_crmeducativo.entities.CargaCursoCalendarioPeriodo;
 import com.consultoraestrategia.ss_crmeducativo.entities.Empleado;
 import com.consultoraestrategia.ss_crmeducativo.entities.Empleado_Table;
+import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
+import com.consultoraestrategia.ss_crmeducativo.entities.Persona_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Tipos;
@@ -22,12 +24,15 @@ import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosAnioA
 import com.consultoraestrategia.ss_crmeducativo.services.data.util.TransaccionUtils;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancelImpl;
+import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 
@@ -36,6 +41,9 @@ public class CalendarioPeridoService {
     private ApiRetrofit apiRetrofit;
     private final static String TAG = CalendarioPeridoService.class.getSimpleName();
     private boolean executed = false;
+    private RetrofitCancelImpl<BEDatosAnioAcademico> retrofitCancel;
+
+
 
 
     private CalendarioPeridoService() {
@@ -77,7 +85,7 @@ public class CalendarioPeridoService {
 
         Call<RestApiResponse<BEDatosAnioAcademico>> responseCall = apiRetrofit.flst_getDatosCalendarioPeriodo(anioAcademico.getIdAnioAcademico(), empleado.getEmpleadoId());
 
-        RetrofitCancel<BEDatosAnioAcademico> retrofitCancel = new RetrofitCancelImpl<>(responseCall);
+        retrofitCancel = new RetrofitCancelImpl<>(responseCall);
 
         retrofitCancel.enqueue(new RetrofitCancel.Callback<BEDatosAnioAcademico>() {
             @Override
@@ -101,6 +109,14 @@ public class CalendarioPeridoService {
 
                             TransaccionUtils.fastStoreListInsert(WebConfig.class, response.getWebConfigs(), databaseWrapper, true);
 
+                            for (Persona persona : response.getPersonas()!=null?response.getPersonas():new ArrayList<Persona>()){
+                                SQLite.update(Persona.class)
+                                        .set(Persona_Table.foto.eq(persona.getFoto()),
+                                                Persona_Table.celular.eq(persona.getCelular()),
+                                                Persona_Table.correo.eq(persona.getCorreo()))
+                                        .where(Persona_Table.personaId.eq(persona.getPersonaId()))
+                                        .execute(databaseWrapper);
+                            }
                             //
 
                         }
@@ -132,5 +148,13 @@ public class CalendarioPeridoService {
                 Log.d(TAG,"response calendarioPeriodo Transaction Failure");
             }
         });
+    }
+
+    public void destroy(){
+        if(retrofitCancel!=null)retrofitCancel.cancel();
+    }
+
+    public void refresh(){
+        this.apiRetrofit.updateServerUrl();
     }
 }

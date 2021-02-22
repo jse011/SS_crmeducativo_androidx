@@ -14,6 +14,7 @@ import java.util.Date;
 
 @Table(database = AppDatabase.class)
 public class SessionData2 extends BaseModel {
+    public static String Key_CentroProcesamiento = "Centro_Procesamiento";
     @PrimaryKey
     private String id;
     @Column

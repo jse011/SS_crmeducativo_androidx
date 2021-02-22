@@ -9,9 +9,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/conten_banner_error"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <ImageView
@@ -22,7 +23,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_icono_error_interno" />
+            app:srcCompat="@drawable/ic_icono_error_interno"
+            tools:ignore="VectorDrawableCompat" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/cat_lottie"
@@ -34,11 +36,30 @@
             app:layout_constraintStart_toStartOf="@+id/banner_error"
             app:layout_constraintTop_toTopOf="@+id/banner_error"/>
 
+        <Button
+            android:id="@+id/btn_refresh"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:drawableLeft="@drawable/ic_refresh_centro_procesamiento"
+            android:fontFamily="sans-serif-condensed-light"
+            android:text="Reintentar"
+            android:textAllCaps="false"
+            android:textColor="#253138"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cat_lottie"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/conten_principal"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent"
         android:layout_marginTop="45dp">
 

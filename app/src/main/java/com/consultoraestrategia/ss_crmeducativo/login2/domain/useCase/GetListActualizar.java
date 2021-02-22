@@ -63,15 +63,15 @@ public class GetListActualizar {
 
 
 
-        ActualizarUi resultado = new ActualizarUi();
-        resultado.setNombre("Resultado evaluación");
-        resultado.setTipo(ActualizarTipoUi.Resultado);
-        resultado.setCargacursoId(cargaCursoId);
-        resultado.setCalendarioPeriodoId(calendarioPeriodoId);
-        resultado.setSilaboEventoId(silaboEventoId);
-        resultado.generarId();
-        resultado.setFecha(repositorio.getTimeSesionData(resultado));
-        resultado.setEncoloa(false);
+        //ActualizarUi resultado = new ActualizarUi();
+        //resultado.setNombre("Resultado evaluación");
+        //resultado.setTipo(ActualizarTipoUi.Resultado);
+        //resultado.setCargacursoId(cargaCursoId);
+        //resultado.setCalendarioPeriodoId(calendarioPeriodoId);
+        //resultado.setSilaboEventoId(silaboEventoId);
+        //resultado.generarId();
+        //resultado.setFecha(repositorio.getTimeSesionData(resultado));
+        //resultado.setEncoloa(false);
 
         ActualizarUi grupos = new ActualizarUi();
         grupos.setNombre("Grupos");
@@ -159,7 +159,7 @@ public class GetListActualizar {
         actualizarUiList.add(casos);
         actualizarUiList.add(dimencionDesarrollo);
         actualizarUiList.add(rubros);
-        actualizarUiList.add(resultado);
+        //actualizarUiList.add(resultado);-------descativar resultados
         //actualizarUiList.add(docente);
         //actualizarUiList.add(asistencia);
         return actualizarUiList;

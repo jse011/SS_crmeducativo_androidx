@@ -1056,12 +1056,12 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
             desempenioIcdIdList.add(itemRubroEvaluacionProcesoC.getDesempenioIcdId());
         }
 
-        List<RubroEvaluacionResultado> rubroEvaluacionResultadoList = new ArrayList<>(SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES))
+        /*List<RubroEvaluacionResultado> rubroEvaluacionResultadoList = new ArrayList<>(SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES))
                 .from(RubroEvaluacionResultado.class)
                 .innerJoin(RubroEvaluacionProcesoC.class)
                 .on(RubroEvaluacionProcesoC_Table.key.withTable().eq(RubroEvaluacionResultado_Table.rubroEvalProcesoId.withTable()))
                 .where(RubroEvaluacionResultado_Table.rubroEvalProcesoId.withTable().in(rubroProcesoEvalaucionIdList))
-                .queryList(databaseWrapper));
+                .queryList(databaseWrapper));*/
        // Log.d(TAG, "rubroEvaluacionResultadoList "+ rubroEvaluacionResultadoList.size());
 
         List<IndicadorQuery> icds = new DbflowCompat(SQLite.select(Utils.f_allcolumnTable(Icds_Table.icdId,
@@ -1242,7 +1242,7 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                     rubroProcesoUi.setFormaEvaluacionId(itemRubroEvaluacionProceso.getFormaEvaluacionId());
                     rubroProcesoUi.setTipoNotaId(itemRubroEvaluacionProceso.getTipoNotaId());
                     posicionRubros--;
-
+                    /*
                     RubroEvaluacionResultado rubroEvaluacionResultado = null;
                     for(RubroEvaluacionResultado itemRubroEvaluacionResultado : rubroEvaluacionResultadoList){
                         if(itemRubroEvaluacionResultado.getRubroEvalProcesoId().equals(itemRubroEvaluacionProceso.getKey())){
@@ -1265,6 +1265,18 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                            rubroProcesoUi.setTipoAncla(false);
                             rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.DEFECTO);
                         }
+                    }*/
+                    if (itemRubroEvaluacionProceso.getEstadoId() == RubroEvaluacionResultado.ANCLADA) {
+                        rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.ANCLADA);
+                        rubroProcesoUi.setTipoAncla(true);
+                        capacidadUi.setRubroEvalAnclado(rubroProcesoUi);
+                    } else if (itemRubroEvaluacionProceso.getEstadoId() == RubroEvaluacionResultado.EVALUADO) {
+                        rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.EVALUADA);
+                        rubroProcesoUi.setTipoAncla(true);
+                        capacidadUi.setRubroEvalAnclado(rubroProcesoUi);
+                    } else {
+                        rubroProcesoUi.setTipoAncla(false);
+                        rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.DEFECTO);
                     }
 
                     List<RubrosAsociadosUi> rubrosAsociadosUis = new ArrayList<>();
@@ -2700,12 +2712,12 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
             desempenioIcdIdList.add(itemRubroEvaluacionProcesoC.getDesempenioIcdId());
         }
 
-        List<RubroEvaluacionResultado> rubroEvaluacionResultadoList = SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES))
+        /*List<RubroEvaluacionResultado> rubroEvaluacionResultadoList = SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES))
                 .from(RubroEvaluacionResultado.class)
                 .innerJoin(RubroEvaluacionProcesoC.class)
                 .on(RubroEvaluacionProcesoC_Table.key.withTable().eq(RubroEvaluacionResultado_Table.rubroEvalProcesoId.withTable()))
                 .where(RubroEvaluacionResultado_Table.rubroEvalProcesoId.withTable().in(rubroProcesoEvalaucionIdList))
-                .queryList();
+                .queryList();*/
 
 
         List<IndicadorQuery> icds = SQLite.select(Utils.f_allcolumnTable(Utils.f_allcolumnTable(Icds_Table.icdId,
@@ -2841,7 +2853,7 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                     rubroProcesoUi.setTipoNotaId(itemRubroEvaluacionProceso.getTipoNotaId());
                     posicionRubros--;
 
-                    RubroEvaluacionResultado rubroEvaluacionResultado = null;
+                    /*RubroEvaluacionResultado rubroEvaluacionResultado = null;
                     for(RubroEvaluacionResultado itemRubroEvaluacionResultado : rubroEvaluacionResultadoList){
                         if(itemRubroEvaluacionResultado.getRubroEvalProcesoId().equals(itemRubroEvaluacionProceso.getKey())){
                             rubroEvaluacionResultado = itemRubroEvaluacionResultado;
@@ -2865,8 +2877,19 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
 
                         // rubroProcesoUi.setTipoAncla(true);
 
-                    }
+                    }*/
 
+                    if (itemRubroEvaluacionProceso.getEstadoId() == RubroEvaluacionResultado.ANCLADA) {
+                        rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.ANCLADA);
+                        rubroProcesoUi.setTipoAncla(true);
+                        capacidadUi.setRubroEvalAnclado(rubroProcesoUi);
+                    } else if (itemRubroEvaluacionProceso.getEstadoId() == RubroEvaluacionResultado.EVALUADO) {
+                        rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.EVALUADA);
+                        rubroProcesoUi.setTipoAncla(true);
+                        capacidadUi.setRubroEvalAnclado(rubroProcesoUi);
+                    } else {
+                        rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.DEFECTO);
+                    }
                     List<RubrosAsociadosUi> rubrosAsociadosUis = new ArrayList<>();
                     int count = 0;
                     for(RubroEvalRNPFormulaQuery  rubroEvalRNPFormulaC : rnpFormulaCList){
@@ -3167,25 +3190,41 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
         /*Anclado 313*/
         int ancladao = 313;
 
-        TipoNotaC tipoNotaC = SQLite.select(Utils.f_allcolumnTable(TipoNotaC_Table.ALL_COLUMN_PROPERTIES))
-                .from(TipoNotaC.class)
-                .innerJoin(RubroEvaluacionResultado.class)
-                .on(RubroEvaluacionResultado_Table.tipoNotaId.withTable()
-                        .eq(TipoNotaC_Table.tipoNotaId.withTable()))
-                .where(RubroEvaluacionResultado_Table.competenciaId.withTable().eq(capacidadUi.getId()))
-                .and(RubroEvaluacionResultado_Table.silaboEventoId.withTable().eq(capacidadUi.getSilaboEventoId()))
-                .and(RubroEvaluacionResultado_Table.calendarioPeriodoId.withTable().eq(capacidadUi.getCalendarioId()))
+        RubroEvaluacionProcesoC rubroEvaluacionProcesoC = SQLite.select()
+                .from(RubroEvaluacionProcesoC.class)
+                .where(RubroEvaluacionProcesoC_Table.key.eq(rubroProcesoUi.getKey()))
                 .querySingle();
-
-        if(tipoNotaC==null){
-            objetoCallback.onError("No existe el nivel de logro asignado al Rubro Resultado");
+        if(rubroEvaluacionProcesoC==null){
+            objetoCallback.onError("Error desconocido");
             return;
-        }
 
-        if(!tipoNotaC.getTipoNotaId().equals(rubroProcesoUi.getTipoNotaId())){
-            objetoCallback.onError("El nivel de logro es diferente al Rubro Resultado");
-            return;
         }
+        /*
+        if(TextUtils.isEmpty(rubroEvaluacionProcesoC.getResultadoTipoNotaId())){
+            TipoNotaC tipoNotaC = SQLite.select(Utils.f_allcolumnTable(TipoNotaC_Table.ALL_COLUMN_PROPERTIES))
+                    .from(TipoNotaC.class)
+                    .innerJoin(RubroEvaluacionResultado.class)
+                    .on(RubroEvaluacionResultado_Table.tipoNotaId.withTable()
+                            .eq(TipoNotaC_Table.tipoNotaId.withTable()))
+                    .where(RubroEvaluacionResultado_Table.competenciaId.withTable().eq(capacidadUi.getId()))
+                    .and(RubroEvaluacionResultado_Table.silaboEventoId.withTable().eq(capacidadUi.getSilaboEventoId()))
+                    .and(RubroEvaluacionResultado_Table.calendarioPeriodoId.withTable().eq(capacidadUi.getCalendarioId()))
+                    .querySingle();
+
+
+
+            if(tipoNotaC==null){
+                objetoCallback.onError("No existe el nivel de logro asignado al Rubro Resultado");
+                return;
+            }
+
+            if(!tipoNotaC.getTipoNotaId().equals(rubroProcesoUi.getTipoNotaId())){
+                objetoCallback.onError("El nivel de logro es diferente al Rubro Resultado");
+                return;
+            }
+        }*/
+
+
 
         rubroEvaluacionResultadoDao.actualizarResultadodoAncla(capacidadUi.getId(),
                 capacidadUi.getCalendarioId(),
@@ -3193,18 +3232,9 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                 rubroProcesoUi.getKey()
                 , RubroEvaluacionResultado.ANCLADA);
 
-
-        RubroEvaluacionProcesoC rubroEvaluacionProcesoC = SQLite.select()
-                .from(RubroEvaluacionProcesoC.class)
-                .where(RubroEvaluacionProcesoC_Table.key.eq(rubroProcesoUi.getKey()))
-                .querySingle();
-
-        if(rubroEvaluacionProcesoC!=null){
-            rubroEvaluacionProcesoC.setEstadoId(RubroEvaluacionResultado.ANCLADA);
-            rubroEvaluacionProcesoC.setSyncFlag(RubroEvaluacionProcesoC.FLAG_ADDED);
-            rubroEvaluacionProcesoC.save();
-        }
-
+        rubroEvaluacionProcesoC.setEstadoId(RubroEvaluacionResultado.ANCLADA);
+        rubroEvaluacionProcesoC.setSyncFlag(RubroEvaluacionProcesoC.FLAG_ADDED);
+        rubroEvaluacionProcesoC.save();
 
         //rubroProcesoDao.actualizarRubroEstado(rubroProcesoUi.getKey());
         rubroProcesoUi.setTipoAncla(true);
@@ -3227,12 +3257,12 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                 .where(RubroEvaluacionProcesoC_Table.key.eq(rubroProcesoUi.getKey()))
                 .querySingle();
 
+
         if(rubroEvaluacionProcesoC!=null){
-            rubroEvaluacionProcesoC.setEstadoId(RubroEvaluacionResultado.ANCLADA);
+            rubroEvaluacionProcesoC.setEstadoId(RubroEvaluacionResultado.ACTUALIZADO);
             rubroEvaluacionProcesoC.setSyncFlag(RubroEvaluacionProcesoC.FLAG_UPDATED);
             rubroEvaluacionProcesoC.save();
         }
-
 
         //rubroProcesoDao.actualizarRubroEstado(rubroProcesoUi.getKey());
         rubroProcesoUi.setTipoAncla(false);
@@ -3294,7 +3324,7 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
             rubroProcesoUi.setTipoNotaId(itemRubroEvaluacionProceso.getTipoNotaId());
             posicionRubros--;
 
-            RubroEvaluacionResultado rubroEvaluacionResultado = SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES))
+            /*RubroEvaluacionResultado rubroEvaluacionResultado = SQLite.select(Utils.f_allcolumnTable(RubroEvaluacionResultado_Table.ALL_COLUMN_PROPERTIES))
                     .from(RubroEvaluacionResultado.class)
                     .innerJoin(RubroEvaluacionProcesoC.class)
                     .on(RubroEvaluacionProcesoC_Table.key.withTable().eq(RubroEvaluacionResultado_Table.rubroEvalProcesoId.withTable()))
@@ -3319,7 +3349,19 @@ public class RubroEvaluacionProcesoListaLocalDataSource implements RubroEvaluaci
                 // rubroProcesoUi.setTipoAncla(true);
 
             }
+*/
 
+            if (itemRubroEvaluacionProceso.getEstadoId() == RubroEvaluacionResultado.ANCLADA) {
+                rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.ANCLADA);
+                rubroProcesoUi.setTipoAncla(true);
+                capacidadUi.setRubroEvalAnclado(rubroProcesoUi);
+            } else if (itemRubroEvaluacionProceso.getEstadoId() == RubroEvaluacionResultado.EVALUADO) {
+                rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.EVALUADA);
+                rubroProcesoUi.setTipoAncla(true);
+                capacidadUi.setRubroEvalAnclado(rubroProcesoUi);
+            } else {
+                rubroProcesoUi.setTipoFormula(RubroProcesoUi.TipoFormula.DEFECTO);
+            }
             capacidadUi.addRubroProceso(rubroProcesoUi);
 
 

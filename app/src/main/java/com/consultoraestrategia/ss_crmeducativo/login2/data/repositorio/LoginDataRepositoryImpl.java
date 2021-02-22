@@ -1264,7 +1264,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
     }
 
     private RetrofitCancel saveDatos(ApiRetrofit apiRetrofit, final ServiceEnvioUi serviceEnvioUi, final BEGuardarEntidadesGlobal beGuardarEntidadesGlobal, final CallBackSucces<ServiceEnvioUi> callBackSucces){
-        Call<RestApiResponse<BERespuesta>> responseCall = apiRetrofit.fins_GuardarEntidades_GlobalSimple(beGuardarEntidadesGlobal);
+        Call<RestApiResponse<BERespuesta>> responseCall = apiRetrofit.fins_GuardarEntidadesGlobalSimplevJse(beGuardarEntidadesGlobal);
         RetrofitCancel<BERespuesta>  retrofitCancel = new RetrofitCancelImpl<>(responseCall);
 
         SaveAdapter<Object> saveAdapter = (databaseWrapper, response) -> {
@@ -2637,6 +2637,15 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             nuevo.setFecha(new Date().getTime());
             nuevo.save();
         }
+
+        if(actualizarUi.getTipo()==ActualizarTipoUi.Rubros){
+            SQLite.delete()
+                    .from(SessionData2.class)
+                    .where(SessionData2_Table.id.eq(SessionData2.Key_CentroProcesamiento))
+                    .and(SessionData2_Table.cargaCursoId.eq(actualizarUi.getCargacursoId()))
+                    .and(SessionData2_Table.calendarioPeriodoId.eq(actualizarUi.getCalendarioPeriodoId()))
+                    .execute();
+        }
     }
 
     @Override
@@ -2647,7 +2656,7 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         serviceEnvioUiList.addAll(getSesionesEnviar(cargaCursoId, anioAcademicoId));
         serviceEnvioUiList.addAll(getTareaEnviar(cargaCursoId, anioAcademicoId, silaboEventoId));
         serviceEnvioUiList.addAll(getRubroEnviar(silaboEventoId));
-        serviceEnvioUiList.addAll(getResultadoEnvio(silaboEventoId));
+        //serviceEnvioUiList.addAll(getResultadoEnvio(silaboEventoId));
         serviceEnvioUiList.addAll(getcerrarCursoEnviarUi());
         return serviceEnvioUiList;
     }
@@ -6010,10 +6019,10 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
         //Log.d(TAG, " ArchivosRubroProceso: " +count);
         //count += ConsultaUtils.countChangeItemsTable(TareaRubroEvaluacionProceso.class);
         // Log.d(TAG, " TareaRubroEvaluacionProceso: " +count);
-        count += ConsultaUtils.countChangeItemsTable(RubroEvaluacionResultado.class);
-        Log.d(TAG, " RubroEvaluacionResultado: " +count);
-        count += ConsultaUtils.countChangeItemsTable(EvaluacionResultadoC.class);
-        Log.d(TAG, " EvaluacionResultado: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(RubroEvaluacionResultado.class);
+        //Log.d(TAG, " RubroEvaluacionResultado: " +count);
+        //count += ConsultaUtils.countChangeItemsTable(EvaluacionResultadoC.class);
+        //Log.d(TAG, " EvaluacionResultado: " +count);
         return count;
     }
     //#endregion countGEDatosRubroEvaluacionProceso GEDatosRubroEvaluacionProceso
