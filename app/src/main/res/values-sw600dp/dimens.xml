@@ -4,4 +4,5 @@
     <dimen name="table_firstheader_width_eval_session">150dp</dimen>
     <dimen name="table_body_height_eval_session">60dp</dimen>
     <dimen name="table_header_crear_rubrica" >180dp</dimen>
+    <dimen name="table_header_crear_rubrica_2" >45dp</dimen>
 </resources>

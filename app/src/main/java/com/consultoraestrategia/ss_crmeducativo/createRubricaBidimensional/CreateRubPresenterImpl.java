@@ -13,6 +13,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseSincrono;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenterImpl;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
+import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.cell.IndicadorCellViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.cell.PesoCellViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.cell.SelectorCellViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.row.PesoRowViewHolder;
@@ -36,6 +37,7 @@ import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.domai
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.domain.usecase.GetTipoNotaRubrica;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.domain.usecase.GetTipoNotas;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.domain.usecase.GetTituloRubrica;
+import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.IndicadorNombreUi;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.tableview.model.Cell;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.tableview.model.ColumnHeader;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.tableview.model.RowHeader;
@@ -671,11 +673,13 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
     @Override
     public void onSelectedFormaEval(TipoUi selected) {
         formaEvaluacionSelected = selected;
+        showPreview();
     }
 
     @Override
     public void onSelectedTipoEval(TipoUi selected) {
         tipoEvaluacionSelected = selected;
+        showPreview();
     }
 
 
@@ -966,7 +970,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
        //for(ValorTipoNotaUi v: valorTipoNotaList) Log.d(TAG, "criterioEvaluacionUi " +v.getTitle()+ " / "+ v.getIcono() +" / " +v.getTipoNotaUi().getTitle());
         int indicadorListSize = indicadorList.size();
         //if (indicadorListSize == 0) return;
-
+        columnHeaderList.add(new IndicadorNombreUi(null));
         IndicadorUi indicadorUi = new IndicadorUi();
         indicadorUi.setTitulo("%");
         columnHeaderList.add(indicadorUi);
@@ -977,6 +981,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         int i = 0;
         for (IndicadorUi itemIndicadorUi : indicadorList) {
             List<Cell> cells1 = new ArrayList<>();
+            cells1.add(new IndicadorNombreUi(itemIndicadorUi));
             int percentPart = 0;
             if(percentParts!=null && percentParts.length > i) percentPart=percentParts[i];
             itemIndicadorUi.setPeso(String.valueOf(percentPart));
@@ -1545,6 +1550,15 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         } else if (p_jCellView instanceof PesoCellViewHolder) {
             PesoCellViewHolder pesoCellViewHolder = (PesoCellViewHolder) p_jCellView;
             if(TextUtils.isEmpty(rubricaKeyEdit))view.showCriterioEvaluacionItemDialog(pesoCellViewHolder.getIndicadorUi(), x, y);
+        }else if(p_jCellView instanceof IndicadorCellViewHolder){
+            Log.d(TAG, "onRowHeaderClicked y: " + y);
+            List<IndicadorUi> indicadorSelectedList = getIndicadoresSelected(competenciaList);
+            if (y >= indicadorSelectedList.size()) return;
+            indicadorUi = indicadorSelectedList.get(y);
+            List<Cell> list = new ArrayList<>();
+            list = bodyList.get(y);
+            boolean disabledCampoAccion = TextUtils.isEmpty(rubricaKeyEdit);
+            showEditarRubroDetalle(indicadorUi, tipoNotaUi, list, disabledCampoAccion);
         }
     }
 
@@ -1570,14 +1584,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
 
     @Override
     public void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder p_jRowHeaderView, int y) {
-        Log.d(TAG, "onRowHeaderClicked y: " + y);
-        List<IndicadorUi> indicadorSelectedList = getIndicadoresSelected(competenciaList);
-        if (y >= indicadorSelectedList.size()) return;
-        indicadorUi = indicadorSelectedList.get(y);
-        List<Cell> list = new ArrayList<>();
-        list = bodyList.get(y);
-        boolean disabledCampoAccion = TextUtils.isEmpty(rubricaKeyEdit);
-        showEditarRubroDetalle(indicadorUi, tipoNotaUi, list, disabledCampoAccion);
+
     }
 
     private void showEditarRubroDetalle(IndicadorUi indicador, TipoNotaUi tipoNota, List<Cell> cellList, boolean disabledCampoAccion) {
@@ -1638,7 +1645,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         try {
             int porcentaje = 0;
             for (List<Cell> cellList : bodyList) {
-                Cell cell = cellList.get(0);
+                Cell cell = cellList.get(1);
                 IndicadorUi indicadorUi = (IndicadorUi) cell;
                 porcentaje += Integer.parseInt(indicadorUi.getPeso());
                 if(Integer.parseInt(indicadorUi.getPeso())==0)return false;

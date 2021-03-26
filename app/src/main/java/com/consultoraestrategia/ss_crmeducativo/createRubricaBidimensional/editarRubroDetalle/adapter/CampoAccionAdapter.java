@@ -40,13 +40,13 @@ public class CampoAccionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         View view;
         switch (viewType){
             case PARENT:
-                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_rub_tematico_padre, parent, false);
+                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_rub_tematico_padre_white, parent, false);
                 return new ParentViewHolder(view);
             case CHILDREN:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_rub_tematico_hijo, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_rub_tematico_hijo_white, parent, false);
                 return new HijoViewHolder(view);
             default:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_rub_tematico, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_rub_tematico_white, parent, false);
                 return new SimpleViewHolder(view);
         }
 

@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.cell.DefaultCellViewHolder;
+import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.cell.IndicadorCellViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.cell.PesoCellViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.cell.SelectorCellViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.column.DefaultColumnViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.column.IndicadorColumnViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.row.DefaultRowViewHolder;
+import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.row.InidicadorRowViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.row.PesoRowViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.row.SelectorIconoRowViewHolder;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.holder.row.SelectorValorRowViewHolder;
@@ -19,6 +21,7 @@ import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapt
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.model.ColumnHeader;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.tableView.model.RowHeader;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.CriterioEvaluacionUi;
+import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.IndicadorNombreUi;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.IndicadorUi;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.TipoNotaUi;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.ValorTipoNotaUi;
@@ -33,8 +36,8 @@ import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHeader, Cell> {
 
     private static final String TAG = TableViewAdapter.class.getSimpleName();
-    private final int ROW_SELECTOR_VALORES = 1 ,ROW_SELECTOR_ICONOS = 2, ROW_PESO = 3 ;
-    private final int CELL_SELECTOR = 1, CELL_PESO = 2;
+    private final int ROW_SELECTOR_VALORES = 1 ,ROW_SELECTOR_ICONOS = 2, ROW_PESO = 3 ,ROW_INDICADORE = 4;
+    private final int CELL_SELECTOR = 1, CELL_PESO = 2, CELL_INDICADORES = 3;
     private final int COLUMN_INDICADOR = 1;
 
     public TableViewAdapter(Context p_jContext) {
@@ -44,7 +47,7 @@ public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHead
     @Override
     public int getColumnHeaderItemViewType(int position) {
 
-        com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.tableview.model.Cell rowHeader = mColumnHeaderItems.get(position);
+        Object rowHeader = mColumnHeaderItems.get(position);
         if(rowHeader instanceof ValorTipoNotaUi) {
             ValorTipoNotaUi valorTipoNotaUi = (ValorTipoNotaUi) rowHeader;
             TipoNotaUi tipoNotaUi = valorTipoNotaUi.getTipoNotaUi();
@@ -57,6 +60,8 @@ public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHead
             }
         }else if(rowHeader instanceof IndicadorUi){
             return ROW_PESO;
+        }else if(rowHeader instanceof IndicadorNombreUi){
+            return ROW_INDICADORE;
         }
         return 0;
     }
@@ -79,6 +84,8 @@ public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHead
                 return  CELL_SELECTOR;
             }else if(cell instanceof IndicadorUi){
                 return CELL_PESO;
+            }else if(cell instanceof IndicadorNombreUi){
+                return CELL_INDICADORES;
             }
         }
         return 0;
@@ -94,6 +101,9 @@ public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHead
             case CELL_SELECTOR:
                 layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.table_cell_evaluacion_criterio_layout, parent, false);
                 return new SelectorCellViewHolder(layout);
+            case CELL_INDICADORES:
+                layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.table_cell_evaluacion_indicador_layout, parent, false);
+                return new IndicadorCellViewHolder(layout);
             default:
                 layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_cell_layout, parent, false);
                 return new DefaultCellViewHolder(layout);
@@ -110,6 +120,10 @@ public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHead
                 SelectorCellViewHolder selectorCellViewHolder = (SelectorCellViewHolder)holder;
                 CriterioEvaluacionUi criterioEvaluacionUi = (CriterioEvaluacionUi) p_jValue;
                 selectorCellViewHolder.bind(criterioEvaluacionUi);
+            }else if(holder instanceof IndicadorCellViewHolder && p_jValue instanceof IndicadorNombreUi){
+                IndicadorCellViewHolder indicadorCellViewHolder = (IndicadorCellViewHolder)holder;
+                IndicadorNombreUi indicadorNombreUi = (IndicadorNombreUi) p_jValue;
+                indicadorCellViewHolder.bind(indicadorNombreUi);
             }
     }
 
@@ -126,6 +140,9 @@ public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHead
             case ROW_PESO:
                 layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.table_view_btn_evaluacion_layout, parent, false);
                 return new PesoRowViewHolder(layout);
+            case ROW_INDICADORE:
+                layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.table_view_column_titulo_indicador, parent, false);
+                return new InidicadorRowViewHolder(layout);
             default:
                 layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.table_view_column_header_layout, parent, false);
                 return new DefaultRowViewHolder(layout);
@@ -163,7 +180,7 @@ public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHead
         if(holder instanceof IndicadorColumnViewHolder && p_jValue instanceof IndicadorUi){
             IndicadorColumnViewHolder alumnoColumnViewHolder = (IndicadorColumnViewHolder)holder;
             IndicadorUi indicadorUi = (IndicadorUi) p_jValue;
-            alumnoColumnViewHolder.bind(indicadorUi);
+            alumnoColumnViewHolder.bind(indicadorUi, p_nYPosition);
         }
     }
 

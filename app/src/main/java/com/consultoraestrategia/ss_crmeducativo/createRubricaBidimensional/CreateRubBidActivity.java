@@ -810,5 +810,4 @@ public class CreateRubBidActivity extends BaseActivity<CreateRubBidView, CreateR
         presenter.onClikInfoTipoNota();
     }
 
-
 }

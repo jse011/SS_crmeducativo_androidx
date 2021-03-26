@@ -31,6 +31,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -77,8 +78,6 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     public static final String ARG_TIPONOTA = "EditarRubroDetalleFragment.TipoNotaUi";
     public static final String ARG_LISTDETALLE = "EditarRubroDetalleFragment.ListDetalle";
     public static final String ARG_DISABLEDCAMPOACCION = "EditarRubroDetalleFragment.disabledCampoAccion";
-    @BindView(R.id.edit_text_sub_titulo)
-    EditText editTextSubTitulo;
     @BindView(R.id.edit_text_ti_indicador)
     EditText editTextTiIndicador;
     @BindView(R.id.txt_titulo_criterio_eval)
@@ -89,8 +88,6 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     CardView cardCriterioEval;
     @BindView(R.id.rc_campos_accion)
     RecyclerView rcCamposAccion;
-    @BindView(R.id.content2)
-    ConstraintLayout content2;
     @BindView(R.id.txt_competencia)
     TextView txtCompetencia;
     @BindView(R.id.txt_capacidad)
@@ -110,11 +107,11 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     @BindView(R.id.scroll_edit_rubro_det)
     NestedScrollView scrollEditRubroDet;
     @BindView(R.id.bttn_negative)
-    Button bttnNegative;
+    ImageView bttnNegative;
     @BindView(R.id.bttn_positive)
     Button bttnPositive;
     @BindView(R.id.root)
-    ConstraintLayout root;
+    LinearLayout root;
     @BindView(R.id.img_indicador)
     ImageView imgIndicador;
     @BindView(R.id.textView57)
@@ -172,6 +169,7 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     @Override
     public void onResume() {
 
+        /*
         // Store access variables for window and blank point
         Window window = getDialog().getWindow();
         Point size = new Point();
@@ -180,7 +178,7 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
         display.getSize(size);
         // Set the width of the dialog proportional to 75% of the screen width
         window.setLayout((int) (size.x * 0.90), (int) (size.y * 0.85));
-        window.setGravity(Gravity.CENTER);
+        window.setGravity(Gravity.CENTER);*/
         // Call super onResume after sizing
 
         super.onResume();
@@ -195,7 +193,7 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     }
 
     private void setupTextListner() {
-        /*editTextTiIndicador.addTextChangedListener(new TextWatcher() {
+        editTextTiIndicador.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -204,22 +202,6 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 presenter.onTextChangedTitulo(charSequence.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
-        editTextSubTitulo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                presenter.onTextChangedSubTitulo(charSequence.toString());
             }
 
             @Override
@@ -276,7 +258,6 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     @Override
     public void showIndicador(IndicadorUi indicadorUi) {
         editTextTiIndicador.setText(indicadorUi.getTituloRubro());
-        editTextSubTitulo.setText(indicadorUi.getSubTituloRubro());
 
         if(TextUtils.isEmpty(indicadorUi.getAlias())){
             textSubIndicador.setText(indicadorUi.getTitulo());

@@ -11,6 +11,7 @@ import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.infoR
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.CriterioEvaluacionUi;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.ValorTipoNotaUi;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
+import com.google.android.material.textfield.TextInputEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +26,7 @@ public class CellHolder extends RecyclerView.ViewHolder implements View.OnClickL
     @BindView(R.id.imgIcono)
     CircleImageView imgIcono;
     @BindView(R.id.txt_eval_descripcion)
-    TextView txtEvalDescripcion;
+    TextInputEditText txtEvalDescripcion;
     CriterioEvaluacionUi criterioEvaluacionUi;
     private InfoRubricaBidimensionalListener listener;
 
@@ -36,6 +37,7 @@ public class CellHolder extends RecyclerView.ViewHolder implements View.OnClickL
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+        txtEvalDescripcion.setOnClickListener(this);
             }
 
     public void bind(final InfoRubricaBidimensionalListener listener, final CriterioEvaluacionUi criterioEvaluacionUi) {

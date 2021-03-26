@@ -2,38 +2,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
-    android:layout_width="@dimen/table_header_crear_rubrica_2"
+    android:layout_width="@dimen/table_header_crear_rubrica"
     android:layout_height="@dimen/table_body_height_eval_bidimencional"
     android:background="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/txtTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="4dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="4"
-        android:text="1."
+        android:text="Rubro"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textColor="#173766"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/frameLayout7"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.41"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <ImageView
-        android:id="@+id/imageView26"
-        android:layout_width="10dp"
-        android:layout_height="14dp"
-        android:visibility="gone"
+    <View
+        android:id="@+id/linea2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#80173766"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_edit_plomo_mini" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/linea"
@@ -44,12 +46,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/linea2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#80173766"
+    <FrameLayout
+        android:id="@+id/frameLayout7"
+        android:layout_width="15dp"
+        android:layout_height="0dp"
+        android:background="#173766"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/linea2">
+
+        <ImageView
+            android:id="@+id/imageView26"
+            android:layout_gravity="center"
+            android:layout_width="10dp"
+            android:layout_height="14dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_edit_white" />
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

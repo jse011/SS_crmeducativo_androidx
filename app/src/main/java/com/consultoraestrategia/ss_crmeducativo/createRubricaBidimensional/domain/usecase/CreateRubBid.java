@@ -6,6 +6,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseSincrono;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.data.source.CreateRubBidDataSource;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.data.source.CreateRubBidRepository;
+import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.IndicadorNombreUi;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.tableview.model.Cell;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.CampoAccionUi;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.EscalaEvaluacionUi;
@@ -14,6 +15,7 @@ import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entit
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.TipoUi;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.ValorTipoNotaUi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +34,22 @@ public class CreateRubBid extends UseCaseSincrono<CreateRubBid.RequestValues, Cr
 
     @Override
     public void execute(RequestValues request, final Callback<ResponseValue> callback) {
+        try {
+            for (List<Cell> cellList : request.getBodyList()){
+                List<Cell> cellDelte = new ArrayList<>();
+                for (Cell cell : cellList){
+                        if(cell instanceof IndicadorNombreUi){
+                            cellDelte.add(cell);
+                        }
+                }
+                cellList.removeAll(cellDelte);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
         Log.d(TAG, "requestValues");
         repository.createRubBid(request, new CreateRubBidDataSource.SaveCallback() {
 

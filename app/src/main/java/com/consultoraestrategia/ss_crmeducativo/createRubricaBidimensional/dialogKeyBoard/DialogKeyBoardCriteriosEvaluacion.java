@@ -17,6 +17,6 @@ public class DialogKeyBoardCriteriosEvaluacion extends Dialogkeyboard {
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
         editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        txtTitulo.setText("Criterio evaluación");
+        txtTitulo.setText("Descripción del nivel de logro");
     }
 }

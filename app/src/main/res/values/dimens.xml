@@ -143,6 +143,6 @@
 
     <dimen name="spot_size">10dp</dimen>
     <dimen name="table_header_crear_rubrica" >160dp</dimen>
-
+    <dimen name="table_header_crear_rubrica_2" >35dp</dimen>
 
 </resources>

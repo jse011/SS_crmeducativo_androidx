@@ -3,6 +3,8 @@ package com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.rubr
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;

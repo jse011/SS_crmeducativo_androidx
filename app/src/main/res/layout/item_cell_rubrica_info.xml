@@ -9,10 +9,11 @@
         android:id="@+id/view3"
         android:layout_width="4dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
+        android:visibility="invisible"
         android:layout_marginBottom="0dp"
-        android:background="@android:color/white"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -83,28 +84,31 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <TextView
-        android:id="@+id/txt_eval_descripcion"
-        style="@style/RecipientEditTextView"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:hint="Descripción del nivel de logro"
+        app:placeholderText="Ingrese una descripción"
         android:layout_marginStart="2dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:gravity="center_vertical"
-        android:hint="Sin descripción"
-        android:clickable="false"
-        android:focusable="false"
-        android:longClickable="false"
-        android:inputType="textMultiLine|textCapWords|textCapSentences"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout8"
         app:layout_constraintTop_toTopOf="@+id/view14"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_eval_descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:clickable="true"
+            android:focusable="false" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <View
@@ -114,6 +118,7 @@
         android:background="@color/md_grey_200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.3"
+        android:visibility="invisible"
         app:layout_constraintLeft_toRightOf="@+id/view3"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -125,6 +130,7 @@
         android:id="@+id/view14"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
+        android:visibility="invisible"
         android:background="@color/md_grey_200"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

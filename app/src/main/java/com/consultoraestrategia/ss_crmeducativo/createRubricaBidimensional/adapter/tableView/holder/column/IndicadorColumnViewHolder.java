@@ -28,10 +28,10 @@ public class IndicadorColumnViewHolder extends ColumnHeaderViewHolder<IndicadorU
 
     @Override
     public void bind(IndicadorUi columnHeader) {
-        if(TextUtils.isEmpty(columnHeader.getTituloRubro())){
-            txtTitle.setText(columnHeader.getAlias());
-        }else {
-            txtTitle.setText(columnHeader.getTituloRubro());
-        }
+
+    }
+
+    public void bind(IndicadorUi columnHeader, int postionY) {
+        txtTitle.setText(String.valueOf(postionY+1));
     }
 }

@@ -126,20 +126,14 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
         formaEvalSelected.setOnItemClickListener((parent, view, position, id) -> {
             TipoUi selected = (TipoUi) parent.getAdapter().getItem(position);
                 listener.onSelectedFormaEval(selected);
-            Toast.makeText(formaEvalSelected.getContext(),
-                    "Clicked " + position + " name: " + selected.getTitle(),
-                    Toast.LENGTH_SHORT).show();
         });
 
         adapterTipoEval = new SelectionAdapter(tipoEvalSelected.getContext(), new ArrayList<>());
         tipoEvalSelected.setAdapter(adapterTipoEval);
 
-        formaEvalSelected.setOnItemClickListener((parent, view, position, id) -> {
+        tipoEvalSelected.setOnItemClickListener((parent, view, position, id) -> {
             TipoUi selected = (TipoUi) parent.getAdapter().getItem(position);
             listener.onSelectedTipoEval(selected);
-            Toast.makeText(formaEvalSelected.getContext(),
-                    "Clicked " + position + " name: " + selected.getTitle(),
-                    Toast.LENGTH_SHORT).show();
         });
     }
 

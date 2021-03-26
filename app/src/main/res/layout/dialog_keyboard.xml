@@ -33,26 +33,26 @@
 
     <Button
         android:id="@+id/btn_guardar"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Guardar"
+        android:text="Aceptar"
+        android:textColor="#2d7eea"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        android:textColor="#2d7eea"/>
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <Button
         android:id="@+id/btn_cancelar"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Cancelar"
+        android:text="Atras"
+        android:textColor="#2d7eea"
         app:layout_constraintEnd_toStartOf="@+id/btn_guardar"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        android:textColor="#2d7eea"/>
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

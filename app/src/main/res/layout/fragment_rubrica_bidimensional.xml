@@ -66,10 +66,10 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:hint="Titulo de la rúbrica"
+                        android:hint="Titulo de la rúbrica *"
                         app:placeholderText="Ingrese un titulo"
                         app:helperTextTextColor="@color/md_grey_600"
-                        app:helperText="Se requiere un titulo para su rúbrica"
+                        app:helperText=" "
                         app:startIconCheckable="true"
                         app:startIconDrawable="@drawable/ic_icon_matrix"
                         app:startIconTint="#173766"
@@ -107,7 +107,7 @@
                     android:layout_marginTop="10dp"
                     android:hint="Forma de evaluación"
                     app:placeholderText="Seleccione una opción"
-                    app:helperText="Seleccione una forma de evaluación"
+                    app:helperText=" "
                     app:helperTextTextColor="@color/md_grey_600"
                     app:startIconCheckable="true"
                     app:startIconDrawable="@drawable/ic_outline_supervisor"
@@ -131,7 +131,7 @@
                     android:layout_marginTop="10dp"
                     android:hint="Tipo de evaluación"
                     app:placeholderText="Seleccione una opción"
-                    app:helperText="Seleccione un tipo de evaluación"
+                    app:helperText=" "
                     app:helperTextTextColor="@color/md_grey_600"
                     app:startIconCheckable="true"
                     app:startIconDrawable="@drawable/ic_outline_bubble"
@@ -165,7 +165,7 @@
                     android:layout_marginEnd="24dp"
                     android:hint="Promedio de logro"
                     app:placeholderText=""
-                    app:helperText="Seleccione un promedio de logro"
+                    app:helperText="Opcional, puede dar clic en la casualidad para conocer más del promedio de logro seleccionado"
                     app:helperTextTextColor="@color/md_grey_600"
                     app:startIconCheckable="true"
                     app:startIconDrawable="@drawable/ic_tipo_evaluacion"
@@ -253,7 +253,7 @@
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:row_header_width="@dimen/table_header_crear_rubrica"
+                                    app:row_header_width="@dimen/table_header_crear_rubrica_2"
                                     app:selected_color="@color/md_grey_200"
                                     app:shadow_color="@color/md_grey_50"
                                     app:unselected_color="@color/white">
@@ -264,34 +264,50 @@
 
                         </androidx.cardview.widget.CardView>
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout11"
-                            android:layout_width="@dimen/table_header_crear_rubrica"
-                            android:layout_height="@dimen/table_header_width_eval_session"
-                            android:background="@color/md_grey_200"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="@+id/table"
-                            app:layout_constraintTop_toTopOf="@+id/table">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="0dp"
+                           android:paddingEnd="0.5dp"
+                            android:background="#80173766">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/constraintLayout11"
+                                android:layout_width="@dimen/table_header_crear_rubrica_2"
+                                android:layout_height="@dimen/table_header_width_eval_session"
+                                android:background="@color/md_grey_200"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="@+id/table"
+                                app:layout_constraintTop_toTopOf="@+id/table">
 
-                            <TextView
-                                android:id="@+id/titulo"
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:text="Indicadores"
-                                android:textAlignment="center"
-                                android:textSize="14sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                <TextView
+                                    android:id="@+id/titulo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="0dp"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:layout_marginBottom="8dp"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="N°"
+                                    android:textAlignment="center"
+                                    android:textColor="#173766"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                <View
+                                    android:layout_width="0.75dp"
+                                    android:layout_height="0dp"
+                                    android:background="#80173766"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+
 
                     </FrameLayout>
 
