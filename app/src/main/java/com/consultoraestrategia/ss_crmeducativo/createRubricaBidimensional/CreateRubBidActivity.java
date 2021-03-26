@@ -303,13 +303,18 @@ public class CreateRubBidActivity extends BaseActivity<CreateRubBidView, CreateR
     }
 
     @Override
-    public String getEdtRubrica() {
-        return rubricaCabeceraFragment.getEdtRubrica();
+    public void onSelectedFormaEval(TipoUi selected) {
+        presenter.onSelectedFormaEval(selected);
     }
 
     @Override
-    public String getEdtAlias() {
-        return rubricaCabeceraFragment.getEdtAlias();
+    public void onSelectedTipoEval(TipoUi selected) {
+        presenter.onSelectedTipoEval(selected);
+    }
+
+    @Override
+    public String getEdtRubrica() {
+        return rubricaCabeceraFragment.getEdtRubrica();
     }
 
     @Override
@@ -320,13 +325,13 @@ public class CreateRubBidActivity extends BaseActivity<CreateRubBidView, CreateR
 
 
     @Override
-    public void showTipoEvaluacionSelected(String tipoEvaluacionTitulo) {
-        rubricaCabeceraFragment.showTipoEvaluacionSelected(tipoEvaluacionTitulo);
+    public void showTipoEvaluacionSelected(String tipoEvaluacionTitulo, List<TipoUi> tipoEvaluacionList) {
+        rubricaCabeceraFragment.showTipoEvaluacionSelected(tipoEvaluacionTitulo, tipoEvaluacionList);
     }
 
     @Override
-    public void showFormaEvaluacionSelected(String formaEvaluacionTitulo) {
-        rubricaCabeceraFragment.showFormaEvaluacionSelected(formaEvaluacionTitulo);
+    public void showFormaEvaluacionSelected(String formaEvaluacionTitulo, List<TipoUi> formaEvaluacionList) {
+        rubricaCabeceraFragment.showFormaEvaluacionSelected(formaEvaluacionTitulo, formaEvaluacionList);
     }
 
     @Override

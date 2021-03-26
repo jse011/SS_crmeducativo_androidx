@@ -1,20 +1,24 @@
 package com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.rubricaCabecera;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.text.Editable;
+
+import android.content.Context;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity;
@@ -47,78 +51,43 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
     private final Unbinder unbinder;
     @BindView(R.id.edtRubrica)
     EditText edtRubrica;
-    @BindView(R.id.edtAlias)
-    EditText edtAlias;
-    @BindView(R.id.edtTipoEvaluacion)
-    TextInputEditText edtTipoEvaluacion;
-    @BindView(R.id.tilTipoEvaluacion)
-    TextInputLayout tilTipoEvaluacion;
-    @BindView(R.id.btnTipoEvaluacion)
-    ImageView btnTipoEvaluacion;
-    @BindView(R.id.edtFormaEvaluacion)
-    TextInputEditText edtFormaEvaluacion;
-    @BindView(R.id.tilFormaEvaluacion)
-    TextInputLayout tilFormaEvaluacion;
-    @BindView(R.id.btnFormaEvaluacion)
-    ImageView btnFormaEvaluacion;
+
     /*@BindView(R.id.edtTipoNota)
     TextInputEditText edtTipoNota;*/
-    @BindView(R.id.tilTipoNota)
-    RecyclerView tilTipoNota;
-    @BindView(R.id.btnTipoNota)
-    ImageView btnTipoNota;
-    @BindView(R.id.edtEscala)
-    TextInputEditText edtEscala;
-    @BindView(R.id.tilEscala)
-    TextInputLayout tilEscala;
-    @BindView(R.id.btnEscala)
-    ImageButton btnEscala;
+
     @BindView(R.id.text_title_competencialist)
     TextView textTitleCompetencialist;
-    @BindView(R.id.btnCompetenciaList)
-    ImageView btnCompetenciaList;
+
     @BindView(R.id.text_competencialist)
     TextView textCompetencialist;
     @BindView(R.id.text_title_campoaccionlist)
     TextView textTitleCampoaccionlist;
-    @BindView(R.id.btnCampoAccionList)
-    ImageView btnCampoAccionList;
     @BindView(R.id.text_campoaccionlist)
     TextView textCampoaccionlist;
-    @BindView(R.id.root)
-    ConstraintLayout root;
 
     @BindView(R.id.btnEstrategia)
     ImageView btnEstrategia;
-    @BindView(R.id.txt_tipo_nota)
-    TextView txtTipoNota;
-    @BindView(R.id.img_valor_numerico)
-    TextView imgValorNumerico;
-    @BindView(R.id.img_selector_numerico)
-    TextView imgSelectorNumerico;
-    @BindView(R.id.txt_escala)
-    TextView txtEscala;
-    @BindView(R.id.txt_titulo_tipo_nota)
-    TextView txtTituloTipoNota;
-    @BindView(R.id.cons_tipo_nota)
-    ConstraintLayout consTipoNota;
-    @BindView(R.id.txt_descripcion_escala)
-    TextView txtDescripcionEscala;
-    @BindView(R.id.img_more_nivel_logro)
-    ImageView imgMoreNivelLogro;
+    @BindView(R.id.forma_eval_selected)
+    AutoCompleteTextView formaEvalSelected;
+    @BindView(R.id.tipo_eval_selected)
+    AutoCompleteTextView tipoEvalSelected;
+    @BindView(R.id.promedio_logro_selected)
+    AutoCompleteTextView promedioLogroSelected;
 
 
     private RecyclerTouchListener recyclerTouchListener;
     private RubricaCabeceraListener listener;
     private BaseActivity baseActivity;
-    private ValorTipoNotaAdapter valorTipoNotaAdapter;
+    //private ValorTipoNotaAdapter valorTipoNotaAdapter;
+    private SelectionAdapter adapterFormaEval;
+    private SelectionAdapter adapterTipoEval;
 
     public RubricaCabeceraFragment(BaseActivity activity, RubricaCabeceraListener listener) {
         unbinder = ButterKnife.bind(this,activity);
         this.baseActivity = activity;
         this.listener = listener;
 
-        edtAlias.addTextChangedListener(new TextWatcher() {
+       /* edtAlias.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -134,13 +103,13 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        });*/
         setupAdapter();
 
     }
 
     private void setupAdapter() {
-        valorTipoNotaAdapter = new ValorTipoNotaAdapter(new ArrayList<ValorTipoNotaUi>(), ValorTipoNotaAdapter.TIPO_SIMPLE);
+       /* valorTipoNotaAdapter = new ValorTipoNotaAdapter(new ArrayList<ValorTipoNotaUi>(), ValorTipoNotaAdapter.TIPO_SIMPLE);
         tilTipoNota.setAdapter(valorTipoNotaAdapter);
         tilTipoNota.setLayoutManager(new GridLayoutManager(tilTipoNota.getContext(), 6));
         tilTipoNota.setVisibility(View.VISIBLE);
@@ -149,42 +118,62 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
         tilTipoNota.setHasFixedSize(false);
 
         if(recyclerTouchListener!=null)tilTipoNota.addOnItemTouchListener(recyclerTouchListener);
-        recyclerTouchListener = new RecyclerTouchListener(root.getContext(), tilTipoNota, this);
-        tilTipoNota.addOnItemTouchListener(recyclerTouchListener);
+        recyclerTouchListener = new RecyclerTouchListener(tilTipoNota.getContext(), tilTipoNota, this);
+        tilTipoNota.addOnItemTouchListener(recyclerTouchListener);*/
 
+        adapterFormaEval = new SelectionAdapter(formaEvalSelected.getContext(), new ArrayList<>());
+        formaEvalSelected.setAdapter(adapterFormaEval);
+        formaEvalSelected.setOnItemClickListener((parent, view, position, id) -> {
+            TipoUi selected = (TipoUi) parent.getAdapter().getItem(position);
+                listener.onSelectedFormaEval(selected);
+            Toast.makeText(formaEvalSelected.getContext(),
+                    "Clicked " + position + " name: " + selected.getTitle(),
+                    Toast.LENGTH_SHORT).show();
+        });
+
+        adapterTipoEval = new SelectionAdapter(tipoEvalSelected.getContext(), new ArrayList<>());
+        tipoEvalSelected.setAdapter(adapterTipoEval);
+
+        formaEvalSelected.setOnItemClickListener((parent, view, position, id) -> {
+            TipoUi selected = (TipoUi) parent.getAdapter().getItem(position);
+            listener.onSelectedTipoEval(selected);
+            Toast.makeText(formaEvalSelected.getContext(),
+                    "Clicked " + position + " name: " + selected.getTitle(),
+                    Toast.LENGTH_SHORT).show();
+        });
     }
 
 
-    @OnClick({R.id.btnTipoEvaluacion, R.id.btnFormaEvaluacion, R.id.btnTipoNota, R.id.btnEscala, R.id.btnCompetenciaList, R.id.btnCampoAccionList,  R.id.btnEstrategia, R.id.txt_tipo_nota, R.id.cons_tipo_nota})
+    @OnClick({/*R.id.btnTipoEvaluacion,*//* R.id.btnFormaEvaluacion,*//* R.id.btnTipoNota,*/ /*R.id.btnEscala,*/ /*R.id.btnCompetenciaList, R.id.btnCampoAccionList,  R.id.btnEstrategia ,*/R.id.promedio_logro_selected, /*R.id.cons_tipo_nota*/})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btnTipoEvaluacion:
+            /*case R.id.btnTipoEvaluacion:
                 listener.onBtnTipoEvaluacionClicked();
-                break;
-            case R.id.btnFormaEvaluacion:
-                listener.onBtnFormaEvaluacionClicked();
-                break;
-            case R.id.btnTipoNota:
+                break;*/
+            //case R.id.btnFormaEvaluacion:
+                //listener.onBtnFormaEvaluacionClicked();
+               // break;
+           /* case R.id.btnTipoNota:
                 listener.onBtnTipoNotaClicked();
-                break;
-            case R.id.btnEscala:
+                break;*/
+            /*case R.id.btnEscala:
                 listener.onBtnEscalaClicked();
-                break;
-            case R.id.btnCompetenciaList:
+                break;*/
+            /*case R.id.btnCompetenciaList:
                 listener.onBtnCompetenciaListClicked();
-                break;
-            case R.id.btnCampoAccionList:
+                break;*/
+            /* case R.id.btnCampoAccionList:
                 listener.onBtnCampoAccionListClicked();
                 break;
             case R.id.btnEstrategia:
                 listener.onBtnEstrategiaEvaluacionClicked();
-                break;
-            case R.id.txt_tipo_nota:
+                break;*/
+           case R.id.promedio_logro_selected:
                 listener.onBtnTipoNotaClicked();
-                break;
-            case R.id.cons_tipo_nota:
-                //listener.onBtnTipoNotaClicked();
-                break;
+                break;/*
+           case R.id.cons_tipo_nota:
+                listener.onBtnTipoNotaClicked();
+                break;*/
         }
 
     }
@@ -195,15 +184,10 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
     }
 
     @Override
-    public String getEdtAlias() {
-        return edtAlias.getText().toString();
-    }
-
-    @Override
     public void showTipoNotaSelected(TipoNotaUi tipoNota) {
         Log.d(TAG, "showTipoNotaSelected: " + tipoNota.getTitle());
-        txtTituloTipoNota.setText(tipoNota.getTitle());
-
+        promedioLogroSelected.setText(tipoNota.getTitle());
+/*
         EscalaEvaluacionUi escalaUi = tipoNota.getEscalaEvaluacionUi();
         String escala = "";
         String rango = "";
@@ -242,28 +226,30 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
                 valorTipoNotaAdapter.setList(tipoNota.getValorTipoNotaList());
 
                 break;
-        }
+        }*/
 
 
     }
 
 
     @Override
-    public void showTipoEvaluacionSelected(String tipoEvaluacionTitulo) {
+    public void showTipoEvaluacionSelected(String tipoEvaluacionTitulo, List<TipoUi> tipoEvaluacionList) {
         Log.d(TAG, "showTipoEvaluacionSelected: " + tipoEvaluacionTitulo);
-        edtTipoEvaluacion.setText(tipoEvaluacionTitulo);
+        tipoEvalSelected.setText(tipoEvaluacionTitulo, false);
+        adapterTipoEval.setTipoUiList(tipoEvaluacionList);
     }
 
     @Override
-    public void showFormaEvaluacionSelected(String formaEvaluacionTitulo) {
+    public void showFormaEvaluacionSelected(String formaEvaluacionTitulo, List<TipoUi> formaEvaluacionList) {
         Log.d(TAG, "showFormaEvaluacionSelected: " + formaEvaluacionTitulo);
-        edtFormaEvaluacion.setText(formaEvaluacionTitulo);
+        formaEvalSelected.setText(formaEvaluacionTitulo, false);
+        adapterFormaEval.setTipoUiList(formaEvaluacionList);
     }
 
     @Override
     public void showEscalaSelected(String escalaTitulo) {
         Log.d(TAG, "showEscalaSelected: " + escalaTitulo);
-        edtEscala.setText(escalaTitulo);
+        //edtEscala.setText(escalaTitulo);
     }
 
     @Override
@@ -341,29 +327,27 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
 
     @Override
     public void disabledFormaEvaluacion() {
-      btnFormaEvaluacion.setEnabled(false);
+      //btnFormaEvaluacion.setEnabled(false);
+        formaEvalSelected.setEnabled(false);
+        formaEvalSelected.setTextColor(ContextCompat.getColor(formaEvalSelected.getContext(), R.color.form_text_disabled));
     }
 
     @Override
     public void disabledNivelLogroRubrica() {
-        btnTipoNota.setEnabled(false);
-        txtTipoNota.setOnClickListener(null);
-        txtTipoNota.setOnLongClickListener(null);
-        txtTipoNota.setFocusable(false);
-        String titulo = "Promedio logro";
-        txtTipoNota.setHint(titulo);
-        imgMoreNivelLogro.setVisibility(View.GONE);
+        promedioLogroSelected.setEnabled(false);
+        promedioLogroSelected.setTextColor(ContextCompat.getColor(promedioLogroSelected.getContext(), R.color.form_text_disabled));
+
     }
 
     @Override
     public void hideEstrategiaInput() {
-        edtRubrica.setFocusable(true);
+       // edtRubrica.setFocusable(true);
         btnEstrategia.setVisibility(View.GONE);
     }
 
     @Override
     public void showEstrategiaInput() {
-        edtRubrica.setFocusable(false);
+        //edtRubrica.setFocusable(false);
         btnEstrategia.setVisibility(View.VISIBLE);
     }
 
@@ -374,7 +358,7 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
 
     @Override
     public void setSubTitulo(String tituloTarea) {
-        edtAlias.setText(tituloTarea);
+        //edtAlias.setText(tituloTarea);
     }
 
     @Override
@@ -407,6 +391,23 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
 
 
 
+
+    public static class SelectionAdapter extends ArrayAdapter<TipoUi> {
+
+        private final List<TipoUi> tipoUiList;
+
+        public SelectionAdapter(@NonNull Context context,  List<TipoUi> tipoUiList) {
+            super(context, android.R.layout.simple_dropdown_item_1line,tipoUiList);
+            this.tipoUiList = tipoUiList;
+        }
+
+        private void setTipoUiList(List<TipoUi> tipoUiList){
+            this.tipoUiList.clear();
+            this.tipoUiList.addAll(tipoUiList);
+            notifyDataSetChanged();
+        }
+
+    }
 
 
 }

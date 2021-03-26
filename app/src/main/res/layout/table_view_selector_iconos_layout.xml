@@ -52,6 +52,7 @@
         android:id="@+id/imageView10"
         android:layout_width="18dp"
         android:layout_height="18dp"
+        android:visibility="gone"
         android:padding="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

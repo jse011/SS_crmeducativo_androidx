@@ -128,7 +128,7 @@
             android:name=".createRubricaBidimensional.CreateRubBidActivity"
             android:label="@string/activity_create_rub_bid_name"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppMaterialTheme.Formulario"
             android:windowSoftInputMode="stateHidden" />
         <!--android:screenOrientation="portrait"-->
 
@@ -321,6 +321,10 @@
             android:label="Reconocimiento"/>
         <activity android:name=".centroProcesamiento.CentProcesoActivity"
             android:label="Registro de evaluaciones"/>
+        <activity android:label="Crear Rubrica 2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".crearRubrica2.CrearRubrica2Activty" />
+
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="face" />

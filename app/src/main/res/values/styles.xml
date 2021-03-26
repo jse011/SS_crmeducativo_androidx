@@ -299,4 +299,14 @@
         <item name="android:scrollbarDefaultDelayBeforeFade">1000</item>
     </style>
 
+    <style name="AppMaterialTheme.Formulario" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#173766</item>  //Activated color
+        <item name="colorOnSurface">#173766</item>    //Normal color
+        <item name="colorError">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

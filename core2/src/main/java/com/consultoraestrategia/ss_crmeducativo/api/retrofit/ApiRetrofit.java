@@ -385,8 +385,10 @@ public class ApiRetrofit {
         ParametrosExportar<BEDatosSesionAprendizaje> parametrosExportar = new ParametrosExportar<>();
         parametrosExportar.setInsertarVariasEntidades(item);
         Log.d(TAG,"url: " + url);
-        Log.d(TAG, "json : " + item.toString());
         ApiRequestBody<ParametrosExportar<BEDatosSesionAprendizaje>> apiRequestBody = new ApiRequestBody<>("fins_GuardarSesion_Android",parametrosExportar);
+        final Gson gsons = new Gson();
+        final String representacionJSON = gsons.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.fins_GuardarSesion_Android(apiRequestBody);
 
     }
@@ -395,8 +397,10 @@ public class ApiRetrofit {
         ParametrosImportar<BEVariables> parametrosImportar = new ParametrosImportar<>();
         parametrosImportar.setObjeto(importar);
         Log.d(TAG,"url: " + url);
-        Log.d(TAG, "json : " + importar.toString());
         ApiRequestBody<ParametrosImportar<BEVariables>> apiRequestBody = new ApiRequestBody<>("fins_ListarSesiones",parametrosImportar);
+        final Gson gsons = new Gson();
+        final String representacionJSON = gsons.toJson(apiRequestBody);
+        Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.fins_ListarSesiones(apiRequestBody);
     }
 

@@ -48,613 +48,307 @@
             android:paddingBottom="24sp"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/root"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-8dp"
-                android:visibility="visible"
-                tools:visibility="visible">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/imageView28"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="40dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_edit_plomo_mini" />
-
-
-                <EditText
-                    android:id="@+id/edtAlias"
-                    style="@style/Widget.AppCompat.AutoCompleteTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="@null"
-                    android:ems="10"
-                    android:gravity="top"
-                    android:hint="@string/fragment_rubrica_bidimiensional_message_hint_alias"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView24"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout14"
-                    tools:text="" />
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/btnTipoEvaluacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tilTipoEvaluacion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tilTipoEvaluacion"
-                    app:srcCompat="@drawable/ic_more_point"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
-                    android:id="@+id/btnFormaEvaluacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tilFormaEvaluacion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tilFormaEvaluacion"
-                    app:srcCompat="@drawable/ic_more_point"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
-                    android:id="@+id/btnEscala"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/tilEscala"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tilEscala"
-                    app:srcCompat="@drawable/ic_more_point"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageView
-                    android:id="@+id/imageView24"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout14"
-                    app:srcCompat="@drawable/ic_format_align"
-                    tools:ignore="VectorDrawableCompat" />
-
-
-                <ImageView
-                    android:id="@+id/btnTipoNota"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="28dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_tipo_nota"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_tipo_nota"
-                    app:srcCompat="@drawable/ic_crecimiento"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <TextView
-                    android:id="@+id/txt_tipo_nota"
-                    style="@style/RecipientEditTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:hint="Seleccionar promedio de logro"
-                    android:longClickable="false"
-                    android:maxLines="1"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="14dp"
-                    app:layout_constraintEnd_toEndOf="@+id/img_more_nivel_logro"
-                    app:layout_constraintStart_toEndOf="@+id/btnTipoNota"
-                    app:layout_constraintTop_toBottomOf="@+id/tilTipoEvaluacion" />
-
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gdl_mid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_begin="206dp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilTipoEvaluacion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    app:layout_constraintEnd_toStartOf="@+id/btnTipoEvaluacion"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tilFormaEvaluacion"
-                    tools:ignore="MissingConstraints">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtTipoEvaluacion"
-                        style="@style/RecipientEditTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:hint="@string/fragment_rubrica_bidimiensional_message_hint_tipoevaluacion"
-                        android:inputType="textNoSuggestions"
-                        android:longClickable="false"
-                        android:textSize="18sp"
-                        tools:text="Formativa" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilFormaEvaluacion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/btnFormaEvaluacion"
-                    app:layout_constraintHorizontal_bias="0.48"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtAlias">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtFormaEvaluacion"
-                        style="@style/RecipientEditTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:hint="@string/fragment_rubrica_bidimiensional_message_hint_forma_evaluacion"
-                        android:imeOptions="normal"
-                        android:longClickable="false"
-                        android:textSize="18sp"
-                        tools:text="Individual" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilEscala"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toStartOf="@+id/btnEscala"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteY="200dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edtEscala"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:hint="@string/fragment_rubrica_bidimiensional_message_hint_escala"
-                        android:visibility="gone" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <ImageView
-                    android:id="@+id/imageView29"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="40dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/edtAlias"
-                    app:srcCompat="@drawable/ic_edit_plomo_mini" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout14"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <EditText
-                        android:id="@+id/edtRubrica"
-                        style="@style/RecipientEditTextView"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:hint="@string/fragment_rubrica_bidimiensional_message_hint_rubrica"
-                        android:imeOptions="normal"
-                        android:inputType="textMultiLine|textCapWords|textCapSentences"
-                        android:textSize="24sp"
-                        app:layout_constraintEnd_toStartOf="@+id/btnEstrategia"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="" />
+                        android:hint="Titulo de la rúbrica"
+                        app:placeholderText="Ingrese un titulo"
+                        app:helperTextTextColor="@color/md_grey_600"
+                        app:helperText="Se requiere un titulo para su rúbrica"
+                        app:startIconCheckable="true"
+                        app:startIconDrawable="@drawable/ic_icon_matrix"
+                        app:startIconTint="#173766"
+                        app:endIconCheckable="true"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="#173766">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtRubrica"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageButton
+                        android:visibility="gone"
                         android:id="@+id/btnEstrategia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="#173766"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/edtRubrica"
                         app:srcCompat="@drawable/ic_more_point"
                         tools:ignore="VectorDrawableCompat" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/img_more_nivel_logro"
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="38dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_tipo_nota"
-                    app:srcCompat="@drawable/ic_more_vert_black_24dp" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cons_tipo_nota"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp">
-
-                <TextView
-                    android:id="@+id/txt_titulo_tipo_nota"
-                    android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="4dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="16sp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/txt_escala"
-                    app:layout_constraintStart_toEndOf="@+id/imageView25"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="4 Niveles de logro - Letra" />
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="Forma de evaluación"
+                    app:placeholderText="Seleccione una opción"
+                    app:helperText="Seleccione una forma de evaluación"
+                    app:helperTextTextColor="@color/md_grey_600"
+                    app:startIconCheckable="true"
+                    app:startIconDrawable="@drawable/ic_outline_supervisor"
+                    app:startIconTint="#173766"
+                    app:endIconTint="#173766">
 
-                <TextView
-                    android:id="@+id/txt_escala"
-                    android:layout_width="90dp"
+                    <AutoCompleteTextView
+                        android:id="@+id/forma_eval_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textAlignment="viewStart"
-                    android:textSize="14sp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_info_tipo_nota"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Vigesimal" />
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="Tipo de evaluación"
+                    app:placeholderText="Seleccione una opción"
+                    app:helperText="Seleccione un tipo de evaluación"
+                    app:helperTextTextColor="@color/md_grey_600"
+                    app:startIconCheckable="true"
+                    app:startIconDrawable="@drawable/ic_outline_bubble"
+                    app:startIconTint="#173766"
+                    app:endIconTint="#173766">
 
-                <TextView
-                    android:id="@+id/img_valor_numerico"
-                    android:layout_width="50dp"
-                    android:layout_height="38dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/ic_valor_numerico"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/txt_descripcion_escala"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <AutoCompleteTextView
+                        android:id="@+id/tipo_eval_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"/>
 
-
-                <TextView
-                    android:id="@+id/img_selector_numerico"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/ic_selector_numerico"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/txt_descripcion_escala"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tilTipoNota"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@+id/txt_descripcion_escala"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/txt_titulo_tipo_nota"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_titulo_tipo_nota" />
-
-                <ImageView
-                    android:id="@+id/imageView25"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="4dp"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_arrow_crear_rubrica" />
-
-                <TextView
-                    android:id="@+id/txt_descripcion_escala"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="viewStart"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_info_tipo_nota"
-                    app:layout_constraintStart_toStartOf="@+id/txt_escala"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_escala"
-                    tools:text="(0.00- 20.0)" />
-
+                </com.google.android.material.textfield.TextInputLayout>
                 <ImageView
                     android:id="@+id/btn_info_tipo_nota"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:paddingStart="0dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_gravity="end"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_ayudar" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/view32"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                android:background="@color/md_grey_400"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="0dp"
-                android:text="Criterios"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:visibility="visible">
-
-                <ImageView
-                    android:id="@+id/btnBuscarCampoAccionList"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_buscar_campo_accion"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_buscar_campo_accion"
-                    app:srcCompat="@drawable/ic_search_book"
+                    app:srcCompat="@drawable/ic_ayudar_rubrica"
                     tools:ignore="VectorDrawableCompat" />
 
-                <ImageView
-                    android:id="@+id/btnCompetenciaList"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_competencia"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_competencia"
-                    app:srcCompat="@drawable/ic_speedometer"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageView
-                    android:id="@+id/btnCampoAccionList"
-                    android:layout_width="25dp"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_campo_accion"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_competencia"
-                    app:srcCompat="@drawable/ic_checklist"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <TextView
-                    android:id="@+id/txt_buscar_campo_accion"
-                    style="@style/RecipientEditTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:clickable="false"
-                    android:ellipsize="end"
-                    android:focusable="false"
-                    android:hint="Definir indicadores por campos acción"
-                    android:lines="1"
-                    android:longClickable="false"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="14dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/img_more_indicador"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/btnBuscarCampoAccionList"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_campo_accion"
-                    tools:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/txt_campo_accion"
-                    style="@style/RecipientEditTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginEnd="24dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:hint="Seleccionar campos de acción"
-                    android:longClickable="false"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/btnCampoAccionList"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_competencia" />
+                    android:hint="Promedio de logro"
+                    app:placeholderText=""
+                    app:helperText="Seleccione un promedio de logro"
+                    app:helperTextTextColor="@color/md_grey_600"
+                    app:startIconCheckable="true"
+                    app:startIconDrawable="@drawable/ic_tipo_evaluacion"
+                    app:startIconTint="#173766"
+                    app:endIconCheckable="true"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_more_point"
+                    app:endIconTint="#173766">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/promedio_logro_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/txt_competencia"
-                    style="@style/RecipientEditTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:clickable="false"
-                    android:ellipsize="end"
-                    android:focusable="false"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="14dp"
-                    android:hint="Definir indicadores por competencias"
-                    android:lines="1"
-                    android:longClickable="false"
-                    app:layout_constraintEnd_toEndOf="@+id/img_more_competencia"
-                    app:layout_constraintStart_toEndOf="@+id/btnCompetenciaList"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/img_more_indicador"
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="38dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_buscar_campo_accion"
-                    app:srcCompat="@drawable/ic_more_vert_black_24dp" />
-
-                <ImageView
-                    android:id="@+id/img_more_competencia"
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="38dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_competencia"
-                    app:srcCompat="@drawable/ic_more_vert_black_24dp" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
-                app:cardBackgroundColor="@color/md_grey_200"
-                app:cardCornerRadius="8dp"
-                android:layout_marginBottom="4dp"
-                app:cardElevation="0dp">
-
-                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="24dp"
+                    android:text="Criterios"
+                    android:textColor="#173766"
+                    android:textSize="16sp"/>
 
-                    <androidx.cardview.widget.CardView
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_add_indicadores"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="24dp"
+                    app:icon="@drawable/ic_velocimetro"
+                    app:iconTint="@color/white"
+                    android:text="Agregar indicadores">
+
+                </com.google.android.material.button.MaterialButton>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="24dp"
+                    app:cardBackgroundColor="#80173766"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/md_grey_200"
+                    app:cardCornerRadius="6dp"
+                    android:layout_margin="1dp"
+                    app:cardElevation="0dp">
+
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0.5dp"
-                        app:cardBackgroundColor="@color/md_white_1000"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="0dp">
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0.5dp"
+                            app:cardBackgroundColor="@color/md_white_1000"
+                            app:cardCornerRadius="8dp"
+                            app:cardElevation="0dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <com.evrencoskun.tableview.TableView
+                                    android:id="@+id/table"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/white"
+                                    app:column_header_height="@dimen/table_header_width_eval_session"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:row_header_width="@dimen/table_header_crear_rubrica"
+                                    app:selected_color="@color/md_grey_200"
+                                    app:shadow_color="@color/md_grey_50"
+                                    app:unselected_color="@color/white">
+
+                                </com.evrencoskun.tableview.TableView>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.cardview.widget.CardView>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:id="@+id/constraintLayout11"
+                            android:layout_width="@dimen/table_header_crear_rubrica"
+                            android:layout_height="@dimen/table_header_width_eval_session"
+                            android:background="@color/md_grey_200"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@+id/table"
+                            app:layout_constraintTop_toTopOf="@+id/table">
 
-                            <com.evrencoskun.tableview.TableView
-                                android:id="@+id/table"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@android:color/white"
-                                app:column_header_height="@dimen/table_header_width_eval_session"
+                            <TextView
+                                android:id="@+id/titulo"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:text="Indicadores"
+                                android:textAlignment="center"
+                                android:textSize="14sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:row_header_width="@dimen/table_header_crear_rubrica"
-                                app:selected_color="@color/md_grey_200"
-                                app:shadow_color="@color/md_grey_50"
-                                app:unselected_color="@color/white">
-
-                            </com.evrencoskun.tableview.TableView>
+                                app:layout_constraintTop_toTopOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    </androidx.cardview.widget.CardView>
+                    </FrameLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout11"
-                        android:layout_width="@dimen/table_header_crear_rubrica"
-                        android:layout_height="@dimen/table_header_width_eval_session"
-                        android:background="@color/md_grey_200"
-                        android:visibility="visible"
-                        app:layout_constraintStart_toStartOf="@+id/table"
-                        app:layout_constraintTop_toTopOf="@+id/table">
+                </androidx.cardview.widget.CardView>
 
-                        <TextView
-                            android:id="@+id/titulo"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:text="Indicadores"
-                            android:textAlignment="center"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                </androidx.cardview.widget.CardView>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/txt_info_add_indicadores"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="Se requiere que agregue indicadores a su rúbrica"
+                    android:textColor="@color/md_grey_600"/>
 
-                </FrameLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:background="@color/md_grey_400"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="24dp"
+                android:text="Vista previa"
+                android:textColor="#173766"
+                android:textSize="16sp"/>
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
-                android:layout_marginBottom="0dp"
-                android:hint="Vista previa de los rubros"
-                android:textSize="18sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_pre_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                tools:itemCount="1" />
+                android:layout_marginRight="24dp"
+                app:cardBackgroundColor="#80173766"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/md_grey_200"
+                    app:cardCornerRadius="6dp"
+                    android:layout_margin="1dp"
+                    app:cardElevation="0dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rc_pre_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:itemCount="1" />
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

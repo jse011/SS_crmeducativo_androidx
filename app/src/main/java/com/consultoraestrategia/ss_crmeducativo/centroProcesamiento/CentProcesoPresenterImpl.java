@@ -3,6 +3,7 @@ package com.consultoraestrategia.ss_crmeducativo.centroProcesamiento;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenterImpl;
@@ -67,6 +68,8 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
     @Override
     public void onCreate() {
         super.onCreate();
+        selectedPeriodoUi = null;
+        matrizResultadoUi = null;
         this.calendarioPeriodoList.clear();
         this.calendarioPeriodoList.addAll(getCalendarioPeriodo.execute(programaId, anioAcademicoId, cargaCursoId));
         for (PeriodoUi periodoUi : calendarioPeriodoList){
@@ -104,7 +107,7 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
                 @Override
                 public void onLoad(boolean success) {
                     if(success){
-                        
+
                         retrofitCancelGetMatriz = getMatrizResultado.execute(silaboEventoId, cargaCursoId, selectedPeriodoUi.getIdCalendarioPeriodo(), rubroFormal, tituloCurso, new GetMatrizResultado.Callback() {
                             @Override
                             public void onSuccess(MatrizResultadoUi response) {
@@ -130,8 +133,6 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
                     }
                 }
             });
-
-
         }else {
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.clearListMatrizResultado();
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();
@@ -142,11 +143,14 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
 
     }
 
+
+
     private void showPromediar(MatrizResultadoUi matrizResultadoUi) {
         this.matrizResultadoUi = matrizResultadoUi;
         if(registroCentProcesamientoView!=null)registroCentProcesamientoView.setListMatrizResultado(matrizResultadoUi);
         if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();
         if(registroCentProcesamientoView!=null)registroCentProcesamientoView.showCorner();
+
         if(matrizResultadoUi.getEvaluacionList()==null||matrizResultadoUi.getEvaluacionList().isEmpty()){
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
         }else {
@@ -182,13 +186,23 @@ public class CentProcesoPresenterImpl extends BasePresenterImpl<CentProcesoView>
         if(matrizResultadoUi==null){
             getMatrizResultado();
         }else {
+            if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideError();
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.showProgress();
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideCorner();
+            if(registroCentProcesamientoView!=null)registroCentProcesamientoView.clearListMatrizResultado();
             if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showPromediar(matrizResultadoUi);
+                    if(selectedPeriodoUi!=null){
+                        showPromediar(matrizResultadoUi);
+                    }else {
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.clearListMatrizResultado();
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideProgress();
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.hideCorner();
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.bloqueoBotones();
+                        if(registroCentProcesamientoView!=null)registroCentProcesamientoView.showSelecionCalendarioPerido();
+                    }
                 }
             }, 500);
         }

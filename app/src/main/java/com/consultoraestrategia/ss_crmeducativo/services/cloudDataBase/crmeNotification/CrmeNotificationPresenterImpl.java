@@ -48,11 +48,19 @@ public class CrmeNotificationPresenterImpl implements CrmeNotificationPresenter 
     }
 
     private void subscribeToTopic(int usuarioId){
-        service.subscribeToTopic(String.valueOf(usuarioId));
+        try {
+            service.subscribeToTopic(String.valueOf(usuarioId));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void unsubscribeFromTopic(int usuarioId){
-        service.unsubscribeFromTopic(String.valueOf(usuarioId));
+        try {
+            service.unsubscribeFromTopic(String.valueOf(usuarioId));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

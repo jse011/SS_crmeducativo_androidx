@@ -23,7 +23,7 @@ buildscript {
 }
 
 ext{
-    butterknife_version = "10.2.1"
+    butterknife_version = "10.2.3"
     buildToolsVersion = '24.0.1'
 }
 

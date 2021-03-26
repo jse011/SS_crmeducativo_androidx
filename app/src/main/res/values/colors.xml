@@ -102,4 +102,8 @@
     <color name="color_sesion">#42af78</color>
     <color name="transprent_black">#8000</color>
 
+    <color name="background">#F2F3F8</color>
+    <color name="status_bar_lolipop">#6351535C</color>
+
+    <color name="form_text_disabled">#173766</color>
 </resources>

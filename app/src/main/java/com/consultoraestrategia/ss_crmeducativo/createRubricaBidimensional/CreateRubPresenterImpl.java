@@ -95,7 +95,6 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
     private List<EstrategiaEvalUi>estrategiaEvalUis = new ArrayList<>();
     private EstrategiaEvalUi estrategiaEvalUiSelected;
     private int estrategiaId;
-    private String rubricaAlias;
     private boolean complejo = false;
     private GetTipoNotaDefault getTipoNotaDefault;
     private GetNotaPresicion getNotaPresicion;
@@ -590,12 +589,12 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
 
 
     private boolean tipoEvaluacionBtnClicked;
-    private boolean formaEvaluacionBtnClicked;
+    //private boolean formaEvaluacionBtnClicked;
 
     public void onBtnTipoEvaluacionClicked() {
         Log.d(TAG, "onBtnTipoEvaluacionClicked");
         tipoEvaluacionBtnClicked = true;
-        formaEvaluacionBtnClicked = false;
+      //  formaEvaluacionBtnClicked = false;
         showTipoEvaluacionList(tipoEvaluacionList);
     }
 
@@ -603,7 +602,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
     public void onBtnFormaEvaluacionClicked() {
         Log.d(TAG, "onBtnFormaEvaluacionClicked");
         tipoEvaluacionBtnClicked = false;
-        formaEvaluacionBtnClicked = true;
+        //formaEvaluacionBtnClicked = true;
         showFormaEvaluacionList(formaEvaluacionList);
     }
 
@@ -663,23 +662,28 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
 
     @Override
     public void onTextChangedEditarAlias(String texto) {
-        if(complejo){
-            String titulo = (TextUtils.isEmpty(texto) ?  "":  ""+texto+" " ) + (estrategiaEvalUiSelected==null ?  "": estrategiaEvalUiSelected.getEstrategia());
-            if(view!=null)view.showTituloEstrategiaSelected(titulo);
-        }
+        //if(complejo){
+          //  String titulo = (TextUtils.isEmpty(texto) ?  "":  ""+texto+" " ) + (estrategiaEvalUiSelected==null ?  "": estrategiaEvalUiSelected.getEstrategia());
+          //  if(view!=null)view.showTituloEstrategiaSelected(titulo);
+        //}
     }
 
+    @Override
+    public void onSelectedFormaEval(TipoUi selected) {
+        formaEvaluacionSelected = selected;
+    }
 
+    @Override
+    public void onSelectedTipoEval(TipoUi selected) {
+        tipoEvaluacionSelected = selected;
+    }
 
 
     private void getTituloRubrica(String rubricaKeyEdit) {
       estrategiaEvalUiSelected = getTituloRubrica.execute(rubricaKeyEdit);
       this.estrategiaId=estrategiaEvalUiSelected.getEstrategiaId();
       this.rubricaTitle=estrategiaEvalUiSelected.getTituloRubro();
-      this.rubricaAlias=estrategiaEvalUiSelected.getDescripcionRubro();
-
         if(view!=null)view.setTitulo(rubricaTitle);
-        if(view!=null)view.setSubTitulo(rubricaAlias);
     }
 
     private void getCamposAccionPadres(List<CompetenciaUi> competenciaList){
@@ -746,7 +750,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
     @Override
     public void onSingleItemSelected(Object itemSelected, int selectedPosition) {
      //   Log.d(TAG, "onSingleItemSelected: " + itemSelected);
-        if (itemSelected instanceof TipoNotaUi) {
+        /*if (itemSelected instanceof TipoNotaUi) {
             showProgress();
             /*if (tipoNotaBtnClicked) {
                 tipoNotaSelected = (TipoNotaUi) itemSelected;
@@ -783,7 +787,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
                 showTipoNivelSelected(tipoNivelSelected);
                 showTableview();
             }*/
-        } else if (itemSelected instanceof EscalaEvaluacionUi) {
+        /*} else if (itemSelected instanceof EscalaEvaluacionUi) {
             escalaSelected = (EscalaEvaluacionUi) itemSelected;
             for (EscalaEvaluacionUi escalaEvaluacionUi :
                     escalaEvaluacionList) {
@@ -799,7 +803,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
             }
             showEscalaSelected(escalaSelected);
 
-        } else if (itemSelected instanceof TipoUi) {
+        } /*else if (itemSelected instanceof TipoUi) {
             if (tipoEvaluacionBtnClicked) {
                 tipoEvaluacionSelected = (TipoUi) itemSelected;
                 for (TipoUi tipoUi :
@@ -814,11 +818,11 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
                     showImportantMessage(res.getString(R.string.unknown_error));
                     return;
                 }
-                showTipoEvaluacionSelected(tipoEvaluacionSelected);
+                showTipoEvaluacionSelected(tipoEvaluacionSelected, tipoEvaluacionList);
                 showPreview();
-            }
+            }*/
 
-
+/*
             if (formaEvaluacionBtnClicked) {
                 formaEvaluacionSelected = (TipoUi) itemSelected;
                 for (TipoUi tipoUi :
@@ -835,18 +839,18 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
                 }
                 showFormaEvaluacionSelected(formaEvaluacionSelected);
                 showPreview();
-            }
+            }*/
 
-        }
+       /* }
         else if (itemSelected instanceof EstrategiaEvalUi) {
             EstrategiaEvalUi estrategiaEvalUi= (EstrategiaEvalUi)itemSelected;
             Log.d(TAG, "onSingleItemSelected "+ estrategiaEvalUi.getEstrategia()+ view);
             this.estrategiaEvalUiSelected= estrategiaEvalUi;
-            String subtitulo = null;
-            if(view!=null)subtitulo = view.getEdtAlias();
-            String titulo = (TextUtils.isEmpty(subtitulo) ?  "":  ""+subtitulo+" " ) + estrategiaEvalUiSelected.getEstrategia();
-            if(view!=null)view.showTituloEstrategiaSelected(titulo);
-        }
+            //String subtitulo = null;
+            //if(view!=null)subtitulo = view.getEdtAlias();
+            //String titulo = (TextUtils.isEmpty(subtitulo) ?  "":  ""+subtitulo+" " ) + estrategiaEvalUiSelected.getEstrategia();
+            if(view!=null)view.showTituloEstrategiaSelected(estrategiaEvalUiSelected.getEstrategia());
+        }*/
 
         /*
         CompetenciaUi competenciaSelected = null;
@@ -870,15 +874,15 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
             if (view!=null)view.onAcceptButtom();
     }
 
-    private void showFormaEvaluacionSelected(TipoUi formaEvaluacionSelected) {
+    private void showFormaEvaluacionSelected(TipoUi formaEvaluacionSelected, List<TipoUi> formaEvaluacionList) {
         if (view != null && formaEvaluacionSelected != null) {
-            view.showFormaEvaluacionSelected(formaEvaluacionSelected.getTitle());
+            view.showFormaEvaluacionSelected(formaEvaluacionSelected.getTitle(), formaEvaluacionList);
         }
     }
 
-    private void showTipoEvaluacionSelected(TipoUi tipoEvaluacionSelected) {
+    private void showTipoEvaluacionSelected(TipoUi tipoEvaluacionSelected, List<TipoUi> tipoEvaluacionList) {
         if (view != null && tipoEvaluacionSelected != null) {
-            view.showTipoEvaluacionSelected(tipoEvaluacionSelected.getTitle());
+            view.showTipoEvaluacionSelected(tipoEvaluacionSelected.getTitle(), tipoEvaluacionList);
         }
     }
 
@@ -1136,7 +1140,6 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         Log.d(TAG, "onBtnCreateClicked");
         //Validaciones
         rubricaTitle = getEdtRubrica();
-        rubricaAlias = getEdtAlias();
 
         if(complejo){
             if(estrategiaEvalUiSelected==null){
@@ -1201,7 +1204,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         createRubBid.execute(new CreateRubBid.RequestValues(
                 rubricaKeyEdit,
                 rubricaTitle,
-                rubricaAlias,
+                "",
                 tipoEvaluacionSelected,
                 formaEvaluacionSelected,
                 tipoNotaSelected,
@@ -1468,13 +1471,6 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         return null;
     }
 
-    private String getEdtAlias() {
-        if (view != null) {
-            return view.getEdtAlias();
-        }
-        return null;
-    }
-
     private boolean tipoNotaBtnClicked;
     private boolean tipoNivelBtnClicked;
 
@@ -1610,7 +1606,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
             if (tipoEvaluacionSelected == null) {
                 tipoEvaluacionSelected = tipoEvaluacionList.get(poscion > tipoEvaluacionList.size()|| poscion==-1 ? 0 :poscion );
             }
-            showTipoEvaluacionSelected(tipoEvaluacionSelected);
+            showTipoEvaluacionSelected(tipoEvaluacionSelected, tipoEvaluacionList);
         } catch (Exception ignored) {
         }
 
@@ -1622,7 +1618,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
             if (formaEvaluacionSelected == null) {
                 formaEvaluacionSelected = formaEvaluacionList.get(poscion > formaEvaluacionList.size()|| poscion==-1 ? 0 :poscion );
             }
-            showFormaEvaluacionSelected(formaEvaluacionSelected);
+            showFormaEvaluacionSelected(formaEvaluacionSelected, formaEvaluacionList);
         } catch (Exception ignored) {
         }
 
@@ -1679,7 +1675,8 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
             showTableview(false);
             if (tipoNotaBtnClicked) {
                 tipoNotaSelected = tipoNotaUi;
-                showTableview(false);
+                tipoNivelSelected = tipoNotaUi;
+                showTableview(true);
             } else if (tipoNivelBtnClicked) {
                 tipoNivelSelected = tipoNotaUi;
                 showTableview(true);
@@ -1720,8 +1717,9 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
                         getPrescion(response.getTipoNotaUi());
                         if (tipoNotaBtnClicked) {
                             showTipoNotaSelected(response.getTipoNotaUi());
+                            tipoNivelSelected = response.getTipoNotaUi();
                             tipoNotaSelected = response.getTipoNotaUi();
-                            showTableview(false);
+                            showTableview(true);
                         } else if (tipoNivelBtnClicked) {
                             showTipoNivelSelected(response.getTipoNotaUi());
                             tipoNivelSelected = response.getTipoNotaUi();

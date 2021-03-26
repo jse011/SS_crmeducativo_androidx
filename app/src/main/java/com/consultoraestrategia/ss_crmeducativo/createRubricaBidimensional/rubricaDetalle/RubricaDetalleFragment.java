@@ -17,6 +17,7 @@ import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.table
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.entity.TipoNotaUi;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.listener.ITableViewListener;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,30 +37,17 @@ public class RubricaDetalleFragment implements DetalleView  {
     private final BaseActivity baseActivity;
     @BindView(R.id.table)
     TableView table;
-
     //@BindView(R.id.titulo)
     //TextView textTitle;
-    @Nullable
-    @BindView(R.id.rootTableTitle)
-    ConstraintLayout rootTableTitle;
-    @BindView(R.id.btnBuscarCampoAccionList)
-    ImageView btnBuscarCampoAccionList;
-    @BindView(R.id.btnCompetenciaList)
-    ImageView btnCompetenciaList;
-    @BindView(R.id.btnCampoAccionList)
-    ImageView btnCampoAccionList;
+
     @BindView(R.id.rc_pre_view)
     RecyclerView rcPreView;
-    @BindView(R.id.txt_buscar_campo_accion)
-    TextView txtBuscarCampoAccion;
-    @BindView(R.id.txt_campo_accion)
-    TextView txtCampoAccion;
-    @BindView(R.id.img_more_indicador)
-    ImageView imgMoreIndicador;
-    @BindView(R.id.img_more_competencia)
-    ImageView imgMoreCompetencia;
-    @BindView(R.id.txt_competencia)
-    TextView txtCompetencia;
+    @BindView(R.id.btn_add_indicadores)
+    MaterialButton btnAddIndicadores;
+    @BindView(R.id.txt_info_add_indicadores)
+    TextView txtInfoAddindicadores;
+
+
 
 
 
@@ -129,30 +117,30 @@ public class RubricaDetalleFragment implements DetalleView  {
     }
 
 
-    @OnClick({R.id.btnCompetenciaList, R.id.btnCampoAccionList, R.id.btnBuscarCampoAccionList, R.id.txt_competencia, R.id.txt_campo_accion, R.id.txt_buscar_campo_accion})
+    @OnClick({R.id.btn_add_indicadores,/*R.id.btnCompetenciaList, R.id.btnCampoAccionList,*/ /*R.id.btnBuscarCampoAccionList,*//* R.id.txt_competencia, R.id.txt_campo_accion*//*, R.id.txt_buscar_campo_accion*/})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.rootTableTitle:
+            /*case R.id.rootTableTitle:
                 listener.onTableTitleClicked();
-                break;
-            case R.id.btnCompetenciaList:
+                break;*/
+            /*case R.id.btnCompetenciaList:
+                listener.onBtnDetalleCompetenciaListClicked();
+                break;*/
+            case R.id.btn_add_indicadores:
                 listener.onBtnDetalleCompetenciaListClicked();
                 break;
-            case R.id.txt_competencia:
-                listener.onBtnDetalleCompetenciaListClicked();
-                break;
-            case R.id.btnCampoAccionList:
+            /*case R.id.btnCampoAccionList:
                 listener.onBtnDetalleCampoAccionListClicked();
-                break;
-            case R.id.txt_campo_accion:
+                break;*/
+            /*case R.id.txt_campo_accion:
                 listener.onBtnDetalleCampoAccionListClicked();
-                break;
-            case R.id.txt_buscar_campo_accion:
+                break;*/
+            /*case R.id.txt_buscar_campo_accion:
                 listener.onBtnDetalleBuscarCampoAccionListClicked();
-                break;
-            case R.id.btnBuscarCampoAccionList:
+                break;*/
+           /*case R.id.btnBuscarCampoAccionList:
                 listener.onBtnDetalleBuscarCampoAccionListClicked();
-                break;
+                break;*/
         }
     }
 
@@ -163,21 +151,18 @@ public class RubricaDetalleFragment implements DetalleView  {
 
     @Override
     public void disabledBusquedaCamposAccion() {
-        btnBuscarCampoAccionList.setVisibility(View.GONE);
-        txtBuscarCampoAccion.setVisibility(View.GONE);
-        imgMoreCompetencia.setVisibility(View.GONE);
+
     }
 
     @Override
     public void disabledSelectorIndicador() {
-        btnCompetenciaList.setVisibility(View.GONE);
-        txtCompetencia.setVisibility(View.GONE);
-        imgMoreIndicador.setVisibility(View.GONE);
+        btnAddIndicadores.setVisibility(View.GONE);
+        txtInfoAddindicadores.setVisibility(View.GONE);
     }
 
     @Override
     public void disabledSelectorCamposAccion() {
-        btnCampoAccionList.setEnabled(false);
+
     }
 
     @Override

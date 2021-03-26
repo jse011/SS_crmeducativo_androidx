@@ -17,11 +17,10 @@ import java.util.List;
 public interface CabeceraView {
 
     String getEdtRubrica();
-    String getEdtAlias();
 
     void showTipoNotaSelected(TipoNotaUi tipoNota);
-    void showTipoEvaluacionSelected(String tipoEvaluacionTitulo);
-    void showFormaEvaluacionSelected(String formaEvaluacionTitulo);
+    void showTipoEvaluacionSelected(String tipoEvaluacionTitulo, List<TipoUi> tipoEvaluacionList);
+    void showFormaEvaluacionSelected(String formaEvaluacionTitulo, List<TipoUi> formaEvaluacionList);
     void showEscalaSelected(String escalaTitulo);
 
     void showCompetenciaList(List<CompetenciaUi> competenciaList);

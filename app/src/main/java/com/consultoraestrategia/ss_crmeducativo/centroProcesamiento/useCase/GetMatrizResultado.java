@@ -74,19 +74,21 @@ public class GetMatrizResultado {
                     //#region Cabecera
                     List<CabeceraUi> cabeceraUiList = new ArrayList<>();
                     cabeceraUiList.add(new CabeceraUi(CabeceraUi.TITULO_ALUMNO, 1));
-                    CabeceraUi cabeceratituloCompetencia = new CabeceraUi(CabeceraUi.TITULO, 1);
-                    int cantidadCapacidades = 0;
-                    for (ColumnTableRegEvalUi capacidadUi : matriz.getCapacidadList()){
-                        if(capacidadUi.getCompetenciaId()!=0)cantidadCapacidades++;
-                    }
-                    cabeceratituloCompetencia.setRowSpan(cantidadCapacidades);
+                    if(matriz.getCapacidadList()!=null && !matriz.getCapacidadList().isEmpty()){
+                        CabeceraUi cabeceratituloCompetencia = new CabeceraUi(CabeceraUi.TITULO, 1);
+                        int cantidadCapacidades = 0;
+                        for (ColumnTableRegEvalUi capacidadUi : matriz.getCapacidadList()){
+                            if(capacidadUi.getCompetenciaId()!=0)cantidadCapacidades++;
+                        }
+                        cabeceratituloCompetencia.setRowSpan(cantidadCapacidades);
 
-                    cabeceraUiList.add(cabeceratituloCompetencia);
-                    if(rubroformal==1){
-                        cabeceraUiList.add(new CabeceraUi(CabeceraUi.COMPETENCIA_FINAL_TITULO, 1));
-                    }
+                        cabeceraUiList.add(cabeceratituloCompetencia);
+                        if(rubroformal==1){
+                            cabeceraUiList.add(new CabeceraUi(CabeceraUi.COMPETENCIA_FINAL_TITULO, 1));
+                        }
 
-                    cabeceraUiList.add(new CabeceraUi(CabeceraUi.ESPACIO_CALENDARIO, 1));
+                        cabeceraUiList.add(new CabeceraUi(CabeceraUi.ESPACIO_CALENDARIO, 1));
+                    }
                     matriz.setCabeceraList(cabeceraUiList);
                     //#endregion
 
@@ -95,37 +97,41 @@ public class GetMatrizResultado {
                     CabeceraUi cabeceraUi = new CabeceraUi(CabeceraUi.ALUMNO, 1);
                     cabeceraUi.setTitulo(tituloCurso);
                     competenciaUiList.add(cabeceraUi);
-                    for (CabeceraUi competenciaUi: matriz.getCompetenciaList()){
-                        competenciaUi.setTipo(CabeceraUi.COMPETENCIA);
-                        int cantGrupoCapacidades = 0;
-                        for (ColumnTableRegEvalUi capacidadUi : matriz.getCapacidadList()){
-                            if(capacidadUi.getParendId()==competenciaUi.getCompetenciaId()|| //Contar capacidad o Promedios de la competencia
-                                    (capacidadUi.getParendId()==0 && capacidadUi.getCompetenciaId()==competenciaUi.getCompetenciaId())
-                            ){cantGrupoCapacidades++;}
+                    if(matriz.getCompetenciaList()!=null&&!matriz.getCompetenciaList().isEmpty()){
+                        for (CabeceraUi competenciaUi: matriz.getCompetenciaList()){
+                            competenciaUi.setTipo(CabeceraUi.COMPETENCIA);
+                            int cantGrupoCapacidades = 0;
+                            for (ColumnTableRegEvalUi capacidadUi : matriz.getCapacidadList()){
+                                if(capacidadUi.getParendId()==competenciaUi.getCompetenciaId()|| //Contar capacidad o Promedios de la competencia
+                                        (capacidadUi.getParendId()==0 && capacidadUi.getCompetenciaId()==competenciaUi.getCompetenciaId())
+                                ){cantGrupoCapacidades++;}
+                            }
+                            competenciaUi.setRowSpan(cantGrupoCapacidades>0?cantGrupoCapacidades:1);
+                            competenciaUiList.add(competenciaUi);
                         }
-                        competenciaUi.setRowSpan(cantGrupoCapacidades>0?cantGrupoCapacidades:1);
-                        competenciaUiList.add(competenciaUi);
-                    }
-                    if(rubroformal==1){
-                        competenciaUiList.add(new CabeceraUi(CabeceraUi.COMPETENCIA_FINAL, 1));
-                    }
+                        if(rubroformal==1){
+                            competenciaUiList.add(new CabeceraUi(CabeceraUi.COMPETENCIA_FINAL, 1));
+                        }
 
-                    competenciaUiList.add(new CabeceraUi(CabeceraUi.ESPACIO_CALENDARIO, 1));
+                        competenciaUiList.add(new CabeceraUi(CabeceraUi.ESPACIO_CALENDARIO, 1));
+                    }
                     matriz.setCompetenciaList(competenciaUiList);
                     //#endregion
 
                     //#region capacidad
                     List<ColumnTableRegEvalUi> capacidadListUis = new ArrayList<>();
                     capacidadListUis.add(new ColumnTableRegEvalUi(ColumnTableRegEvalUi.ALUMNO));
-                    for (ColumnTableRegEvalUi capacidadUi : matriz.getCapacidadList()){
-                        if(capacidadUi.getCompetenciaId()>0){
-                            capacidadUi.setTipo(ColumnTableRegEvalUi.NOTA);
-                        }else {
-                            capacidadUi.setTipo(ColumnTableRegEvalUi.FINAL);
+                    if(matriz.getCapacidadList()!=null && !matriz.getCapacidadList().isEmpty()){
+                        for (ColumnTableRegEvalUi capacidadUi : matriz.getCapacidadList()){
+                            if(capacidadUi.getCompetenciaId()>0){
+                                capacidadUi.setTipo(ColumnTableRegEvalUi.NOTA);
+                            }else {
+                                capacidadUi.setTipo(ColumnTableRegEvalUi.FINAL);
+                            }
+                            capacidadListUis.add(capacidadUi);
                         }
-                        capacidadListUis.add(capacidadUi);
+                        capacidadListUis.add(new ColumnTableRegEvalUi(ColumnTableRegEvalUi.ESPACIO_CALENDARIO));
                     }
-                    capacidadListUis.add(new ColumnTableRegEvalUi(ColumnTableRegEvalUi.ESPACIO_CALENDARIO));
                     matriz.setCapacidadList(capacidadListUis);
                     //endregion
 
@@ -167,7 +173,9 @@ public class GetMatrizResultado {
                         CellTableRegEvalUi alumnoEvaluacionUi = new CellTableRegEvalUi(CellTableRegEvalUi.ALUMNO);
                         alumnoEvaluacionUi.setAlumnoUi(alumnoUi);
                         evaluacionList.add(0, alumnoEvaluacionUi);
-                        evaluacionList.add(new CellTableRegEvalUi(CellTableRegEvalUi.ESPACIO_CALENDARIO));
+                        if(evaluacionList.size()>1){
+                            evaluacionList.add(new CellTableRegEvalUi(CellTableRegEvalUi.ESPACIO_CALENDARIO));
+                        }
                         evaluacionListList.add(evaluacionList);
                     }
                     matriz.setEvaluacionListList(evaluacionListList);
