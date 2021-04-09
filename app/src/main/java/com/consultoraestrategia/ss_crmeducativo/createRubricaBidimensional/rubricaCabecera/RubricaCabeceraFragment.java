@@ -138,7 +138,7 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
     }
 
 
-    @OnClick({/*R.id.btnTipoEvaluacion,*//* R.id.btnFormaEvaluacion,*//* R.id.btnTipoNota,*/ /*R.id.btnEscala,*/ /*R.id.btnCompetenciaList, R.id.btnCampoAccionList,  R.id.btnEstrategia ,*/R.id.promedio_logro_selected, /*R.id.cons_tipo_nota*/})
+    @OnClick({/*R.id.btnTipoEvaluacion,*//* R.id.btnFormaEvaluacion,*//* R.id.btnTipoNota,*/ /*R.id.btnEscala,*/ /*R.id.btnCompetenciaList, R.id.btnCampoAccionList,*/  R.id.btnEstrategia ,R.id.promedio_logro_selected, /*R.id.cons_tipo_nota*/})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             /*case R.id.btnTipoEvaluacion:
@@ -158,10 +158,10 @@ public class RubricaCabeceraFragment implements CabeceraView, RecyclerTouchListe
                 break;*/
             /* case R.id.btnCampoAccionList:
                 listener.onBtnCampoAccionListClicked();
-                break;
+                break;*/
             case R.id.btnEstrategia:
                 listener.onBtnEstrategiaEvaluacionClicked();
-                break;*/
+                break;
            case R.id.promedio_logro_selected:
                 listener.onBtnTipoNotaClicked();
                 break;/*

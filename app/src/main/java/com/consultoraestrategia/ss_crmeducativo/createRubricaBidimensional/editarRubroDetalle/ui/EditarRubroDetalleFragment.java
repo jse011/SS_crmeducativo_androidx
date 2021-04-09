@@ -2,6 +2,7 @@ package com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.edit
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -19,17 +20,20 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -99,9 +103,7 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     @BindView(R.id.txt_vermas_desem)
     TextView txtVermasDesem;
     @BindView(R.id.txt_desempenio)
-    JustifiedTextView txtDesempenio;
-    @BindView(R.id.conten_desempenio)
-    ConstraintLayout contenDesempenio;
+    TextView txtDesempenio;
     @BindView(R.id.text_descripcion)
     TextView textDescripcion;
     @BindView(R.id.scroll_edit_rubro_det)
@@ -112,12 +114,8 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     Button bttnPositive;
     @BindView(R.id.root)
     LinearLayout root;
-    @BindView(R.id.img_indicador)
-    ImageView imgIndicador;
-    @BindView(R.id.textView57)
-    TextView txtGuionDescripcion;
-    @BindView(R.id.textView155)
-    TextView txtGuionTitulo;
+    @BindView(R.id.conten_instrumento)
+    FrameLayout contenInstrumento;
 
 
     private EditarRubroDetalleCallBack callback;
@@ -257,65 +255,58 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
 
     @Override
     public void showIndicador(IndicadorUi indicadorUi) {
-        editTextTiIndicador.setText(indicadorUi.getTituloRubro());
+        textTiIndicador.setText(indicadorUi.getTitulo());
+        textSubIndicador.setText(indicadorUi.getAlias());
+        textDescripcion.setText(indicadorUi.getDescripcion());
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener( new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event )
+            {
+                if( keyCode == KeyEvent.KEYCODE_BACK )
+                {
+                    if(contenInstrumento!=null&&contenInstrumento.getVisibility()==View.VISIBLE){
+                        contenInstrumento.setVisibility(View.GONE);
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+        } );
 
-        if(TextUtils.isEmpty(indicadorUi.getAlias())){
-            textSubIndicador.setText(indicadorUi.getTitulo());
-            textTiIndicador.setVisibility(View.GONE);
-            txtGuionTitulo.setVisibility(View.GONE);
-        }else {
-            textSubIndicador.setText(indicadorUi.getAlias());
-            textTiIndicador.setVisibility(View.VISIBLE);
-            String titulo = "Título: "+ indicadorUi.getTitulo();
-            textTiIndicador.setText(titulo);
-            txtGuionTitulo.setVisibility(View.VISIBLE);
-        }
-
-        if (!TextUtils.isEmpty(indicadorUi.getDescripcion())) {
-            String descripcion = "Descripción: "+ indicadorUi.getDescripcion();
-            textDescripcion.setText(descripcion);
-            textDescripcion.setVisibility(View.VISIBLE);
-            txtGuionDescripcion.setVisibility(View.VISIBLE);
-        } else {
-            textDescripcion.setVisibility(View.GONE);
-            txtGuionDescripcion.setVisibility(View.GONE);
-        }
-
-        Drawable drawable = null;
+       /* Drawable drawable = null;
         switch (indicadorUi.getTipoIndicadorUi()) {
             case SER:
                 Glide.with(getContext()).load(indicadorUi.getUrl())
-                        .apply(Utils.getGlideRequestOptionsSimple().error(R.drawable.ic_speedometer)).into(imgIndicador);
+                        .apply(Utils.getGlideRequestOptionsSimple().error(R.drawable.ic_velocimetro_color)).into(imgIndicador);
                 break;
             case HACER:
                 Glide.with(getContext()).load(indicadorUi.getUrl())
-                        .apply(Utils.getGlideRequestOptionsSimple().error(R.drawable.ic_speedometer)).into(imgIndicador);
+                        .apply(Utils.getGlideRequestOptionsSimple().error(R.drawable.ic_velocimetro_color)).into(imgIndicador);
                 break;
             case SABER:
                 Glide.with(getContext()).load(indicadorUi.getUrl())
-                        .apply(Utils.getGlideRequestOptionsSimple().error(R.drawable.ic_speedometer)).into(imgIndicador);
+                        .apply(Utils.getGlideRequestOptionsSimple().error(R.drawable.ic_velocimetro_color)).into(imgIndicador);
                 break;
             case DEFAULT:
-                drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_speedometer);
+                drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_velocimetro_color);
                 break;
             default:
-                drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_speedometer);
+                drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_velocimetro_color);
                 break;
         }
-        if (drawable != null) imgIndicador.setImageDrawable(drawable);
+        if (drawable != null) imgIndicador.setImageDrawable(drawable);*/
 
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        imgIndicador.setColorFilter(filter);
+        //ColorMatrix matrix = new ColorMatrix();
+        //matrix.setSaturation(0);
+        //ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+       // imgIndicador.setColorFilter(filter);
 
         txtDesempenio.setText(indicadorUi.getDesempenioDesc());
-        txtDesempenio.post(new Runnable() {
-            @Override
-            public void run() {
-                presenter.postCantidadLineasDesempenio(txtDesempenio.getLineCount());
-            }
-        });
+
 
         //txtSubTitle.setText(indicadorUi.getTituloRubro());
         //editTextSubTitulo.setText(indicadorUi.getTituloRubro());
@@ -361,12 +352,11 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     @Override
     public void enabledVerMas(int maxLinTex) {
         txtVermasDesem.setOnClickListener(this);
-        contenDesempenio.setOnClickListener(this);
         formatMinimizarTextDesmepenio(maxLinTex);
     }
 
 
-    @OnClick({R.id.bttn_negative, R.id.bttn_positive})
+    @OnClick({R.id.bttn_negative, R.id.bttn_positive, R.id.bttn_atras_indicador, R.id. btn_info_tipo_nota})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bttn_negative:
@@ -374,6 +364,18 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
                 break;
             case R.id.bttn_positive:
                 presenter.onCampoTematicoListOk();
+                break;
+            case R.id.bttn_atras_indicador:
+                contenInstrumento.setVisibility(View.GONE);
+                break;
+            case R.id.btn_info_tipo_nota:
+                contenInstrumento.setVisibility(View.VISIBLE);
+                txtDesempenio.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        presenter.postCantidadLineasDesempenio(txtDesempenio.getLineCount());
+                    }
+                });
                 break;
            /* case R.id.img_edit:
                 presenter.onClickEditar();
@@ -384,6 +386,7 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
 
     private void onClickVerMas() {
         presenter.onClickVerMasDesempenio();
+
     }
 
 
@@ -456,7 +459,7 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     public void showDialogEditCriterio(CriterioEvaluacionUi criterioEvaluacionUi) {
         DialogKeyBoardCriteriosEvaluacion dialogkeyboard = DialogKeyBoardCriteriosEvaluacion.newInstance(criterioEvaluacionUi.getTitulo());
         dialogkeyboard.setTargetFragment(this, 16);
-        dialogkeyboard.show(getFragmentManager(), "dialogkeyboard");
+        dialogkeyboard.show(getParentFragmentManager(), "dialogkeyboard");
     }
 
 
@@ -464,9 +467,6 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_vermas_desem:
-                onClickVerMas();
-                break;
-            case R.id.conten_desempenio:
                 onClickVerMas();
                 break;
         }
@@ -507,4 +507,6 @@ public class EditarRubroDetalleFragment extends BaseDialogFragment<EditarRubroDe
     public void onCreateDialogKeyBoard(DialogkeyBoardView view) {
         presenter.onCreateDialogKeyBoard(view);
     }
+
+
 }

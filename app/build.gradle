@@ -5,14 +5,14 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.consultoraestrategia.ss_crmeducativo.educar"//CATA DocenteMentor3.0
-        //applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Parents
+        //applicationId "com.consultoraestrategia.ss_crmeducativo.educar"//CATA DocenteMentor3.0
+        applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Parents
         minSdkVersion 19
         targetSdkVersion 29
-        //versionCode 65//UPS Educar Parents
-        versionCode 54//CATA DocenteMentor3.0
-        //versionName "1.1.5" EDUCAR
-        versionName "1.2" //CATA
+        versionCode 66//UPS Educar Parents
+        //versionCode 55//CATA DocenteMentor3.0
+        versionName "1.2" //EDUCAR
+        //versionName "1.3" //CATA
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
