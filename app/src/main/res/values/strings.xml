@@ -66,8 +66,8 @@
         <item>Algebra</item>
     </array>
 
-    <!--<string name="app_name">Docente Mentor 3.0</string>-->
-    <string name="app_name">Educar Teacher</string>
+    <string name="app_name">Docente Mentor 3.0</string>
+    <!--<string name="app_name">Educar Teacher</string>-->
 
 
 <string name="login.progress.titulo">Iniciando</string>
@@ -224,15 +224,15 @@
     <string name="createrubbid_formaevaluacion_dialog_title">Forma Evaluación</string>
     <string name="createrubbid_tipoevaluacion_dialog_title">Tipo Evaluación</string>
     <string name="createrubbid_escalaevaluacion_dialog_title">Escala Evaluación</string>
-    <string name="createrubbid_error_rubricatitle_empty">Nombre de Rúbrica Vacío</string>
+    <string name="createrubbid_error_rubricatitle_empty">Ingrese el título de la rúbrica</string>
     <string name="createrubbid_error_rubricaalias_empty">Rúbrica Alias Vacío</string>
-    <string name="createrubbid_error_tipoevaluacion_empty">Tipo Evaluación Vacio</string>
-    <string name="createrubbid_error_formaevaluacion_empty">Forma Evaluación Vacío</string>
+    <string name="createrubbid_error_tipoevaluacion_empty">Tipo evaluación vacio</string>
+    <string name="createrubbid_error_formaevaluacion_empty">Forma evaluación vacío</string>
     <string name="createrubbid_error_tiponota_empty">Tipo Nota Vacío</string>
     <string name="createrubbid_error_escalaevaluacion_empty">Escala Evaluación Vacío</string>
-    <string name="createrubbid_error_campoaccion_empty">Campo Acción Vacío</string>
+    <string name="createrubbid_error_campoaccion_empty">No ha seleccionado campo Acción</string>
     <string name="createrubbid_error_tiponivel_empty">Tipo Nivel Vacío</string>
-    <string name="createrubbid_error_indicadores_notselected">No ha seleccionado indicadores</string>
+    <string name="createrubbid_error_indicadores_notselected">No ha seleccionado criterios</string>
     <string name="createrubbid_error_tiponivel_valortiponotalist_empty">El tipo de Nivel no tiene Niveles Asociados</string>
     <string name="createrubbid_error_peso_inidacadores">El peso de los inidicadores erroneos</string>
     <string name="fragment_rubrica_bidimiensional_cell_desc">Cambiar Descripción</string>
@@ -356,7 +356,7 @@
     <string name="title_anclar_resultados">¿Seguro que desea anclar todos los resultados? </string>
     <string name="teamlist_msg_lista_vacia">No hay lista grupos</string>
     <string name="teamlist_msg_lista_seleccionar_vacia">No hay lista de grupos que se puedan seleccionar</string>
-    <string name="title_activity_seleccionar_indicadores">Indicadores</string>
+    <string name="title_activity_seleccionar_indicadores">Criterios</string>
     <string name="resultados_desabilitados">No se encuentra vigente el periodo para resultados </string>
     <string name="cannot_open_file">No se puede abrir el archivo</string>
     <string name="title_cerrar_curso">¿Seguro que desea cerrar el curso? </string>

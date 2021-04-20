@@ -96,8 +96,12 @@ public class EditarRubroDetallePresenterImpl extends BaseFragmentPresenterImpl<E
             }else {
                 editableTitulo = indicadorUi.getTituloRubro();
             }*/
+            if(TextUtils.isEmpty(indicadorUi.getTituloRubro())){
+                editableTitulo = TextUtils.isEmpty(indicadorUi.getAlias())? indicadorUi.getTitulo() : indicadorUi.getAlias();
+            }else {
+                editableTitulo = indicadorUi.getTituloRubro();
+            }
 
-            editableTitulo = TextUtils.isEmpty(indicadorUi.getAlias())? indicadorUi.getTitulo() : indicadorUi.getAlias();
             if(view!=null)view.setTituloRubro(editableTitulo);
             editableSubTitulo = indicadorUi.getSubTituloRubro();
 

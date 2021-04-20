@@ -32,7 +32,7 @@ public class IndicadorCellViewHolder extends ColumnHeaderViewHolder<IndicadorNom
     @Override
     public void bind(IndicadorNombreUi columnHeader) {
         if(TextUtils.isEmpty(columnHeader.getIndicadorUi().getTituloRubro())){
-            txtTitle.setText(columnHeader.getIndicadorUi().getAlias());
+            txtTitle.setText(TextUtils.isEmpty(columnHeader.getIndicadorUi().getAlias())?columnHeader.getIndicadorUi().getTitulo():columnHeader.getIndicadorUi().getAlias());
         }else {
             txtTitle.setText(columnHeader.getIndicadorUi().getTituloRubro());
         }

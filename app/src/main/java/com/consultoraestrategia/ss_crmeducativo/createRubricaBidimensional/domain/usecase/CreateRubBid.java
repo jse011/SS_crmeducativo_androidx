@@ -34,6 +34,7 @@ public class CreateRubBid extends UseCaseSincrono<CreateRubBid.RequestValues, Cr
 
     @Override
     public void execute(RequestValues request, final Callback<ResponseValue> callback) {
+        //Solo listar el Peso más Niveles de logro
         try {
             for (List<Cell> cellList : request.getBodyList()){
                 List<Cell> cellDelte = new ArrayList<>();
@@ -42,8 +43,13 @@ public class CreateRubBid extends UseCaseSincrono<CreateRubBid.RequestValues, Cr
                             cellDelte.add(cell);
                         }
                 }
-                cellList.removeAll(cellDelte);
+                cellList.removeAll(cellDelte);//Eliminar e nivel de logro
+                int position = cellList.size()>0?cellList.size()-1:0;
+                Cell cell = cellList.get(position);
+                cellList.remove(position);//Eliminar el peso
+                cellList.add(cell);// Poner al principio el peso
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }

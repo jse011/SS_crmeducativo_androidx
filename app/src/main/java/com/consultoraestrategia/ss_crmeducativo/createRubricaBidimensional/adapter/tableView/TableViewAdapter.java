@@ -155,6 +155,7 @@ public class TableViewAdapter extends AbstractTableAdapter<RowHeader, ColumnHead
             SelectorValorRowViewHolder selectorValorRowViewHolder = (SelectorValorRowViewHolder)holder;
             ValorTipoNotaUi valorTipoNotaUi = (ValorTipoNotaUi) p_jValue;
             selectorValorRowViewHolder.bind(valorTipoNotaUi);
+            selectorValorRowViewHolder.changeColor(p_nXPosition);
         }else if(holder instanceof SelectorIconoRowViewHolder && p_jValue instanceof ValorTipoNotaUi){
             SelectorIconoRowViewHolder selectorIconoRowViewHolder = (SelectorIconoRowViewHolder) holder;
             ValorTipoNotaUi valorTipoNotaUi = (ValorTipoNotaUi) p_jValue;

@@ -232,7 +232,7 @@ public class SeleccionarCompetenciasActivity extends BaseActivity<SeleccionarCom
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_select, menu);
+        getMenuInflater().inflate(R.menu.menu_selecionar_competencia, menu);
         return true;
     }
 

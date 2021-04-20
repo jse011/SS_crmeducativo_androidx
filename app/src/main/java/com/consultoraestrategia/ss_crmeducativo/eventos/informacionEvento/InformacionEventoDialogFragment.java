@@ -237,33 +237,11 @@ public class InformacionEventoDialogFragment extends DialogFragment implements I
 
     @Override
     public void showCompartirEvento(final EventosUi eventosUi) {
-        Glide
-                .with(getContext())
-                .asBitmap()
-                .load(eventosUi.getImagen())
-                .apply(new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL))
-                .listener(new RequestListener<Bitmap>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                        IntentHelper.sendEmailUri(getContext(),null,eventosUi.getTitulo(), eventosUi.getDescripcion(), null);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        resource.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                        String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), resource, "Title", null);
-                        IntentHelper.sendEmailUri(getContext(),null,eventosUi.getTitulo(), eventosUi.getDescripcion(), Uri.parse(path));
-                    }
-                });
+        if(TextUtils.isEmpty(eventosUi.getImagen())){
+            IntentHelper.sendEmailUri(getContext(),null,eventosUi.getTitulo(), eventosUi.getDescripcion(), null);
+        }else {
+            IntentHelper.sendEmailUri(getContext(),null,eventosUi.getTitulo(), eventosUi.getDescripcion(), Uri.parse(eventosUi.getImagen()));
+        }
     }
 
     @Override

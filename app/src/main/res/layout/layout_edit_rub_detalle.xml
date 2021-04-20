@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="Editar indicador"
+            android:text="Editar criterio"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toEndOf="@+id/bttn_negative"
@@ -77,15 +77,15 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24sp"
-                android:hint="Título de la rúbrica"
+                android:hint="Título del criterio"
                 app:endIconCheckable="true"
                 app:endIconMode="clear_text"
                 app:endIconTint="#173766"
-                app:helperText="Puede modificar el nombre del indicador según su criterio o dar clic en la casualidad para conocer más del indicador"
+                app:helperText="Puede modificar el nombre del criterio o dar clic en el signo de interrigación para conocer más del criterio."
                 app:helperTextTextColor="@color/md_grey_600"
                 app:placeholderText="Ingrese un titulo"
                 app:startIconCheckable="true"
-                app:startIconDrawable="@drawable/ic_icon_matrix"
+                app:startIconDrawable="@drawable/ic_velocimetro"
                 app:startIconTint="#173766">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -158,7 +158,7 @@
                                     android:layout_marginTop="8dp"
                                     android:layout_marginStart="40dp"
                                     android:layout_marginEnd="24dp"
-                                    android:text="Marque o desmarque los campos de acción que tendrá su indicador"
+                                    android:text="Marque o desmarque los campos de acción que tendrá su criterio."
                                     android:textColor="@color/white"/>
 
                                 <androidx.recyclerview.widget.RecyclerView
@@ -177,7 +177,7 @@
                                     android:layout_marginStart="24dp"
                                     android:layout_marginTop="24dp"
                                     android:layout_marginEnd="24dp"
-                                    android:text="Criterios de evaluación"
+                                    android:text="Niveles de logro"
                                     android:textColor="@color/white"
                                     android:textSize="20sp" />
 
@@ -197,7 +197,7 @@
                                     android:layout_marginTop="8dp"
                                     android:layout_marginStart="40dp"
                                     android:layout_marginEnd="24dp"
-                                    android:text="Opcional, ingrese una descripción del nivel de logro"
+                                    android:text="Opcional, ingrese una descripción del nivel de logro."
                                     android:textColor="@color/white"/>
 
                                 <androidx.cardview.widget.CardView
@@ -310,7 +310,7 @@
                          android:layout_marginStart="16dp"
                          android:layout_marginTop="8dp"
                          android:layout_marginEnd="16dp"
-                         android:text="Información del indicador"
+                         android:text="Información del criterio"
                          android:textAlignment="center"
                          android:textColor="@color/black"
                          android:textSize="18sp" />
@@ -427,6 +427,7 @@
                              android:layout_height="wrap_content"
                              android:layout_marginStart="8dp"
                              android:layout_weight="4"
+                             android:textColor="@color/blue"
                              tools:text="Resuelve problemas de cantidad de manera autóma.." />
 
                      </LinearLayout>

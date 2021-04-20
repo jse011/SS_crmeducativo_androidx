@@ -753,6 +753,15 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
 
     @Override
     public void onSingleItemSelected(Object itemSelected, int selectedPosition) {
+        if (itemSelected instanceof EstrategiaEvalUi) {
+            EstrategiaEvalUi estrategiaEvalUi= (EstrategiaEvalUi)itemSelected;
+            Log.d(TAG, "onSingleItemSelected "+ estrategiaEvalUi.getEstrategia()+ view);
+            this.estrategiaEvalUiSelected= estrategiaEvalUi;
+            //String subtitulo = null;
+            //if(view!=null)subtitulo = view.getEdtAlias();
+            //String titulo = (TextUtils.isEmpty(subtitulo) ?  "":  ""+subtitulo+" " ) + estrategiaEvalUiSelected.getEstrategia();
+            if(view!=null)view.showTituloEstrategiaSelected(estrategiaEvalUiSelected.getEstrategia());
+        }
      //   Log.d(TAG, "onSingleItemSelected: " + itemSelected);
         /*if (itemSelected instanceof TipoNotaUi) {
             showProgress();
@@ -973,8 +982,8 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         columnHeaderList.add(new IndicadorNombreUi(null));
         IndicadorUi indicadorUi = new IndicadorUi();
         indicadorUi.setTitulo("%");
-        columnHeaderList.add(indicadorUi);
         columnHeaderList.addAll(valorTipoNotaList);
+        columnHeaderList.add(indicadorUi);
         rowHeaderList.addAll(indicadorList);
         int[] percentParts = getPercentPartsV2(100, indicadorListSize);
 
@@ -982,10 +991,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         for (IndicadorUi itemIndicadorUi : indicadorList) {
             List<Cell> cells1 = new ArrayList<>();
             cells1.add(new IndicadorNombreUi(itemIndicadorUi));
-            int percentPart = 0;
-            if(percentParts!=null && percentParts.length > i) percentPart=percentParts[i];
-            itemIndicadorUi.setPeso(String.valueOf(percentPart));
-            cells1.add(itemIndicadorUi);
+
             List<CriterioEvaluacionUi> criterioEvaluacionUiList = itemIndicadorUi.getCriterioEvaluacionUiList();
             if(rubricaKeyEdit!=null){
                 for (CriterioEvaluacionUi criterioEvaluacionUi : criterioEvaluacionUiList){
@@ -1016,6 +1022,11 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
                     cells1.addAll(criterioEvaluacionUiList);
                 }
             }
+
+            int percentPart = 0;
+            if(percentParts!=null && percentParts.length > i) percentPart=percentParts[i];
+            itemIndicadorUi.setPeso(String.valueOf(percentPart));
+            cells1.add(itemIndicadorUi);
 
             cells.add(cells1);
             i++;
@@ -1150,6 +1161,9 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
             if(estrategiaEvalUiSelected==null){
                 showImportantMessage("Seleccione un Tipo de Estrategia");
                 return;
+            }else if (TextUtils.isEmpty(rubricaTitle)) {
+                showImportantMessage(res.getString(R.string.createrubbid_error_rubricatitle_empty));
+                return;
             }
         }else {
             if (TextUtils.isEmpty(rubricaTitle)) {
@@ -1176,10 +1190,7 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
             showImportantMessage(res.getString(R.string.createrubbid_error_tiponota_empty));
             return;
         }
-        if (selectCampoAccionList.size() == 0) {
-            showImportantMessage(res.getString(R.string.createrubbid_error_campoaccion_empty));
-            return;
-        }
+
 
         if (tipoNivelSelected == null) {
             showImportantMessage(res.getString(R.string.createrubbid_error_tiponivel_empty));
@@ -1190,6 +1201,11 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
 
         if (indicadorListSelected.size() < 1) {
             showImportantMessage(res.getString(R.string.createrubbid_error_indicadores_notselected));
+            return;
+        }
+
+        if (selectCampoAccionList.size() == 0) {
+            showImportantMessage(res.getString(R.string.createrubbid_error_campoaccion_empty));
             return;
         }
 
@@ -1645,7 +1661,8 @@ public class CreateRubPresenterImpl extends BasePresenterImpl<CreateRubBidView> 
         try {
             int porcentaje = 0;
             for (List<Cell> cellList : bodyList) {
-                Cell cell = cellList.get(1);
+                int position = cellList.size()>0?cellList.size()-1:0;
+                Cell cell = cellList.get(position);
                 IndicadorUi indicadorUi = (IndicadorUi) cell;
                 porcentaje += Integer.parseInt(indicadorUi.getPeso());
                 if(Integer.parseInt(indicadorUi.getPeso())==0)return false;

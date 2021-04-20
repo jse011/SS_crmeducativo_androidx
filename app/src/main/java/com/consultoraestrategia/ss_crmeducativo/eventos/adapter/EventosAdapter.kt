@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
@@ -109,31 +110,10 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
             })
 
             btn_me_compartir.setOnClickListener {
-                Glide
-                        .with(this)
-                        .asBitmap()
-                        .load(eventosUi.imagen)
-                        .apply(RequestOptions()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .override(850))
-                        .listener(object : RequestListener<Bitmap?> {
-                            override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Bitmap?>, isFirstResource: Boolean): Boolean {
-                                IntentHelper.sendEmailUri(itemView.context, null, eventosUi.titulo, eventosUi.descripcion, null)
-                                return false
-                            }
+                val bytes = ByteArrayOutputStream()
+                IntentHelper.sendEmailUri(itemView.context, null, eventosUi.titulo, eventosUi.descripcion, Uri.parse(eventosUi.imagen))
 
-                            override fun onResourceReady(resource: Bitmap?, model: Any, target: Target<Bitmap?>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                                return false
-                            }
-                        })
-                        .into(object : SimpleTarget<Bitmap?>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
-                                val bytes = ByteArrayOutputStream()
-                                resource.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-                                val path: String = MediaStore.Images.Media.insertImage(context.contentResolver, resource, "Title", null)
-                                IntentHelper.sendEmailUri(itemView.context, null, eventosUi.titulo, eventosUi.descripcion, Uri.parse(path))
-                            }
-                        })
+
             }
 
 

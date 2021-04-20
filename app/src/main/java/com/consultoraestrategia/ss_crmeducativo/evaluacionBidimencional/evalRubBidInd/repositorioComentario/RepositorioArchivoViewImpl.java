@@ -269,7 +269,7 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
         for (Uri uri: photoPaths){
             try {
                 photoPaths2.add(ContentUriUtils.INSTANCE.getFilePath( context, uri));
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

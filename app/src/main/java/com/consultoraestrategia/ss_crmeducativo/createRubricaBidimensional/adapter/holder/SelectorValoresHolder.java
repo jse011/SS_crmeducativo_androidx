@@ -1,7 +1,10 @@
 package com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.adapter.holder;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,6 +41,13 @@ public class SelectorValoresHolder extends RecyclerView.ViewHolder {
     public void bind(ValorTipoNotaUi valorTipoNotaUi){
         tipoTexto.setText(valorTipoNotaUi.getTitle());
         nombre.setText(valorTipoNotaUi.getAlias());
+        try {
+            tipoTexto.setTextColor(Color.parseColor(valorTipoNotaUi.getColor()));
+            nombre.setTextColor(Color.parseColor(valorTipoNotaUi.getColor()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         txtValorNumerico.setText(String.valueOf(valorTipoNotaUi.getValorDefecto()));
         txtIsPrecision.setText(valorTipoNotaUi.getPrecisionList()==null||valorTipoNotaUi.getPrecisionList().isEmpty()?"No":"Sí");
         rcPrecision.setLayoutManager(new GridLayoutManager(itemView.getContext(),6));

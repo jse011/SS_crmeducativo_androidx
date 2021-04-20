@@ -164,16 +164,16 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="24dp"
                     android:hint="Promedio de logro"
-                    app:placeholderText=""
-                    app:helperText="Opcional, puede dar clic en la casualidad para conocer más del promedio de logro seleccionado"
+                    app:endIconCheckable="true"
+                    app:endIconDrawable="@drawable/ic_more_point"
+                    app:endIconMode="custom"
+                    app:endIconTint="#173766"
+                    app:helperText="Opcional, puede dar clic en la interrogación para conocer más del promedio de logro seleccionado."
                     app:helperTextTextColor="@color/md_grey_600"
+                    app:placeholderText=""
                     app:startIconCheckable="true"
                     app:startIconDrawable="@drawable/ic_tipo_evaluacion"
-                    app:startIconTint="#173766"
-                    app:endIconCheckable="true"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_more_point"
-                    app:endIconTint="#173766">
+                    app:startIconTint="#173766">
 
                     <AutoCompleteTextView
                         android:id="@+id/promedio_logro_selected"
@@ -181,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:focusable="false"
-                        android:inputType="none"/>
+                        android:inputType="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -191,6 +191,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginStart="24dp"
                     android:text="Criterios"
+                    android:visibility="gone"
                     android:textColor="#173766"
                     android:textSize="16sp"/>
 
@@ -199,11 +200,11 @@
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginStart="24dp"
                     app:icon="@drawable/ic_velocimetro"
                     app:iconTint="@color/white"
-                    android:text="Agregar indicadores">
+                    android:text="Agregar Criterios">
 
                 </com.google.android.material.button.MaterialButton>
 
@@ -283,15 +284,14 @@
                                     android:id="@+id/titulo"
                                     android:layout_width="0dp"
                                     android:layout_height="0dp"
-                                    android:layout_marginStart="10dp"
                                     android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="4dp"
                                     android:layout_marginBottom="8dp"
                                     android:gravity="center"
                                     android:maxLines="1"
                                     android:text="N°"
                                     android:textAlignment="center"
                                     android:textColor="#173766"
+                                    android:textSize="12sp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -322,7 +322,7 @@
                     android:textSize="12sp"
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="24dp"
-                    android:text="Se requiere que agregue indicadores a su rúbrica"
+                    android:text="Se requiere que agregue criterios a su rúbrica"
                     android:textColor="@color/md_grey_600"/>
 
             </LinearLayout>

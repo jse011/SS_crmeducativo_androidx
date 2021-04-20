@@ -32,6 +32,7 @@ public class IndicadorColumnViewHolder extends ColumnHeaderViewHolder<IndicadorU
     }
 
     public void bind(IndicadorUi columnHeader, int postionY) {
-        txtTitle.setText(String.valueOf(postionY+1));
+        String numero = String.valueOf(postionY+1)+".";
+        txtTitle.setText(numero);
     }
 }
