@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source.local.EvalRubBidLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source.remote.EvalRubBidRemoteDataSource;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.EvalProcUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.FiltroTableUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.IndicadorUi;
@@ -41,7 +41,7 @@ public class EvalRubBidRepository implements EvalRubBidDataSource {
     }
 
     @Override
-    public boolean deleteArchivoComentario(ArchivoComentarioUi archivoComentarioUi) {
+    public boolean deleteArchivoComentario(ArchivoUi archivoComentarioUi) {
         return localDataSource.deleteArchivoComentario(archivoComentarioUi);
     }
 
@@ -119,12 +119,8 @@ public class EvalRubBidRepository implements EvalRubBidDataSource {
     }
 
     @Override
-    public List<ArchivoComentarioUi> getArchivoComentarioList(String rubroEvaluacionId, int personaId) {
+    public List<ArchivoUi> getArchivoComentarioList(String rubroEvaluacionId, int personaId) {
         return localDataSource.getArchivoComentarioList(rubroEvaluacionId, personaId);
     }
 
-    @Override
-    public boolean saveComentarioArchivo(ArchivoComentarioUi archivoComentarioUi) {
-        return localDataSource.saveComentarioArchivo(archivoComentarioUi);
-    }
 }

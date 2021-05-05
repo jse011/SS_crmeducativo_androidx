@@ -1,7 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source.remote;
 
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source.EvalRubBidDataSource;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.EvalProcUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.FiltroTableUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.IndicadorUi;
@@ -32,7 +32,7 @@ public class EvalRubBidRemoteDataSource implements EvalRubBidDataSource {
     }
 
     @Override
-    public boolean deleteArchivoComentario(ArchivoComentarioUi archivoComentarioUi) {
+    public boolean deleteArchivoComentario(ArchivoUi archivoComentarioUi) {
         return false;
     }
 
@@ -107,12 +107,8 @@ public class EvalRubBidRemoteDataSource implements EvalRubBidDataSource {
     }
 
     @Override
-    public List<ArchivoComentarioUi> getArchivoComentarioList(String rubroEvaluacionId, int personaId) {
+    public List<ArchivoUi> getArchivoComentarioList(String rubroEvaluacionId, int personaId) {
         return null;
     }
 
-    @Override
-    public boolean saveComentarioArchivo(ArchivoComentarioUi archivoComentarioUi) {
-        return false;
-    }
 }

@@ -1,26 +1,42 @@
 package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.ui;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
+
+import com.consultoraestrategia.ss_crmeducativo.BuildConfig;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.adapter.AdjuntoAdapter;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UploadArchivo;
+import com.consultoraestrategia.ss_crmeducativo.lib.imageViewZoom.ImageZomDialog;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -36,6 +52,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +60,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.consultoraestrategia.ss_crmeducativo.CMRE;
 import com.consultoraestrategia.ss_crmeducativo.R;
-import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.base.dialogFragment.BaseDialogFragment;
@@ -55,7 +71,6 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.sou
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source.local.EvalRubBidLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source.remote.EvalRubBidRemoteDataSource;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.AlumnoProcesoUi;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.EvalProcUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.MensajeUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.PublicarEvaluacionUi;
@@ -68,12 +83,9 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.t
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.tableView.RowHeader;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.EvalRubBidIndPresenter;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.EvalRubBidIndPresenterImpl;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.adapter.ArchivoComentarioColumnCountProvider;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.adapter.ComentarioPredeAdapter;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.dialogComentario.EvalRubBidComPred;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.listener.EvalRubBidIndListener;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.repositorioComentario.RepositorioArchivoRubroPresenterImpl;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.repositorioComentario.RepositorioArchivoViewImpl;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.grupal.ui.EvaluacionBimencionalGrupalActividad;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.individual.ui.EvaluacionBimencionalActividad;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.plantilla.ui.EvaluacionBimencionalAbstractActividad;
@@ -85,50 +97,42 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.SaveArchivoRubro;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.SaveComentario;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UpdatePublicacionEvaluacion;
-import com.consultoraestrategia.ss_crmeducativo.lib.autoColumnGrid.AutoColumnGridLayoutManager;
 import com.consultoraestrategia.ss_crmeducativo.presicionEvaluacion.listener.PresicionListener;
 import com.consultoraestrategia.ss_crmeducativo.presicionEvaluacion.ui.PresicionDialogFragment;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.adapter.RepositorioAdapter;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.adapter.RepositoriotemDecoration;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.bundle.RepositorioTBunble;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.data.RepositorioRepository;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.data.local.RepositorioLocalDataSource;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.data.preferents.RepositorioPreferentsDataSource;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.data.remote.RepositorioRemoteDataSource;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.FragmentoTipo;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioUi;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.UpdateRepositorioFileUi;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.listener.RepositorioItemListener;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.listener.RepositorioItemUpdateListener;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.CloneImagenCompress;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.ConvertirPathRepositorioUpload;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.DowloadImageUseCase;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.GetUrlRepositorioArchivo;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.UpdateRepositorio;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.UploadRepositorio;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.consultoraestrategia.ss_crmeducativo.utils.Tutorial;
 import com.evrencoskun.tableview.listener.ITableViewListener;
-import com.iceteck.silicompressorr.SiliCompressor;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
-import droidninja.filepicker.FilePickerBuilder;
 
 /**
  * Created by @stevecampos on 28/02/2018.
  */
 
-public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView, EvalRubBidIndPresenter, EvalRubBidIndListener> implements EvalRubBidIndView, PresicionListener, View.OnClickListener, ITableViewListener, TextWatcher, ComentarioPredeAdapter.ArchivoComentarioListener, RepositorioItemListener, RepositorioItemUpdateListener {
+public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView, EvalRubBidIndPresenter, EvalRubBidIndListener> implements EvalRubBidIndView, PresicionListener, View.OnClickListener, ITableViewListener, TextWatcher, ComentarioPredeAdapter.ArchivoComentarioListener, AdjuntoAdapter.Listener {
     public static final String TAG = EvalRubBidIndFragment.class.getSimpleName();
-    private static final int CUSTOM_REQUEST_CODE = 423;
+    private static final int CUSTOM_REQUEST_CODE = 423, REQUEST_TAKE_PHOTO = 544, REQUEST_GALLERY_IMAGE = 545;
     @BindView(R.id.text_alumn_name)
     TextView textAlumnName;
     @BindView(R.id.img_alumn_profile)
@@ -196,13 +200,12 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
     @BindView(R.id.btn_publicar)
     ImageView btnPublicar;
 
-    private RepositorioArchivoRubroPresenterImpl baseRepositorioPresenter;
     private ComentarioPredeAdapter comentarioPredeAdapter;
     private RepositorioAdapter repositorioAdapter;
     private TableViewAdapter adapter;
-    private RepositorioArchivoViewImpl repositorioViewImpl;
     private boolean initTutorial;
     private RepositoriotemDecoration repositorioItemDecoration;
+    private AdjuntoAdapter adjuntoAdapter;
 
     public static EvalRubBidIndFragment newInstance(Bundle bundle) {
         EvalRubBidIndFragment frag = new EvalRubBidIndFragment();
@@ -219,19 +222,6 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
     @Override
     protected EvalRubBidIndPresenter getPresenter() {
 
-        RepositorioRepository repositorioRepository = new RepositorioRepository(new RepositorioLocalDataSource(),
-                new RepositorioPreferentsDataSource(),
-                new RepositorioRemoteDataSource(ApiRetrofit.getInstance()));
-
-        baseRepositorioPresenter = new RepositorioArchivoRubroPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(),
-                new DowloadImageUseCase(repositorioRepository),
-                new ConvertirPathRepositorioUpload(),
-                new UploadRepositorio(repositorioRepository),
-                new GetUrlRepositorioArchivo(repositorioRepository),
-                new UpdateRepositorio(repositorioRepository, SiliCompressor.with(getContext())),
-                new CloneImagenCompress(SiliCompressor.with(getContext()), getContext()));
-
-
         EvalRubBidRepository evalRubBidRepository = new EvalRubBidRepository(new EvalRubBidLocalDataSource(), new EvalRubBidRemoteDataSource());
         return new EvalRubBidIndPresenterImpl(
                 new UseCaseHandler(new UseCaseThreadPoolScheduler()),
@@ -241,7 +231,8 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
                 new SaveArchivoRubro(evalRubBidRepository),
                 new DeleteArchivoComentario(evalRubBidRepository),
                 new GetPublicacionEvaluacion(evalRubBidRepository),
-                new UpdatePublicacionEvaluacion(evalRubBidRepository)
+                new UpdatePublicacionEvaluacion(evalRubBidRepository),
+                new UploadArchivo(getContext())
         );
 
     }
@@ -284,6 +275,7 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
 
     }
 
+
     public void setFocus(View view) {
         if (view instanceof RecyclerView) {
             ((RecyclerView) view).setFocusable(false);
@@ -307,15 +299,31 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        repositorioViewImpl = new RepositorioArchivoViewImpl(this, presenter);
-        setRepositorioAchivoView(repositorioViewImpl);
-        repositorioViewImpl.setPresenter(baseRepositorioPresenter);
-        baseRepositorioPresenter.onViewCreated();
-        RepositorioTBunble tBunble = new RepositorioTBunble();
-        tBunble.setRepositorio(RepositorioUi.ARCHIVO_RUBRO);
-        tBunble.setFragmentoTipo(FragmentoTipo.SUBIDA_DESCARGA_ARCHIVOS_VINCULOS);
-        //tBunble.setColorCurso();
-        baseRepositorioPresenter.setExtras(tBunble.getBundle());
+
+       // RepositorioTBunble tBunble = new RepositorioTBunble();
+        //tBunble.setRepositorio(RepositorioUi.ARCHIVO_RUBRO);
+        //tBunble.setFragmentoTipo(FragmentoTipo.SUBIDA_DESCARGA_ARCHIVOS_VINCULOS);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Map<Uri, String> photoPaths = new HashMap<>();
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            Uri uri = galleryAddPic();
+            photoPaths.put(uri, currentPhotoFileName);
+            presenter.onUpdload(photoPaths);
+        }
+    }
+
+
+    private Uri galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getContext().sendBroadcast(mediaScanIntent);
+        return  contentUri;
     }
 
     private void initEditText() {
@@ -331,21 +339,9 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
         recycomentarios.setAdapter(comentarioPredeAdapter);
         recycomentarios.setNestedScrollingEnabled(false);
 
-
-        AutoColumnGridLayoutManager autoColumnGridLayoutManager = new AutoColumnGridLayoutManager(getContext(), OrientationHelper.VERTICAL, false);
-        ArchivoComentarioColumnCountProvider columnCountProvider = new ArchivoComentarioColumnCountProvider(getContext());
-        autoColumnGridLayoutManager.setColumnCountProvider(columnCountProvider);
-        recRubroArchivo.setLayoutManager(autoColumnGridLayoutManager);
-        repositorioAdapter = new RepositorioAdapter(this, this, recRubroArchivo, true);
-        recRubroArchivo.setAdapter(repositorioAdapter);
-        recRubroArchivo.setHasFixedSize(true);
-        recRubroArchivo.setNestedScrollingEnabled(false);
-
-
-        if(repositorioItemDecoration==null){
-            repositorioItemDecoration = new RepositoriotemDecoration(700);
-            recRubroArchivo.addItemDecoration(repositorioItemDecoration);
-        }
+        recRubroArchivo.setLayoutManager(new LinearLayoutManager(getContext()));
+        adjuntoAdapter = new AdjuntoAdapter(this);
+        recRubroArchivo.setAdapter(adjuntoAdapter);
     }
 
     @Override
@@ -523,10 +519,13 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
     @Override
     public void onStart() {
         super.onStart();
-        this.getDialog().getWindow()
-                .setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        this.getDialog().getWindow().
-                setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if ( this.getDialog() != null) {
+            this.getDialog().getWindow()
+                    .setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            this.getDialog().getWindow().
+                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
     }
 
     @Override
@@ -564,7 +563,7 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
 
     @Override
     public void showPickPhoto(boolean enableVideo) {
-        FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
+       /* FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
                 //.setSelectedFiles(stringList)
                 .setActivityTheme(R.style.LibAppThemeLibrary)
                 //.setActivityTitle("Selección de multimedia")
@@ -577,7 +576,7 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
                 .setMaxCount(1);
                 //.setCameraPlaceholder(R.drawable.custom_camera)
                 //.withOrientation(Orientation.UNSPECIFIED);
-        filePickerBuilder.pickPhoto(this, CUSTOM_REQUEST_CODE);
+        filePickerBuilder.pickPhoto(this, CUSTOM_REQUEST_CODE);*/
     }
 
     @Override
@@ -626,26 +625,101 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
         CMRE.saveNotifyChangeDataBase(getContext());
     }
 
+    @Override
+    public void showCamera() {
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.CAMERA)
+                .withListener(new PermissionListener() {
+                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+                        ArrayList<String> stringList = new ArrayList<>();
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                            // Create the File where the photo should go
+                            File photoFile = null;
+                            try {
+                                photoFile = createImageFile();
+                            } catch (IOException ex) {
+                                // Error occurred while creating the File
+                            }
+                            // Continue only if the File was successfully created
+                            if (photoFile != null) {
+                                Uri photoURI = FileProvider.getUriForFile(getContext(),
+                                        BuildConfig.APPLICATION_ID+".provider",
+                                        photoFile);
+                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+
+                                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                            }
+                        }
+                    }
+                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(getContext(), "Se necesita permiso ", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                    }
+                }).check();
+    }
+
+    @Override
+    public void addTareaArchivo(ArchivoUi item) {
+        adjuntoAdapter.add(item);
+    }
+
+    @Override
+    public void updateTareaArchivo(ArchivoUi item) {
+        adjuntoAdapter.update(item);
+    }
+
+    @Override
+    public void removeTareaArchivo(ArchivoUi item) {
+        adjuntoAdapter.remove(item);
+    }
+
+    @Override
+    public void showGalery() {
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto, REQUEST_GALLERY_IMAGE);
+
+
+
+    }
+
+
+    String currentPhotoPath;
+    String currentPhotoFileName;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        currentPhotoFileName = image.getName();
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        baseRepositorioPresenter.onResume();
-        // single example
+
     }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        baseRepositorioPresenter.onDestroyView();
         unbinder.unbind();
     }
 
-
-    public List<RepositorioFileUi> getListFiles() {
-        return baseRepositorioPresenter.getListFiles();
-    }
 
     @Override
     public void showTableModoAvanzado(String titulo, List<ColumnHeader> headerList, List<RowHeader> rows, List<List<Cell>> bodyList, boolean disabledEval) {
@@ -826,8 +900,8 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
     }
 
     @Override
-    public void showListComentariosArchivos(List<ArchivoComentarioUi> objects) {
-        repositorioViewImpl.changeList(new ArrayList<RepositorioFileUi>(objects));
+    public void showListComentariosArchivos(List<ArchivoUi> objects) {
+        adjuntoAdapter.setList(objects);
     }
 
     @Override
@@ -859,68 +933,11 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
         presenter.onClickComentarioNormal(mensajeUi);
     }
 
-    @Override
-    public void onClickDownload(RepositorioFileUi repositorioFileUi) {
-        repositorioViewImpl.onClickDownload(repositorioFileUi);
-    }
 
-    @Override
-    public void onClickClose(RepositorioFileUi repositorioFileUi) {
-        repositorioViewImpl.onClickClose(repositorioFileUi);
-    }
-
-    @Override
-    public void onClickCheck(RepositorioFileUi repositorioFileUi) {
-        repositorioViewImpl.onClickCheck(repositorioFileUi);
-    }
-
-    @Override
-    public void onClickArchivo(RepositorioFileUi repositorioFileUi) {
-        repositorioViewImpl.onClickArchivo(repositorioFileUi);
-    }
-
-    @Override
-    public void onClickUpload(UpdateRepositorioFileUi updateRepositorioFileUi) {
-        repositorioViewImpl.onClickUpload(updateRepositorioFileUi);
-    }
-
-    @Override
-    public void onClickRemover(UpdateRepositorioFileUi updateRepositorioFileUi) {
-        repositorioViewImpl.onClickRemover(updateRepositorioFileUi);
-    }
-
-    @Override
-    public void onClickClose(UpdateRepositorioFileUi updateRepositorioFileUi) {
-        repositorioViewImpl.onClickClose(updateRepositorioFileUi);
-    }
-
-    @Override
-    public void onClickArchivo(UpdateRepositorioFileUi updateRepositorioFileUi) {
-        repositorioViewImpl.onClickArchivo(updateRepositorioFileUi);
-    }
-
-
-    public void setRepositorioAchivoView(RepositorioArchivoViewImpl repositorioViewImpl) {
-        this.repositorioViewImpl = repositorioViewImpl;
-        this.repositorioViewImpl.setAdapterArchivo(repositorioAdapter);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        repositorioViewImpl.onActivityResult(requestCode, resultCode, data, getContext());
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        repositorioViewImpl.destroy();
-    }
 
     @OnClick(R.id.btn_add_evidencias)
     public void onClickAddMultimedia() {
-        repositorioViewImpl.onClickAddMultimedia();
+        new OpcionesAdjuntarDialog(presenter).show(getChildFragmentManager(), "OpcionesAdjuntarDialog");
     }
 
     @Override
@@ -954,5 +971,130 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
     @OnClick(R.id.btn_publicar)
     public void onClickedBtnPublicar() {
         presenter.btnPublicar();
+    }
+
+    @Override
+    public void onClickRemoveTareaArchivo(ArchivoUi archivoUi) {
+        presenter.removerComentarioArchivo(archivoUi);
+    }
+
+    @Override
+    public void onClickTareaArchivo(ArchivoUi tareaArchivoUi) {
+        ImageZomDialog imageZomDialog = new ImageZomDialog();
+        imageZomDialog.show(getContext(),tareaArchivoUi.getUrl());
+    }
+
+
+    public static class OpcionesAdjuntarDialog extends BottomSheetDialogFragment implements View.OnClickListener {
+        EvalRubBidIndPresenter presenter;
+
+        public OpcionesAdjuntarDialog(EvalRubBidIndPresenter presenter) {
+            this.presenter = presenter;
+        }
+
+        private Unbinder unbinder;
+        private android.app.AlertDialog alertDialog;
+
+        @BindView(R.id.bottomSheet)
+        LinearLayout bottomSheet;
+        @BindView(R.id.root)
+        CoordinatorLayout root;
+
+        private BottomSheetBehavior<LinearLayout> sheetBehavior;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View contentView = inflater.inflate(R.layout.dialog_seleccionar_archivo_evaluacion, container, false);
+            unbinder = ButterKnife.bind(this, contentView);
+            root.setOnClickListener(v -> dismiss());
+            sheetBehavior = BottomSheetBehavior.from(bottomSheet);
+            /**
+             * bottom sheet state change listener
+             * we are changing button text when sheet changed state
+             * */
+            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                double SLIDEOFFSETHIDEN = -0.9f;
+
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    switch (newState) {
+
+                        case BottomSheetBehavior.STATE_COLLAPSED: {
+                            dismiss();
+                            Log.d("BSB", "collapsed");
+                        }
+                        case BottomSheetBehavior.STATE_SETTLING: {
+
+                            Log.d("BSB", "settling");
+                        }
+                        case BottomSheetBehavior.STATE_EXPANDED: {
+
+                            Log.d("BSB", "expanded");
+                        }
+                        case BottomSheetBehavior.STATE_HIDDEN: {
+
+                            Log.d("BSB", "hidden");
+                        }
+                        case BottomSheetBehavior.STATE_DRAGGING: {
+
+                            Log.d("BSB", "dragging");
+                        }
+                    }
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                    try {
+                        if (SLIDEOFFSETHIDEN >= slideOffset) dismiss();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+            return contentView;
+        }
+
+        @Override
+        public void onClick(View view) {
+            int i = view.getId();
+        }
+
+        @Override
+        public void onAttach(@NonNull Context context) {
+            super.onAttach(context);
+        }
+
+        public void onStart() {
+            super.onStart();
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            if(alertDialog!=null)alertDialog.dismiss();
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            unbinder.unbind();
+        }
+
+        @OnClick({R.id.btn_camera, R.id.btn_galeria})
+        public void onViewClicked(View view) {
+            switch (view.getId()) {
+                case R.id.btn_camera:
+                    if(presenter!=null)presenter.onClickCamera();
+                    dismiss();
+                    break;
+                case R.id.btn_galeria:
+                    if(presenter!=null)presenter.onClickGalery();
+                    dismiss();
+                    break;
+            }
+        }
+
     }
 }

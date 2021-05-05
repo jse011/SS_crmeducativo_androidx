@@ -1,6 +1,6 @@
 package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.ui;
 
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.MensajeUi;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface ComentarioView  {
 
     void hideBtnSendComentario();
 
-    void showListComentariosArchivos(List<ArchivoComentarioUi> objects);
+    void showListComentariosArchivos(List<ArchivoUi> objects);
 
     void clearTextInpuComentario();
 }

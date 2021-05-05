@@ -62,7 +62,7 @@ public class RepositorioArchivoTareaPresenterImpl extends BaseRepositorioPresent
 
     @Override
     public void onClickDownload(RepositorioFileUi repositorioFileUi) {
-        handler.execute(dowloadImageUseCase, new DowloadImageUseCase.RequestValues(repositorioFileUi),
+       /* handler.execute(dowloadImageUseCase, new DowloadImageUseCase.RequestValues(repositorioFileUi),
                 new UseCase.UseCaseCallback<UseCase.ResponseValue>() {
                     @Override
                     public void onSuccess(UseCase.ResponseValue response) {
@@ -82,7 +82,7 @@ public class RepositorioArchivoTareaPresenterImpl extends BaseRepositorioPresent
                                     if(success){
                                         moverArchivosAlaCarpetaTarea(responseValue.getRepositorioFileUi());
                                         setUpdate(responseValue.getRepositorioFileUi());
-                                        if(view!=null)view.leerArchivo(repositorioFileUi.getPath());
+                                        if(view!=null)view.getFileNameDowload(repositorioFileUi.getPath());
 
                                     }else {
                                         repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.ERROR_DESCARGA);
@@ -104,7 +104,7 @@ public class RepositorioArchivoTareaPresenterImpl extends BaseRepositorioPresent
 
                     }
                 }
-        );
+        );*/
     }
 
     private void moverArchivosAlaCarpetaTarea(RepositorioFileUi repositorioFileUi) {

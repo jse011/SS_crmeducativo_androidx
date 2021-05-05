@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio;
 
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,6 +32,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<RepositorioView> implements RepositorioPresenter {
     private String TAG = BaseRepositorioPresenterImpl.class.getSimpleName();
@@ -134,6 +136,16 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
     @Override
     public void onClickDownload(final RepositorioFileUi repositorioFileUi) {
 
+        repositorioFileUi.setCancel(false);
+        String url = repositorioFileUi.getUrl();
+        if(TextUtils.isEmpty(url)){
+            repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.ERROR_DESCARGA);
+            setUpdate(repositorioFileUi);
+            return;
+        }
+
+        if(view!=null)view.download(repositorioFileUi);
+/*
         handler.execute(dowloadImageUseCase, new DowloadImageUseCase.RequestValues(repositorioFileUi),
                 new UseCase.UseCaseCallback<UseCase.ResponseValue>() {
                     @Override
@@ -172,7 +184,7 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
 
                     }
                 }
-        );
+        );*/
     }
 
     protected void setUpdate(RepositorioFileUi repositorioFileUi) {
@@ -184,15 +196,16 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
     @Override
     public void onClickArchivo(RepositorioFileUi repositorioFileUi) {
         if(repositorioFileUi instanceof UpdateRepositorioFileUi){
-            if(view!=null)view.leerArchivo(repositorioFileUi.getPath());
+            if(view!=null)view.leerArchivo(repositorioFileUi.getPathLocal());
         }else if(repositorioFileUi.getEstadoFileU()==RepositorioEstadoFileU.DESCARGA_COMPLETA){
-            if(view!=null)view.leerArchivo(repositorioFileUi.getPath());
+            if(view!=null)view.leerArchivo(repositorioFileUi.getPathLocal());
         }
     }
 
     @Override
     public void onClickClose(RepositorioFileUi repositorioFileUi) {
         repositorioFileUi.setCancel(true);
+        if(view!=null)view.cancelDownload(repositorioFileUi.getDownloadId());
     }
 
     @Override
@@ -205,10 +218,13 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
         if(view!=null)view.onShowPickDoc(cantidadMaxima, new ArrayList<UpdateRepositorioFileUi>());
     }
 
-    @Override
+    @Deprecated
     public void onSalirSelectPiket(ArrayList<String> photoPaths) {
 
-        convertirPathRepositorioUpload.execute(photoPaths, new UseCaseSincrono.Callback<List<UpdateRepositorioFileUi>>() {
+    }
+    @Override
+    public void onSalirSelectPiket(Map<Uri,String>  fileName) {
+        convertirPathRepositorioUpload.execute(fileName, new UseCaseSincrono.Callback<List<UpdateRepositorioFileUi>>() {
             @Override
             public void onResponse(boolean succes, List<UpdateRepositorioFileUi> value) {
                 if(succes){
@@ -251,10 +267,11 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
                             updateRepositorioFileUiList.remove(updateRepositorioFileUi);
                             RepositorioFileUi repositorioFileUi = new RepositorioFileUi();
                             repositorioFileUi.setArchivoId(updateRepositorioFileUi.getArchivoId());
-                            repositorioFileUi.setPath(updateRepositorioFileUi.getPath());
+                            //repositorioFileUi.setPath(updateRepositorioFileUi.getPath());
                             repositorioFileUi.setNombreArchivo(updateRepositorioFileUi.getNombreArchivo());
                             repositorioFileUi.setNombreRecurso(updateRepositorioFileUi.getNombreRecurso());
                             repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.DESCARGA_COMPLETA);
+                            repositorioFileUi.setUrl(updateRepositorioFileUi.getUrl());
                             repositorioFileUi.setUrl(updateRepositorioFileUi.getUrl());
                             repositorioFileUi.setTipoFileU(updateRepositorioFileUi.getTipoFileU());
                             repositorioFileUi.setSelect(true);
@@ -389,6 +406,46 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
     }
 
     @Override
+    public void onProgressDownload(double progress, RepositorioFileUi repositorioFileUi) {
+        repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.ENPROCESO_DESCARGA);
+        if(view!=null) view.setUpdateProgress(repositorioFileUi, (int)progress);
+    }
+
+
+    @Override
+    public void finishedDownload(long downloadId) {
+        RepositorioFileUi repositorioFileUi = null;
+        for(RepositorioFileUi item : repositorioFileUiList){
+            if(item.getDownloadId() == downloadId){
+                repositorioFileUi = item;
+                break;
+            }
+        }
+
+        if(view!=null && repositorioFileUi!=null){
+           view.getFileNameDowload(repositorioFileUi);
+            updateRepositorioDowload.execute(new UpdateRepositorio.Request(repositorioFileUi.getArchivoId(),repositorioFileUi.getTipoFileU() ,repositorioFileUi.getPathLocal(), repositorio));
+            setUpdate(repositorioFileUi);
+            repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.DESCARGA_COMPLETA);
+            if(view!=null)view.leerArchivo(repositorioFileUi.getPathLocal());
+        }
+    }
+
+    @Override
+    public void canceledDownload(long downloadId) {
+        RepositorioFileUi repositorioFileUi = null;
+        for(RepositorioFileUi item : repositorioFileUiList){
+            if(item.getDownloadId() == downloadId){
+                repositorioFileUi = item;
+                break;
+            }
+        }
+        if(repositorioFileUi!=null){
+            repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.ERROR_DESCARGA);
+        }
+    }
+
+    @Override
     public void setExtras(Bundle extras) {
         super.setExtras(extras);
         RepositorioTBunble tBunble = RepositorioTBunble.clone(extras);
@@ -468,4 +525,6 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
         }
         super.onDestroyView();
     }
+
+
 }

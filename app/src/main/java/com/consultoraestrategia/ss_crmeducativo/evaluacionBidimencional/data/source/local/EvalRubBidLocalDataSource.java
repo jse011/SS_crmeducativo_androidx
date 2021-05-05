@@ -55,7 +55,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.TipoNotaC;
 import com.consultoraestrategia.ss_crmeducativo.entities.ValorTipoNotaC;
 import com.consultoraestrategia.ss_crmeducativo.entities.queryCustomList.IndicadorQuery;
 import com.consultoraestrategia.ss_crmeducativo.entities.queryCustomList.PersonaContratoQuery;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.CampotematicoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.DimensionObservadaUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.DimensionUi;
@@ -176,7 +176,7 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
     }
 
     @Override
-    public boolean deleteArchivoComentario(ArchivoComentarioUi archivoComentarioUi) {
+    public boolean deleteArchivoComentario(ArchivoUi archivoComentarioUi) {
 
         EvaluacionProcesoC evaluacionProcesoC = SQLite.select()
                 .from(EvaluacionProcesoC.class)
@@ -200,7 +200,7 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
 
         ArchivosRubroProceso archivosRubroProceso = SQLite.select()
                 .from(ArchivosRubroProceso.class)
-                .where(ArchivosRubroProceso_Table.key.eq(archivoComentarioUi.getArchivoId()))
+                .where(ArchivosRubroProceso_Table.key.eq(archivoComentarioUi.getId()))
                 .querySingle();
 
         if(archivosRubroProceso!=null){
@@ -2041,8 +2041,8 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
     }
 
     @Override
-    public List<ArchivoComentarioUi> getArchivoComentarioList(String rubroEvaluacionId, int personaId) {
-        List<ArchivoComentarioUi> archivoComentarioUis = new ArrayList<>();
+    public List<ArchivoUi> getArchivoComentarioList(String rubroEvaluacionId, int personaId) {
+        List<ArchivoUi> archivoComentarioUis = new ArrayList<>();
 
         EvaluacionProcesoC evaluacionProcesoC = SQLite.select()
                 .from(EvaluacionProcesoC.class)
@@ -2059,10 +2059,10 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
                 .queryList();
 
         for (ArchivosRubroProceso archivosRubroProceso: archivosRubroProcesoList){
-            ArchivoComentarioUi archivoUi = new ArchivoComentarioUi();
+            ArchivoUi archivoUi = new ArchivoUi();
             archivoUi.setAlumnoId(personaId);
             archivoUi.setRubroEvaluacionId(rubroEvaluacionId);
-            archivoUi.setArchivoId(archivosRubroProceso.getKey());
+            archivoUi.setId(archivosRubroProceso.getKey());
             String file = "";
             try {
                 int p = Math.max(archivosRubroProceso.getUrl().lastIndexOf('/'), archivosRubroProceso.getUrl().lastIndexOf('\\'));
@@ -2071,68 +2071,13 @@ public class EvalRubBidLocalDataSource implements EvalRubBidDataSource {
                 e.printStackTrace();
             }
 
-            archivoUi.setNombreArchivo(file);
-            archivoUi.setNombreRecurso(file);
-            switch (archivosRubroProceso.getTipoArchivoId()) {
-                case ArchivosRubroProceso.TIPO_IMAGEN:
-                    archivoUi.setTipoFileU(RepositorioTipoFileU.IMAGEN);
-                    break;
-                case ArchivosRubroProceso.TIPO_VIDEO:
-                    archivoUi.setTipoFileU(RepositorioTipoFileU.VIDEO);
-                    break;
-            }
+            archivoUi.setNombre(file);
             archivoUi.setUrl(archivosRubroProceso.getUrl());
-            archivoUi.setPath(archivosRubroProceso.getLocalpath());
-            if (TextUtils.isEmpty(archivosRubroProceso.getLocalpath())) {
-                archivoUi.setEstadoFileU(RepositorioEstadoFileU.SIN_DESCARGAR);
-            } else {
-                archivoUi.setEstadoFileU(RepositorioEstadoFileU.DESCARGA_COMPLETA);
-            }
-            archivoUi.setSelect(true);
-            archivoUi.setFechaAccionArchivo(archivosRubroProceso.getFechaAccion());
             archivoComentarioUis.add(archivoUi);
         }
         return archivoComentarioUis;
     }
 
-    @Override
-    public boolean saveComentarioArchivo(ArchivoComentarioUi archivoComentarioUi) {
-        EvaluacionProcesoC evaluacionProcesoC = SQLite.select()
-                .from(EvaluacionProcesoC.class)
-                .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.eq(archivoComentarioUi.getRubroEvaluacionId()))
-                .and(EvaluacionProcesoC_Table.alumnoId.eq(archivoComentarioUi.getAlumnoId()))
-                .querySingle();
 
-        if(evaluacionProcesoC==null)return false;
-        //evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        //evaluacionProcesoC.save();
-
-        RubroEvaluacionProcesoC rubroEvaluacionProcesoC =  rubroEvalProcesoDao.get(evaluacionProcesoC.getRubroEvalProcesoId());
-        if(rubroEvaluacionProcesoC!=null){
-            rubroEvaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-            rubroEvaluacionProcesoC.save();
-        }
-        ArchivosRubroProceso archivosRubroProceso = new ArchivosRubroProceso();
-        archivosRubroProceso.setKey(archivoComentarioUi.getArchivoId());
-        archivosRubroProceso.setArchivoRubroId(archivoComentarioUi.getArchivoId());
-        archivosRubroProceso.setLocalpath(archivoComentarioUi.getPath());
-        archivosRubroProceso.setUrl(archivoComentarioUi.getUrl());
-        archivosRubroProceso.setEvaluacionProcesoId(evaluacionProcesoC.getKey());
-        switch (archivoComentarioUi.getTipoFileU()) {
-            case IMAGEN:
-                archivosRubroProceso.setTipoArchivoId(ArchivosRubroProceso.TIPO_IMAGEN);
-                break;
-            case VIDEO:
-                archivosRubroProceso.setTipoArchivoId(ArchivosRubroProceso.TIPO_VIDEO);
-                break;
-            default:
-                archivosRubroProceso.setTipoArchivoId(ArchivosRubroProceso.TIPO_IMAGEN);
-                break;
-        }
-
-        archivosRubroProceso.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        evaluacionProcesoC.setSyncFlag(BaseEntity.FLAG_UPDATED);
-        return archivosRubroProceso.save();
-    }
 
 }

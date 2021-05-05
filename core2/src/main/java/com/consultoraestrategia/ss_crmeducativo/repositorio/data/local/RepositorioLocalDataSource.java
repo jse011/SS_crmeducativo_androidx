@@ -1,5 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio.data.local;
 
+import android.net.Uri;
+
 import com.consultoraestrategia.ss_crmeducativo.entities.Archivo;
 import com.consultoraestrategia.ss_crmeducativo.entities.ArchivoAsistencia;
 import com.consultoraestrategia.ss_crmeducativo.entities.ArchivoAsistencia_Table;
@@ -123,7 +125,7 @@ public class RepositorioLocalDataSource implements RepositorioDataSource {
     }
 
     @Override
-    public void uploadFileCasoRubro(String archivoId, String urlServidor, String path, CallbackProgress<String> callbackProgress) {
+    public void uploadFileCasoRubro(String archivoId, String urlServidor, Uri path, CallbackProgress<String> callbackProgress) {
 
     }
 

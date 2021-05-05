@@ -32,20 +32,14 @@ public class UploadRepositorio extends UseCase<Request, UploadRepositorio.Respon
     @Override
     protected void executeUseCase(Request request) {
 
-        /*Validar que exista el nuevo permiso de acceso*/
-        if(!new File(request.getUpdateRepositorioFileUi().getPath()).exists()){
-
-        }
-        /**/
-
         final UpdateRepositorioFileUi updateRepositorioFileUi = request.getUpdateRepositorioFileUi();
-        Log.d(TAG,"getUrlServidor: "+ request.getUrlServidor() +"getPath: " + updateRepositorioFileUi.getPath());
+        Log.d(TAG,"getUrlServidor: "+ request.getUrlServidor() +"getPath: " + updateRepositorioFileUi.getUri());
         if(TextUtils.isEmpty(request.getUrlServidor())){
             updateRepositorioFileUi.setUploadEstadoFileU(RepositorioUploadEstadoFileU.ERROR_SUBIDA);
             getUseCaseCallback().onSuccess(new Response(updateRepositorioFileUi, false));
             return;
         }
-        if(TextUtils.isEmpty(updateRepositorioFileUi.getPath())){
+        if(updateRepositorioFileUi.getUri()==null){
             updateRepositorioFileUi.setUploadEstadoFileU(RepositorioUploadEstadoFileU.ERROR_SUBIDA);
             getUseCaseCallback().onSuccess(new Response(updateRepositorioFileUi, false));
             return;
@@ -93,7 +87,7 @@ public class UploadRepositorio extends UseCase<Request, UploadRepositorio.Respon
                 repositorioRepository.uploadFileCaso(updateRepositorioFileUi.getExtencionArchivoId(), request.getUrlServidor(), updateRepositorioFileUi.getPath(),callbackProgress);
                 break;
             case ARCHIVO_RUBRO:
-                repositorioRepository.uploadFileCasoRubro(updateRepositorioFileUi.getExtencionArchivoId(), request.getUrlServidor(), updateRepositorioFileUi.getPath(),callbackProgress);
+                repositorioRepository.uploadFileCasoRubro(updateRepositorioFileUi.getExtencionArchivoId(), request.getUrlServidor(), updateRepositorioFileUi.getUri(),callbackProgress);
                 break;
         }
 

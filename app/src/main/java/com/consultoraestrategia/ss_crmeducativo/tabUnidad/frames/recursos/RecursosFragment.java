@@ -72,7 +72,7 @@ public class RecursosFragment extends BaseFragment<RecursosView, RecursosPresent
         RepositorioRepository repositorioRepository = new RepositorioRepository(
                 new RepositorioLocalDataSource(),
                 new RepositorioPreferentsDataSource(),
-                new RepositorioRemoteDataSource(ApiRetrofit.getInstance()));
+                new RepositorioRemoteDataSource(getContext()));
         presenter = new RecursosPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(),
                 new GetRecursoDidactico(repository),
                 new DowloadImageUseCase(repositorioRepository),

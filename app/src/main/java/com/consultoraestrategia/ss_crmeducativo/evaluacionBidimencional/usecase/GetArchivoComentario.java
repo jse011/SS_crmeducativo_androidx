@@ -1,7 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase;
 
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source.EvalRubBidRepository;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class GetArchivoComentario {
         this.repository = repository;
     }
 
-    public List<ArchivoComentarioUi> execute(Response response){
+    public List<ArchivoUi> execute(Response response){
         return repository.getArchivoComentarioList(response.getRubroEvaluacionId(), response.getPersonaId());
     }
 

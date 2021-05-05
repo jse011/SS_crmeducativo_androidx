@@ -1,5 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio.data;
 
+import android.net.Uri;
+
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.remote.RepositorioRemoteDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.preferents.RepositorioPreferentsDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.local.RepositorioLocalDataSource;
@@ -73,7 +75,7 @@ public class RepositorioRepository implements RepositorioDataSource {
     }
 
     @Override
-    public void uploadFileCasoRubro(String archivoId, String urlServidor, String path, CallbackProgress<String> callbackProgress) {
+    public void uploadFileCasoRubro(String archivoId, String urlServidor, Uri path, CallbackProgress<String> callbackProgress) {
         remoteDataSource.uploadFileCasoRubro(archivoId, urlServidor, path, callbackProgress);
     }
 }

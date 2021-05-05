@@ -1,6 +1,6 @@
 package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source;
 
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.EvalProcUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.FiltroTableUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.GrupoProcesoUi;
@@ -27,7 +27,7 @@ public interface EvalRubBidDataSource {
 
     boolean deleteComentario(MensajeUi mensajeUi);
 
-    boolean deleteArchivoComentario(ArchivoComentarioUi archivoComentarioUi);
+    boolean deleteArchivoComentario(ArchivoUi archivoComentarioUi);
 
     PublicarEvaluacionUi  getPublicacionEvaluacion(String rubroEvaluacionId, int personaId);
 
@@ -73,7 +73,6 @@ public interface EvalRubBidDataSource {
     List<MensajeUi> getComentarioPred(EvalProcUi evalProcUi);
     List<MensajeUi> getComentarios(String rubricaBidimencionalId, int alumnoId);
     boolean saveComentario( MensajeUi mensajeUi);
-    List<ArchivoComentarioUi> getArchivoComentarioList(String rubroEvaluacionId, int personaId);
-    boolean saveComentarioArchivo(ArchivoComentarioUi archivoComentarioUi);
+    List<ArchivoUi> getArchivoComentarioList(String rubroEvaluacionId, int personaId);
 
 }

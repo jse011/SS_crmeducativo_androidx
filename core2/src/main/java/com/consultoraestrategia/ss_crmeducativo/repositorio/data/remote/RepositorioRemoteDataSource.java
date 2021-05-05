@@ -1,16 +1,25 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio.data.remote;
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
+import com.consultoraestrategia.ss_crmeducativo.core2.R;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.RepositorioDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.DownloadCancelUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
+import com.consultoraestrategia.ss_crmeducativo.util.UtilsStorage;
+import com.google.android.gms.common.util.IOUtils;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,15 +36,18 @@ import okhttp3.ResponseBody;
 
 public class RepositorioRemoteDataSource implements RepositorioDataSource {
 
-    private final ApiRetrofit apiRetrofit;
+
+    private final Context context;
     private String TAG = RepositorioRemoteDataSource.class.getSimpleName();
 
-    public RepositorioRemoteDataSource(ApiRetrofit apiRetrofit) {
-        this.apiRetrofit = apiRetrofit;
+    public RepositorioRemoteDataSource(Context context) {
+        this.context = context;
     }
 
+    @Deprecated
     @Override
     public  void dowloadImage(final String url, final String nombre, final String carpeta, final CallbackProgress<String> repositorioFileUiCallback) {
+
         new Thread(){
             @Override
             public void run() {
@@ -271,7 +283,7 @@ public class RepositorioRemoteDataSource implements RepositorioDataSource {
     }
 
     @Override
-    public void uploadFileCasoRubro(String archivoId, String urlServidor, String path, final CallbackProgress<String> callbackProgress) {
+    public void uploadFileCasoRubro(String archivoId, String urlServidor, Uri uri, final CallbackProgress<String> callbackProgress) {
         final OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS) // write timeout
@@ -280,38 +292,58 @@ public class RepositorioRemoteDataSource implements RepositorioDataSource {
 
         final DownloadCancelUi downloadCancelUi = new DownloadCancelUi();
         callbackProgress.onPreLoad(downloadCancelUi);
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            assert (inputStream!=null);
+            RequestBody request = RequestBody.create(MediaType.parse("*/*"), getBytes(inputStream));
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", "archivo",
+                    new CountingRequestBody(request, new CountingRequestBody.Listener() {
+                        int pogress = 0;
+                        @Override
+                        public void onRequestProgress(long bytesWritten, long contentLength) {
+                            double progress = (1.0 * bytesWritten) / contentLength;
+                            Log.d(TAG, "progress : " + progress);
+                            if(pogress!=(int)(progress*100)||progress==0){
+                                callbackProgress.onProgress(pogress);
+                                pogress = (int)(progress*100);
+                            }
 
-        File file = new File(path);
-        RequestBody request = RequestBody.create(MediaType.parse("*/*"), file);
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", "archivo",
-                new CountingRequestBody(request, new CountingRequestBody.Listener() {
-                    int pogress = 0;
-                    @Override
-                    public void onRequestProgress(long bytesWritten, long contentLength) {
-                        double progress = (1.0 * bytesWritten) / contentLength;
-                        Log.d(TAG, "progress : " + progress);
-                        if(pogress!=(int)(progress*100)||progress==0){
-                            callbackProgress.onProgress(pogress);
-                            pogress = (int)(progress*100);
+                            if(downloadCancelUi.isCancel()){
+                                client.dispatcher().cancelAll();
+                                Log.d(TAG, "cancel");
+                            }
+
                         }
+                    }));
 
-                        if(downloadCancelUi.isCancel()){
-                            client.dispatcher().cancelAll();
-                            Log.d(TAG, "cancel");
-                        }
+            RequestBody requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addPart(fileToUpload)
+                    .addFormDataPart("name", archivoId)
+                    .addFormDataPart("optionTipos", "4")
+                    .addFormDataPart("option", "1")
+                    .build();
 
-                    }
-                }));
+            uploadArchivo(urlServidor, requestBody, client, callbackProgress);
 
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addPart(fileToUpload)
-                .addFormDataPart("name", archivoId)
-                .addFormDataPart("optionTipos", "4")
-                .addFormDataPart("option", "1")
-                .build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            callbackProgress.onLoad(false, null);
+        }
 
-        uploadArchivo(urlServidor, requestBody, client, callbackProgress);
+
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 262144;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
     private void uploadArchivo(String urlServidor, RequestBody requestBody, OkHttpClient client, final CallbackProgress<String> callback){

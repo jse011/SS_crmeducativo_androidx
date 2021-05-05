@@ -2,6 +2,7 @@ package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRub
 
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseView;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.AlumnoProcesoUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.EvalProcUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.PublicarEvaluacionUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.RubBidUi;
@@ -56,5 +57,15 @@ public interface EvalRubBidIndView extends BaseView<EvalRubBidIndPresenter> , Co
     void showPublicar();
 
     void notiftyDataBaseChange();
+
+    void showCamera();
+
+    void addTareaArchivo(ArchivoUi item);
+
+    void updateTareaArchivo(ArchivoUi item);
+
+    void removeTareaArchivo(ArchivoUi item);
+
+    void showGalery();
 }
 

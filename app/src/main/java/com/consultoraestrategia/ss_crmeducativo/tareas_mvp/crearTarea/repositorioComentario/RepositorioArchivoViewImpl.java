@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,9 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import android.net.Uri;
-import android.os.Build;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.consultoraestrategia.ss_crmeducativo.BuildConfig;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.RepositorioPresenter;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.RepositorioView;
@@ -33,20 +28,11 @@ import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.Repositorio
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.UpdateRepositorioFileUi;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.crearTarea.CreateTareaPresenter;
 import com.consultoraestrategia.ss_crmeducativo.util.OpenIntents;
-import com.consultoraestrategia.ss_crmeducativo.util.StreamUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import droidninja.filepicker.FilePickerBuilder;
-import droidninja.filepicker.FilePickerConst;
-import droidninja.filepicker.models.sort.SortingTypes;
-import droidninja.filepicker.utils.ContentUriUtils;
 
 public class RepositorioArchivoViewImpl implements RepositorioView {
     private RepositorioArchivoTareaPresenterImpl presenter;
@@ -87,14 +73,7 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
 
     @Override
     public void leerArchivo(String path) {
-        Log.d(getClass().getSimpleName(), path);
-        try {
-            OpenIntents.openFile(FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", new File(path)), activity);
 
-        }catch (Exception e){
-            e.printStackTrace();
-            Log.d(getClass().getSimpleName(), activity.getString(R.string.cannot_open_file));
-        }
     }
 
     @Override
@@ -102,7 +81,7 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
         Log.d(getClass().getSimpleName(), "showPickPhoto");
         ArrayList<String> stringList = new ArrayList<>();
         //for (UpdateRepositorioFileUi recursoUploadFile : photoPaths)stringList.add(recursoUploadFile.getPath());
-        FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
+        /*FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
                 //.setSelectedFiles(stringList)
                 .setActivityTheme(R.style.LibAppThemeLibrary)
                 //.setActivityTitle("Selección de multimedia")
@@ -115,12 +94,12 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
                 .setMaxCount(1);
                 //.setCameraPlaceholder(R.drawable.custom_camera)
                 //.withOrientation(Orientation.UNSPECIFIED);
-        filePickerBuilder.pickPhoto(activity, CUSTOM_REQUEST_CODE);
+        filePickerBuilder.pickPhoto(activity, CUSTOM_REQUEST_CODE);*/
     }
 
     @Override
     public void onShowPickDoc(int maxCount, List<UpdateRepositorioFileUi> docPaths) {
-
+/*
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
             // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
@@ -132,8 +111,7 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
             // Filter to show only images, using the image MIME data type.
             // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
             // To search for all documents available via installed storage providers,
-            // it would be "*/*".
-            intent.setType("*/*");
+            intent.setType("asterisco/asterisco);
             activity.startActivityForResult(intent, REQUEST_CODE_DOC_Q);
 
         }else {
@@ -156,7 +134,7 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
 
 
             filePickerBuilder.pickFile(activity, FilePickerConst.REQUEST_CODE_DOC);
-        }
+        }*/
 
     }
 
@@ -269,6 +247,21 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
     }
 
     @Override
+    public void download(RepositorioFileUi url) {
+
+    }
+
+    @Override
+    public void getFileNameDowload(RepositorioFileUi repositorioFileUi) {
+
+    }
+
+    @Override
+    public void cancelDownload(long downloadId) {
+
+    }
+
+    @Override
     public void showProgress() {
 
     }
@@ -339,7 +332,7 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data, Context context) {
-        Log.d(getClass().getSimpleName(),"onActivityResult: "+ requestCode +" / "+ resultCode);
+      /*  Log.d(getClass().getSimpleName(),"onActivityResult: "+ requestCode +" / "+ resultCode);
         ArrayList<Uri> photoPaths = new ArrayList<>();
         ArrayList<String> photoPaths2 = new ArrayList<>();
         switch (requestCode) {
@@ -377,7 +370,7 @@ public class RepositorioArchivoViewImpl implements RepositorioView {
         }
 
         Log.d("photoPaths","photoPaths " + photoPaths2);
-        presenter.onSalirSelectPiket(photoPaths2);
+        presenter.onSalirSelectPiket(photoPaths2);*/
     }
 
     public String getNombre(Uri uri, Activity activity) {

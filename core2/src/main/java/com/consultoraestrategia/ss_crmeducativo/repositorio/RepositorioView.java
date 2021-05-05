@@ -45,4 +45,10 @@ public interface RepositorioView extends BaseView<RepositorioPresenter> {
     void changeColorButtom(String colorButtom);
 
     void showListArchivosSelecte(List<RepositorioFileUi> repositorioFileUiList);
+
+    void download(RepositorioFileUi url);
+
+    void getFileNameDowload(RepositorioFileUi repositorioFileUi);
+
+    void cancelDownload(long downloadId);
 }

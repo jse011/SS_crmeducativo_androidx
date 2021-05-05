@@ -98,7 +98,7 @@ public class FragmentComportAlumnoC extends BaseFragment<ComportAlumnoCview, Com
                 new DowloadImageUseCase(new RepositorioRepository(
                         new RepositorioLocalDataSource(),
                         new RepositorioPreferentsDataSource(),
-                        new RepositorioRemoteDataSource(ApiRetrofit.getInstance())
+                        new RepositorioRemoteDataSource(getContext())
                 )),
                 new UpdateSuccesDowloadCasoArchivo(comportamientoRepository));
 

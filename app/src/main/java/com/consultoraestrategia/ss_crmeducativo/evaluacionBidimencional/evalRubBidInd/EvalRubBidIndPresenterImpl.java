@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd;
 
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -8,10 +9,9 @@ import android.util.Log;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentPresenterImpl;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
-import com.consultoraestrategia.ss_crmeducativo.entities.ArchivosRubroProceso;
-import com.consultoraestrategia.ss_crmeducativo.entities.ArchivosRubroProceso_Table;
+import com.consultoraestrategia.ss_crmeducativo.entities.Archivo;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.AlumnoProcesoUi;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.EscalaEvaluacionUI;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.EvalProcUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.GrupoProcesoUi;
@@ -26,8 +26,6 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.V
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.tableView.Cell;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.tableView.ColumnHeader;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.tableView.RowHeader;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.ui.ComentarioView;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.ui.TablaEvaluacionView;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.ui.EvalRubBidIndView;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.dialogComentario.EvalRubBidComPredView;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.DeleteArchivoComentario;
@@ -38,10 +36,9 @@ import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.SaveArchivoRubro;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.SaveComentario;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UpdatePublicacionEvaluacion;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase.UploadArchivo;
 import com.consultoraestrategia.ss_crmeducativo.util.IdGenerator;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
-import com.google.android.gms.common.util.CollectionUtils;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -51,6 +48,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -87,6 +85,8 @@ public class EvalRubBidIndPresenterImpl extends BaseFragmentPresenterImpl<EvalRu
     private UpdatePublicacionEvaluacion updatePublicacionEvaluacion;
     private boolean initResume = false;
     private PublicarEvaluacionUi publicarEvaluacionUi;
+    private UploadArchivo uploadArchivo;
+    private List<ArchivoUi> tareaArchivoUiList = new ArrayList<>();
 
     @Override
     protected String getTag() {
@@ -100,7 +100,8 @@ public class EvalRubBidIndPresenterImpl extends BaseFragmentPresenterImpl<EvalRu
                                       SaveArchivoRubro saveArchivoRubro,
                                       DeleteArchivoComentario deleteArchivoComentario,
                                       GetPublicacionEvaluacion getPublicacionEvaluacion,
-                                      UpdatePublicacionEvaluacion updatePublicacionEvaluacion) {
+                                      UpdatePublicacionEvaluacion updatePublicacionEvaluacion,
+                                      UploadArchivo uploadArchivo) {
         super(handler, res);
         this.getcomentarioPred=getcomentarioPred;
         this.saveComentario=saveComentario;
@@ -110,6 +111,7 @@ public class EvalRubBidIndPresenterImpl extends BaseFragmentPresenterImpl<EvalRu
         this.deleteArchivoComentario = deleteArchivoComentario;
         this.getPublicacionEvaluacion = getPublicacionEvaluacion;
         this.updatePublicacionEvaluacion = updatePublicacionEvaluacion;
+        this.uploadArchivo = uploadArchivo;
 
     }
     @Override
@@ -1046,19 +1048,61 @@ public class EvalRubBidIndPresenterImpl extends BaseFragmentPresenterImpl<EvalRu
     }
 
     @Override
-    public void saveComentarioArchivo(ArchivoComentarioUi repositorioFileUi) {
-        if(rubricaBidimencional!=null){
-            repositorioFileUi.setRubroEvaluacionId(rubricaBidimencional.getId());
-            repositorioFileUi.setAlumnoId(evalProcUiSelect.getAlumnoId());
-            saveArchivoRubro.execute(new SaveArchivoRubro.Requests(repositorioFileUi));
-            changeRubtoArchivo();
+    public void onClickCamera() {
+        if(view!=null)view.showCamera();
+    }
+
+    @Override
+    public void onClickGalery() {
+        if(view!=null)view.showGalery();
+    }
+
+    @Override
+    public void onUpdload(Map<Uri, String> photoPaths) {
+
+        for (Map.Entry<Uri, String> entry : photoPaths.entrySet()) {
+            String fileName = entry.getValue();
+            ArchivoUi archivoUi = new ArchivoUi();
+            archivoUi.setId(IdGenerator.generateId());
+            archivoUi.setAlumnoId(evalProcUiSelect.getAlumnoId());
+            archivoUi.setRubroEvaluacionId(rubricaBidimencional.getId());
+            archivoUi.setNombre(fileName);
+            archivoUi.setUri(entry.getKey());
+
+            uploadArchivo.execute(archivoUi, new UploadArchivo.CallbackProgress<ArchivoUi>() {
+                @Override
+                public void onProgress(int count, ArchivoUi item) {
+                    item.setProgress(count);
+                    if(view!=null)view.updateTareaArchivo(item);
+                }
+
+                @Override
+                public void onLoad(boolean success, ArchivoUi item) {
+                    if(success){
+                        if(view!=null)view.updateTareaArchivo(item);
+                    }else {
+                        tareaArchivoUiList.remove(item);
+                        if(view!=null)view.removeTareaArchivo(item);
+                    }
+                }
+
+                @Override
+                public void onPreLoad(ArchivoUi item) {
+                    tareaArchivoUiList.add(item);
+                    if(view!=null)view.addTareaArchivo(item);
+                }
+            });
         }
+
     }
 
 
     @Override
-    public void removerComentarioArchivo(ArchivoComentarioUi archivoComentarioUi) {
+    public void removerComentarioArchivo(ArchivoUi archivoComentarioUi) {
+        archivoComentarioUi.setCancel(true);
         deleteArchivoComentario.execute(new DeleteArchivoComentario.Requests(archivoComentarioUi));
+        tareaArchivoUiList.remove(archivoComentarioUi);
+        if(view!=null)view.removeTareaArchivo(archivoComentarioUi);
     }
 
 }

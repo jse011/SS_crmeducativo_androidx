@@ -16,11 +16,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import droidninja.filepicker.FilePickerBuilder;
-import droidninja.filepicker.FilePickerConst;
-import droidninja.filepicker.models.sort.SortingTypes;
-import droidninja.filepicker.utils.ContentUriUtils;
-
 /**
  * Created by Jse on 17/01/2019.
  */
@@ -50,7 +45,7 @@ public class SelectFilePiketImpl implements SelectFilePiker {
     public void showPickPhoto(boolean enableVideo, int maxCount, List<RecursoUploadFile> photoPaths) {
         ArrayList<Uri> stringList = new ArrayList<>();
         for (RecursoUploadFile recursoUploadFile : photoPaths)stringList.add(Uri.parse(recursoUploadFile.getPath()));
-        FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
+        /*FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
                 .setMaxCount(maxCount)
                 .setSelectedFiles(stringList)
                 .setActivityTheme(R.style.LibAppTheme)
@@ -68,12 +63,12 @@ public class SelectFilePiketImpl implements SelectFilePiker {
             filePickerBuilder.pickPhoto(activity, CUSTOM_REQUEST_CODE);
         }else {
             filePickerBuilder.pickPhoto(fragmento, CUSTOM_REQUEST_CODE);
-        }
+        }*/
     }
 
     @Override
     public void onShowPickDoc(List<GroupFile> groupFiles, int maxCount, List<RecursoUploadFile> docPaths) {
-        ArrayList<Uri> stringList = new ArrayList<>();
+       /* ArrayList<Uri> stringList = new ArrayList<>();
         for (RecursoUploadFile recursoUploadFile : docPaths)stringList.add(Uri.parse(recursoUploadFile.getPath()));
         FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
                 .setMaxCount(maxCount)
@@ -98,7 +93,7 @@ public class SelectFilePiketImpl implements SelectFilePiker {
             filePickerBuilder.pickFile(activity);
         }else {
             filePickerBuilder.pickFile(fragmento);
-        }
+        }*/
     }
 
     @Override

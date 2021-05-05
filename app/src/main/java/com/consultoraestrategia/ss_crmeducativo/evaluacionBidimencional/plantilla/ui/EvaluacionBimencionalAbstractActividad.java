@@ -323,7 +323,6 @@ public abstract class EvaluacionBimencionalAbstractActividad extends BaseActivit
             fragment = EvalRubBidIndFragment.newInstance(getIntent().getExtras());
             fragment.show(manager, EvalRubBidIndFragment.class.getSimpleName());
         }
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio.data.preferents;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.RepositorioDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
@@ -68,7 +69,7 @@ public class RepositorioPreferentsDataSource implements RepositorioDataSource {
     }
 
     @Override
-    public void uploadFileCasoRubro(String archivoId, String urlServidor, String path, CallbackProgress<String> callbackProgress) {
+    public void uploadFileCasoRubro(String archivoId, String urlServidor, Uri path, CallbackProgress<String> callbackProgress) {
 
     }
 /*

@@ -1,6 +1,8 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio.entities;
 
 
+import android.net.Uri;
+
 import java.io.Serializable;
 
 import okhttp3.ResponseBody;
@@ -13,13 +15,17 @@ public class RepositorioFileUi implements Serializable {
     private String nombreArchivo;
     private String descripcion;
     private String url;
+    @Deprecated
     private String path;
+    private String pathLocal;
+    private Uri uri;
     private RepositorioTipoFileU tipoFileU = RepositorioTipoFileU.VINCULO;
     private RepositorioEstadoFileU estadoFileU = RepositorioEstadoFileU.SIN_DESCARGAR;
     private boolean select;
     private boolean cancel;
     private long fechaCreacionRecuros;
     private long fechaAccionArchivo;
+    private long downloadId;
 
     public String getRecursoId() {
         return recursoId;
@@ -61,10 +67,12 @@ public class RepositorioFileUi implements Serializable {
         this.url = url;
     }
 
+    @Deprecated
     public String getPath() {
         return path;
     }
 
+    @Deprecated
     public void setPath(String path) {
         this.path = path;
     }
@@ -125,5 +133,30 @@ public class RepositorioFileUi implements Serializable {
 
     public void setFechaAccionArchivo(long fechaAccionArchivo) {
         this.fechaAccionArchivo = fechaAccionArchivo;
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
+    }
+
+
+    public void setDownloadId(long downloadId) {
+        this.downloadId = downloadId;
+    }
+
+    public long getDownloadId() {
+        return downloadId;
+    }
+
+    public String getPathLocal() {
+        return pathLocal;
+    }
+
+    public void setPathLocal(String pathLocal) {
+        this.pathLocal = pathLocal;
     }
 }

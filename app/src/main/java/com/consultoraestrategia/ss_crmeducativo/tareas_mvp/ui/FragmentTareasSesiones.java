@@ -173,7 +173,7 @@ public class FragmentTareasSesiones extends Fragment implements TareasMvpView, U
                 new DowloadImageUseCase(new RepositorioRepository(
                         new RepositorioLocalDataSource(),
                         new RepositorioPreferentsDataSource(),
-                        new RepositorioRemoteDataSource(ApiRetrofit.getInstance()))),
+                        new RepositorioRemoteDataSource(getContext()))),
                 new UpdateSuccesDowloadArchivo(TareasMvpRepository.getInstace(
                         new TareasLocalDataSource(),
                         new RemoteMvpDataSource()

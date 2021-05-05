@@ -116,7 +116,7 @@ public class FragmentAprendizaje extends Fragment implements AprendizajeView, Ba
                 new DowloadImageUseCase(new RepositorioRepository(
                         new RepositorioLocalDataSource(),
                         new RepositorioPreferentsDataSource(),
-                        new RepositorioRemoteDataSource(ApiRetrofit.getInstance())
+                        new RepositorioRemoteDataSource(getContext())
                 )),
                 new UpdateSuccesDowloadArchivo(AprendizajeRepository.getInstance(
                         new AprendizajeLocalDataSource(),

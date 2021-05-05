@@ -1,5 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio.data;
 
+import android.net.Uri;
+
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.DownloadCancelUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
 
@@ -26,6 +28,6 @@ public interface RepositorioDataSource {
     void updateSucessDowloaComportamiento(String archivoId, String path, Callback<Boolean> booleanCallback);
     void uploadFileCaso(String archivoId, String urlServidor, String path, CallbackProgress<String> callbackProgress);
     void updateSucessDowloadRubro(String archivoId, String path, Callback<Boolean> booleanCallback);
-    void uploadFileCasoRubro(String archivoId, String urlServidor, String path, CallbackProgress<String> callbackProgress);
+    void uploadFileCasoRubro(String archivoId, String urlServidor, Uri path, CallbackProgress<String> callbackProgress);
 }
 

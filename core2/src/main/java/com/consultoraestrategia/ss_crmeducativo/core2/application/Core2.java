@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.multidex.MultiDex;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -19,6 +20,7 @@ import com.consultoraestrategia.ss_crmeducativo.core2.permisos.DialogOnAnyDenied
 import com.consultoraestrategia.ss_crmeducativo.services.firebase.FireBaseNotificacion;
 import com.google.firebase.FirebaseApp;
 import com.karumi.dexter.Dexter;
+import com.karumi.dexter.DexterBuilder;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -137,24 +139,37 @@ public class Core2 extends Application implements ActivityLifecycleHandler.Lifec
         if(dialogMultiplePermissionsListener==null)dialogMultiplePermissionsListener =
                 DialogOnAnyDeniedMultiplePermissionsListener.Builder
                         .withContext(activity)
-                        .withTitle("Permisos de internet, lectura y escritura y cámara.")
+                        .withTitle("Permisos de internet, lectura  y cámara.")
                         .withMessage("Tanto los permisos como el permiso de Internet y el permiso de lectura y escritura son necesarios para el correcto funcionamiento del aplicativo móvil.")
                         .withButtonText(android.R.string.ok)
                         .withIcon(R.drawable.base_academico)
                         .build();
-
-        Dexter.withActivity(activity)
-                .withPermissions(
-                        Manifest.permission.INTERNET,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
-                        //Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.CAMERA,
-                        //Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_WIFI_STATE
-                )
-                .withListener(dialogMultiplePermissionsListener)
+        DexterBuilder.Permission permission = Dexter.withActivity(activity);
+        DexterBuilder.MultiPermissionListener multiPermissionListener;
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.P){
+            multiPermissionListener = permission.withPermissions(
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    //Manifest.permission.READ_CONTACTS,
+                    //Manifest.permission.CAMERA,
+                    //Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_WIFI_STATE
+            );
+        }else {
+            multiPermissionListener=    permission  .withPermissions(
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    //Manifest.permission.READ_CONTACTS,
+                    //Manifest.permission.CAMERA,
+                    //Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                   // Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_WIFI_STATE
+            );
+        }
+        multiPermissionListener.withListener(dialogMultiplePermissionsListener)
                 .check();
     }
 

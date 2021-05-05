@@ -156,7 +156,7 @@ public class InfoComentarioDialog extends BaseDialogFragment<InfoRubroView, Info
     protected InfoRubroPresenter getPresenter() {
         RepositorioRepository repositorioRepository = new RepositorioRepository(new RepositorioLocalDataSource(),
                 new RepositorioPreferentsDataSource(),
-                new RepositorioRemoteDataSource(ApiRetrofit.getInstance()));
+                new RepositorioRemoteDataSource(getContext()));
 
         baseRepositorioPresenter = new RepositorioArchivoRubroPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(),
                 new DowloadImageUseCase(repositorioRepository),

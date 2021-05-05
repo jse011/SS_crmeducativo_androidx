@@ -141,7 +141,7 @@ public class CrearTareasActivity extends BaseActivity<CreateTareaView, CreateTar
     public CreateTareaPresenter getPresenter() {
         RepositorioRepository repositorioRepository = new RepositorioRepository(new RepositorioLocalDataSource(),
                 new RepositorioPreferentsDataSource(),
-                new RepositorioRemoteDataSource(ApiRetrofit.getInstance()));
+                new RepositorioRemoteDataSource(this));
 
         baseRepositorioPresenter = new RepositorioArchivoTareaPresenterImpl(new UseCaseHandler(new UseCaseThreadPoolScheduler()), getResources(),
                 new DowloadImageUseCase(repositorioRepository),

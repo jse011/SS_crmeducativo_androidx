@@ -94,7 +94,7 @@ public class ActividadesFragment extends Fragment implements ActividadesView, Ba
                 new DowloadImageUseCase(new RepositorioRepository(
                         new RepositorioLocalDataSource(),
                         new RepositorioPreferentsDataSource(),
-                        new RepositorioRemoteDataSource(ApiRetrofit.getInstance())
+                        new RepositorioRemoteDataSource(getContext())
                 )),
                 new UpdateSuccesDowloadArchivo(repository)
         );

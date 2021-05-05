@@ -1,5 +1,6 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio.useCase;
 
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,14 +11,18 @@ import com.consultoraestrategia.ss_crmeducativo.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ConvertirPathRepositorioUpload extends UseCaseSincrono<List<String>, List<UpdateRepositorioFileUi>> {
+public class ConvertirPathRepositorioUpload extends UseCaseSincrono<Map<Uri,String>, List<UpdateRepositorioFileUi>> {
     private static final String TAG = ConvertirPathRepositorioUpload.class.getSimpleName();
 
     @Override
-    public void execute(List<String> response, Callback<List<UpdateRepositorioFileUi>> callback) {
+    public void execute(Map<Uri,String> response, Callback<List<UpdateRepositorioFileUi>> callback) {
         List<UpdateRepositorioFileUi> updateRepositorioFileUis = new ArrayList<>();
-        for (String fileName : response){
+
+        for (Map.Entry<Uri, String> entry : response.entrySet()) {
+            String fileName = entry.getValue();
+
             String extencion = "";
             String nombreSinExtencion = "";
             int i = fileName.lastIndexOf('.');
@@ -87,10 +92,12 @@ public class ConvertirPathRepositorioUpload extends UseCaseSincrono<List<String>
             recursoUploadFile.setArchivoId(IdGenerator.generateId());
             recursoUploadFile.setNombreArchivo(file);
             recursoUploadFile.setNombreRecurso(nombreSinExtencion);
-            recursoUploadFile.setExtencionArchivoId(file+extencion);
-            recursoUploadFile.setPath(fileName);
+            recursoUploadFile.setExtencionArchivoId(file);
+            recursoUploadFile.setUri(entry.getKey());
             updateRepositorioFileUis.add(recursoUploadFile);
         }
         callback.onResponse(true, updateRepositorioFileUis);
     }
+
+
 }

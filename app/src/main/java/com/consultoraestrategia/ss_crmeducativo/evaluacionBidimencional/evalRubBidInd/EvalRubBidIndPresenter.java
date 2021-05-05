@@ -1,21 +1,21 @@
 package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd;
 
+import android.net.Uri;
+
 import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentPresenter;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.AlumnoProcesoUi;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.MensajeUi;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.PublicarEvaluacionUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.RubBidUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.RubEvalProcUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.TipoNotaUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ValorTipoNotaUi;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.tableView.ColumnHeader;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.ui.ComentarioView;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.ui.TablaEvaluacionView;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.ui.EvalRubBidIndView;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.dialogComentario.EvalRubBidComPredView;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -58,13 +58,17 @@ public interface EvalRubBidIndPresenter extends BaseFragmentPresenter<EvalRubBid
 
     void onClickComentarioNormal(MensajeUi mensajeUi);
 
-    void saveComentarioArchivo(ArchivoComentarioUi repositorioFileUi);
-
-    void removerComentarioArchivo(ArchivoComentarioUi archivoComentarioUi);
 
     void onClickBtnClear();
 
     void btnPublicar();
 
 
+    void onClickCamera();
+
+    void onClickGalery();
+
+    void onUpdload(Map<Uri, String> photoPaths);
+
+    void removerComentarioArchivo(ArchivoUi archivoUi);
 }

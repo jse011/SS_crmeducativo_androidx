@@ -7,7 +7,7 @@ import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.Repositorio
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioUi;
 import com.iceteck.silicompressorr.SiliCompressor;
 
-public class UpdateRepositorio extends UseCaseSincrono<UpdateRepositorio.Request, Boolean> {
+public class UpdateRepositorio  {
 
     private RepositorioRepository repository;
     private SiliCompressor siliCompressor;
@@ -17,12 +17,11 @@ public class UpdateRepositorio extends UseCaseSincrono<UpdateRepositorio.Request
         this.siliCompressor = siliCompressor;
     }
 
-    @Override
-    public void execute(Request request, final Callback<Boolean> callback) {
+    public void execute(Request request) {
         RepositorioDataSource.Callback<Boolean> booleanCallback = new RepositorioRepository.Callback<Boolean>() {
             @Override
             public void onLoad(boolean success, Boolean item) {
-                callback.onResponse(success, item);
+
             }
         };
         String path = request.getPath();

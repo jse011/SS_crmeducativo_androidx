@@ -84,9 +84,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
-import droidninja.filepicker.FilePickerBuilder;
-import droidninja.filepicker.FilePickerConst;
-import droidninja.filepicker.utils.ContentUriUtils;
 
 public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEventoPresenter> implements CrearEventoView, SelectDateFragment.OnDateSelectClickListener, SelectTimeFragment.OnTimeSelectClickListener, LifeCycleFragment.LifecycleListener, AlumnoAdapter.Listener, NestedScrollView.OnScrollChangeListener {
     @BindView(R.id.toolbar)
@@ -713,7 +710,7 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
         Log.d(getClass().getSimpleName(), "showPickPhoto");
         ArrayList<String> stringList = new ArrayList<>();
         //for (UpdateRepositorioFileUi recursoUploadFile : photoPaths)stringList.add(recursoUploadFile.getPath());
-        FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
+        /*FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
                 //.setSelectedFiles(stringList)
                 .setActivityTheme(R.style.LibAppThemeLibrary)
                 //.setActivityTitle("Selección de multimedia")
@@ -726,13 +723,13 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
                 .setMaxCount(1);
         //.setCameraPlaceholder(R.drawable.custom_camera)
         //.withOrientation(Orientation.UNSPECIFIED);
-        filePickerBuilder.pickPhoto(this, CUSTOM_REQUEST_CODE);
+        filePickerBuilder.pickPhoto(this, CUSTOM_REQUEST_CODE);*/
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(getClass().getSimpleName(), "onActivityResult: " + requestCode + " / " + resultCode);
+        /*Log.d(getClass().getSimpleName(), "onActivityResult: " + requestCode + " / " + resultCode);
         ArrayList<Uri> photoPaths = new ArrayList<>();
         switch (requestCode) {
             case CUSTOM_REQUEST_CODE:
@@ -749,7 +746,7 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
                 e.printStackTrace();
             }
         }
-        presenter.onSalirSelectPiket(photoPaths2);
+        presenter.onSalirSelectPiket(photoPaths2);*/
 
 
     }

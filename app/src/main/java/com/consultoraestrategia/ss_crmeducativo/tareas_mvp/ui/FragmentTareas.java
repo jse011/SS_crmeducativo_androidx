@@ -186,7 +186,7 @@ public class FragmentTareas extends Fragment implements TareasMvpView, UnidadApr
                 new DowloadImageUseCase(new  RepositorioRepository(
                         new RepositorioLocalDataSource(),
                         new RepositorioPreferentsDataSource(),
-                        new RepositorioRemoteDataSource(ApiRetrofit.getInstance()))),
+                        new RepositorioRemoteDataSource(getContext()))),
                 new UpdateSuccesDowloadArchivo(
                         TareasMvpRepository.getInstace(
                                 new TareasLocalDataSource(),

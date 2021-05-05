@@ -1,8 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase;
 
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.data.source.EvalRubBidRepository;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoComentarioUi;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.MensajeUi;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 
 public class SaveArchivoRubro {
 
@@ -15,17 +14,17 @@ public class SaveArchivoRubro {
 
 
     public Response execute(Requests request){
-        return new Response(evalRubBidRepository.saveComentarioArchivo(request.getArchivoComentarioUi()));
-
+        //return new Response(evalRubBidRepository.saveComentarioArchivo(request.getArchivoComentarioUi()));
+        return null;
     }
     public static class Requests {
-        ArchivoComentarioUi archivoComentarioUi;
+        ArchivoUi archivoComentarioUi;
 
-        public Requests(ArchivoComentarioUi archivoComentarioUi) {
+        public Requests(ArchivoUi archivoComentarioUi) {
             this.archivoComentarioUi = archivoComentarioUi;
         }
 
-        public ArchivoComentarioUi getArchivoComentarioUi() {
+        public ArchivoUi getArchivoComentarioUi() {
             return archivoComentarioUi;
         }
     }
