@@ -6,7 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/><!--WRITE_EXTERNAL_STORAGE ya no proporciona acceso de escritura cuando se orienta a Android 10, a menos que use requestLegacyExternalStorage-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -21,7 +22,6 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup"
-        android:requestLegacyExternalStorage="true"
         tools:targetApi="q">
 
         <activity android:name=".comportamiento.comportamientoAlumno.ComportamientoAlumnoActivity"

@@ -18,6 +18,7 @@ import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.GetUrlReposi
 import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.UpdateRepositorio;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.UploadRepositorio;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class RepositorioArchivoRubroPresenterImpl extends BaseRepositorioPresent
     @Override
     public void onClickUpload(final UpdateRepositorioFileUi updateRepositorioFileUi) {
         Log.d(getClass().getSimpleName(), "onClickUpload");
+
         switch (updateRepositorioFileUi.getTipoFileU()){
             case IMAGEN:
                 String path = cloneImagenCompress.SaveImage(updateRepositorioFileUi.getPath());

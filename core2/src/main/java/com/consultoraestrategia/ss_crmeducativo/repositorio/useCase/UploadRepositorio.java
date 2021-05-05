@@ -1,5 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio.useCase;
 
+import android.content.Context;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -13,12 +15,15 @@ import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.Repositorio
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioUploadEstadoFileU;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.UpdateRepositorioFileUi;
 
+import java.io.File;
+
 import static com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.UploadRepositorio.*;
 
 public class UploadRepositorio extends UseCase<Request, UploadRepositorio.Response> {
 
     protected RepositorioRepository repositorioRepository;
     protected  String TAG = UploadRepositorio.class.getSimpleName();
+    protected Context context;
 
     public UploadRepositorio(RepositorioRepository repositorioRepository) {
         this.repositorioRepository = repositorioRepository;
@@ -26,6 +31,13 @@ public class UploadRepositorio extends UseCase<Request, UploadRepositorio.Respon
 
     @Override
     protected void executeUseCase(Request request) {
+
+        /*Validar que exista el nuevo permiso de acceso*/
+        if(!new File(request.getUpdateRepositorioFileUi().getPath()).exists()){
+
+        }
+        /**/
+
         final UpdateRepositorioFileUi updateRepositorioFileUi = request.getUpdateRepositorioFileUi();
         Log.d(TAG,"getUrlServidor: "+ request.getUrlServidor() +"getPath: " + updateRepositorioFileUi.getPath());
         if(TextUtils.isEmpty(request.getUrlServidor())){

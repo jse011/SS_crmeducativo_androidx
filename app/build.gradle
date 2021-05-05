@@ -3,12 +3,12 @@ apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.consultoraestrategia.ss_crmeducativo.educar"//CATA DocenteMentor3.0
         //applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Parents
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         //versionCode 68//UPS Educar Parents
         versionCode 56//CATA DocenteMentor3.0
         //versionName "1.4" //EDUCAR
