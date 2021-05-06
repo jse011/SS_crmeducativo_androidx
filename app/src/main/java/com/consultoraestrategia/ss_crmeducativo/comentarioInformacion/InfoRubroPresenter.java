@@ -1,11 +1,14 @@
 package com.consultoraestrategia.ss_crmeducativo.comentarioInformacion;
 
 
-import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenter;
+import android.net.Uri;
+
 import com.consultoraestrategia.ss_crmeducativo.base.fragment.BaseFragmentPresenter;
-import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.MensajeUi;
 import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.ui.InfoRubroView;
+
+import java.util.Map;
 
 /**
  * Created by Jse on 15/09/2018.
@@ -21,7 +24,11 @@ public interface InfoRubroPresenter extends BaseFragmentPresenter<InfoRubroView>
 
     void onClickComentarioNormal(MensajeUi mensajeUi);
 
-    void saveComentarioArchivo(ArchivoComentarioUi archivoComentarioUi);
+    void onClickCamera();
 
-    void removerComentarioArchivo(ArchivoComentarioUi archivoComentarioUi);
+    void onClickGalery();
+
+    void removerComentarioArchivo(ArchivoUi archivoComentarioUi);
+
+    void onUpdload(Map<Uri, String> photoPaths);
 }

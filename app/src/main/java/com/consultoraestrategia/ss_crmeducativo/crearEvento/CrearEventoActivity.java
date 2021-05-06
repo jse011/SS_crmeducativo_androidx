@@ -1,19 +1,26 @@
 package com.consultoraestrategia.ss_crmeducativo.crearEvento;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +42,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.FileProvider;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -43,6 +52,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.bumptech.glide.Glide;
+import com.consultoraestrategia.ss_crmeducativo.BuildConfig;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
@@ -64,6 +74,7 @@ import com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase.SaveE
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AlumnoUi;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.seleccionarCalendario.SeleccionarCalendarioDialog;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.seleccionarCalendario.SeleccionarCalendarioView;
+import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRubBidInd.EvalRubBidIndPresenter;
 import com.consultoraestrategia.ss_crmeducativo.services.data.util.UtilServidor;
 import com.consultoraestrategia.ss_crmeducativo.util.InjectorUtils;
 import com.consultoraestrategia.ss_crmeducativo.util.KeyboardUtils;
@@ -73,19 +84,34 @@ import com.consultoraestrategia.ss_crmeducativo.util.SelectTimeFragment;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import dmax.dialog.SpotsDialog;
 
 public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEventoPresenter> implements CrearEventoView, SelectDateFragment.OnDateSelectClickListener, SelectTimeFragment.OnTimeSelectClickListener, LifeCycleFragment.LifecycleListener, AlumnoAdapter.Listener, NestedScrollView.OnScrollChangeListener {
+    private static final int CUSTOM_REQUEST_CODE = 423, REQUEST_TAKE_PHOTO = 544, REQUEST_GALLERY_IMAGE = 545;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.appBarLayout)
@@ -130,7 +156,6 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
     ConstraintLayout layPlaceholder;
 
 
-    private final static int CUSTOM_REQUEST_CODE = 543;
     @BindView(R.id.img_spin)
     ImageView imgSpin;
     @BindView(R.id.bottom_sheet)
@@ -207,7 +232,7 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
                 new GetTipoCalendario(repository),
                 new GetTipoEvento(repository),
                 new SaveEvento(repository),
-                new GetFile64(),
+                new GetFile64(this),
                 new GetAlumnoCargaAcademica(repository),
                 new GetNombreCargaAcademica(repository),
                 new GetNombreCargaCurso(repository),
@@ -683,6 +708,7 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
         layPlaceholder.setVisibility(View.VISIBLE);
     }
 
+    @Deprecated
     @Override
     public void showImage(String path) {
         Glide.with(imgPreview)
@@ -708,7 +734,7 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
     @OnClick({R.id.btn_imagen, R.id.txt_insertar_imagen, R.id.lay_placeholder})
     public void onBtnImagenClicked(View view) {
         Log.d(getClass().getSimpleName(), "showPickPhoto");
-        ArrayList<String> stringList = new ArrayList<>();
+        //ArrayList<String> stringList = new ArrayList<>();
         //for (UpdateRepositorioFileUi recursoUploadFile : photoPaths)stringList.add(recursoUploadFile.getPath());
         /*FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
                 //.setSelectedFiles(stringList)
@@ -724,6 +750,9 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
         //.setCameraPlaceholder(R.drawable.custom_camera)
         //.withOrientation(Orientation.UNSPECIFIED);
         filePickerBuilder.pickPhoto(this, CUSTOM_REQUEST_CODE);*/
+
+        new OpcionesAdjuntarDialog(presenter).show(getSupportFragmentManager(), "OpcionesAdjuntarDialog");
+
     }
 
     @Override
@@ -747,8 +776,38 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
             }
         }
         presenter.onSalirSelectPiket(photoPaths2);*/
+        Map<Uri, String> photoPaths = new HashMap<>();
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            Uri uri = galleryAddPic();
+            photoPaths.put(uri, currentPhotoFileName);
+            presenter.onUpdload(photoPaths);
+        }else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_GALLERY_IMAGE){
+            Uri imageUri = data.getData();
+            photoPaths.put(imageUri, queryName(getContentResolver(), imageUri));
+            presenter.onUpdload(photoPaths);
+        }
+
+    }
 
 
+    private static String queryName(ContentResolver resolver, Uri uri) {
+        Cursor returnCursor =
+                resolver.query(uri, null, null, null, null);
+        assert returnCursor != null;
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String name = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return name;
+    }
+
+    private Uri galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+         sendBroadcast(mediaScanIntent);
+        return  contentUri;
     }
 
     @Override
@@ -824,6 +883,84 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
     @Override
     public void panelUpAlumnos() {
         sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    @Override
+    public void showCamera() {
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.CAMERA)
+                .withListener(new PermissionListener() {
+                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+                        ArrayList<String> stringList = new ArrayList<>();
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                            // Create the File where the photo should go
+                            File photoFile = null;
+                            try {
+                                photoFile = createImageFile();
+                            } catch (IOException ex) {
+                                // Error occurred while creating the File
+                            }
+                            // Continue only if the File was successfully created
+                            if (photoFile != null) {
+                                Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+                                        BuildConfig.APPLICATION_ID+".provider",
+                                        photoFile);
+                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+
+                                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                            }
+                        }
+                    }
+                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(getApplicationContext(), "Se necesita permiso ", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                    }
+                }).check();
+    }
+
+
+    String currentPhotoPath;
+    String currentPhotoFileName;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir =  getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        currentPhotoFileName = image.getName();
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    @Override
+    public void showGalery() {
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto, REQUEST_GALLERY_IMAGE);
+
+
+
+    }
+
+    @Override
+    public void showImage(Uri uri) {
+        Glide.with(imgPreview)
+                .load(uri)
+                .apply(Utils.getGlideRequestOptionsSimple())
+                .into(imgPreview);
+        imgPreview.setVisibility(View.VISIBLE);
+        layPlaceholder.setVisibility(View.GONE);
+        imgCloseImg.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.img_spin)
@@ -911,5 +1048,119 @@ public class CrearEventoActivity extends BaseActivity<CrearEventoView, CrearEven
     @OnClick(R.id.img_close_img)
     public void onViewClicked() {
         presenter.onClickCloseImage();
+    }
+
+
+    public static class OpcionesAdjuntarDialog extends BottomSheetDialogFragment implements View.OnClickListener {
+        CrearEventoPresenter presenter;
+
+        public OpcionesAdjuntarDialog(CrearEventoPresenter presenter) {
+            this.presenter = presenter;
+        }
+
+        private Unbinder unbinder;
+        private android.app.AlertDialog alertDialog;
+
+        @BindView(R.id.bottomSheet)
+        LinearLayout bottomSheet;
+        @BindView(R.id.root)
+        CoordinatorLayout root;
+
+        private BottomSheetBehavior<LinearLayout> sheetBehavior;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View contentView = inflater.inflate(R.layout.dialog_seleccionar_archivo_evaluacion, container, false);
+            unbinder = ButterKnife.bind(this, contentView);
+            root.setOnClickListener(v -> dismiss());
+            sheetBehavior = BottomSheetBehavior.from(bottomSheet);
+            /**
+             * bottom sheet state change listener
+             * we are changing button text when sheet changed state
+             * */
+            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                double SLIDEOFFSETHIDEN = -0.9f;
+
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    switch (newState) {
+
+                        case BottomSheetBehavior.STATE_COLLAPSED: {
+                            dismiss();
+                            Log.d("BSB", "collapsed");
+                        }
+                        case BottomSheetBehavior.STATE_SETTLING: {
+
+                            Log.d("BSB", "settling");
+                        }
+                        case BottomSheetBehavior.STATE_EXPANDED: {
+
+                            Log.d("BSB", "expanded");
+                        }
+                        case BottomSheetBehavior.STATE_HIDDEN: {
+
+                            Log.d("BSB", "hidden");
+                        }
+                        case BottomSheetBehavior.STATE_DRAGGING: {
+
+                            Log.d("BSB", "dragging");
+                        }
+                    }
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                    try {
+                        if (SLIDEOFFSETHIDEN >= slideOffset) dismiss();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+            return contentView;
+        }
+
+        @Override
+        public void onClick(View view) {
+            int i = view.getId();
+        }
+
+        @Override
+        public void onAttach(@NonNull Context context) {
+            super.onAttach(context);
+        }
+
+        public void onStart() {
+            super.onStart();
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            if(alertDialog!=null)alertDialog.dismiss();
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            unbinder.unbind();
+        }
+
+        @OnClick({R.id.btn_camera, R.id.btn_galeria})
+        public void onViewClicked(View view) {
+            switch (view.getId()) {
+                case R.id.btn_camera:
+                    if(presenter!=null)presenter.onClickCamera();
+                    dismiss();
+                    break;
+                case R.id.btn_galeria:
+                    if(presenter!=null)presenter.onClickGalery();
+                    dismiss();
+                    break;
+            }
+        }
+
     }
 }

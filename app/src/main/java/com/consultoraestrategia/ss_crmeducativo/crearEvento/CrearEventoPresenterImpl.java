@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.crearEvento;
 
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,6 +30,7 @@ import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView> implements CrearEventoPresenter{
     private static final int EVENTO=526, ACTIVIDAD=528, CITA=530, TAREA=529, NOTICIA=527;
@@ -400,6 +402,7 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
         seleccionarCalendarioView.showListComportamiento(tipoCalendarioUiList);
     }
 
+    @Deprecated
     @Override
     public void onSalirSelectPiket(ArrayList<String> photoPaths) {
         if(photoPaths.isEmpty()){
@@ -509,6 +512,32 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
         if(view!=null)view.hideImage();
         pathEdit = null;
         imageBaseG4= null;
+    }
+
+    @Override
+    public void onClickCamera() {
+        if(view!=null)view.showCamera();
+    }
+
+    @Override
+    public void onClickGalery() {
+        if(view!=null)view.showGalery();
+    }
+
+    @Override
+    public void onUpdload(Map<Uri, String> photoPaths) {
+        if(photoPaths.isEmpty()){
+            if(view!=null)view.hideImage();
+            pathEdit = null;
+            imageBaseG4= null;
+        }else {
+            pathEdit = "#";
+            for (Map.Entry<Uri, String> pair : photoPaths.entrySet()) {
+                imageBaseG4 = getFile64.execute(pair.getKey(), pair.getValue());
+                if(view!=null)view.showImage(pair.getKey());
+            }
+
+        }
     }
 
     @Override

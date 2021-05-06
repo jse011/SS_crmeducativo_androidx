@@ -602,7 +602,7 @@ public class RegistroFragment extends Fragment implements RegistroView, Evaluaci
     public void showInfoComentario(String evaluacionId) {
         InfoComentarioDialog infoComentarioDialog = InfoComentarioDialog.newInstance(evaluacionId);
         infoComentarioDialog.setTargetFragment(RegistroFragment.this, 200);
-        infoComentarioDialog.show(getFragmentManager(), "InfoRubroFragments");
+        infoComentarioDialog.show(getParentFragmentManager(), "InfoRubroFragments");
     }
 
     @Override

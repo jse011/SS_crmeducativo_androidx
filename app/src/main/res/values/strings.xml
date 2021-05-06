@@ -66,8 +66,8 @@
         <item>Algebra</item>
     </array>
 
-    <string name="app_name">Docente Mentor 3.0</string>
-    <!--<string name="app_name">Educar Teacher</string>-->
+    <!--<string name="app_name">Docente Mentor 3.0</string>-->
+    <string name="app_name">Educar Teacher</string>
 
 
 <string name="login.progress.titulo">Iniciando</string>

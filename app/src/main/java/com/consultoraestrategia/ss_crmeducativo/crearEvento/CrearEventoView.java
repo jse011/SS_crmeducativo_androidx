@@ -1,5 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.crearEvento;
 
+import android.net.Uri;
+
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseView;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AgendaUi;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AlumnoUi;
@@ -75,4 +77,9 @@ public interface CrearEventoView extends BaseView<CrearEventoPresenter> {
 
     void panelUpAlumnos();
 
+    void showCamera();
+
+    void showGalery();
+
+    void showImage(Uri u);
 }

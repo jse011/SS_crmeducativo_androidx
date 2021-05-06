@@ -233,7 +233,30 @@ public class ApiRetrofit {
         return getResponse.uploadFileAlumno(fileToUpload, filename, requestPersonaId,option);
     }
 
+    public Call<String> uploadMultiFileAlumno(String urlServidor, int personaId, byte[] bytes, String nombre) {
 
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), bytes);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", "archivo", requestBody);
+        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), nombre);
+        RequestBody requestPersonaId = RequestBody.create(MediaType.parse("*/*"), String.valueOf(personaId));
+        RequestBody option = RequestBody.create(MediaType.parse("*/*"), "1");
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder
+                .connectTimeout(120, TimeUnit.SECONDS) // connect timeout
+                .writeTimeout(120, TimeUnit.SECONDS) // write timeout
+                .readTimeout(120, TimeUnit.SECONDS);
+        // read timeout
+        OkHttpClient okHttpClient = builder.build();
+
+        Service getResponse = new Retrofit.Builder()
+                .baseUrl(urlServidor+"/")
+                .client(okHttpClient)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build()
+                .create(Service.class);
+        Log.d(TAG, "filename: " + nombre +" requestPersonaId: " + String.valueOf(personaId));
+        return getResponse.uploadFileAlumno(fileToUpload, filename, requestPersonaId,option);
+    }
 
 
 

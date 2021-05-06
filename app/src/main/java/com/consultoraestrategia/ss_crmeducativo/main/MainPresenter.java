@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.main;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenter;

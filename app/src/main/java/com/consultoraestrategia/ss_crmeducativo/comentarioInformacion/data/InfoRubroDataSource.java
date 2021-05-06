@@ -1,7 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.data;
 
 
-import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.MensajeUi;
 
 import java.util.List;
@@ -14,13 +14,11 @@ public interface InfoRubroDataSource {
 
     List<MensajeUi> getComentarios(String evaluacionId);
 
-    List<ArchivoComentarioUi> getArchivoComentarioList(String evaluacionId);
+    List<ArchivoUi> getArchivoComentarioList(String evaluacionId);
 
     boolean saveComentario(MensajeUi mensajeUi);
 
     boolean deleteComentario(MensajeUi mensajeUi);
 
-    boolean saveComentarioArchivo(ArchivoComentarioUi archivoComentarioUi);
-
-    boolean deleteArchivoComentario(ArchivoComentarioUi archivoComentarioUi);
+    boolean deleteArchivoComentario(ArchivoUi archivoComentarioUi);
 }

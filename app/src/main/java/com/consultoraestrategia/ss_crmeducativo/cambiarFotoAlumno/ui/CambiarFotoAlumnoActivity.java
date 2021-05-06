@@ -199,7 +199,8 @@ public class CambiarFotoAlumnoActivity extends BaseActivity<CambiarFotoAlumnoVie
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == Activity.RESULT_OK) {
                 Log.d(getTag(), "uri: " + result.getUri());
-                comprimirImagen(result.getUri());
+                //comprimirImagen(result.getUri());
+                presenter.onCropImageActivityResult(result.getUri().getPath());
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 showMessage(getResources().getString(R.string.unknown_error));
             }

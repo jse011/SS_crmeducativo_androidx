@@ -3,7 +3,7 @@ package com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.domain.us
 
 
 import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.data.InfoRubroRepository;
-import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoUi;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class GetArchivoComentario {
         this.repository = repository;
     }
 
-    public List<ArchivoComentarioUi> execute(Response response){
+    public List<ArchivoUi> execute(Response response){
         return repository.getArchivoComentarioList(response.getEvaluacionId());
     }
 

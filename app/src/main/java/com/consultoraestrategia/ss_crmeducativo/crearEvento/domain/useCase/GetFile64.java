@@ -1,20 +1,31 @@
 package com.consultoraestrategia.ss_crmeducativo.crearEvento.domain.useCase;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class GetFile64 {
 
+    Context context;
+
+    public GetFile64(Context context) {
+        this.context = context;
+    }
 
     public String execute(String imagePath) {
         Bitmap scaledBitmap = null;
@@ -138,5 +149,34 @@ public class GetFile64 {
         }
 
         return inSampleSize;
+    }
+
+    public String execute(Uri uri, String nombre) {
+        return execute(getFile(context, uri, nombre).getPath());
+    }
+
+    public static File getFile(Context context, Uri uri, String nombre) {
+        File destinationFilename = new File(context.getFilesDir().getPath() + File.separatorChar + nombre);
+        try (InputStream ins = context.getContentResolver().openInputStream(uri)) {
+            createFileFromStream(ins, destinationFilename);
+        } catch (Exception ex) {
+            Log.e("Save File", ex.getMessage());
+            ex.printStackTrace();
+        }
+        return destinationFilename;
+    }
+
+    public static void createFileFromStream(InputStream ins, File destination) {
+        try (OutputStream os = new FileOutputStream(destination)) {
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = ins.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+            os.flush();
+        } catch (Exception ex) {
+            Log.e("Save File", ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 }

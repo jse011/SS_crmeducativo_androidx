@@ -1,6 +1,6 @@
 package com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.data;
 
-import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.MensajeUi;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class InfoRubroRepository implements InfoRubroDataSource {
     }
 
     @Override
-    public List<ArchivoComentarioUi> getArchivoComentarioList(String evaluacionId) {
+    public List<ArchivoUi> getArchivoComentarioList(String evaluacionId) {
         return infoRubroDataLocalSource.getArchivoComentarioList(evaluacionId);
     }
 
@@ -35,12 +35,7 @@ public class InfoRubroRepository implements InfoRubroDataSource {
     }
 
     @Override
-    public boolean saveComentarioArchivo(ArchivoComentarioUi archivoComentarioUi) {
-        return infoRubroDataLocalSource.saveComentarioArchivo(archivoComentarioUi);
-    }
-
-    @Override
-    public boolean deleteArchivoComentario(ArchivoComentarioUi archivoComentarioUi) {
+    public boolean deleteArchivoComentario(ArchivoUi archivoComentarioUi) {
         return infoRubroDataLocalSource.deleteArchivoComentario(archivoComentarioUi);
     }
 }

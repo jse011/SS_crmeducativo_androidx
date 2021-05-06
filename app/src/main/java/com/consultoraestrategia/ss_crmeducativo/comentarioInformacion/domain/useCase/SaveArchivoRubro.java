@@ -1,7 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.domain.useCase;
 
 import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.data.InfoRubroRepository;
-import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoUi;
 
 public class SaveArchivoRubro {
 
@@ -13,17 +13,17 @@ public class SaveArchivoRubro {
     }
 
     public Response execute(Requests request){
-        return new Response(repository.saveComentarioArchivo(request.getArchivoComentarioUi()));
-
+        //return new Response(repository.saveComentarioArchivo(request.getArchivoComentarioUi()));
+        return null;
     }
     public static class Requests {
-        ArchivoComentarioUi archivoComentarioUi;
+        ArchivoUi archivoComentarioUi;
 
-        public Requests(ArchivoComentarioUi archivoComentarioUi) {
+        public Requests(ArchivoUi archivoComentarioUi) {
             this.archivoComentarioUi = archivoComentarioUi;
         }
 
-        public ArchivoComentarioUi getArchivoComentarioUi() {
+        public ArchivoUi getArchivoComentarioUi() {
             return archivoComentarioUi;
         }
     }

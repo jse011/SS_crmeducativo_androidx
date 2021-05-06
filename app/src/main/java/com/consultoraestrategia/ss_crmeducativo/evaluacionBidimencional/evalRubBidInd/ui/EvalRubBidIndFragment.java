@@ -2,10 +2,12 @@ package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.evalRub
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -37,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -313,9 +316,23 @@ public class EvalRubBidIndFragment extends BaseDialogFragment<EvalRubBidIndView,
             Uri uri = galleryAddPic();
             photoPaths.put(uri, currentPhotoFileName);
             presenter.onUpdload(photoPaths);
+        }else if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_GALLERY_IMAGE){
+            Uri imageUri = data.getData();
+            photoPaths.put(imageUri, queryName(getContext().getContentResolver(), imageUri));
+            presenter.onUpdload(photoPaths);
         }
     }
 
+    private static String queryName(ContentResolver resolver, Uri uri) {
+        Cursor returnCursor =
+                resolver.query(uri, null, null, null, null);
+        assert returnCursor != null;
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String name = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return name;
+    }
 
     private Uri galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);

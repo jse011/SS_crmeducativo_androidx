@@ -1,5 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.crearEvento;
 
+import android.net.Uri;
+
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenter;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AgendaUi;
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AlumnoUi;
@@ -7,6 +9,7 @@ import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.TipoCalenda
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.seleccionarCalendario.SeleccionarCalendarioView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface CrearEventoPresenter extends BasePresenter<CrearEventoView> {
     void onBtnCreateClicked(String nombre, String descripcion);
@@ -51,4 +54,9 @@ public interface CrearEventoPresenter extends BasePresenter<CrearEventoView> {
 
     void onClickCloseImage();
 
+    void onClickCamera();
+
+    void onClickGalery();
+
+    void onUpdload(Map<Uri, String> photoPaths);
 }

@@ -6,7 +6,7 @@ package com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.ui;
 
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseView;
 import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.InfoRubroPresenter;
-import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoComentarioUi;
+import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.MensajeUi;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface InfoRubroView extends BaseView<InfoRubroPresenter> {
 
     void showListComentarios(List<MensajeUi> mensajeUiList);
 
-    void showListComentariosArchivos(List<ArchivoComentarioUi> execute);
+    void showListComentariosArchivos(List<ArchivoUi> execute);
 
     void cerrarDialog(String evaluacionProcesoId);
 
@@ -29,4 +29,13 @@ public interface InfoRubroView extends BaseView<InfoRubroPresenter> {
 
     void clearTextInpuComentario();
 
+    void showCamera();
+
+    void showGalery();
+
+    void updateTareaArchivo(ArchivoUi item);
+
+    void removeTareaArchivo(ArchivoUi item);
+
+    void addTareaArchivo(ArchivoUi item);
 }

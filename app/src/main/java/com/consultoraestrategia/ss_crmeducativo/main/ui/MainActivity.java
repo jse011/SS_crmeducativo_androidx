@@ -453,7 +453,8 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == Activity.RESULT_OK) {
                 Log.d(getTag(), "uri: " + result.getUri());
-                comprimirImagen(result.getUri());
+                //comprimirImagen(result.getUri());
+                presenter.onCropImageActivityResult(result.getUri().getPath());
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 showMessage(getResources().getString(R.string.unknown_error));
             }
@@ -462,7 +463,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     }
 
-    private void comprimirImagen(Uri uri) {
+    private void _comprimirImagen(Uri uri) {
 
         try {
             Bitmap imageBitmap = SiliCompressor.with(this).getCompressBitmap(uri.getPath());

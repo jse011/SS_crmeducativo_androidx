@@ -1,6 +1,5 @@
-package com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.usecase;
+package com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.domain.useCase;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,47 +8,36 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
-import com.consultoraestrategia.ss_crmeducativo.entities.Archivo;
+import com.consultoraestrategia.ss_crmeducativo.comentarioInformacion.entities.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.entities.ArchivosRubroProceso;
-import com.consultoraestrategia.ss_crmeducativo.entities.ArchivosRubroProceso_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.EvaluacionProcesoC;
 import com.consultoraestrategia.ss_crmeducativo.entities.EvaluacionProcesoC_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC;
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC_Table;
-import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoComentario;
 import com.consultoraestrategia.ss_crmeducativo.entities.Rutas;
 import com.consultoraestrategia.ss_crmeducativo.entities.Rutas_Table;
-import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
-import com.consultoraestrategia.ss_crmeducativo.repositorio.data.RepositorioDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.remote.CountingRequestBody;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 public class UploadArchivo {
     Context context;
@@ -144,8 +132,7 @@ public class UploadArchivo {
 
                         EvaluacionProcesoC evaluacionProcesoC = SQLite.select()
                                 .from(EvaluacionProcesoC.class)
-                                .where(EvaluacionProcesoC_Table.rubroEvalProcesoId.eq(archivoUi.getRubroEvaluacionId()))
-                                .and(EvaluacionProcesoC_Table.alumnoId.eq(archivoUi.getAlumnoId()))
+                                .where(EvaluacionProcesoC_Table.evaluacionProcesoId.eq(archivoUi.getEvaluacionProcesoId()))
                                 .querySingle();
 
                         if(evaluacionProcesoC!=null){
