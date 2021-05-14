@@ -151,3 +151,18 @@ dependencies {
     //implementation 'me.shaohui.advancedluban:library:1.3.5'
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "ContentResolverV2"
+        property "sonar.projectKey", "ContentResolverV2"
+        property "sonar.host.url", "http://192.168.0.30:80"
+        property "sonar.language", "java"
+        property "sonar.sources", "src/main/java"
+        property "sonar.java.sources", "src/main/java"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.login", "admin"
+        property "sonar.password", "SP8rvF5xNN5Z"
+    }
+}

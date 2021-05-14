@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.CentProcesoPresenter;
 import com.consultoraestrategia.ss_crmeducativo.centroProcesamiento.view.TutorialCentView;
@@ -49,6 +50,11 @@ public class TutorialCentProcesamiento extends Fragment implements TutorialCentV
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tutorial_cent_procesamiento, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        Glide.with(img_fondo)
+                .load(R.drawable.fondo_registro_2)
+                .into(img_fondo);
+
         return view;
     }
 

@@ -225,11 +225,11 @@
     <string name="createrubbid_tipoevaluacion_dialog_title">Tipo Evaluación</string>
     <string name="createrubbid_escalaevaluacion_dialog_title">Escala Evaluación</string>
     <string name="createrubbid_error_rubricatitle_empty">Ingrese el título de la rúbrica</string>
-    <string name="createrubbid_error_rubricaalias_empty">Rúbrica Alias Vacío</string>
-    <string name="createrubbid_error_tipoevaluacion_empty">Tipo evaluación vacio</string>
+    <string name="createrubbid_error_rubricaalias_empty">Rúbrica Alias vacío</string>
+    <string name="createrubbid_error_tipoevaluacion_empty">Tipo evaluación vacío</string>
     <string name="createrubbid_error_formaevaluacion_empty">Forma evaluación vacío</string>
-    <string name="createrubbid_error_tiponota_empty">Tipo Nota Vacío</string>
-    <string name="createrubbid_error_escalaevaluacion_empty">Escala Evaluación Vacío</string>
+    <string name="createrubbid_error_tiponota_empty">Promedio de logro vacío</string>
+    <string name="createrubbid_error_escalaevaluacion_empty">Escala Evaluación vacío</string>
     <string name="createrubbid_error_campoaccion_empty">No ha seleccionado campo Acción</string>
     <string name="createrubbid_error_tiponivel_empty">Tipo Nivel Vacío</string>
     <string name="createrubbid_error_indicadores_notselected">No ha seleccionado criterios</string>
