@@ -76,4 +76,22 @@ public class RubroEvalRNPFormulaC extends BaseEntity {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RubroEvalRNPFormulaC)) return false;
+
+        RubroEvalRNPFormulaC that = (RubroEvalRNPFormulaC) o;
+
+        if (posicion != that.posicion) return false;
+        return rubroEvaluacionPrimId != null ? rubroEvaluacionPrimId.equals(that.rubroEvaluacionPrimId) : that.rubroEvaluacionPrimId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = rubroEvaluacionPrimId != null ? rubroEvaluacionPrimId.hashCode() : 0;
+        result = 31 * result + posicion;
+        return result;
+    }
 }
