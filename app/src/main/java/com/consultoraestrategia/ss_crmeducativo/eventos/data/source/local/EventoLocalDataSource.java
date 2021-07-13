@@ -1,9 +1,12 @@
 package com.consultoraestrategia.ss_crmeducativo.eventos.data.source.local;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.AlumnoUi;
+import com.consultoraestrategia.ss_crmeducativo.crearEvento.entities.EventoUi;
 import com.consultoraestrategia.ss_crmeducativo.createTeam.entities.Person;
+import com.consultoraestrategia.ss_crmeducativo.entities.Archivo;
 import com.consultoraestrategia.ss_crmeducativo.entities.Calendario;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioListaUsuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioListaUsuario_Table;
@@ -15,6 +18,8 @@ import com.consultoraestrategia.ss_crmeducativo.entities.DetalleContratoAcad_Tab
 import com.consultoraestrategia.ss_crmeducativo.entities.Entidad;
 import com.consultoraestrategia.ss_crmeducativo.entities.Entidad_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Evento;
+import com.consultoraestrategia.ss_crmeducativo.entities.EventoAdjunto;
+import com.consultoraestrategia.ss_crmeducativo.entities.EventoAdjunto_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.EventoPersona;
 import com.consultoraestrategia.ss_crmeducativo.entities.EventoPersona_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.Evento_Table;
@@ -32,13 +37,17 @@ import com.consultoraestrategia.ss_crmeducativo.entities.Usuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.Usuario_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.queryCustomList.CalendarioEventoQuery;
 import com.consultoraestrategia.ss_crmeducativo.eventos.data.source.EventosDataSource;
+import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventoAdjuntoUi;
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventosUi;
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.PersonaUi;
+import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TipoAdjuntoUi;
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposEventosUi;
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposUi;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEEventos;
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
+import com.consultoraestrategia.ss_crmeducativo.util.YouTubeThumbnail;
+import com.consultoraestrategia.ss_crmeducativo.util.YouTubeUrlParser;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
@@ -46,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -141,19 +151,41 @@ public class EventoLocalDataSource implements EventosDataSource {
 
 
 
-            Where<Evento> eventoWhere = SQLite.select(Utils.f_allcolumnTable(Evento_Table.ALL_COLUMN_PROPERTIES,Evento_Table.key.withTable().as("eventoId"),Calendario_Table.nombre.withTable().as("nombreCalendario"), Calendario_Table.cargo.withTable(), Calendario_Table.nUsuario.withTable()))
+            Where<Evento> eventoWhere = SQLite.select(
+                    Utils.f_allcolumnTable(Evento_Table.ALL_COLUMN_PROPERTIES,
+                            Evento_Table.key.withTable().as("eventoId"),
+                            Calendario_Table.nombre.withTable().as("nombreCalendario"),
+                            Calendario_Table.cargo.withTable(),
+                            Calendario_Table.nUsuario.withTable(),
+                            EventoAdjunto_Table.eventoAdjuntoId.withTable(),
+                            EventoAdjunto_Table.titulo.withTable().as("adjuntoTitulo"),
+                            EventoAdjunto_Table.tipoId.withTable().as("adjuntoTipoId"),
+                            EventoAdjunto_Table.driveId.withTable().as("adjuntoDriveId"),
+                            Calendario_Table.nFoto.withTable()))
                     .from(Evento.class)
                     .innerJoin(Calendario.class)
                     .on(Evento_Table.calendarioId.withTable()
                             .eq(Calendario_Table.calendarioId.withTable()))
+                    .leftOuterJoin(EventoAdjunto.class)
+                    .on(EventoAdjunto_Table.eventoId.withTable().eq(Evento_Table.eventoId.withTable()))
                     .where(Calendario_Table.usuarioId.withTable().eq(idUsuario))
                     .and(Calendario_Table.georeferenciaId.withTable().eq(idGeoreferencia))
                     .and(Calendario_Table.estado.withTable()
                             .notEq(Calendario.ESTADO_ELIMINADO))
                     .and(Evento_Table.estadoId.notEq(Evento.ESTADO_ELIMINADO))
+                    .groupBy(Evento_Table.eventoId.withTable(), EventoAdjunto_Table.eventoAdjuntoId)
                     .orderBy(Evento_Table.fechaEvento.desc());
 
-            Where<Evento> eventoWhereExterno = SQLite.select(Utils.f_allcolumnTable(Evento_Table.ALL_COLUMN_PROPERTIES,Evento_Table.key.withTable().as("eventoId"),Calendario_Table.nombre.withTable().as("nombreCalendario"), Calendario_Table.cargo.withTable(), Calendario_Table.nUsuario.withTable()))
+            Where<Evento> eventoWhereExterno = SQLite.select(Utils.f_allcolumnTable(Evento_Table.ALL_COLUMN_PROPERTIES,
+                    Evento_Table.key.withTable().as("eventoId"),
+                    Calendario_Table.nombre.withTable().as("nombreCalendario"),
+                    Calendario_Table.cargo.withTable(),
+                    Calendario_Table.nUsuario.withTable(),
+                    EventoAdjunto_Table.eventoAdjuntoId.withTable(),
+                    EventoAdjunto_Table.titulo.withTable().as("adjuntoTitulo"),
+                    EventoAdjunto_Table.tipoId.withTable().as("adjuntoTipoId"),
+                    EventoAdjunto_Table.driveId.withTable().as("adjuntoDriveId"),
+                    Calendario_Table.nFoto.withTable()))
                     .from(Evento.class)
                     .innerJoin(Calendario.class)
                     .on(Evento_Table.calendarioId.withTable()
@@ -167,11 +199,14 @@ public class EventoLocalDataSource implements EventosDataSource {
                     .innerJoin(ListaUsuarioDetalle.class)
                     .on(ListaUsuarioDetalle_Table.listaUsuarioId.withTable()
                             .eq(ListaUsuario_Table.listaUsuarioId.withTable()))
+                    .leftOuterJoin(EventoAdjunto.class)
+                    .on(EventoAdjunto_Table.eventoId.withTable().eq(Evento_Table.eventoId.withTable()))
                     .where(ListaUsuarioDetalle_Table.usuarioId.withTable().eq(idUsuario))
                     .and(Calendario_Table.estado.withTable()
                             .notEq(Calendario.ESTADO_ELIMINADO))
                     .and(Evento_Table.estadoId.notEq(Evento.ESTADO_ELIMINADO))
                     .and(Evento_Table.estadoPublicacion.withTable().eq(true))
+                    .groupBy(Evento_Table.eventoId.withTable(), EventoAdjunto_Table.eventoAdjuntoId)
                     .orderBy(Evento_Table.fechaEvento.desc());
 
             if(tiposEventosUi==null){
@@ -184,9 +219,11 @@ public class EventoLocalDataSource implements EventosDataSource {
             }
 
             List<CalendarioEventoQuery> eventoList = eventoWhere
+
                     .queryCustomList(CalendarioEventoQuery.class);
 
             List<CalendarioEventoQuery> eventoListExterno = eventoWhereExterno
+
                     .queryCustomList(CalendarioEventoQuery.class);
 
 
@@ -199,12 +236,18 @@ public class EventoLocalDataSource implements EventosDataSource {
             Collections.sort(eventosUiList, new Comparator<EventosUi>() {
                 @Override
                 public int compare(EventosUi o1, EventosUi o2) {
-                    Calendar calendar1 = Calendar.getInstance();
-                    Calendar calendar2 = Calendar.getInstance();
-                    calendar1.setTimeInMillis(o1.getFechaEvento()>0?o1.getFechaEvento():o1.getFechaCreacion());
-                    calendar2.setTimeInMillis(o2.getFechaEvento()>0?o2.getFechaEvento():o2.getFechaCreacion());
-                    Log.d("getEventosColegio", "calendar2.compareTo(calendar1) :  " +calendar2.compareTo(calendar1));
-                    return calendar2.compareTo(calendar1);
+
+                    Date fecha1_ = new Date(o1.getTiposUi().getTipos() == TiposUi.AGENDA? o1.getFechaCreacion() : o1.getFechaPublicacion());
+                    Calendar date1 = Calendar.getInstance();
+                    date1.setTimeInMillis(o1.getTiposUi().getTipos() == TiposUi.AGENDA? o1.getFechaCreacion() : o1.getFechaPublicacion());
+                    if(date1.get(Calendar.YEAR)<2000) fecha1_= new Date(o1.getFechaPublicacion());
+
+                    Date fecha2_ = new Date(o2.getTiposUi().getTipos() == TiposUi.AGENDA? o2.getFechaCreacion() : o2.getFechaPublicacion());
+                    Calendar date2 = Calendar.getInstance();
+                    date2.setTimeInMillis(o2.getTiposUi().getTipos() == TiposUi.AGENDA? o2.getFechaCreacion() : o2.getFechaPublicacion());
+                    if(date2.get(Calendar.YEAR)<2000) fecha2_ = new Date(o2.getFechaPublicacion());
+
+                    return fecha2_.compareTo(fecha1_);
                 }
             });
 
@@ -219,76 +262,81 @@ public class EventoLocalDataSource implements EventosDataSource {
         List<EventosUi> eventosUiList = new ArrayList<>();
 
         for (CalendarioEventoQuery evento: eventoList){
+
+
             EventosUi eventosUi = new EventosUi();
-            eventosUi.setExterno(externo);
             eventosUi.setIdEvento(evento.getEventoId());
-            eventosUi.setLikeCount(evento.getLikeCount());
-            eventosUi.setTitulo(evento.getTitulo());
-            eventosUi.setDescripcion(evento.getDescripcion());
-            eventosUi.setCalendarioId(evento.getCalendarioId());
-            eventosUi.setFechaCreacion(evento.getFechaCreacion());
-            eventosUi.setLike(evento.isLike());
-            eventosUi.setNombreCalendario(evento.getNombreCalendario());
+            int position = eventosUiList.indexOf(eventosUi);
+            if(position==-1){
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(evento.getFechaEvento());
-            List<Integer> list = Utils.changeHourMinuto(evento.getHoraEvento());
-            calendar.set(Calendar.HOUR_OF_DAY, list.get(0));
-            calendar.set(Calendar.MINUTE, list.get(1));
-            calendar.set(Calendar.SECOND,0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            eventosUi.setFechaEvento(calendar.getTimeInMillis());
+                eventosUi.setExterno(externo);
+                eventosUi.setLikeCount(evento.getLikeCount());
+                eventosUi.setTitulo(evento.getTitulo());
+                eventosUi.setDescripcion(evento.getDescripcion());
+                eventosUi.setCalendarioId(evento.getCalendarioId());
+                eventosUi.setFechaCreacion(evento.getFechaCreacion());
+                eventosUi.setLike(evento.isLike());
+                eventosUi.setNombreCalendario(evento.getNombreCalendario());
 
-            eventosUi.setImagen(evento.getPathImagen());
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(evento.getFechaEvento());
+                List<Integer> list = Utils.changeHourMinuto(evento.getHoraEvento());
+                calendar.set(Calendar.HOUR_OF_DAY, list.get(0));
+                calendar.set(Calendar.MINUTE, list.get(1));
+                calendar.set(Calendar.SECOND,0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                eventosUi.setFechaEvento(calendar.getTimeInMillis());
+                eventosUi.setFechaPublicacion(evento.getFechaPublicacion());
+                eventosUi.setImagen(evento.getPathImagen());
 
-            Tipos tipos = SQLite.select()
-                    .from(Tipos.class)
-                    .where(Tipos_Table.tipoId.withTable().eq(evento.getTipoEventoId()))
-                    .querySingle();
-            TiposEventosUi tiposUi = new TiposEventosUi();
-            if (tipos!=null){
+                Tipos tipos = SQLite.select()
+                        .from(Tipos.class)
+                        .where(Tipos_Table.tipoId.withTable().eq(evento.getTipoEventoId()))
+                        .querySingle();
+                TiposEventosUi tiposUi = new TiposEventosUi();
+                if (tipos!=null){
 
-                tiposUi.setNombre(tipos.getNombre());
-                tiposUi.setTipos(TiposUi.DEFAULT);
-                switch (tipos.getTipoId()){
-                    case EVENTO:
-                        tiposUi.setTipos(TiposUi.EVENTOS);
-                        break;
-                    case TAREA:
-                        tiposUi.setTipos(TiposUi.TAREAS);
-                        break;
-                    case CITA:
-                        tiposUi.setTipos(TiposUi.CITAS);
-                        break;
-                    case ACTIVIDAD:
-                        tiposUi.setTipos(TiposUi.ACTIVIDADES);
-                        break;
-                    case NOTICIA:
-                        tiposUi.setTipos(TiposUi.NOTICIA);
-                        break;
-                    case AGENDA:
-                        tiposUi.setTipos(TiposUi.AGENDA);
-                        break;
+                    tiposUi.setNombre(tipos.getNombre());
+                    tiposUi.setTipos(TiposUi.DEFAULT);
+                    switch (tipos.getTipoId()){
+                        case EVENTO:
+                            tiposUi.setTipos(TiposUi.EVENTOS);
+                            break;
+                        case TAREA:
+                            tiposUi.setTipos(TiposUi.TAREAS);
+                            break;
+                        case CITA:
+                            tiposUi.setTipos(TiposUi.CITAS);
+                            break;
+                        case ACTIVIDAD:
+                            tiposUi.setTipos(TiposUi.ACTIVIDADES);
+                            break;
+                        case NOTICIA:
+                            tiposUi.setTipos(TiposUi.NOTICIA);
+                            break;
+                        case AGENDA:
+                            tiposUi.setTipos(TiposUi.AGENDA);
+                            break;
+                    }
+
+                }else {
+                    tiposUi.setNombre("desconocido");
+                    tiposUi.setTipos(TiposUi.EVENTOS);
                 }
+                eventosUi.setTiposUi(tiposUi);
 
-            }else {
-                tiposUi.setNombre("desconocido");
-                tiposUi.setTipos(TiposUi.EVENTOS);
-            }
-            eventosUi.setTiposUi(tiposUi);
+                Entidad entidad = SQLite.select()
+                        .from(Entidad.class)
+                        .where(Entidad_Table.entidadId.withTable().eq(evento.entidadId))
+                        .querySingle();
 
-            Entidad entidad = SQLite.select()
-                    .from(Entidad.class)
-                    .where(Entidad_Table.entidadId.withTable().eq(evento.entidadId))
-                    .querySingle();
+                if (entidad!=null){
+                    eventosUi.setNombreEntidad(entidad.getNombre());
+                    eventosUi.setFotoEntidad(evento.getnFoto());
+                }
+                eventosUi.setPersona(Utils.capitalize(evento.getnUsuario()));
 
-            if (entidad!=null){
-                eventosUi.setNombreEntidad(entidad.getNombre());
-                eventosUi.setFotoEntidad(entidad.getFoto());
-            }
-            eventosUi.setPersona(evento.getnUsuario());
-            Log.d("evento", "evento: "+evento.getCargo());
-            eventosUi.setCargo(evento.getCargo());
+                eventosUi.setCargo(evento.getCargo());
 
             /*List<ListaUsuarioDetalle> listaUsuarioDetalles = SQLite.select()
                     .from(ListaUsuarioDetalle.class)
@@ -302,9 +350,113 @@ public class EventoLocalDataSource implements EventosDataSource {
                     .queryList();
 
             eventosUi.setCantidaEnviar(listaUsuarioDetalles.size());*/
-            eventosUi.setPublicado(evento.isEstadoPublicacion());
+                eventosUi.setPublicado(evento.isEstadoPublicacion());
+                eventosUi.setAdjuntoUiPreviewList(new ArrayList<EventoAdjuntoUi>());
+                eventosUi.setAdjuntoUiList(new ArrayList<EventoAdjuntoUi>());
 
-            eventosUiList.add(eventosUi);
+
+                if(eventosUi.getFechaPublicacion()>912402000000L){
+                    String fecha_ = "Publicado " + Utils.getFechaDiaMesAnho(eventosUi.getFechaPublicacion());
+                    eventosUi.setNombreFechaPublicion(fecha_);
+                }else{
+                    eventosUi.setNombreFechaPublicion("");
+                }
+                eventosUiList.add(eventosUi);
+            }else {
+                eventosUi = eventosUiList.get(position);
+            }
+
+            EventoAdjuntoUi adjuntoUi = new EventoAdjuntoUi();
+            adjuntoUi.setEventoAjuntoId(evento.eventoAdjuntoId);
+            if(!TextUtils.isEmpty(adjuntoUi.getEventoAjuntoId())){
+                adjuntoUi.setDriveId(evento.adjuntoDriveId);
+                adjuntoUi.setTitulo(evento.adjuntoTitulo);
+                switch (evento.adjuntoTipoId){
+                    case Archivo.TIPO_VIDEO:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.VIDEO);
+                        eventosUi.getAdjuntoUiPreviewList().add(adjuntoUi);
+                        adjuntoUi.setVideo(true);
+                        break;
+                    case Archivo.TIPO_VINCULO:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.LINK);
+                        eventosUi.getAdjuntoUiList().add(adjuntoUi);
+                        break;
+                    case Archivo.TIPO_DOCUMENTO:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.DOCUMENTO);
+                        eventosUi.getAdjuntoUiList().add(adjuntoUi);
+                        break;
+                    case Archivo.TIPO_IMAGEN:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.IMAGEN);
+                        eventosUi.getAdjuntoUiPreviewList().add(adjuntoUi);
+                        break;
+                    case Archivo.TIPO_AUDIO:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.AUDIO);
+                        eventosUi.getAdjuntoUiList().add(adjuntoUi);
+                        break;
+                    case Archivo.TIPO_HOJA_CALCULO:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.HOJACALCULO);
+                        eventosUi.getAdjuntoUiList().add(adjuntoUi);
+                        break;
+                    case Archivo.TIPO_DIAPOSITIVA:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.PRESENTACION);
+                        eventosUi.getAdjuntoUiList().add(adjuntoUi);
+                        break;
+                    case Archivo.TIPO_PDF:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.PDF);
+                        eventosUi.getAdjuntoUiList().add(adjuntoUi);
+                        break;
+                    case Archivo.TIPO_YOUTUBE:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.VIDEO);
+                        eventosUi.getAdjuntoUiPreviewList().add(adjuntoUi);
+                        adjuntoUi.setVideo(true);
+                        break;
+                    default:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.OTROS);
+                        eventosUi.getAdjuntoUiList().add(adjuntoUi);
+                        break;
+                }
+
+                if(adjuntoUi.getTipoArchivo()==TipoAdjuntoUi.VIDEO){
+                    String idYoutube = YouTubeUrlParser.getVideoId(adjuntoUi.getTitulo());
+                    if(TextUtils.isEmpty(idYoutube)){
+                        adjuntoUi.setImagePreview("https://drive.google.com/thumbnail?id="+adjuntoUi.getDriveId());
+                    }else {
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.YOUTUBE);
+                        adjuntoUi.setImagePreview(YouTubeThumbnail.getUrlFromVideoId(idYoutube,YouTubeThumbnail.Quality.DEFAULT));
+                        adjuntoUi.setYotubeId(idYoutube);
+                    }
+                }else if(adjuntoUi.getTipoArchivo()==TipoAdjuntoUi.YOUTUBE){
+                    String idYoutube = YouTubeUrlParser.getVideoId(adjuntoUi.getTitulo());
+                    adjuntoUi.setTipoArchivo(TipoAdjuntoUi.YOUTUBE);
+                    adjuntoUi.setImagePreview(YouTubeThumbnail.getUrlFromVideoId(idYoutube,YouTubeThumbnail.Quality.DEFAULT));
+                    adjuntoUi.setYotubeId(idYoutube);
+                }else if(adjuntoUi.getTipoArchivo() == TipoAdjuntoUi.IMAGEN){
+                    adjuntoUi.setImagePreview("https://drive.google.com/uc?id="+adjuntoUi.getDriveId());
+                }
+            }
+
+
+        }
+
+        for(EventosUi eventoUi : eventosUiList){
+            if (eventoUi.getTiposUi().getTipos() == TiposUi.NOTICIA ||
+                    eventoUi.getTiposUi().getTipos()  == TiposUi.EVENTOS||(eventoUi.getTiposUi().getTipos()  == TiposUi.AGENDA && !TextUtils.isEmpty(eventoUi.getImagen()))){
+                if(!TextUtils.isEmpty(eventoUi.getImagen())){
+                   EventoAdjuntoUi adjuntoUi = new EventoAdjuntoUi();
+                    adjuntoUi.setImagePreview(eventoUi.getImagen());
+                    adjuntoUi.setTipoArchivo(TipoAdjuntoUi.IMAGEN);
+                    adjuntoUi.setTitulo(eventoUi.getTitulo());
+                    eventoUi.getAdjuntoUiPreviewList().add(adjuntoUi);
+                }
+            }
+
+            if (eventoUi.getTiposUi().getTipos()  == TiposUi.NOTICIA ||
+                    eventoUi.getTiposUi().getTipos()  == TiposUi.EVENTOS||(eventoUi.getTiposUi().getTipos()  == TiposUi.AGENDA && !TextUtils.isEmpty(eventoUi.getImagen()))){
+
+                if(TextUtils.isEmpty(eventoUi.getImagen()) && !eventoUi.getAdjuntoUiPreviewList().isEmpty()){
+                    eventoUi.setImagen(eventoUi.getAdjuntoUiPreviewList().get(0).getImagePreview());
+                }
+            }
         }
 
         return eventosUiList;

@@ -33,6 +33,8 @@ public class Calendario extends BaseEntity {
     public int estadoPublicación;
     @Column
     public int rolId;
+    @Column
+    public String nFoto;
 
     public String getCalendarioId() {
         return calendarioId;
@@ -136,5 +138,13 @@ public class Calendario extends BaseEntity {
 
     public void setRolId(int rolId) {
         this.rolId = rolId;
+    }
+
+    public String getnFoto() {
+        return nFoto;
+    }
+
+    public void setnFoto(String nFoto) {
+        this.nFoto = nFoto;
     }
 }

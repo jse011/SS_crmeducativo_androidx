@@ -225,10 +225,10 @@ public class CrearEventoPresenterImpl extends BasePresenterImpl<CrearEventoView>
             return;
         }
 
-        if(TextUtils.isEmpty(descripcion)){
+        /*if(TextUtils.isEmpty(descripcion)){
             if(view!=null)view.showMessage("Ingresé la descripción del evento");
             return;
-        }
+        }*/
 
         int countSelected = 0;
         for (AlumnoUi alumnoUi : alumnoUiList){

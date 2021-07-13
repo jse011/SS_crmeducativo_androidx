@@ -6,6 +6,10 @@ class EventosUi {
         DEFAULT, CALENDAR
     }
 
+    var nombreFechaPublicion: String? = null
+    var fechaPublicacion: Long = 0;
+    var adjuntoUiList: List<EventoAdjuntoUi> = ArrayList()
+    var adjuntoUiPreviewList: List<EventoAdjuntoUi> = ArrayList()
     var nombreCalendario: String? = null
     var cantidaEnviar: Int = 0
     var idEvento: String? = null
@@ -35,4 +39,18 @@ class EventosUi {
     var loading = false
 
     var externo = false
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is EventosUi) return false
+
+        if (idEvento != other.idEvento) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return idEvento?.hashCode() ?: 0
+    }
+
+
 }

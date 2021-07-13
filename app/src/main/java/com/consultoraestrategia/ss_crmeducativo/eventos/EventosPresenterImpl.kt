@@ -3,7 +3,6 @@ package com.consultoraestrategia.ss_crmeducativo.eventos
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
-import android.text.TextUtils
 import android.util.Log
 import com.consultoraestrategia.ss_crmeducativo.R
 import com.consultoraestrategia.ss_crmeducativo.base.UseCase.UseCaseCallback
@@ -11,12 +10,13 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseSincrono
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BasePresenterImpl
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle
+import com.consultoraestrategia.ss_crmeducativo.driveYoutubePreview.util.DriveYoutubePreview
 import com.consultoraestrategia.ss_crmeducativo.eventos.domain.useCase.*
-import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventosUi
-import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposEventosUi
-import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposUi
+import com.consultoraestrategia.ss_crmeducativo.eventos.entities.*
 import com.consultoraestrategia.ss_crmeducativo.eventos.informacionEvento.InformacionEventoDialogView
+import com.consultoraestrategia.ss_crmeducativo.eventos.informacionListaEventos.InformacionListaEventosView
 import com.consultoraestrategia.ss_crmeducativo.eventos.informacionListaUsuarios.ListaUsuarioView
+import com.consultoraestrategia.ss_crmeducativo.eventos.listaAdjuntoDownload.AdjuntoEventoDownload
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel
 
 class EventosPresenterImpl(handler: UseCaseHandler?,
@@ -31,6 +31,9 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
                            var getListaUsuario: GetListaUsuario) : BasePresenterImpl<EventosView>(handler, res), EventosPresenter{
 
 
+    private var AdjuntoEventoDownloadView: AdjuntoEventoDownload? = null
+    private var informacionListaEventosView: InformacionListaEventosView? = null
+    private var adjuntoUiPreviewSelected: EventoAdjuntoUi? = null;
     private var tutorCargaAcademicaId: Int = 0
     private var cargaCursoId: Int = 0
     private var listaUsuarioView: ListaUsuarioView? = null
@@ -115,6 +118,45 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
         cargaCursoId = crmBundle.cargaCursoId;
     }
 
+    override fun onClikLikeInfoCompartir() {
+        if (eventosUiSelected != null) view?.startCompartirEvento(eventosUiSelected!!)
+    }
+
+    override fun onClickDialogAdjunto(adjuntoUi: EventoAdjuntoUi) {
+        when (adjuntoUi.tipoArchivo) {
+            TipoAdjuntoUi.DOCUMENTO, TipoAdjuntoUi.HOJACALCULO, TipoAdjuntoUi.PRESENTACION, TipoAdjuntoUi.IMAGEN, TipoAdjuntoUi.PDF ->  view?.showPreviewArchivo(DriveYoutubePreview.Build.setupDriveDocumento(adjuntoUi.driveId, adjuntoUi.titulo))
+            TipoAdjuntoUi.VIDEO, TipoAdjuntoUi.AUDIO -> view?.showPreviewArchivo(DriveYoutubePreview.Build.setupDriveMultimedia(adjuntoUi.driveId, adjuntoUi.titulo))
+            else -> view?.showVinculo(adjuntoUi.titulo)
+        }
+    }
+
+    override fun onAdjuntoEventoDownloadDestroy() {
+        AdjuntoEventoDownloadView = null;
+    }
+
+    override fun onClikLikeInfoEvento() {
+        if (eventosUiSelected != null) {
+
+            if (!eventosUiSelected!!.like) {
+                eventosUiSelected!!.like = true
+            } else {
+                eventosUiSelected!!.like = false
+            }
+            var cantidad: Int = eventosUiSelected!!.likeCount
+            if (eventosUiSelected!!.like) {
+                cantidad++
+            } else {
+                cantidad--
+            }
+            if (cantidad < 0) cantidad = 0
+            eventosUiSelected!!.likeCount = cantidad
+            onClikLike(eventosUiSelected!!)
+            informacionListaEventosView?.changeLike(eventosUiSelected)
+            informacionEventoDialogView?.changeLike(eventosUiSelected)
+            view?.updateEvento(eventosUiSelected!!)
+        }
+    }
+
     override fun onClickTipoEvento(tiposEventosUi: TiposEventosUi) {
         tipoEventosList.forEach({
             it.toogle = false
@@ -129,6 +171,17 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
 
     }
 
+    override fun renderItemEvento(eventosUi: EventosUi, onSuccess: (EventosUi) -> Unit) {
+        if (!eventosUi.datosfirefase) {
+            eventosUi.datosfirefase=true
+            getLikeSaveCountLike.execute(eventosUi, UseCaseSincrono.Callback<EventosUi?> { success, value ->
+                if (success) {
+                    onSuccess(value!!)
+                }
+            })
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         if(initial){
@@ -136,43 +189,19 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
         }
         initial = true
     }
-    override fun renderItemEvento(eventosUi: EventosUi) {
-        if (!eventosUi.datosfirefase) {
-            eventosUi.datosfirefase=true
-            getLikeSaveCountLike.execute(eventosUi, UseCaseSincrono.Callback<EventosUi?> { success, value ->
-                if (success) {
-                    if (view != null) view.showListEventos(false, eventosUiList)
-                }
-            })
-        }
-    }
 
-    override fun onclikInfoEventos(eventosUi: EventosUi) {
-        if(eventosUi.tiposUi.tipos==TiposUi.NOTICIA||eventosUi.tiposUi.tipos==TiposUi.EVENTOS||(eventosUi.tiposUi.tipos == TiposUi.AGENDA && !TextUtils.isEmpty(eventosUi.imagen))){
-            eventosUiSelected = eventosUi
-            if (view != null) view.showDialogInfoEvento()
-        }else{
-            eventosUiSelected==null;
+    override fun onclikInfoEventos(eventosUi: EventosUi, eventoAdjuntoUi: EventoAdjuntoUi?) {
+        eventosUiSelected = eventosUi
+        adjuntoUiPreviewSelected = eventoAdjuntoUi
+        if (eventosUiSelected!=null && eventosUiSelected?.adjuntoUiPreviewList?.size!! > 1) {
+            if (view != null) view.showDialogListaBannerEvento()
+        } else {
+            if (view != null) view.showDialogAdjuntoEvento()
         }
     }
 
     override fun onClikLike(eventosUi: EventosUi) {
         if (view != null && view.isInternetAvailable()) {
-            Log.d(tag, "onClikLike: " + eventosUi.like)
-            if (!eventosUi.like) {
-                eventosUi.like = true
-            } else {
-                eventosUi.like = false
-            }
-            var cantidad: Int = eventosUi.likeCount
-            if (eventosUi.like) {
-                cantidad++
-            } else {
-                cantidad--
-            }
-            if (cantidad < 0) cantidad = 0
-            eventosUi.likeCount = cantidad
-            if (view != null) view.showListEventos(false, eventosUiList)
             saveLike.execute(eventosUi)
         } else {
             if (view != null) view.showMessage(res.getString(R.string.msg_unknow_internet_2))
@@ -210,18 +239,13 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
         if(eventosUiSelected!=null)this.informacionEventoDialogView?.showCompartirEvento(eventosUiSelected)
     }
 
-    override fun onClickBtnMegustaInfoEventos() {
-        eventosUiSelected?.let { onClikLike(it) }
-        if(eventosUiSelected!=null)this.informacionEventoDialogView?.changeLike(eventosUiSelected)
-    }
-
     override fun onInformacionEventoDialogViewDestroyed() {
         informacionEventoDialogView = null;
     }
 
     override fun attachView(informacionEventoDialogView: InformacionEventoDialogView?) {
         this.informacionEventoDialogView = informacionEventoDialogView;
-        if(eventosUiSelected!=null)this.informacionEventoDialogView?.showInformacionEvento(eventosUiSelected)
+        if(eventosUiSelected!=null)this.informacionEventoDialogView?.showInformacionEvento(eventosUiSelected, adjuntoUiPreviewSelected)
     }
 
     override fun attachView(listaUsuarioView: ListaUsuarioView?) {
@@ -230,6 +254,20 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
             listaUsuarioView?.setListUsuarios(getListaUsuario.execute(eventosUiSelected?.calendarioId, eventosUiSelected?.idEvento))
             listaUsuarioView?.hideProgress()
         }
+    }
+
+    override fun attachView(informacionListaEventosView: InformacionListaEventosView?) {
+        this.informacionListaEventosView = informacionListaEventosView;
+        if (eventosUiSelected != null && adjuntoUiPreviewSelected != null) {
+            informacionListaEventosView?.showInformacionEvento(eventosUiSelected, adjuntoUiPreviewSelected, false)
+        } else if (eventosUiSelected != null) {
+            informacionListaEventosView?.showInformacionEvento(eventosUiSelected, null, true)
+        }
+    }
+
+    override fun attachView(adjuntoEventoDownload: AdjuntoEventoDownload?) {
+        this.AdjuntoEventoDownloadView = adjuntoEventoDownload
+        adjuntoEventoDownload!!.setList(eventosUiSelected?.adjuntoUiList)
     }
 
     override fun itemClickEnviar(eventosUi: EventosUi) {
@@ -254,6 +292,29 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
 
     override fun onListaUsuarioViewDestroyed() {
         listaUsuarioView = null
+    }
+
+    override fun onClickDialogListBannerAdjuntoPreview(eventoUi: EventosUi, adjuntoUi: EventoAdjuntoUi) {
+        eventosUiSelected = eventoUi
+        adjuntoUiPreviewSelected = adjuntoUi
+        view?.showDialogAdjuntoEvento()
+    }
+
+    override fun onClickAdjunto(eventoUi: EventosUi, adjuntoUi: EventoAdjuntoUi, more: Boolean) {
+        if (more) {
+            eventosUiSelected = eventoUi
+            view?.showDialogEventoDownload()
+        } else {
+            when (adjuntoUi.tipoArchivo) {
+                TipoAdjuntoUi.DOCUMENTO, TipoAdjuntoUi.HOJACALCULO, TipoAdjuntoUi.PRESENTACION, TipoAdjuntoUi.IMAGEN, TipoAdjuntoUi.PDF ->  view?.showPreviewArchivo(DriveYoutubePreview.Build.setupDriveDocumento(adjuntoUi.driveId, adjuntoUi.titulo))
+                TipoAdjuntoUi.VIDEO, TipoAdjuntoUi.AUDIO -> view?.showPreviewArchivo(DriveYoutubePreview.Build.setupDriveMultimedia(adjuntoUi.driveId, adjuntoUi.titulo))
+                else -> view?.showVinculo(adjuntoUi.titulo)
+            }
+        }
+    }
+
+    override fun onInformacionListaEventosViewDestroyed() {
+        informacionListaEventosView = null;
     }
 
     override fun onCLickAcceptButtom() {

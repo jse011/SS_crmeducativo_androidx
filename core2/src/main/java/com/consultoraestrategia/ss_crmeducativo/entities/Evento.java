@@ -4,6 +4,8 @@ import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.Table;
 
+import java.util.Date;
+
 @Table(database = AppDatabase.class)
 public class Evento extends BaseEntity {
     public static final int ESTADO_ELIMINADO = 346 , ESTADO_ACTUALIZADO = 345, ESTADO_CREADO = 344;
@@ -44,6 +46,8 @@ public class Evento extends BaseEntity {
     public boolean like;
     @Column
     public boolean envioPersonalizado;
+    @Column
+    long fechaPublicacion;
 
     private String image64;
 
@@ -191,5 +195,13 @@ public class Evento extends BaseEntity {
 
     public void setEnvioPersonalizado(boolean envioPersonalizado) {
         this.envioPersonalizado = envioPersonalizado;
+    }
+
+    public long getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(long fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
     }
 }

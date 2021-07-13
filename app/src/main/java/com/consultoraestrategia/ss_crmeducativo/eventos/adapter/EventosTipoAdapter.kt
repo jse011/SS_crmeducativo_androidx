@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.consultoraestrategia.ss_crmeducativo.R
+import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventosUi
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposUi
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposEventosUi
 import kotlinx.android.synthetic.main.item_tipo_evento_docente.view.*
@@ -26,19 +27,19 @@ class EventosTipoAdapter(val listener: (TiposEventosUi) -> Unit): RecyclerView.A
         fun bind(tiposEventosUi: TiposEventosUi, listener: (TiposEventosUi) -> Unit) = with(itemView){
             txt_tipo.text = tiposEventosUi.nombre
             //EVENTOS, NOTICIA, ACTIVIDADES, TAREAS, CITAS, DEFAULT,TODOS;
-           val (recurso,rgb) = when(tiposEventosUi.tipos){
-                    TiposUi.EVENTOS->Pair(R.drawable.ic_sun, "#4CAF50")
-                    TiposUi.NOTICIA->Pair(R.drawable.ic_sun_1,"#03A9F4")
-                    TiposUi.ACTIVIDADES->Pair(R.drawable.ic_calendar_day,"#FF9800")
-                    TiposUi.TAREAS->Pair(R.drawable.ic_tareas_white,"#E91E63")
-                    TiposUi.CITAS->Pair(R.drawable.ic_calendar_day,"#00BCD4")
-                    TiposUi.DEFAULT->Pair(R.drawable.ic_calendar_day,"#E91E63")
-                    TiposUi.AGENDA->Pair(R.drawable.ic_agenda_1,"#AD3FF8")
-                    TiposUi.TODOS->Pair(R.drawable.ic_left_arrow,"#00BCD4")
-               else -> {
-                   Pair(R.drawable.ic_calendar_day,"#00BCD4")
-               }
-           }
+            val (recurso,rgb) = when(tiposEventosUi.tipos){
+                TiposUi.EVENTOS->Pair(R.drawable.ic_rocket, "#bfca52")
+                TiposUi.NOTICIA->Pair(R.drawable.ic_newspaper_o,"#ffc107")
+                TiposUi.ACTIVIDADES->Pair(R.drawable.ic_gif,"#ff6b9d")
+                TiposUi.TAREAS->Pair(R.drawable.ic_tasks,"#ff9800")
+                TiposUi.CITAS->Pair(R.drawable.ic_calendar_3,"#00bcd4")
+                TiposUi.DEFAULT->Pair(R.drawable.ic_calendar_3,"#00BCD4")
+                TiposUi.AGENDA->Pair(R.drawable.ic_graduation_cap,"#71bb74")
+                TiposUi.TODOS->Pair(R.drawable.ic_check_square,"#0091EA")
+                else -> {
+                    Pair(R.drawable.ic_calendar,"#00BCD4")
+                }
+            }
 
             Glide.with(img_tipo)
                     .load(recurso)
@@ -56,7 +57,7 @@ class EventosTipoAdapter(val listener: (TiposEventosUi) -> Unit): RecyclerView.A
             if(tiposEventosUi.toogle){
                 itemView.alpha = 1f
             }else{
-                itemView.alpha = .5f
+                itemView.alpha = .6f
             }
 
             setOnClickListener{listener(tiposEventosUi)}

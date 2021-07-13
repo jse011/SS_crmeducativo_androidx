@@ -3,6 +3,7 @@ package com.consultoraestrategia.ss_crmeducativo.model.docentementor;
 import com.consultoraestrategia.ss_crmeducativo.entities.Calendario;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioListaUsuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.Evento;
+import com.consultoraestrategia.ss_crmeducativo.entities.EventoAdjunto;
 import com.consultoraestrategia.ss_crmeducativo.entities.EventoPersona;
 import com.consultoraestrategia.ss_crmeducativo.entities.ListaUsuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.ListaUsuarioDetalle;
@@ -24,7 +25,7 @@ public class BEEventos {
     public List<Persona> persona;
     private List<Relaciones> relaciones;
     private List<EventoPersona> eventoPersona;
-
+    private List<EventoAdjunto> eventoAdjuntos;
     public List<Evento> getEvento() {
         return evento;
     }
@@ -103,5 +104,13 @@ public class BEEventos {
 
     public void setEventoPersona(List<EventoPersona> eventoPersona) {
         this.eventoPersona = eventoPersona;
+    }
+
+    public List<EventoAdjunto> getEventoAdjuntos() {
+        return eventoAdjuntos;
+    }
+
+    public void setEventoAdjuntos(List<EventoAdjunto> eventoAdjuntos) {
+        this.eventoAdjuntos = eventoAdjuntos;
     }
 }

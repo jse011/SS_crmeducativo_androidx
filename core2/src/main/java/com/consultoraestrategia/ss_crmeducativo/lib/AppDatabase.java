@@ -39,7 +39,8 @@ public class AppDatabase {
    // public static final int VERSION = 13;//Playstore 12
     //public static final int VERSION = 14;//Playstore 13
    //public static final int VERSION = 15;//Playstore 14 se creo uns tabla webconfig
-    public static final int VERSION = 16;//Playstore 15 se aumento resultadoTipoNotaId
+    //public static final int VERSION = 16;//Playstore 15 se aumento resultadoTipoNotaId
+   public static final int VERSION = 17;//Playstore 16 se aumento parametros a las tablas Eventos, Calendario y se creo la tabla EventoAdjunto
     @Migration(version = 9, database = AppDatabase.class)
     public static class MigrationRubroEvaluacionResultadoTwo extends AlterTableMigration<EvaluacionResultadoC> {
 
@@ -50,80 +51,6 @@ public class AppDatabase {
         @Override
         public void onPreMigrate() {
             addColumn(SQLiteType.INTEGER, "cargaCursoId");
-        }
-
-        @Override
-        public void onPostMigrate() {
-            super.onPostMigrate();
-        }
-
-    }
-
-    @Migration(version = 12, database = AppDatabase.class)
-    public static class MigrationTareaRubroEvaluacionProceso extends AlterTableMigration<RubroEvaluacionProcesoC> {
-
-        public MigrationTareaRubroEvaluacionProceso(Class<RubroEvaluacionProcesoC> table) {
-            super(table);
-        }
-
-        @Override
-        public void onPreMigrate() {
-            addColumn(SQLiteType.TEXT, "tareaId");
-        }
-
-        @Override
-        public void onPostMigrate() {
-            super.onPostMigrate();
-            List<TareaRubroEvaluacionProceso> tareaRubroEvaluacionProcesoList = SQLite.select()
-                    .from(TareaRubroEvaluacionProceso.class)
-                    .queryList();
-
-            for (TareaRubroEvaluacionProceso tareaRubroEvaluacionProceso : tareaRubroEvaluacionProcesoList){
-                RubroEvaluacionProcesoC rubroEvaluacionProcesoC = SQLite.select()
-                        .from(RubroEvaluacionProcesoC.class)
-                        .where(RubroEvaluacionProcesoC_Table.key.eq(tareaRubroEvaluacionProceso.getRubroEvalProcesoId()))
-                        .querySingle();
-
-                if(rubroEvaluacionProcesoC!=null){
-                    rubroEvaluacionProcesoC.setTareaId(TextUtils.isEmpty(rubroEvaluacionProcesoC.getTareaId())?tareaRubroEvaluacionProceso.getTareaId():rubroEvaluacionProcesoC.getTareaId());
-                }
-            }
-        }
-
-    }
-
-    @Migration(version = 14, database = AppDatabase.class)
-    public static class MigrationEvento extends AlterTableMigration<Evento> {
-
-        public MigrationEvento(Class<Evento> table) {
-            super(table);
-        }
-
-        @Override
-        public void onPreMigrate() {
-            addColumn(SQLiteType.INTEGER, "envioPersonalizado");
-        }
-
-        @Override
-        public void onPostMigrate() {
-            super.onPostMigrate();
-        }
-
-    }
-
-    @Migration(version = 14, database = AppDatabase.class)
-    public static class MigrationCalendario extends AlterTableMigration<Calendario> {
-
-        public MigrationCalendario(Class<Calendario> table) {
-            super(table);
-        }
-
-        @Override
-        public void onPreMigrate() {
-            addColumn(SQLiteType.INTEGER, "cargaAcademicaId");
-            addColumn(SQLiteType.INTEGER, "cargaCursoId");
-            addColumn(SQLiteType.INTEGER, "estadoPublicación");
-            addColumn(SQLiteType.INTEGER, "rolId");
         }
 
         @Override
@@ -152,5 +79,42 @@ public class AppDatabase {
 
     }
 
+    @Migration(version = 17, database = AppDatabase.class)
+    public static class MigrationCalendario extends AlterTableMigration<Calendario> {
 
+        public MigrationCalendario(Class<Calendario> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            addColumn(SQLiteType.TEXT, "nFoto");
+        }
+
+        @Override
+        public void onPostMigrate() {
+            super.onPostMigrate();
+        }
+
+    }
+
+    @Migration(version = 17, database = AppDatabase.class)
+    public static class AlterEvento extends AlterTableMigration<Evento> {
+
+        public AlterEvento(Class<Evento> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            addColumn(SQLiteType.INTEGER, "fechaPublicacion_");
+            addColumn(SQLiteType.INTEGER, "fechaPublicacion");
+        }
+
+        @Override
+        public void onPostMigrate() {
+            super.onPostMigrate();
+        }
+
+    }
 }

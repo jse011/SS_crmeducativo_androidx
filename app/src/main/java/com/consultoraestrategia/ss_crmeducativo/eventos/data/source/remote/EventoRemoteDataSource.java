@@ -9,6 +9,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.Calendario;
 import com.consultoraestrategia.ss_crmeducativo.entities.CalendarioListaUsuario;
 import com.consultoraestrategia.ss_crmeducativo.entities.Evento;
+import com.consultoraestrategia.ss_crmeducativo.entities.EventoAdjunto;
 import com.consultoraestrategia.ss_crmeducativo.entities.EventoPersona;
 import com.consultoraestrategia.ss_crmeducativo.entities.Evento_Table;
 import com.consultoraestrategia.ss_crmeducativo.entities.ListaUsuario;
@@ -162,6 +163,7 @@ public class EventoRemoteDataSource implements EventosDataSource {
                             TransaccionUtils.deleteTable(ListaUsuario.class);
                             TransaccionUtils.deleteTable(ListaUsuarioDetalle.class);
                             TransaccionUtils.deleteTable(EventoPersona.class);
+                            TransaccionUtils.deleteTable(EventoAdjunto.class);
                             SQLite.delete()
                                     .from(Tipos.class)
                                     .where(Tipos_Table.objeto.eq("T_CE_MOV_EVENTOS"))
@@ -180,6 +182,7 @@ public class EventoRemoteDataSource implements EventosDataSource {
                             TransaccionUtils.fastStoreListInsert(Usuario.class, response.getUsuario(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(Relaciones.class, response.getRelaciones(), databaseWrapper, true);
                             TransaccionUtils.fastStoreListInsert(EventoPersona.class, response.getEventoPersona(), databaseWrapper, true);
+                            TransaccionUtils.fastStoreListInsert(EventoAdjunto.class, response.getEventoAdjuntos(), databaseWrapper, true);
 
                         }
                     }).success(new Transaction.Success() {

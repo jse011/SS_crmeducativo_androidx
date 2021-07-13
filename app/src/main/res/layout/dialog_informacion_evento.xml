@@ -14,9 +14,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <com.github.chrisbanes.photoview.PhotoView
-            android:id="@+id/imagenEvento"
+        <FrameLayout
+            android:id="@+id/content_evento"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitCenter"
@@ -24,9 +23,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout5" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/content_youtube"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout22"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout22"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/transprent_black"
@@ -158,7 +170,6 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout5"
-            android:background="@color/transprent_black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -171,6 +182,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
+                android:visibility="gone"
                 android:src="@drawable/insignia_colegio"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -183,6 +195,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
+                android:visibility="gone"
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:text="Colegio  CATA PRI-SEC"
@@ -195,6 +208,7 @@
             <ImageView
                 android:id="@+id/imageView26"
                 android:layout_width="15dp"
+                android:visibility="gone"
                 android:layout_height="15dp"
                 android:rotation="-90"
                 android:src="@drawable/arrow_down_white"
@@ -210,6 +224,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                android:visibility="gone"
                 android:text="Cordinador Académico"
                 android:textColor="@color/md_white_1000"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -223,6 +238,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="Zarate Julio"
+                android:visibility="gone"
                 android:textColor="@color/md_white_1000"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -235,6 +251,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Hace una hora"
+                android:visibility="gone"
                 android:textColor="@color/md_white_1000"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/nombrePersonaEvento"
@@ -246,6 +263,7 @@
                 android:layout_width="1dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="8dp"
+                android:visibility="gone"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
@@ -271,6 +289,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout9"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:background="@color/transprent_black"
             app:layout_constraintEnd_toEndOf="parent"

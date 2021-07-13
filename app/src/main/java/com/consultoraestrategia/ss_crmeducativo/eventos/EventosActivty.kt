@@ -1,24 +1,39 @@
 package com.consultoraestrategia.ss_crmeducativo.eventos
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.OrientationHelper
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import com.consultoraestrategia.ss_crmeducativo.R
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler
 import com.consultoraestrategia.ss_crmeducativo.base.activity.BaseActivity
 import com.consultoraestrategia.ss_crmeducativo.crearEvento.CrearEventoActivity
+import com.consultoraestrategia.ss_crmeducativo.driveYoutubePreview.PreviewArchivoActivity
+import com.consultoraestrategia.ss_crmeducativo.driveYoutubePreview.util.DriveYoutubePreview
 import com.consultoraestrategia.ss_crmeducativo.eventos.adapter.EventoColumnCountProvider
 import com.consultoraestrategia.ss_crmeducativo.eventos.adapter.EventosAdapter
 import com.consultoraestrategia.ss_crmeducativo.eventos.adapter.EventosTipoAdapter
@@ -26,14 +41,20 @@ import com.consultoraestrategia.ss_crmeducativo.eventos.data.source.EventosRepos
 import com.consultoraestrategia.ss_crmeducativo.eventos.data.source.local.EventoLocalDataSource
 import com.consultoraestrategia.ss_crmeducativo.eventos.data.source.remote.EventoRemoteDataSource
 import com.consultoraestrategia.ss_crmeducativo.eventos.domain.useCase.*
+import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventoAdjuntoUi
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventosUi
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.TiposEventosUi
 import com.consultoraestrategia.ss_crmeducativo.eventos.informacionEvento.InformacionEventoDialogFragment
 import com.consultoraestrategia.ss_crmeducativo.eventos.informacionEvento.InformacionEventoDialogView
+import com.consultoraestrategia.ss_crmeducativo.eventos.informacionListaEventos.DialogListaBannerEvento
+import com.consultoraestrategia.ss_crmeducativo.eventos.informacionListaEventos.InformacionListaEventosView
 import com.consultoraestrategia.ss_crmeducativo.eventos.informacionListaUsuarios.ListaUsuarioDialog
 import com.consultoraestrategia.ss_crmeducativo.eventos.informacionListaUsuarios.ListaUsuarioView
+import com.consultoraestrategia.ss_crmeducativo.eventos.listaAdjuntoDownload.AdjuntoEventoDownload
+import com.consultoraestrategia.ss_crmeducativo.eventos.listaAdjuntoDownload.DialogAdjuntoDownload
 import com.consultoraestrategia.ss_crmeducativo.lib.autoColumnGrid.AutoColumnStaggeredGridLayoutManager
 import com.consultoraestrategia.ss_crmeducativo.services.data.util.UtilServidor
+import com.consultoraestrategia.ss_crmeducativo.util.IntentHelper
 import com.consultoraestrategia.ss_crmeducativo.util.LifeCycleFragment
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_eventos_docente.*
@@ -65,6 +86,10 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
 
     override fun getExtrasInf(): Bundle ? = intent.extras
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        desbloqOrientation()
+    }
     override fun setContentView() {
         setContentView(R.layout.activity_eventos_docente)
         setupToolbar()
@@ -99,7 +124,8 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = RecyclerView.VERTICAL
         eventosRv.layoutManager = layoutManager
-        eventosAdapter = EventosAdapter({onClickLike(it)}, { itemClickEventos(it)}, { itemRenderEvento(it)} ,{itemClickEnviar(it)} ,{itemClickInfoEnviar(it)},{ onOpEditarEventoClicked(it)},{onOpEventoDelteClicked(it)})
+        eventosAdapter = EventosAdapter({onClickLike(it)}, { eventosUi, eventoAdjuntoUi -> itemClickEventos(eventosUi, eventoAdjuntoUi) }, { eventosUi, viewHolder -> itemRenderEvento(eventosUi, viewHolder) } ,{itemClickEnviar(it)} ,{itemClickInfoEnviar(it)},{ onOpEditarEventoClicked(it)},{onOpEventoDelteClicked(it)},
+                { eventosUi, eventoAdjuntoUi, more -> itemClickAdjunto(eventosUi, eventoAdjuntoUi, more) })
         eventosAdapter.recyclerView = eventosRv
         eventosRv.adapter = eventosAdapter
     }
@@ -120,6 +146,10 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
         presenter.onItemOpcionEditarEvento(eventosUi)
     }
 
+    private fun itemClickAdjunto(eventosUi: EventosUi, eventoAdjuntoUi:EventoAdjuntoUi, more:Boolean) {
+        presenter.onClickAdjunto(eventosUi, eventoAdjuntoUi, more)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.evento_activity_menu, menu)
         return true
@@ -135,12 +165,16 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
         }
         return super.onOptionsItemSelected(item)
     }
-    private fun itemRenderEvento(eventosUi: EventosUi) {
-        presenter.renderItemEvento(eventosUi)
+    private fun itemRenderEvento(eventosUi: EventosUi, viewHolder: EventosAdapter.ViewHolder) {
+        presenter.renderItemEvento(eventosUi,{
+            if(viewHolder.eventosUi?.idEvento == it.idEvento){
+                viewHolder.changeLike(eventosUi)
+            }
+        })
     }
 
-    private fun itemClickEventos(eventosUi: EventosUi) {
-        presenter.onclikInfoEventos(eventosUi)
+    private fun itemClickEventos(eventosUi: EventosUi, eventoAdjuntoUi:EventoAdjuntoUi?) {
+        presenter.onclikInfoEventos(eventosUi, eventoAdjuntoUi)
     }
 
     private fun onClickLike(eventosUi: EventosUi) {
@@ -161,8 +195,7 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
     }
 
     override fun showDialogInfoEvento() {
-        val eventoDialogFragment = InformacionEventoDialogFragment.newInstance()
-        eventoDialogFragment.show(supportFragmentManager, "InformacionEventoDialogFragment2")
+
     }
 
     override fun isInternetAvailable(): Boolean {
@@ -196,6 +229,66 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
         listaUsuario.show(supportFragmentManager, "ListaUsuarioDialog")
     }
 
+    override fun showDialogListaBannerEvento() {
+        val eventoDialogFragment = DialogListaBannerEvento.newInstance()
+        eventoDialogFragment.show(supportFragmentManager, "DialogListaBannerEvento")
+    }
+
+    override fun showDialogAdjuntoEvento() {
+        val eventoDialogFragment = InformacionEventoDialogFragment.newInstance()
+        eventoDialogFragment.show(supportFragmentManager, "InformacionEventoDialogFragment2")
+    }
+
+    override fun showDialogEventoDownload() {
+        DialogAdjuntoDownload()
+                .show(supportFragmentManager, "dialogEventoDownload")
+    }
+
+    override fun showVinculo(url: String?) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error al abrir el vínculo", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun showPreviewArchivo(driveYoutubePreview: DriveYoutubePreview?) {
+        val intent = Intent(this, PreviewArchivoActivity::class.java)
+        intent.putExtra("serial", driveYoutubePreview)
+        startActivity(intent)
+    }
+
+    override fun startCompartirEvento(eventosUi: EventosUi) {
+        Glide
+                .with(this)
+                .asBitmap()
+                .load(eventosUi.imagen)
+                .apply(RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .override(850))
+                .listener(object : RequestListener<Bitmap?> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap?>?, isFirstResource: Boolean): Boolean {
+                        IntentHelper.sendEmailUri(this@EventosActivty, null, eventosUi.titulo, eventosUi.descripcion, null)
+                        return false
+                    }
+
+                    override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        return false
+                    }
+
+                })
+                .into(object : SimpleTarget<Bitmap?>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
+                        IntentHelper.sendEmailUri(this@EventosActivty, null, eventosUi.titulo, eventosUi.descripcion, Uri.parse(eventosUi.imagen))
+                    }
+                })
+    }
+
+    override fun updateEvento(eventosUiSelected: EventosUi) {
+        eventosAdapter.update(eventosUiSelected);
+    }
+
     override fun onRefresh() {
         presenter.onRefresh()
     }
@@ -222,6 +315,10 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
             presenter.onInformacionEventoDialogViewDestroyed()
         }else if( f is ListaUsuarioView){
             presenter.onListaUsuarioViewDestroyed()
+        }else if( f is InformacionListaEventosView){
+            presenter.onInformacionListaEventosViewDestroyed()
+        } else if (f is AdjuntoEventoDownload) {
+            presenter.onAdjuntoEventoDownloadDestroy()
         }
     }
 
@@ -232,6 +329,12 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
         }else if (f is ListaUsuarioView) {
             presenter.attachView(f as ListaUsuarioView?)
             (f as ListaUsuarioView).setPresenter(presenter)
+        }else if (f is InformacionListaEventosView) {
+            presenter.attachView(f as InformacionListaEventosView?)
+            (f as InformacionListaEventosView).setPresenter(presenter)
+        } else if (f is AdjuntoEventoDownload) {
+            presenter.attachView(f as AdjuntoEventoDownload?)
+            (f as AdjuntoEventoDownload).setPresenter(presenter)
         }
     }
 }

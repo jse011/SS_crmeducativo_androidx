@@ -1,5 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.entities.queryCustomList;
 
+import com.consultoraestrategia.ss_crmeducativo.entities.Calendario_Table;
+import com.consultoraestrategia.ss_crmeducativo.entities.EventoAdjunto_Table;
 import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.QueryModel;
@@ -62,6 +64,18 @@ public class CalendarioEventoQuery {
     public String cargo;
     @Column
     public String nombreCalendario;
+    @Column
+    public String adjuntoTitulo;
+    @Column
+    public int adjuntoTipoId;
+    @Column
+    public String adjuntoDriveId;
+    @Column
+    public String nFoto;
+    @Column
+    public long fechaPublicacion;
+    @Column
+    public String eventoAdjuntoId;
 
     public CalendarioEventoQuery() {
     }
@@ -272,5 +286,53 @@ public class CalendarioEventoQuery {
 
     public void setNombreCalendario(String nombreCalendario) {
         this.nombreCalendario = nombreCalendario;
+    }
+
+    public String getAdjuntoTitulo() {
+        return adjuntoTitulo;
+    }
+
+    public void setAdjuntoTitulo(String adjuntoTitulo) {
+        this.adjuntoTitulo = adjuntoTitulo;
+    }
+
+    public int getAdjuntoTipoId() {
+        return adjuntoTipoId;
+    }
+
+    public void setAdjuntoTipoId(int adjuntoTipoId) {
+        this.adjuntoTipoId = adjuntoTipoId;
+    }
+
+    public String getAdjuntoDriveId() {
+        return adjuntoDriveId;
+    }
+
+    public void setAdjuntoDriveId(String adjuntoDriveId) {
+        this.adjuntoDriveId = adjuntoDriveId;
+    }
+
+    public String getnFoto() {
+        return nFoto;
+    }
+
+    public void setnFoto(String nFoto) {
+        this.nFoto = nFoto;
+    }
+
+    public long getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(long fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
+
+    public String getEventoAdjuntoId() {
+        return eventoAdjuntoId;
+    }
+
+    public void setEventoAdjuntoId(String eventoAdjuntoId) {
+        this.eventoAdjuntoId = eventoAdjuntoId;
     }
 }

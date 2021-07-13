@@ -36,4 +36,10 @@
             <enum name="right" value="3"/>
         </attr>
     </declare-styleable>
+    <declare-styleable name="RoundedView">
+        <attr name="topLeftCornerRadius" format="dimension" />
+        <attr name="topRightCornerRadius" format="dimension" />
+        <attr name="bottomLeftCornerRadius" format="dimension" />
+        <attr name="bottomRightCornerRadius" format="dimension" />
+    </declare-styleable>
 </resources>

@@ -47,5 +47,4 @@ public class Presenter extends BasePresenterImpl<View> {
 
     }
 
-
 }

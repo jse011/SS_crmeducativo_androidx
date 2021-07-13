@@ -106,4 +106,6 @@
     <color name="status_bar_lolipop">#6351535C</color>
 
     <color name="form_text_disabled">#173766</color>
+
+    <color name="color_shimmer">#DFDFDF</color>
 </resources>
