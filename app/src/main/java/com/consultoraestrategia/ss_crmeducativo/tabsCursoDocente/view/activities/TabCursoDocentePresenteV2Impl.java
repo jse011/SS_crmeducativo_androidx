@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.DrawableRes;
 import androidx.fragment.app.Fragment;
+
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -439,7 +441,7 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
 
             if(changeDataBaseFull){
 
-                new Handler().postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         changeDataBase = false;
@@ -451,12 +453,12 @@ public class TabCursoDocentePresenteV2Impl extends BasePresenterImpl<TabCursoDoc
 
 
             }else if(changeDataBase){
-                new Handler().postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         changeDataBase = false;
                         if(view!=null)view.successchangeDataBase();
-                        onResumenFramentManger();
+                        onResumenAllFragment();
                     }
                 },500);
             }

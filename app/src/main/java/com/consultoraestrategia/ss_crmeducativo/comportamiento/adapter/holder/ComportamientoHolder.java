@@ -98,16 +98,7 @@ public class ComportamientoHolder extends RecyclerView.ViewHolder implements Vie
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent motionEvent) {
-        try {
-            View child = rc_tipos.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-            if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-                int position = rc_tipos.getChildAdapterPosition(child);
-                listener.onclick(alumnoUiseleted);
-                return true;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        listener.onclick(alumnoUiseleted);
 
         return false;
     }

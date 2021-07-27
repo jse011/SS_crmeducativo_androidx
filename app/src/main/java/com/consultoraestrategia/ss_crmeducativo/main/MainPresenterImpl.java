@@ -4,6 +4,7 @@ package com.consultoraestrategia.ss_crmeducativo.main;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -181,6 +182,8 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
     @Override
     public void onResume()
     {
+        if(view!=null)view.updateCalendarioPeridoyOtros();
+
         Log.d(TAG, "onResume");
         if(initMain){
             getCursosUIListCallback();
@@ -310,6 +313,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
                         if(view!=null)view.close();
                     }else {
                         efectoLista = false;
+                        if(view!=null)view.updateCalendarioPeridoyOtros();
                         initMain();
                     }
                 }else {
@@ -349,7 +353,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainView> implements Ma
             successData = succesData.execute();
             //if(view!=null)view.showDialogFastData(anioAcademicoIdFinal, idUsuario);
             showProgress();
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     getCursosUIListCallback();

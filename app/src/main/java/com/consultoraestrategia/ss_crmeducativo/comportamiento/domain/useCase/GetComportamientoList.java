@@ -18,6 +18,7 @@ public class GetComportamientoList extends UseCase<GetComportamientoList.Request
 
     @Override
     protected void executeUseCase(RequestValues requestValues) {
+
         comportamientoRepository.getListComportamiento(requestValues.getProgramaEducativoId(), requestValues.getCargaAcademicaId(), requestValues.getCargaCursoId(), requestValues.getDocenteId(),
                 requestValues.getCalendarioPeriodoId(),requestValues.getGeoreferenciaId()
                 ,requestValues.getEntidadId(),new ComportamientoDataSource.SucessCallback<List<AlumnoUi>>() {

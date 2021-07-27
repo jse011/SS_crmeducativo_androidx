@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.comportamiento.entities;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComportamientoUi {
@@ -28,7 +29,7 @@ public class ComportamientoUi {
     private int calendarioPeridoId;
     private int entidadId;
     private int georeferenciaId;
-    private List<ArchivoUi> archivoUiList;
+    private List<ArchivoUi> archivoUiList = new ArrayList<>();
     private  Tipo tipo=Tipo.ORIGEN;
     private UsuarioUi usuarioDestino;
 

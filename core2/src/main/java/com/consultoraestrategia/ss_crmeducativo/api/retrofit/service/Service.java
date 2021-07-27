@@ -32,6 +32,7 @@ import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosTarea
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosTipoNota;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosUnidades;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDimensionDesarrollo;
+import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDrive;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEEventos;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEMatrizResultadoDocente;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BETransResultResponse;
@@ -164,4 +165,6 @@ public interface Service {
     Call<RestApiResponse<Boolean>> fupd_cerrarCursoDocente(@Body ApiRetrofit.ApiRequestBody<ParametrosRegistroEvaluacion> apiRequestBody);
     @POST(" ")
     Call<RestApiResponse<BERespuesta>> fins_GuardarEntidadesGlobalSimplevJse(@Body ApiRetrofit.ApiRequestBody<ParametrosExportarGlobal> apiRequestBody);
+    @POST(" ")
+    Call<RestApiResponse<BEDrive>> getUrlDriveArchivo(@Body RequestBody body);
 }

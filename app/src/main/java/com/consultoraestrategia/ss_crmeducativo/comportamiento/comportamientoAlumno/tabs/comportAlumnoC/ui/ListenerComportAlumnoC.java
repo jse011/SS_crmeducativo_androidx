@@ -9,4 +9,6 @@ import com.consultoraestrategia.ss_crmeducativo.comportamiento.entities.Comporta
 
 public interface ListenerComportAlumnoC extends BaseFragmentListener {
     void onclickOpciones(ComportamientoUi comportamientoUi, View view, Context context);
+
+    void onClickComportamientoAlumno(ComportamientoUi comportamientoUi);
 }

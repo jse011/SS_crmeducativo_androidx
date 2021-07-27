@@ -14,4 +14,10 @@ public interface ComportAlumnoCPresenter extends BaseFragmentPresenter<ComportAl
     void onClickClose(RepositorioFileUi repositorioFileUi);
 
     void onClickArchivo(RepositorioFileUi repositorioFileUi);
+
+    void onClickComportamientoAlumno(ComportamientoUi comportamientoUi);
+
+    void canceledDownload(long id);
+
+    void finishedDownload(long id);
 }

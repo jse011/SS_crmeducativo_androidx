@@ -40,11 +40,7 @@ public class RepositorioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (viewType == UPDATE) {
             return new RepositorioUpdateHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_repositorio_update, parent, false));
         } else if(viewType == DOWNLOAD) {
-            int layout = R.layout.item_repositorio;
-            if(version_two){
-                layout = R.layout.item_repositorio_version_two;
-            }
-            return new RepositorioDownloadHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
+            return new RepositorioDownloadHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_repositorio, parent, false));
         }else {
             return new RepositorioBtnAddHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coment_btn_archivo, parent, false));
         }

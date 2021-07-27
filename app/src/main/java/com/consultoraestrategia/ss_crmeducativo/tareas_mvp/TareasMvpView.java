@@ -1,6 +1,7 @@
 package com.consultoraestrategia.ss_crmeducativo.tareas_mvp;
 
 import com.consultoraestrategia.ss_crmeducativo.base.BaseView;
+import com.consultoraestrategia.ss_crmeducativo.driveYoutubePreview.util.DriveYoutubePreview;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.entities.ParametroDisenioUi;
@@ -66,4 +67,6 @@ public interface TareasMvpView extends BaseView<TareasMvpPresenter> {
     void showCrearTarea(HeaderTareasAprendizajeUI headerTareasAprendizajeUI, int idSilaboEvento, int idCargaCurso);
 
     void updateTarea(TareasUI tareasUI);
+
+    void showPreviewArchivo(DriveYoutubePreview setupDriveDocumento);
 }

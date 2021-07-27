@@ -5,14 +5,14 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 30
     defaultConfig {
-        //applicationId "com.consultoraestrategia.ss_crmeducativo.educar"//CATA DocenteMentor3.0
-        applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Parents
+        applicationId "com.consultoraestrategia.ss_crmeducativo.educar"//CATA DocenteMentor3.0
+        //applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Teacher
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 71//UPS Educar Teacher
-        //versionCode 59//CATA DocenteMentor3.0
-        versionName "1.7" //EDUCAR
-        //versionName "1.7" //CATA
+        //versionCode 72//UPS Educar Teacher
+        versionCode 60//CATA DocenteMentor3.0
+        //versionName "1.7" //EDUCAR
+        versionName "1.8" //CATA
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -120,7 +120,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:16.0.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.facebook.shimmer:shimmer:0.4.0'
-    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation ("androidx.concurrent:concurrent-futures:1.0.0"){
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }
@@ -147,7 +147,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.9.2'
     implementation 'com.github.florent37:shapeofview:1.4.7'
     implementation 'com.github.alimodares2003:FormView:1.0.3'
-    implementation 'com.github.hsmnzaydn:imagezoom:1.2.1'
+    //implementation 'com.github.hsmnzaydn:imagezoom:1.2.1'
     //implementation 'me.shaohui.advancedluban:library:1.3.5'
     implementation 'com.aghajari.emojiview:AXEmojiView:1.3.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.12.1'

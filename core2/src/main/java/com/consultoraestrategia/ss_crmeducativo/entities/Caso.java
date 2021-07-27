@@ -32,6 +32,22 @@ public class Caso extends BaseEntity {
     private int docenteId;
     @Column
     private int calendarioPeriodoId;
+    @Column
+    private boolean apoderado;
+    @Column
+    private boolean tutor;
+    @Column
+    private boolean padre;
+    @Column
+    private int organigramaId;
+
+    public int getOrganigramaId() {
+        return organigramaId;
+    }
+
+    public void setOrganigramaId(int organigramaId) {
+        this.organigramaId = organigramaId;
+    }
 
     public String getCasoId() {
         return casoId;
@@ -143,4 +159,30 @@ public class Caso extends BaseEntity {
     public int hashCode() {
         return getKey() != null ? getKey().hashCode() : 0;
     }
+
+    public boolean isApoderado() {
+        return apoderado;
+    }
+
+    public void setApoderado(boolean apoderado) {
+        this.apoderado = apoderado;
+    }
+
+    public boolean isTutor() {
+        return tutor;
+    }
+
+    public void setTutor(boolean tutor) {
+        this.tutor = tutor;
+    }
+
+    public boolean isPadre() {
+        return padre;
+    }
+
+    public void setPadre(boolean padre) {
+        this.padre = padre;
+    }
+
+
 }

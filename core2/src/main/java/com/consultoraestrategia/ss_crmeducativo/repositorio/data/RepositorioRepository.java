@@ -6,6 +6,7 @@ import com.consultoraestrategia.ss_crmeducativo.repositorio.data.remote.Reposito
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.preferents.RepositorioPreferentsDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.local.RepositorioLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
+import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.UpdateRepositorioFileUi;
 
 import java.util.List;
 
@@ -66,8 +67,8 @@ public class RepositorioRepository implements RepositorioDataSource {
     }
 
     @Override
-    public void uploadFileCaso(String archivoId, String urlServidor, String path, CallbackProgress<String> callbackProgress) {
-        remoteDataSource.uploadFileCaso(archivoId, urlServidor, path, callbackProgress);
+    public void uploadFileCaso(UpdateRepositorioFileUi updateRepositorioFileUi, String urlServidor, Uri path, CallbackProgress<String> callbackProgress) {
+        remoteDataSource.uploadFileCaso(updateRepositorioFileUi, urlServidor, path, callbackProgress);
     }
 
     public void updateSucessDowloadRubro(String archivoId, String path, Callback<Boolean> booleanCallback) {

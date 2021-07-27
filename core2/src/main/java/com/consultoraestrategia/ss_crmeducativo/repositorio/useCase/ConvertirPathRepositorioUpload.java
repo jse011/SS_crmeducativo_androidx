@@ -24,7 +24,6 @@ public class ConvertirPathRepositorioUpload extends UseCaseSincrono<Map<Uri,Stri
             String fileName = entry.getValue();
 
             String extencion = "";
-            String nombreSinExtencion = "";
             int i = fileName.lastIndexOf('.');
             int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
             String file = fileName.substring(p + 1);
@@ -33,16 +32,7 @@ public class ConvertirPathRepositorioUpload extends UseCaseSincrono<Map<Uri,Stri
             }
 
             // Remove the extension.
-            nombreSinExtencion = file;
-            int extensionIndex = nombreSinExtencion.lastIndexOf(".");
-            if (extensionIndex != -1){
-                nombreSinExtencion = nombreSinExtencion.substring(0, extensionIndex);
-            }
-
-            if(nombreSinExtencion.length()>20){
-                nombreSinExtencion = nombreSinExtencion.substring(0,20);
-                file = nombreSinExtencion +"."+extencion;
-            }
+            file = IdGenerator.generateId() +"."+extencion;
 
             UpdateRepositorioFileUi recursoUploadFile = new UpdateRepositorioFileUi();
 
@@ -88,16 +78,19 @@ public class ConvertirPathRepositorioUpload extends UseCaseSincrono<Map<Uri,Stri
                     //intent.setDataAndType(uri, "*/*");
                 }
             }
-            Log.d(TAG, "recursoUploadFile: " + recursoUploadFile.getPath());
+
             recursoUploadFile.setArchivoId(IdGenerator.generateId());
             recursoUploadFile.setNombreArchivo(file);
-            recursoUploadFile.setNombreRecurso(nombreSinExtencion);
+            recursoUploadFile.setNombreRecurso(file);
             recursoUploadFile.setExtencionArchivoId(file);
             recursoUploadFile.setUri(entry.getKey());
             updateRepositorioFileUis.add(recursoUploadFile);
         }
         callback.onResponse(true, updateRepositorioFileUis);
     }
+
+
+
 
 
 }

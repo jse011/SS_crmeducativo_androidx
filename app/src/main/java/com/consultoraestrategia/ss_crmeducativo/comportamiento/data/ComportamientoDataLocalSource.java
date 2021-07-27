@@ -503,30 +503,23 @@ public class ComportamientoDataLocalSource implements ComportamientoDataSource {
                 casoCreated.setCargaAcademicaId(comportamientoUi.getCargaAcademicaId());
                 casoCreated.setAlumnoId(comportamientoUi.getAlumnoUi().getId());
                 casoCreated.setCalendarioPeriodoId(comportamientoUi.getCalendarioPeridoId());
+                casoCreated.setOrganigramaId(comportamientoUi.getCalendarioPeridoId());
                 casoCreated.setEstadoId(Caso.ESTADO_CREADO);
                 casoCreated.setSyncFlag(BaseEntity.FLAG_ADDED);
-                casoCreated.save();
+
                 casoKey = casoCreated.getKey();
                 //consulto si existe caso reporte
-                if (destinoUi.getDestinosIds().size() > 0) {
+                GeoRefOrganigrama geoRefOrganigrama = SQLite.select().from(GeoRefOrganigrama.class)
+                        .where(GeoRefOrganigrama_Table.geoReferenciaId.withTable().eq(destinoUi.getGeoreferenciaId()))
+                        .and(GeoRefOrganigrama_Table.activo.withTable().eq(true)).querySingle();
 
-                    GeoRefOrganigrama geoRefOrganigrama = SQLite.select().from(GeoRefOrganigrama.class)
-                            .where(GeoRefOrganigrama_Table.geoReferenciaId.withTable().eq(destinoUi.getGeoreferenciaId()))
-                            .and(GeoRefOrganigrama_Table.activo.withTable().eq(true)).querySingle();
-
-                    if (geoRefOrganigrama != null) {
-                        for (Integer usuairoId : destinoUi.getDestinosIds()) {
-                            Log.d(TAG, "usuairoId destinos: " + usuairoId);
-                            CasoReporte casoReporte = new CasoReporte();
-                            casoReporte.setCasoId(casoCreated.getKey());
-                            casoReporte.setUsuarioDestinoId(usuairoId);
-                            casoReporte.setOrganigramaId(geoRefOrganigrama.getOrganigramaId());
-                            casoReporte.setSyncFlag(BaseEntity.FLAG_ADDED);
-                            casoReporte.save();
-                        }
-                    }
-
+                if (geoRefOrganigrama != null) {
+                    casoCreated.setOrganigramaId(geoRefOrganigrama.getOrganigramaId());
+                    casoCreated.setPadre(destinoUi.getPadre());
+                    casoCreated.setApoderado(destinoUi.getApoderado());
+                    casoCreated.setTutor(destinoUi.getTutor());
                 }
+                casoCreated.save();
                 saveArchivos(casoKey, repositorioFileUiList);
                 success = true;
             }
@@ -875,78 +868,11 @@ public class ComportamientoDataLocalSource implements ComportamientoDataSource {
         Log.d(TAG, "getDestino" + idComportamiento);
         try {
             DestinoUi destinoUi = new DestinoUi();
-            List<CasoReporte> casoReporteList = SQLite.select().from(CasoReporte.class)
-                    .where(CasoReporte_Table.casoId.withTable().eq(idComportamiento)).queryList();
-
             Caso caso = SQLite.select().from(Caso.class).where(Caso_Table.key.withTable().eq(idComportamiento)).querySingle();
             if (caso != null) {
-                List<DestinoUi.Tipo> tipoList = new ArrayList<>();
-                List<UsuarioUi> usuarioUiList = new ArrayList<>();
-
-                for (CasoReporte casoReporte : casoReporteList) {
-                    Log.d(TAG, "caso reporte key " + casoReporte.key);
-                    Usuario usuario = SQLite.select().from(Usuario.class)
-                            .where(Usuario_Table.usuarioId.withTable().eq(casoReporte.getUsuarioDestinoId())).querySingle();
-                    if (usuario != null) {
-
-                        Relaciones relacion = SQLite.select().from(Relaciones.class)
-                                .innerJoin(Usuario.class)
-                                .on(Relaciones_Table.personaVinculadaId.withTable().eq(Usuario_Table.personaId.withTable()))
-                                .innerJoin(CasoReporte.class)
-                                .on(Usuario_Table.usuarioId.withTable().eq(CasoReporte_Table.usuarioDestinoId.withTable()))
-                                .where(CasoReporte_Table.key.withTable().eq(casoReporte.key))
-                                .and(Relaciones_Table.personaVinculadaId.withTable().eq(usuario.getPersonaId()))
-                                .and(Relaciones_Table.personaPrincipalId.withTable().eq(caso.getAlumnoId())).querySingle();
-
-                        if (getTutor(caso.getCargaAcademicaId(), casoReporte.key) != null)
-                            tipoList.add(DestinoUi.Tipo.TUTOR);
-
-                        if (relacion != null)
-                            if (relacion.getTipoId() == Relaciones.MADRE || relacion.getTipoId() == Relaciones.PADRE)
-                                tipoList.add(DestinoUi.Tipo.PADRES);
-
-                        Contrato contrato = SQLite.select().from(Contrato.class).
-                                innerJoin(Usuario.class)
-                                .on(Contrato_Table.apoderadoId.withTable().eq(Usuario_Table.personaId.withTable()))
-                                .innerJoin(CasoReporte.class)
-                                .on(Usuario_Table.usuarioId.withTable().eq(CasoReporte_Table.usuarioDestinoId.withTable()))
-                                .where(CasoReporte_Table.key.withTable().eq(casoReporte.key))
-                                .and(Usuario_Table.usuarioId.withTable().eq(casoReporte.getUsuarioDestinoId())).querySingle();
-
-                        if (contrato != null) tipoList.add(DestinoUi.Tipo.ADODERADO);
-                    }
-
-                }
-                //Listar usuarios del organigrama
-                List<UsuarioUi> usuariosOrgaLIst = getUsuariosGeoreferncia(georeferenciaId);
-                for (UsuarioUi usuarioOrga : usuariosOrgaLIst) {
-                    Persona persona = SQLite.select().
-                            from(Persona.class)
-                            .where(Persona_Table.personaId.withTable().eq(usuarioOrga.getPersonaId())).querySingle();
-                    Log.d(TAG, "persona " + persona.getPersonaId());
-                    if (persona != null) {
-                        UsuarioUi usuarioUi = new UsuarioUi();
-                        CasoReporte casoReporteSeletdeU = SQLite.select().
-                                from(CasoReporte.class).
-                                innerJoin(Caso.class)
-                                .on(CasoReporte_Table.casoId.withTable().eq(Caso_Table.key.withTable()))
-                                .where(CasoReporte_Table.usuarioDestinoId.withTable().eq(usuarioOrga.getUsuarioId()))
-                                .and(CasoReporte_Table.casoId.withTable().eq(caso.key)).querySingle();
-                        if (casoReporteSeletdeU != null) usuarioUi.setSelected(true);
-                        Log.d(TAG, "PERSONA NMBRE " + persona.getApellidos());
-                        usuarioUi.setPersonaId(persona.getPersonaId());
-                        usuarioUi.setApellidoPersona(persona.getApellidos());
-                        usuarioUi.setUsuarioId(usuarioOrga.getUsuarioId());
-                        usuarioUi.setNombrePersona(persona.getFirstName());
-                        usuarioUi.setUrlpicture(persona.getUrlPicture());
-                        usuarioUi.setEnabled(false);
-                        usuarioUiList.add(usuarioUi);
-                    }
-
-                }
-
-                destinoUi.setUsuarioUiList(usuarioUiList);
-                destinoUi.setTipos(tipoList);
+                destinoUi.setApoderado(caso.isApoderado());
+                destinoUi.setPadre(caso.isPadre());
+                destinoUi.setTutor(caso.isTutor());
             }
             return destinoUi;
         } catch (Exception e) {
@@ -988,33 +914,6 @@ public class ComportamientoDataLocalSource implements ComportamientoDataSource {
                 .querySingle();
 
         return usuario;
-    }
-
-    @Override
-    public List<Integer> validarUsuario(DestinoUi.Tipo tipo, int alumnoId, int cargaAcademicaId, int georeferenciaId) {
-         Log.d(TAG, "cargaAcademicaId"+ cargaAcademicaId + "georeferenciaId: " + georeferenciaId + "alumnoId: " + alumnoId);
-        GeoRefOrganigrama geoRefOrganigrama = SQLite.select().from(GeoRefOrganigrama.class)
-                .where(GeoRefOrganigrama_Table.geoReferenciaId.withTable().eq(georeferenciaId))
-                .and(GeoRefOrganigrama_Table.activo.withTable().eq(true)).querySingle();
-
-        if(geoRefOrganigrama==null)return  null;
-        List<Integer> destinosList = new ArrayList<>();
-        switch (tipo) {
-            case PADRES:
-                List<Usuario> usuarioList = alumnoDao.getPadres(alumnoId);
-                for (Usuario u : usuarioList) destinosList.add(u.getUsuarioId());
-                break;
-            case ADODERADO:
-                Usuario usuario = alumnoDao.getApoderado(alumnoId);
-                if (usuario.getUsuarioId() != 0) destinosList.add(usuario.getUsuarioId());
-                break;
-            default:
-                Usuario usuarioTutor = alumnoDao.getTutor(cargaAcademicaId);
-                if (usuarioTutor.getUsuarioId() != 0) destinosList.add(usuarioTutor.getUsuarioId());
-                break;
-        }
-        Log.d(TAG, "destinosList "+ destinosList.size() );
-        return destinosList;
     }
 
     @Override

@@ -29,6 +29,8 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCaseThreadPoolScheduler;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
 import com.consultoraestrategia.ss_crmeducativo.createRubricaBidimensional.CreateRubBidActivity;
 import com.consultoraestrategia.ss_crmeducativo.dao.personaDao.PersonaDao;
+import com.consultoraestrategia.ss_crmeducativo.driveYoutubePreview.PreviewArchivoActivity;
+import com.consultoraestrategia.ss_crmeducativo.driveYoutubePreview.util.DriveYoutubePreview;
 import com.consultoraestrategia.ss_crmeducativo.entities.Persona;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.grupal.ui.EvaluacionBimencionalGrupalActividad;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.individual.ui.EvaluacionBimencionalActividad;
@@ -61,6 +63,7 @@ import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.crearTarea.ui.CrearTa
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.TareasMvpRepository;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.local.TareasLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.remote.RemoteMvpDataSource;
+import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.GetNombreDrive;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.GetParametroDisenio;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.GetTareasUIList;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.MoverArchivosAlaCarpetaTarea;
@@ -182,7 +185,12 @@ public class FragmentTareasSesiones extends Fragment implements TareasMvpView, U
                         new TareasLocalDataSource(),
                         new RemoteMvpDataSource())
 
-        ));
+        ),
+                new GetNombreDrive(
+                        TareasMvpRepository.getInstace(
+                                new TareasLocalDataSource(),
+                                new RemoteMvpDataSource())
+                ));
 
         setPresenter(presenter);
         Log.d(TAG, "onCreate");
@@ -386,6 +394,13 @@ public class FragmentTareasSesiones extends Fragment implements TareasMvpView, U
     @Override
     public void updateTarea(TareasUI tareasUI) {
         tareasAdapter.update(tareasUI);
+    }
+
+    @Override
+    public void showPreviewArchivo(DriveYoutubePreview driveYoutubePreview) {
+        Intent intent = new Intent(getContext(), PreviewArchivoActivity.class);
+        intent.putExtra("serial", driveYoutubePreview);
+        startActivity(intent);
     }
 
 

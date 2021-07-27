@@ -16,10 +16,12 @@ import com.consultoraestrategia.ss_crmeducativo.comportamiento.domain.useCase.De
 import com.consultoraestrategia.ss_crmeducativo.comportamiento.domain.useCase.GetComportAlumnoList;
 import com.consultoraestrategia.ss_crmeducativo.comportamiento.domain.useCase.UpdateSuccesDowloadCasoArchivo;
 import com.consultoraestrategia.ss_crmeducativo.comportamiento.entities.AlumnoUi;
+import com.consultoraestrategia.ss_crmeducativo.comportamiento.entities.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.comportamiento.entities.ComportamientoUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioEstadoFileU;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.DowloadImageUseCase;
+import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.UpdateRepositorio;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.UpdateSuccesDowloadArchivo;
 
 import java.util.List;
@@ -198,6 +200,38 @@ public class ComportAlumnoCPresenterImpl extends BaseFragmentPresenterImpl<Compo
     public void onClickArchivo(RepositorioFileUi repositorioFileUi) {
         if(repositorioFileUi.getEstadoFileU()== RepositorioEstadoFileU.DESCARGA_COMPLETA){
             if(view!=null)view.leerArchivo(repositorioFileUi.getPath());
+        }
+    }
+
+    @Override
+    public void onClickComportamientoAlumno(ComportamientoUi comportamientoUi) {
+        this.comportamientoUiselected=comportamientoUi;
+        comportamientoUiselected.setEntidadId(entidadId);
+        comportamientoUiselected.setGeoreferenciaId(georeferenciaId);
+        if (view != null) view.lauchEditComportamiento(comportamientoUiselected);
+    }
+
+    @Override
+    public void canceledDownload(long id) {
+
+    }
+
+    @Override
+    public void finishedDownload(long downloadId) {
+        RepositorioFileUi repositorioFileUi = null;
+        for (ComportamientoUi comportamientoUi : comportamientoUiList){
+            for (ArchivoUi item : comportamientoUi.getArchivoUiList()){
+                if(item.getDownloadId() == downloadId){
+                    repositorioFileUi = item;
+                    break;
+                }
+            }
+
+        }
+
+        if(view!=null && repositorioFileUi!=null){
+            view.getFileNameDowload(repositorioFileUi);
+            if(view!=null)view.leerArchivo(repositorioFileUi.getPathLocal());
         }
     }
 

@@ -75,11 +75,6 @@ public class ComportamientoRepository implements  ComportamientoDataSource {
     }
 
     @Override
-    public List<Integer> validarUsuario(DestinoUi.Tipo tipo, int alumnoId, int cargaACademicaId, int georeferenciaId) {
-        return comportamientoDataLocalSource.validarUsuario(tipo, alumnoId, cargaACademicaId, georeferenciaId);
-    }
-
-    @Override
     public void getComporamientosDestinosList(int docente, int alumnoId, SucessCallback<List<ComportamientoUi>> callback) {
         comportamientoDataLocalSource.getComporamientosDestinosList(docente,alumnoId,callback);
     }

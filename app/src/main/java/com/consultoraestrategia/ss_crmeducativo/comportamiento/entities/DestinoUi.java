@@ -5,28 +5,10 @@ import java.util.List;
 
 public class DestinoUi {
 
-    public enum Tipo{PADRES, TUTOR, ADODERADO}
-    List<Tipo>tipos;
-    List<Integer>destinosIds;
     int georeferenciaId;
-    List<UsuarioUi>usuarioUiList;
-
-    public List<Integer> getDestinosIds() {
-        return destinosIds;
-    }
-
-    public void setDestinosIds(List<Integer> destinosIds) {
-        this.destinosIds = destinosIds;
-    }
-
-    public List<Tipo> getTipos() {
-        return tipos;
-    }
-
-    public void setTipos(List<Tipo> tipos) {
-        this.tipos = tipos;
-    }
-
+    private boolean tutor;
+    private boolean padre;
+    private boolean apoderado;
 
     public int getGeoreferenciaId() {
         return georeferenciaId;
@@ -36,11 +18,27 @@ public class DestinoUi {
         this.georeferenciaId = georeferenciaId;
     }
 
-    public List<UsuarioUi> getUsuarioUiList() {
-        return usuarioUiList;
+    public void setTutor(boolean tutor) {
+        this.tutor = tutor;
     }
 
-    public void setUsuarioUiList(List<UsuarioUi> usuarioUiList) {
-        this.usuarioUiList = usuarioUiList;
+    public boolean getTutor() {
+        return tutor;
+    }
+
+    public void setPadre(boolean padre) {
+        this.padre = padre;
+    }
+
+    public boolean getPadre() {
+        return padre;
+    }
+
+    public void setApoderado(boolean apoderado) {
+        this.apoderado = apoderado;
+    }
+
+    public boolean getApoderado() {
+        return apoderado;
     }
 }

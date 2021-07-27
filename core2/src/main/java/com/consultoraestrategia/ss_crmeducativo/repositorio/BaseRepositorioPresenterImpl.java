@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -210,11 +211,6 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
 
     @Override
     public void onClickAddFile() {
-        if(view!=null)isInternet = view.isInternetAvailable();
-        if(!isInternet){
-            if(view!=null)view.showMessageNotConnection();
-            return;
-        }
         if(view!=null)view.onShowPickDoc(cantidadMaxima, new ArrayList<UpdateRepositorioFileUi>());
     }
 
@@ -242,12 +238,6 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
 
     @Override
     public void onClickUpload(final UpdateRepositorioFileUi updateRepositorioFileUi) {
-        switch (updateRepositorioFileUi.getTipoFileU()){
-            case IMAGEN:
-                String path = cloneImagenCompress.SaveImage(updateRepositorioFileUi.getPath());
-                if(!TextUtils.isEmpty(path))updateRepositorioFileUi.setPath(path);
-                break;
-        }
         _onClickUpload(updateRepositorioFileUi);
     }
 
@@ -349,11 +339,6 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
 
     @Override
     public void onClickAddMultimedia() {
-        if(view!=null)isInternet = view.isInternetAvailable();
-        if(!isInternet){
-            if(view!=null)view.showMessageNotConnection();
-            return;
-        }
         switch (fragmentoTipo){
             case SUBIDA_DESCARGA_IMAGEN:
                 if(view!=null)view.showPickPhoto(false, cantidadMaxima, new ArrayList<UpdateRepositorioFileUi>());
@@ -443,6 +428,25 @@ public class BaseRepositorioPresenterImpl extends BaseFragmentPresenterImpl<Repo
         if(repositorioFileUi!=null){
             repositorioFileUi.setEstadoFileU(RepositorioEstadoFileU.ERROR_DESCARGA);
         }
+    }
+
+    @Override
+    public void onResultDocumento(Uri uri, String documentoFile) {
+        Map<Uri, String> fileName = new HashMap<>();
+        fileName.put(uri, documentoFile);
+        convertirPathRepositorioUpload.execute(fileName, new UseCaseSincrono.Callback<List<UpdateRepositorioFileUi>>() {
+            @Override
+            public void onResponse(boolean succes, List<UpdateRepositorioFileUi> value) {
+                if(succes){
+                    updateRepositorioFileUiList.addAll(value);
+                    repositorioFileUiList.addAll(0, value);
+                    for (UpdateRepositorioFileUi updateRepositorioFileUi : value) {
+                        onClickUpload(updateRepositorioFileUi);
+                    }
+                    showListArchivos(repositorioFileUiList);
+                }
+            }
+        });
     }
 
     @Override

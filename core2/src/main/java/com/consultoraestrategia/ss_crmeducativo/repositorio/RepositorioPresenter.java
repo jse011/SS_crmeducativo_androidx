@@ -48,4 +48,6 @@ public interface RepositorioPresenter extends BaseFragmentPresenter<RepositorioV
     void finishedDownload(long downloadId);
 
     void canceledDownload(long downloadId);
+
+    void onResultDocumento(Uri uri, String documentoFile);
 }

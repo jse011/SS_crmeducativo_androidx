@@ -53,8 +53,7 @@ public class CreateComportamientoPresenterImpl extends BaseFragmentPresenterImpl
             if(comportamientoUi.getTipoComportamientoUi()==null) {if(view!=null)view.showMessage(res.getString(R.string.msg_empty_tipo_comportamiento));}
             else {
 
-                Log.d(TAG, "saveComportamiento " );
-                Log.d(TAG, "destinatarios: " + destinatarios.getDestinosIds());
+
                 SaveComportamiento.Response response= saveComportamiento.execute(new SaveComportamiento.Request(comportamientoUi, destinatarios,repositorioFileUiList));
                 Log.d(TAG, "success " +response.isSuccess() );
                 if(response.isSuccess()){

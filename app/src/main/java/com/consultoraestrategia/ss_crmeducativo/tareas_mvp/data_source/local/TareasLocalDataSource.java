@@ -43,9 +43,11 @@ import com.consultoraestrategia.ss_crmeducativo.lib.AppDatabase;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioEstadoFileU;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioTipoFileU;
+import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.entities.ParametroDisenioUi;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.TareasMvpDataSource;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.callbacks.GetTareasListCallback;
+import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.DriveFileUi;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.FormaRubroEvalProcesoUi;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.HeaderTareasAprendizajeUI;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.RecursosUI;
@@ -92,6 +94,11 @@ public class TareasLocalDataSource implements TareasMvpDataSource {
                     .where(Archivo_Table.key.eq(repositorioFileUi.getArchivoId()))
                     .execute();
         }
+    }
+
+    @Override
+    public RetrofitCancel getUrlDriveArchivo(String archivoId, Callback<DriveFileUi> driveFileUiCallback) {
+        return null;
     }
 
     @Override

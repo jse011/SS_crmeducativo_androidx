@@ -124,7 +124,7 @@ public class TabCreateComportFragment extends BaseFragment<TabCreateComportView,
     CheckBox checkTutor;
     @BindView(R.id.recyclerUsuarios)
     RecyclerView recyclerUsuarios;
-    AdapterDestinatarios adapterDestinatarios;
+
 
 
     public static TabCreateComportFragment newInstance(Bundle bundle, String coloParametroDisenio) {
@@ -201,12 +201,7 @@ public class TabCreateComportFragment extends BaseFragment<TabCreateComportView,
 
     private void initadapter() {
         Log.d(TAG, "initadapter");
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerUsuarios.setLayoutManager(layoutManager);
-        adapterDestinatarios = new AdapterDestinatarios(new ArrayList<UsuarioUi>(), this);
-        recyclerUsuarios.setAdapter(adapterDestinatarios);
-        recyclerUsuarios.setHasFixedSize(true);
-        recyclerUsuarios.setNestedScrollingEnabled(false);
+
 
     }
 
@@ -387,30 +382,6 @@ public class TabCreateComportFragment extends BaseFragment<TabCreateComportView,
         initDatePicker(fechaseleted);
     }
 
-    @Override
-    public void showListUsuarios(List<UsuarioUi> usuarioUis) {
-
-    }
-
-    @Override
-    public void setTipoList(List<DestinoUi.Tipo> tipoList) {
-        checkApoderado.setEnabled(false);
-        checkPadre.setEnabled(false);
-        checkTutor.setEnabled(false);
-        for (DestinoUi.Tipo tipo : tipoList) {
-            switch (tipo) {
-                case PADRES:
-                    checkPadre.setChecked(true);
-                    break;
-                case ADODERADO:
-                    checkApoderado.setChecked(true);
-                    break;
-                default:
-                    checkTutor.setChecked(true);
-                    break;
-            }
-        }
-    }
 
     @Override
     public AlumnoUi getAlumno() {
@@ -419,7 +390,7 @@ public class TabCreateComportFragment extends BaseFragment<TabCreateComportView,
 
     @Override
     public void updateUsuario(UsuarioUi usuarioUi) {
-        adapterDestinatarios.update(usuarioUi);
+
     }
 
     public void setSelectedTutor(boolean selectedTutor) {
@@ -504,13 +475,13 @@ public class TabCreateComportFragment extends BaseFragment<TabCreateComportView,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.checkPadre:
-                presenter.selectedCheck(DestinoUi.Tipo.PADRES);
+                presenter.selectedCheckPadre();
                 break;
             case R.id.checkApoderado:
-                presenter.selectedCheck(DestinoUi.Tipo.ADODERADO);
+                presenter.selectedCheckApoderado();
                 break;
             case R.id.checkTutor:
-                presenter.selectedCheck(DestinoUi.Tipo.TUTOR);
+                presenter.selectedCheckTutor();
                 break;
         }
     }

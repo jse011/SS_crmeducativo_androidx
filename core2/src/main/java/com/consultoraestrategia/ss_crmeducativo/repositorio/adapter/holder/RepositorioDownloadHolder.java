@@ -73,6 +73,7 @@ public class RepositorioDownloadHolder extends RecyclerView.ViewHolder implement
         this.listener = repositorioItemListener;
         txtFile.setText(repositorioFileUi.getNombreArchivo());
         txtFecha.setText(Utils.f_fecha_letras_2(repositorioFileUi.getFechaAccionArchivo()));
+        txtFecha.setVisibility(View.GONE);
         txtNombre.setText(repositorioFileUi.getNombreRecurso());
         setupSelect(repositorioFileUi.isSelect());
         setupEstado(repositorioFileUi.getEstadoFileU());
@@ -152,23 +153,16 @@ public class RepositorioDownloadHolder extends RecyclerView.ViewHolder implement
 
         switch (tipoFileU){
             case IMAGEN:
-                String path = "";
+                imgExtencion.setVisibility(View.VISIBLE);
                 RequestOptions glideRequestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL);
-                if(repositorioFileUi.getEstadoFileU() == RepositorioEstadoFileU.DESCARGA_COMPLETA){
-                    path = repositorioFileUi.getPath();
-                }else {
-                    path = repositorioFileUi.getUrl();
-                    glideRequestOptions.override(50, 50);
-                }
-
                 Glide.with(itemView.getContext())
-                        .load(path)
+                        .load(repositorioFileUi.getUrl())
                         .apply(
                                 glideRequestOptions.centerCrop()
                         ).listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    //on load failed
+                                    //on load failed}
                                     imgExtencion.setVisibility(View.VISIBLE);
                                     return false;
                                 }
@@ -184,44 +178,10 @@ public class RepositorioDownloadHolder extends RecyclerView.ViewHolder implement
 
                 break;
             case VIDEO:
-                if(repositorioFileUi.getEstadoFileU() == RepositorioEstadoFileU.DESCARGA_COMPLETA){
-
-                    String pathw = repositorioFileUi.getPath();
-                    if(TextUtils.isEmpty(pathw)){
-                        imgExtencion.setVisibility(View.VISIBLE);
-                    }else {
-                        if(AndroidLifecycleUtils.canLoadImage(itemView.getContext())) {
-                            Glide.with(itemView.getContext())
-                                    .load(new File(pathw))
-                                    .apply(RequestOptions
-                                            .centerCropTransform()
-                                            //.override(50, 80)
-                                            .placeholder(droidninja.filepicker.R.drawable.image_placeholder))
-                                    .thumbnail(0.5f)
-                                    .listener(new RequestListener<Drawable>() {
-                                        @Override
-                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                            imgExtencion.setVisibility(View.VISIBLE);
-                                            return false;
-                                        }
-
-                                        @Override
-                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                            imgExtencion.setVisibility(View.GONE);
-                                            return false;
-                                        }
-                                    })
-                                    .into(imgFondo);
-                        }else {
-                            imgExtencion.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                }
+                imgExtencion.setVisibility(View.VISIBLE);
                 break;
                 default:
                     imgFondo.setImageBitmap(null);
-                    //imgFondo.destroyDrawingCache();
                     imgExtencion.setVisibility(View.VISIBLE);
                     break;
         }
@@ -230,9 +190,9 @@ public class RepositorioDownloadHolder extends RecyclerView.ViewHolder implement
     }
 
     private void showProgress(){
-        progressBar2.setVisibility(View.VISIBLE);
-        imgClose.setVisibility(View.VISIBLE);
-        imgFondoprogres.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.GONE);
+        imgClose.setVisibility(View.GONE);
+        imgFondoprogres.setVisibility(View.GONE);
     }
 
     private void hiProgress(){
@@ -242,9 +202,9 @@ public class RepositorioDownloadHolder extends RecyclerView.ViewHolder implement
     }
 
     private void showProgressSuccess(){
-        progressSucces.setVisibility(View.VISIBLE);
-        imgClose.setVisibility(View.VISIBLE);
-        imgFondoprogres.setVisibility(View.VISIBLE);
+        progressSucces.setVisibility(View.GONE);
+        imgClose.setVisibility(View.GONE);
+        imgFondoprogres.setVisibility(View.GONE);
     }
 
     private void hiProgressSuccess(){
@@ -254,8 +214,8 @@ public class RepositorioDownloadHolder extends RecyclerView.ViewHolder implement
     }
 
     private void showDowload(){
-        imgFondoprogres.setVisibility(View.VISIBLE);
-        imgDownload.setVisibility(View.VISIBLE);
+        imgFondoprogres.setVisibility(View.GONE);
+        imgDownload.setVisibility(View.GONE);
     }
 
     private void hideDowload(){

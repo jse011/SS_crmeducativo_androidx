@@ -2,7 +2,9 @@ package com.consultoraestrategia.ss_crmeducativo.lib.imageViewZoom;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
-import com.consultoraestrategia.ss_crmeducativo.R;
+import com.consultoraestrategia.ss_crmeducativo.core2.R;
 import com.consultoraestrategia.ss_crmeducativo.util.Utils;
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -43,7 +45,7 @@ public class ImageZomDialog extends DialogFragment {
         });
         Glide.with(getContext())
                 .load(image)
-                .apply(Utils.getGlideRequestOptionsSimple().centerInside())
+                .apply(Utils.getGlideRequestOptionsSimple())
                 .into(dialogImageView);
         return this.view;
     }

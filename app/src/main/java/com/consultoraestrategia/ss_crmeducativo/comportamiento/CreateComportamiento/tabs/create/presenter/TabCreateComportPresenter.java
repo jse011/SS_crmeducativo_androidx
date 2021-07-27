@@ -28,5 +28,10 @@ public interface TabCreateComportPresenter extends BaseFragmentPresenter<TabCrea
 
     void seletedUsuario(UsuarioUi usuarioUi);
     DestinoUi getDestinatarios();
-    void selectedCheck(DestinoUi.Tipo tipoEnum);
+
+    void selectedCheckPadre();
+
+    void selectedCheckApoderado();
+
+    void selectedCheckTutor();
 }

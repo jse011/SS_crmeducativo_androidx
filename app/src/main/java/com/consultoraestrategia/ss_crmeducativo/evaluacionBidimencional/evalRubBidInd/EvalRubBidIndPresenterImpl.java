@@ -1066,7 +1066,20 @@ public class EvalRubBidIndPresenterImpl extends BaseFragmentPresenterImpl<EvalRu
             archivoUi.setId(IdGenerator.generateId());
             archivoUi.setAlumnoId(evalProcUiSelect.getAlumnoId());
             archivoUi.setRubroEvaluacionId(rubricaBidimencional.getId());
-            archivoUi.setNombre(fileName);
+
+
+            String extencion = "";
+            int i = fileName.lastIndexOf('.');
+            int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+            String file = fileName.substring(p + 1);
+            if (i > p) {
+                extencion = fileName.substring(i+1);
+            }
+
+            // Remove the extension.
+            file = IdGenerator.generateId() +"."+extencion;
+
+            archivoUi.setNombre(file);
             archivoUi.setUri(entry.getKey());
 
             uploadArchivo.execute(archivoUi, new UploadArchivo.CallbackProgress<ArchivoUi>() {

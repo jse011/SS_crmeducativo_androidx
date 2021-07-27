@@ -1,11 +1,16 @@
 package com.consultoraestrategia.ss_crmeducativo.repositorio;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -16,16 +21,23 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.consultoraestrategia.ss_crmeducativo.core2.BuildConfig;
+import com.consultoraestrategia.ss_crmeducativo.lib.imageViewZoom.ImageZomDialog;
+import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioTipoFileU;
 import com.consultoraestrategia.ss_crmeducativo.util.DownloadProgressCounter;
 import com.consultoraestrategia.ss_crmeducativo.util.UtilsStorage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
@@ -70,7 +82,10 @@ import com.consultoraestrategia.ss_crmeducativo.util.OpenIntents;
 import com.iceteck.silicompressorr.SiliCompressor;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import droidninja.filepicker.FilePickerBuilder;
@@ -82,6 +97,7 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, RepositorioPresenter, RepositorioListener> implements RepositorioView, RepositorioItemListener, RepositorioItemUpdateListener, View.OnClickListener {
     private final static int REQUEST_CODE_DOC_Q = 2312;
     protected static final int CUSTOM_REQUEST_CODE = 532;
+    protected static final int REQUEST_TAKE_PHOTO = 2316;
     protected RecyclerView rcRepositorio;
     protected RepositorioAdapter repositorioAdapter;
     protected ProgressBar progressBar;
@@ -405,7 +421,36 @@ public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, Repos
 
     @Override
     public void onClickArchivo(RepositorioFileUi repositorioFileUi) {
-        presenter.onClickArchivo(repositorioFileUi);
+        if(repositorioFileUi.getTipoFileU()== RepositorioTipoFileU.IMAGEN){
+            ImageZomDialog imageZomDialog = new ImageZomDialog();
+            imageZomDialog.show(getContext(),repositorioFileUi.getUrl());
+        }else {
+
+            try {
+                DownloadManager.Request r = new DownloadManager.Request(Uri.parse(repositorioFileUi.getUrl()));
+                r.setTitle(repositorioFileUi.getNombreArchivo());
+                r.setDescription(getResources().getString(R.string.app_name));
+                r.setMimeType(UtilsStorage.getMimeType(repositorioFileUi.getNombreArchivo()));
+                // This put the download in the same Download dir the browser uses
+                //r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, archivoPreview);
+                r.setAllowedOverRoaming(false);
+                r.setDestinationUri(Uri.fromFile(new File(getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), repositorioFileUi.getNombreArchivo())));
+                // When downloading music and videos they will be listed in the player
+                // (Seems to be available since Honeycomb only)
+                r.allowScanningByMediaScanner();
+
+                // Notify user when download is completed
+                // (Seems to be available since Honeycomb only)
+                r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+                // Start download
+                DownloadManager dm = (DownloadManager) getContext().getSystemService(DOWNLOAD_SERVICE);
+                repositorioFileUi.setDownloadId(dm.enqueue(r));
+            } catch (Exception e) {
+                e.printStackTrace();
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(repositorioFileUi.getUrl())));
+            }
+        }
     }
 
     @Override
@@ -468,10 +513,36 @@ public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, Repos
         dialog.show();
 
     }
+    private static String queryName(ContentResolver resolver, Uri uri) {
+        Cursor returnCursor =
+                resolver.query(uri, null, null, null, null);
+        assert returnCursor != null;
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String name = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return name;
+    }
+    private Uri galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getContext().sendBroadcast(mediaScanIntent);
+        return  contentUri;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DOC_Q){
+            Uri uri = data.getData();
+            presenter.onResultDocumento(uri, queryName(getActivity().getContentResolver(), uri));
+        }else if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            Uri uri = galleryAddPic();
+            presenter.onResultDocumento(uri, currentPhotoFileName);
+        }
+
         /*ArrayList<Uri> photoPaths = new ArrayList<>();
         ArrayList<String> photoPaths2 = new ArrayList<>();
         switch (requestCode) {
@@ -531,24 +602,101 @@ public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, Repos
 
     @Override
     public void showPickPhoto(boolean enableVideo, int maxCount, List<UpdateRepositorioFileUi> photoPaths) {
-        ArrayList<String> stringList = new ArrayList<>();
-        //for (UpdateRepositorioFileUi recursoUploadFile : photoPaths)stringList.add(recursoUploadFile.getPath());
-            FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
-                    //.setSelectedFiles(stringList)
-                    .setActivityTheme(R.style.LibAppThemeLibrary)
-                    //.setActivityTitle("Selección de multimedia")
-                    .enableVideoPicker(enableVideo)
-                    .enableCameraSupport(true)
-                    .showGifs(true)
-                    .showFolderView(true)
-                    //.enableSelectAll(false)
-                    .enableImagePicker(true)
-                    .setMaxCount(1);
-            //.setCameraPlaceholder(R.drawable.custom_camera)
-            //.withOrientation(Orientation.UNSPECIFIED);
-            filePickerBuilder.pickPhoto(this, CUSTOM_REQUEST_CODE);
+      checkForCamaraWritePermissions(this, new WorkFinish() {
+            @Override
+            public void onWorkFinish(Boolean check) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(getContext(),
+                                getContext().getPackageName()+".provider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+
+                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                    }
+                }
+            }
+        });
+
     }
 
+    public static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 9921;
+    public static void checkForCamaraWritePermissions(final FragmentActivity activity, WorkFinish workFinish) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            workFinish.onWorkFinish(true);
+        } else {
+            List<String> permissionsNeeded = new ArrayList<String>();
+            final List<String> permissionsList = new ArrayList<String>();
+            if (!addPermission(permissionsList, Manifest.permission.CAMERA, activity))
+                permissionsNeeded.add("CAMERA");
+            if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE, activity))
+                permissionsNeeded.add("WRITE_EXTERNAL_STORAGE");
+            if (permissionsList.size() > 0) {
+                activity.requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+            } else {
+                workFinish.onWorkFinish(true);
+            }
+        }
+    }
+    public interface WorkFinish {
+        void onWorkFinish(Boolean check);
+    }
+    public static void checkForCamaraWritePermissions(final Fragment fragment, WorkFinish workFinish) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            workFinish.onWorkFinish(true);
+        } else {
+            List<String> permissionsNeeded = new ArrayList<String>();
+            final List<String> permissionsList = new ArrayList<String>();
+            if (!addPermission(permissionsList, Manifest.permission.CAMERA, fragment.getActivity()))
+                permissionsNeeded.add("CAMERA");
+            if (permissionsList.size() > 0) {
+                fragment.requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+            } else {
+                workFinish.onWorkFinish(true);
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static boolean addPermission(List<String> permissionsList, String permission, Activity ac) {
+        if (ac.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+            permissionsList.add(permission);
+            // Check for Rationale Option
+            return ac.shouldShowRequestPermissionRationale(permission);
+        }
+        return true;
+    }
+
+    String currentPhotoPath;
+    String currentPhotoFileName;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        currentPhotoFileName = image.getName();
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 
     /* DOC_ESCRITOS(),
      DOC_PRESENTACIONES(new String[]{".ppt", ".pptx"}),
@@ -560,40 +708,11 @@ public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, Repos
      COMPRESION(new String[]{".gz",".gzip",".rar",".zip"});*/
     @Override
     public void onShowPickDoc(int maxCount, List<UpdateRepositorioFileUi> docPaths) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
-            // browser.
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            // Filter to only show results that can be "opened", such as a
-            // file (as opposed to a list of contacts or timezones)
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            // Filter to show only images, using the image MIME data type.
-            // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
-            // To search for all documents available via installed storage providers,
-            // it would be "*/*".
-            intent.setType("*/*");
-            startActivityForResult(intent, REQUEST_CODE_DOC_Q);
-
-        }else {
-            FilePickerBuilder filePickerBuilder = FilePickerBuilder.Companion.getInstance()
-                    .setMaxCount(1)
-                    //.setSelectedFiles(stringList)
-                    .setActivityTheme(R.style.LibAppThemeLibrary)
-                    //.setActivityTitle("Selección de documento");
-                    .addFileSupport("DOCUMENTO", new String[]{".doc", ".docx", ".txt"},R.drawable.ext_doc)
-                    .addFileSupport("HOJA DE CALCULO", new String[]{".xls", ".xlsx",".ods"},R.drawable.ext_xls)
-                    .addFileSupport("PDF", new String[]{".pdf"},R.drawable.ext_pdf)
-                    .addFileSupport("PRESENTACION", new String[]{".ppt", ".pptx"},R.drawable.ext_ppt)
-                    .addFileSupport("MUSICA", new String[]{".mp3", ".ogg",".wav"},R.drawable.ext_aud)
-                    //filePickerBuilder.addFileSupport("COMPRESION", new String[]{".gz",".gzip",".rar",".zip"});
-                    .enableDocSupport(false)
-                    //.enableSelectAll(true)
-                    //.showFolderView(true)
-                    .sortDocumentsBy(SortingTypes.name);
-
-
-            filePickerBuilder.pickFile(this, FilePickerConst.REQUEST_CODE_DOC);
-        }
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, REQUEST_CODE_DOC_Q);
     }
 
 
@@ -634,7 +753,7 @@ public class BaseRepositoriFragmento extends BaseFragment<RepositorioView, Repos
 
     @Override
     public void onClickArchivo(UpdateRepositorioFileUi updateRepositorioFileUi) {
-        presenter.onClickArchivo(updateRepositorioFileUi);
+
     }
 
     public void changeList(List<RepositorioFileUi> repositorioFileUiList){

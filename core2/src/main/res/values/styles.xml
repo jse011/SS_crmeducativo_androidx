@@ -73,4 +73,9 @@
         <item name="android:windowEnterAnimation">@anim/default_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/default_dialog_out</item>
     </style>
+    <style name="DialogStyleUtilImageZoom">
+
+        <item name="android:windowEnterAnimation"> @anim/scale_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_out</item>
+    </style>
 </resources>

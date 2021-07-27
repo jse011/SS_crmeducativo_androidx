@@ -36,10 +36,6 @@ public interface TabCreateComportView extends BaseView<TabCreateComportPresenter
 
     void showCalendarComportamineto(long fechaseleted);
 
-  void showListUsuarios(List<UsuarioUi> usuarioUis);
-
-  void setTipoList(List<DestinoUi.Tipo> tipoList);
-
   AlumnoUi getAlumno();
 
   void updateUsuario(UsuarioUi usuarioUi);

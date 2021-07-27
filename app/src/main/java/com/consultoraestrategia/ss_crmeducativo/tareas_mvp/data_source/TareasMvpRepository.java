@@ -6,6 +6,7 @@ import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.callbacks.GetTareasListCallback;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.local.TareasLocalDataSource;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.remote.RemoteMvpDataSource;
+import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.DriveFileUi;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.TareasUI;
 
 import java.util.List;
@@ -36,6 +37,11 @@ public class TareasMvpRepository implements TareasMvpDataSource {
     @Override
     public void updateArchivosTarea(List<RepositorioFileUi> repositorioFileUis) {
         localDataSource.updateArchivosTarea(repositorioFileUis);
+    }
+
+    @Override
+    public RetrofitCancel getUrlDriveArchivo(String recursoId, Callback<DriveFileUi> driveFileUiCallback) {
+        return remoteDataSource.getUrlDriveArchivo(recursoId, driveFileUiCallback);
     }
 
     @Override

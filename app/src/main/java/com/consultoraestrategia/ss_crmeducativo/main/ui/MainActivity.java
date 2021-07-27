@@ -539,6 +539,11 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 
     }
 
+    @Override
+    public void updateCalendarioPeridoyOtros() {
+        CMRE.getCMRE(this).updateCalendarioPerido();
+    }
+
     private void subscribeToUser() {
         SessionUser user = SessionUser.getCurrentUser();
         if (user != null) {

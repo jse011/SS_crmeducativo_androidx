@@ -3,6 +3,7 @@ package com.consultoraestrategia.ss_crmeducativo.comportamiento.presenter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
@@ -90,7 +91,7 @@ public class ComportamientoPresenterImpl extends BaseFragmentPresenterImpl<Compo
 
         Log.d(TAG, " setExtras ");
         if(view!=null)view.showProgress();
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 if(view!=null)view.hideProgress();

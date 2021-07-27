@@ -34,7 +34,6 @@ public interface ComportamientoDataSource {
     ParametroDisenioUi getParametroDisenio(int idcargaCurso);
     void getUsuariosDestino(int georeferenciaId ,SucessCallback<List<UsuarioUi>> sucessCallback);
     DestinoUi getDestino(String idComportamiento, int georeferencia);
-    List<Integer> validarUsuario(DestinoUi.Tipo tipo, int alumnoId, int cargaACademicaId, int georeferenciaId);
     void getComporamientosDestinosList(int docente,int alumnoId,  SucessCallback<List<ComportamientoUi>> callback );
     void updateSucessDowload(String archivoId, String path, CallbackSuccess callback);
 

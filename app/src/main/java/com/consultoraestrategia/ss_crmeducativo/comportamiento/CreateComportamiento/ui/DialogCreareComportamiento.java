@@ -12,6 +12,7 @@ import com.consultoraestrategia.ss_crmeducativo.login2.service2.worker.SynckServ
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
 
@@ -79,6 +80,7 @@ public class DialogCreareComportamiento extends BaseDialogFragment<CreateComport
     public static String ID_ALUMNOID = "personaId";
     public static String COLOR_PARAMETRO_DISENIO = "colorParametroDisenio";
     private String colorParametroDisenio;
+    public static boolean showDialog = false;
 
     public static DialogCreareComportamiento newInstance(CRMBundle crmBundle, String idcomportamiento) {
         DialogCreareComportamiento fragment = new DialogCreareComportamiento();
@@ -325,5 +327,17 @@ public class DialogCreareComportamiento extends BaseDialogFragment<CreateComport
         if(tabArchivosComportFragment!=null)tabArchivosComportFragment.changeList(new ArrayList<RepositorioFileUi>(archivoUiList));
     }
 
+    @Override
+    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        if(!showDialog){
+            showDialog = true;
+            super.show(manager, tag);
+        }
+    }
 
+    @Override
+    public void onDestroyView() {
+        showDialog = false;
+        super.onDestroyView();
+    }
 }

@@ -309,7 +309,7 @@ public abstract class  SyncIntenService extends Worker implements ImportarCountT
 
         Log.d(TAG, "casosReporteList "+casosReporteList.size()+ " casoList "+casosList.size());
         Set<Integer> casoAlumnoIdList = new LinkedHashSet<>();
-        if(casosReporteList.size()!=0){
+        /*if(casosReporteList.size()!=0){
             for(CasoReporte casoReporte:casosReporteList ){
                 for(Caso caso:casosList){
                     if(casoReporte.getCasoId().equals(caso.getKey())){
@@ -321,7 +321,7 @@ public abstract class  SyncIntenService extends Worker implements ImportarCountT
                     }
                 }
             }
-        }
+        }*/
 
         int countTarea = 0;
         if(respuesta.isCommit_TareaRecurso()){

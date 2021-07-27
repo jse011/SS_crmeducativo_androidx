@@ -62,18 +62,16 @@ public class CMRE extends Core2 {
     @Override
     public void onActivityResumed(Activity activity) {
         super.onActivityResumed(activity);
-        if(activity instanceof MainActivity){
-            try {
-                calendarioPeridoService.destroy();
-                calendarioPeridoService.refresh();
-                calendarioPeridoService.execute();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
 
-        }
     }
 
+
+
+
+    @Override
+    public void onActivityStopped(Activity activity) {
+
+    }
     //guardar la una intencion de cambio en el servicio
     public static void saveNotifyChangeDataBase(Context context){
         SharedPreferences prefs = context.
@@ -98,6 +96,18 @@ public class CMRE extends Core2 {
         editor.apply();
     }
 
+    public  void updateCalendarioPerido(){
+        try {
+            calendarioPeridoService.destroy();
+            calendarioPeridoService.refresh();
+            calendarioPeridoService.execute();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
+    public static CMRE getCMRE(Activity activity){
+        return (CMRE)activity.getApplication();
+    }
 }
 

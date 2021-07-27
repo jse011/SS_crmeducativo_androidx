@@ -34,23 +34,23 @@ public class AlumnoDaoImpl implements AlumnoDao {
     }
 
     @Override
-    public List<Usuario> getPadres(int alumnoId) {//1380
+    public List<Integer> getPadres(int alumnoId) {//1380
 
-        List<Usuario>usuarioList= new ArrayList<>();
+        List<Integer>personaIdList= new ArrayList<>();
         List<Relaciones> relacionesList=getRelaciones(alumnoId);
 
         for (Relaciones relaciones : relacionesList) {
             if (relaciones.getTipoId() == 181 || relaciones.getTipoId() == 182  ) {
-                Usuario PadresUsuario = SQLite.select()
+                /*Usuario PadresUsuario = SQLite.select()
                         .from(Usuario.class)
                         .where(Usuario_Table.personaId.withTable().eq(relaciones.getPersonaVinculadaId()))
-                        .querySingle();
-                if(PadresUsuario!=null)usuarioList.add(PadresUsuario);
+                        .querySingle();*/
+                personaIdList.add(relaciones.getPersonaVinculadaId());
             }
 
 
          }
-        return usuarioList;
+        return personaIdList;
     }
 
     public List<Relaciones>getRelaciones(int alumnoid){
@@ -61,19 +61,15 @@ public class AlumnoDaoImpl implements AlumnoDao {
     }
 
     @Override
-    public Usuario getApoderado(int alumnoId) {
-        Log.d(getClass().getSimpleName(), "ALUMNO ID"+alumnoId);
-        Usuario usuario= new Usuario();
+    public int getApoderado(int alumnoId) {
+
+       int apoderadoId = 0;
         Contrato contrato= SQLite.select().from(Contrato.class)
                 .where(Contrato_Table.personaId.withTable().eq(alumnoId)).querySingle();
         if (contrato != null) {
-            usuario = SQLite.select()
-                    .from(Usuario.class)
-                    .where(Usuario_Table.personaId.withTable().eq(contrato.getApoderadoId()))
-                    .querySingle();
-            if(usuario==null)usuario= new Usuario();
+            apoderadoId = contrato.getApoderadoId();
         }
-        return usuario;
+        return apoderadoId;
     }
 
     @Override

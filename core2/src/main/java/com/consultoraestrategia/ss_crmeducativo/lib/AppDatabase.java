@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.consultoraestrategia.ss_crmeducativo.entities.BaseEntity;
 import com.consultoraestrategia.ss_crmeducativo.entities.Calendario;
 import com.consultoraestrategia.ss_crmeducativo.entities.CargaCursoCalendarioPeriodo;
+import com.consultoraestrategia.ss_crmeducativo.entities.Caso;
 import com.consultoraestrategia.ss_crmeducativo.entities.DimensionDesarrolloDetalle;
 import com.consultoraestrategia.ss_crmeducativo.entities.EstrategiaEvaluacion;
 import com.consultoraestrategia.ss_crmeducativo.entities.EvaluacionResultado;
@@ -17,6 +18,7 @@ import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionResultad
 import com.consultoraestrategia.ss_crmeducativo.entities.SesionAprendizaje;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareaRubroEvaluacionProceso_Table;
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.annotation.Migration;
@@ -40,7 +42,10 @@ public class AppDatabase {
     //public static final int VERSION = 14;//Playstore 13
    //public static final int VERSION = 15;//Playstore 14 se creo uns tabla webconfig
     //public static final int VERSION = 16;//Playstore 15 se aumento resultadoTipoNotaId
-   public static final int VERSION = 17;//Playstore 16 se aumento parametros a las tablas Eventos, Calendario y se creo la tabla EventoAdjunto
+   //public static final int VERSION = 17;//Playstore 16 se aumento parametros a las tablas Eventos, Calendario y se creo la tabla EventoAdjunto
+   public static final int VERSION = 18;//Se actualizo la tabla Caso
+
+
     @Migration(version = 9, database = AppDatabase.class)
     public static class MigrationRubroEvaluacionResultadoTwo extends AlterTableMigration<EvaluacionResultadoC> {
 
@@ -109,6 +114,30 @@ public class AppDatabase {
         public void onPreMigrate() {
             addColumn(SQLiteType.INTEGER, "fechaPublicacion_");
             addColumn(SQLiteType.INTEGER, "fechaPublicacion");
+        }
+
+        @Override
+        public void onPostMigrate() {
+            super.onPostMigrate();
+        }
+
+    }
+
+    @Migration(version = 18, database = AppDatabase.class)
+    public static class CasoAlter extends AlterTableMigration<Caso> {
+
+        public CasoAlter(Class<Caso> table) {
+            super(table);
+        }
+
+        @Override
+        public void onPreMigrate() {
+            addColumn(SQLiteType.INTEGER, "apoderado");
+            addColumn(SQLiteType.INTEGER, "tutor");
+            addColumn(SQLiteType.INTEGER, "padre");
+            addColumn(SQLiteType.INTEGER, "organigramaId");
+
+
         }
 
         @Override

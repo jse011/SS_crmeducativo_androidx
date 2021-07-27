@@ -8,6 +8,7 @@ import com.consultoraestrategia.ss_crmeducativo.base.UseCase;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseHandler;
 import com.consultoraestrategia.ss_crmeducativo.base.UseCaseSincrono;
 import com.consultoraestrategia.ss_crmeducativo.bundle.CRMBundle;
+import com.consultoraestrategia.ss_crmeducativo.driveYoutubePreview.util.DriveYoutubePreview;
 import com.consultoraestrategia.ss_crmeducativo.entities.SessionUser;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC;
 import com.consultoraestrategia.ss_crmeducativo.entities.TareasC_Table;
@@ -15,11 +16,14 @@ import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.Repositorio
 import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.RepositorioFileUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.useCase.DowloadImageUseCase;
 import com.consultoraestrategia.ss_crmeducativo.services.entidad.request.BEVariables;
+import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.entities.ParametroDisenioUi;
+import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.GetNombreDrive;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.GetParametroDisenio;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.GetTareasUIList;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.MoverArchivosAlaCarpetaTarea;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.domain_usecase.UpdateSuccesDowloadArchivo;
+import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.DriveFileUi;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.HeaderTareasAprendizajeUI;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.RecursosUI;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.RubroEvalProcesoUi;
@@ -36,6 +40,7 @@ import java.util.List;
 
 public class TareasMvpPresenterImpl implements TareasMvpPresenter {
     private static final String TAG = TareasMvpPresenterImpl.class.getSimpleName();
+    private final GetNombreDrive getNombreDrive;
     private TareasMvpView view;
     private UseCaseHandler handler;
     private GetTareasUIList getTareasUIList;
@@ -54,17 +59,20 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
     private MoverArchivosAlaCarpetaTarea moverArchivosAlaCarpetaTarea;
     private List<HeaderTareasAprendizajeUI> headerTareasAprendizajeUIList = new ArrayList<>();
     private int anioAcademicoId;
+    private RetrofitCancel cancelGetUrlDrive;
 
     public TareasMvpPresenterImpl(UseCaseHandler handler, GetTareasUIList getTareasUIList, GetParametroDisenio getParametroDisenio,
                                   DowloadImageUseCase dowloadImageUseCase,
                                   UpdateSuccesDowloadArchivo updateSuccesDowloadArchivo,
-                                  MoverArchivosAlaCarpetaTarea moverArchivosAlaCarpetaTarea) {
+                                  MoverArchivosAlaCarpetaTarea moverArchivosAlaCarpetaTarea,
+                                  GetNombreDrive getNombreDrive) {
         this.handler = handler;
         this.getTareasUIList = getTareasUIList;
         this.getParametroDisenio = getParametroDisenio;
         this.dowloadImageUseCase = dowloadImageUseCase;
         this.updateSuccesDowloadArchivo = updateSuccesDowloadArchivo;
         this.moverArchivosAlaCarpetaTarea = moverArchivosAlaCarpetaTarea;
+        this.getNombreDrive = getNombreDrive;
     }
 
     @Override
@@ -468,6 +476,7 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
 
     @Override
     public void onClickArchivo(RepositorioFileUi repositorioFileUi) {
+        if(cancelGetUrlDrive!=null)cancelGetUrlDrive.cancel();
         switch (repositorioFileUi.getTipoFileU()){
             case VINCULO:
                 if(view!=null)view.showVinculo(repositorioFileUi.getUrl());
@@ -478,9 +487,36 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
             case MATERIALES:
                 break;
             default:
-                if(repositorioFileUi.getEstadoFileU()== RepositorioEstadoFileU.DESCARGA_COMPLETA){
-                    if(view!=null)view.leerArchivo(repositorioFileUi.getPath());
-                }
+                if(view!=null)view.showProgress();
+                cancelGetUrlDrive = getNombreDrive.execute(repositorioFileUi, new GetNombreDrive.Callback() {
+                    @Override
+                    public void onSuccess(DriveFileUi driveFileUi) {
+                        if(view!=null)view.hideProgress();
+                        switch (repositorioFileUi.getTipoFileU()){
+                            case DOCUMENTO:
+                            case HOJA_CALCULO:
+                            case DIAPOSITIVA:
+                            case IMAGEN:
+                            case PDF:
+                                if(view!=null)view.showPreviewArchivo(DriveYoutubePreview.Build.setupDriveDocumento(driveFileUi.getDriveId(), repositorioFileUi.getNombreRecurso()));
+                                break;
+                            case VIDEO:
+                            case AUDIO:
+                                if(view!=null)view.showPreviewArchivo(DriveYoutubePreview.Build.setupDriveMultimedia(driveFileUi.getDriveId(), repositorioFileUi.getNombreRecurso()));
+                                break;
+                            default:
+                                if(view!=null)view.showVinculo(repositorioFileUi.getUrl());
+                                break;
+                        }
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        if(view!=null)view.showVinculo(repositorioFileUi.getUrl());
+                        if(view!=null)view.hideProgress();
+                    }
+                });
                 break;
         }
 
@@ -498,6 +534,7 @@ public class TareasMvpPresenterImpl implements TareasMvpPresenter {
     @Override
     public void onDestroyView() {
         cancelAllDowload();
+        if(cancelGetUrlDrive!=null)cancelGetUrlDrive.cancel();
         view = null;
         Log.d(TAG, "onDestroyView");
     }

@@ -115,6 +115,13 @@ public class ComportamientoAlumnoHolder extends AbstractViewHolder implements Vi
             txtvacioArchivos.setVisibility(View.GONE);
         }
 
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickComportamientoAlumno(comportamientoUi);
+            }
+        });
+
     }
 
 

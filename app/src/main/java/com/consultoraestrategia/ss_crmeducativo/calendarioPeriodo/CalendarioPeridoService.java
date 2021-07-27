@@ -1,6 +1,8 @@
 package com.consultoraestrategia.ss_crmeducativo.calendarioPeriodo;
 
 import androidx.annotation.NonNull;
+
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.consultoraestrategia.ss_crmeducativo.api.retrofit.ApiRetrofit;
@@ -42,12 +44,14 @@ public class CalendarioPeridoService {
     private final static String TAG = CalendarioPeridoService.class.getSimpleName();
     private boolean executed = false;
     private RetrofitCancelImpl<BEDatosAnioAcademico> retrofitCancel;
-
-
+    private String urlServidor;
+    private int idAnioAcademico;
+    private int empleadoId;
 
 
     private CalendarioPeridoService() {
         this.apiRetrofit = ApiRetrofit.getInstance();
+        this.urlServidor = apiRetrofit.getUrl();
     }
 
     public static CalendarioPeridoService getInstance() {
@@ -73,17 +77,32 @@ public class CalendarioPeridoService {
 
          if(empleado==null)return;
 
+        apiRetrofit.updateServerUrl();//Actualizar Url Servidor
 
-         if(executed){
+        if(executed){
              Log.d(TAG,"is execute CalendarioPeridoService");
-             return;
-         }
 
+            int idAnioAcademico = anioAcademico.getIdAnioAcademico();
+            int empleadoId = empleado.getEmpleadoId();
+            String urlServidor = apiRetrofit.getUrl();
+            urlServidor = TextUtils.isEmpty(urlServidor)?"":urlServidor;
+
+            if(idAnioAcademico == this.idAnioAcademico && empleadoId == this.empleadoId && urlServidor.equals(this.urlServidor)){
+                return;//si no canbia nada en la consulta dejar que termine la peticion
+            }else {
+                Log.d(TAG,"Reiniciar service CalendarioPeridoService");
+                if(retrofitCancel!=null)retrofitCancel.cancel();
+            }
+         }
         Log.d(TAG,"run CalendarioPeridoService");
+
+        this.idAnioAcademico = anioAcademico.getIdAnioAcademico();
+        this.empleadoId = empleado.getEmpleadoId();
+        this.urlServidor = apiRetrofit.getUrl();
 
         executed = true;
 
-        Call<RestApiResponse<BEDatosAnioAcademico>> responseCall = apiRetrofit.flst_getDatosCalendarioPeriodo(anioAcademico.getIdAnioAcademico(), empleado.getEmpleadoId());
+        Call<RestApiResponse<BEDatosAnioAcademico>> responseCall = apiRetrofit.flst_getDatosCalendarioPeriodo(idAnioAcademico, empleadoId);
 
         retrofitCancel = new RetrofitCancelImpl<>(responseCall);
 

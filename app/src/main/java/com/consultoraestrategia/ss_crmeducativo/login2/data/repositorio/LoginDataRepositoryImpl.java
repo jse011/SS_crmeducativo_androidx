@@ -5716,11 +5716,11 @@ public class LoginDataRepositoryImpl implements LoginDataRepository {
             for(CasoReporte casoReporte:casosReporteList ){
                 for(Caso caso:casosList){
                     if(casoReporte.getCasoId().equals(caso.getKey())){
-                        List<Usuario>padres= alumnoDao.getPadres(caso.getAlumnoId());
+                        /*List<Usuario>padres= alumnoDao.getPadres(caso.getAlumnoId());
                         for(Usuario padre: padres){
                             if(casoReporte.getUsuarioDestinoId()==padre.getUsuarioId())
                                 casoAlumnoIdList.add(caso.getAlumnoId());
-                        }
+                        }*/
                     }
                 }
             }

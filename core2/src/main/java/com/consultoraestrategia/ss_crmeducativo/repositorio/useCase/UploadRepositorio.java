@@ -84,7 +84,7 @@ public class UploadRepositorio extends UseCase<Request, UploadRepositorio.Respon
                 repositorioRepository.uploadFileJustificacion(updateRepositorioFileUi.getExtencionArchivoId(),request.getUrlServidor(), updateRepositorioFileUi.getPath(),callbackProgress);
                 break;
             case ARCHIVO_COMPORTAMIENTO:
-                repositorioRepository.uploadFileCaso(updateRepositorioFileUi.getExtencionArchivoId(), request.getUrlServidor(), updateRepositorioFileUi.getPath(),callbackProgress);
+                repositorioRepository.uploadFileCaso(updateRepositorioFileUi, request.getUrlServidor(), updateRepositorioFileUi.getUri(),callbackProgress);
                 break;
             case ARCHIVO_RUBRO:
                 repositorioRepository.uploadFileCasoRubro(updateRepositorioFileUi.getExtencionArchivoId(), request.getUrlServidor(), updateRepositorioFileUi.getUri(),callbackProgress);

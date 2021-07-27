@@ -145,4 +145,6 @@ public interface MainView extends BaseView<MainPresenter>,MainConfiguracion{
     void showCentroProcesoActivty(CursosUI cursosUiRecurso, int idPrograma, int anioAcademicoIdFinal);
 
     void showDialogNuevaVersion(NuevaVersionUi nuevaVersionUi);
+
+    void updateCalendarioPeridoyOtros();
 }

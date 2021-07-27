@@ -35,6 +35,7 @@ import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Where;
+import com.raizlabs.android.dbflow.sql.language.property.IProperty;
 import com.raizlabs.android.dbflow.sql.language.property.Property;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 
@@ -115,7 +116,7 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
         Log.d(getClass().getSimpleName(), "cargaCursoId "+ cargaCursoId);
 
         try {
-
+            IProperty[] propertyList;
             Where<CargaCursos> cargaCursosWhere = SQLite.select()
                     .from(CargaCursos.class)
                     .where(CargaCursos_Table.cargaCursoId.eq(cargaCursoId));
@@ -123,8 +124,8 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
             CargaCursos cargaCursos  =  databaseWrapper!= null ? cargaCursosWhere.querySingle(databaseWrapper): cargaCursosWhere.querySingle();
 
             if(cargaCursos.getComplejo()== 0){
-                Where<Persona> where = SQLite.select(
-                        Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable()))
+                propertyList = Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable());
+                Where<Persona> where = SQLite.select(propertyList)
                         .from(Persona.class)
                         .innerJoin(Contrato.class)
                         .on(Persona_Table.personaId.withTable()
@@ -140,7 +141,7 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                 }else if(orderByApellido){
                     where.orderBy(Persona_Table.apellidoPaterno.withTable().asc());
                 }
-
+                where.groupBy(propertyList);
                 personaList = databaseWrapper!=null ? new DbflowCompat(where).queryCustomList(PersonaContratoQuery.class,databaseWrapper) : where.queryCustomList((PersonaContratoQuery.class));
                 Log.d(getClass().getSimpleName(), " size personas list "+personaList.size() );
             }else {
@@ -149,8 +150,8 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                         .where(Empleado_Table.personaId.eq(SessionUser.getCurrentUser().getPersonaId()))
                         .querySingle();
                 if(empleado!=null){
-                    Where<Persona> where = SQLite.select(
-                            Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable()))
+                    propertyList = Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable());
+                    Where<Persona> where = SQLite.select(propertyList)
                             .from(Persona.class)
                             .innerJoin(CargaCursoDocenteDet.class)
                             .on(Persona_Table.personaId.withTable().eq(CargaCursoDocenteDet_Table.alumnoId.withTable()))
@@ -171,6 +172,7 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                     }else if(orderByApellido){
                         where.orderBy(Persona_Table.nombres.withTable().asc());
                     }
+                    where.groupBy(propertyList);
 
                     personaList =  databaseWrapper!=null ? new DbflowCompat(where).queryCustomList(PersonaContratoQuery.class, databaseWrapper) : where.queryCustomList(PersonaContratoQuery.class);
                 }
@@ -227,10 +229,11 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                 .from(CargaCursos.class)
                 .where(CargaCursos_Table.cargaCursoId.eq(cargaCursoId))
                 .querySingle();
-
+        IProperty[] iProperties;
         if(cargaCursos!=null){
             if(cargaCursos.getComplejo()== 0){
-                personaContratoList = SQLite.select(Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable()))
+                iProperties = Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable());
+                personaContratoList = SQLite.select(iProperties)
                         .from(Persona.class)
                         .innerJoin(Contrato.class)
                         .on(Persona_Table.personaId.withTable()
@@ -240,6 +243,7 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                                 .eq(DetalleContratoAcad_Table.idContrato.withTable()))
                         .where(DetalleContratoAcad_Table.cargaCursoId.eq(cargaCursoId))
                         .and(Persona_Table.personaId.withTable().in(personaWhere))
+                        .groupBy(iProperties)
                         .queryCustomList(PersonaContratoQuery.class);
             }else {
                 Empleado empleado = SQLite.select()
@@ -247,7 +251,8 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                         .where(Empleado_Table.personaId.eq(SessionUser.getCurrentUser().getPersonaId()))
                         .querySingle();
                 if(empleado!=null){
-                    personaContratoList = SQLite.select(Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable()))
+                    iProperties = Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable());
+                    personaContratoList = SQLite.select(iProperties)
                             .from(Persona.class)
                             .innerJoin(CargaCursoDocenteDet.class)
                             .on(Persona_Table.personaId.withTable().eq(CargaCursoDocenteDet_Table.alumnoId.withTable()))
@@ -263,6 +268,7 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                             .and(DetalleContratoAcad_Table.cargaCursoId.withTable().eq(cargaCursoId))
                             .and(CargaCursoDocente_Table.docenteId.withTable().eq(empleado.getEmpleadoId()))
                             .and(Persona_Table.personaId.withTable().in(personaWhere))
+                            .groupBy(iProperties)
                             .queryCustomList(PersonaContratoQuery.class);
                 }
             }
@@ -373,10 +379,11 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                 .from(CargaCursos.class)
                 .where(CargaCursos_Table.cargaCursoId.eq(cargaCursoId))
                 .querySingle();
-
+        IProperty[] iProperties;
         if(cargaCursos!=null){
             if(cargaCursos.getComplejo()== 0){
-                personaContratoList = SQLite.select(Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable()))
+                iProperties = Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable());
+                personaContratoList = SQLite.select(iProperties)
                         .from(Persona.class)
                         .innerJoin(Contrato.class)
                         .on(Persona_Table.personaId.withTable()
@@ -386,6 +393,7 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                                 .eq(DetalleContratoAcad_Table.idContrato.withTable()))
                         .where(DetalleContratoAcad_Table.cargaCursoId.eq(cargaCursoId))
                         .and(Persona_Table.personaId.withTable().in(personaWhere))
+                        .groupBy(iProperties)
                         .queryCustomList(PersonaContratoQuery.class);
             }else {
                 Empleado empleado = SQLite.select()
@@ -393,7 +401,8 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                         .where(Empleado_Table.personaId.eq(SessionUser.getCurrentUser().getPersonaId()))
                         .querySingle();
                 if(empleado!=null){
-                    personaContratoList = SQLite.select(Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable()))
+                    iProperties = Utils.f_allcolumnTable(Persona_Table.ALL_COLUMN_PROPERTIES, Contrato_Table.idContrato.withTable(), Contrato_Table.vigente.withTable());
+                    personaContratoList = SQLite.select(iProperties)
                             .from(Persona.class)
                             .innerJoin(CargaCursoDocenteDet.class)
                             .on(Persona_Table.personaId.withTable().eq(CargaCursoDocenteDet_Table.alumnoId.withTable()))
@@ -409,6 +418,7 @@ public class PersonaDaoImpl extends BaseIntegerDaoImpl<Persona, Persona_Table> i
                             .and(DetalleContratoAcad_Table.cargaCursoId.withTable().eq(cargaCursoId))
                             .and(CargaCursoDocente_Table.docenteId.withTable().eq(empleado.getEmpleadoId()))
                             .and(Persona_Table.personaId.withTable().in(personaWhere))
+                            .groupBy(iProperties)
                             .queryCustomList(PersonaContratoQuery.class);
                 }
             }

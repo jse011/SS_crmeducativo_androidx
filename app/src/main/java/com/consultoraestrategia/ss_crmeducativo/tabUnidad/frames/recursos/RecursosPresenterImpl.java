@@ -78,41 +78,7 @@ public class RecursosPresenterImpl extends BaseFragmentPresenterImpl<RecursosVie
 
     @Override
     public void onClickDownload(final RepositorioFileUi repositorioFileUi) {
-        handler.execute(dowloadImageUseCase, new DowloadImageUseCase.RequestValues(repositorioFileUi),
-                new UseCase.UseCaseCallback<UseCase.ResponseValue>() {
-                    @Override
-                    public void onSuccess(UseCase.ResponseValue response) {
-                        if (response instanceof DowloadImageUseCase.ResponseProgressValue) {
-                            DowloadImageUseCase.ResponseProgressValue responseProgressValue = (DowloadImageUseCase.ResponseProgressValue) response;
-                            if (view != null)
-                                view.setUpdateProgress(responseProgressValue.getRepositorioFileUi(), responseProgressValue.getCount());
 
-                        }
-                        if (response instanceof DowloadImageUseCase.ResponseSuccessValue) {
-                            final DowloadImageUseCase.ResponseSuccessValue responseValue = (DowloadImageUseCase.ResponseSuccessValue) response;
-                            saveRegistorRecursos(repositorioFileUi, new UseCaseSincrono.Callback<Boolean>() {
-                                @Override
-                                public void onResponse(boolean success, Boolean value) {
-                                    if (!success)responseValue.getRepositorioFileUi().setEstadoFileU(RepositorioEstadoFileU.ERROR_DESCARGA);
-
-                                    if (view != null)
-                                        view.setUpdate(responseValue.getRepositorioFileUi());
-                                }
-                            });
-                        }
-                        if (response instanceof DowloadImageUseCase.ResponseErrorValue) {
-                            DowloadImageUseCase.ResponseErrorValue responseErrorValue = (DowloadImageUseCase.ResponseErrorValue) response;
-                            if (view != null)
-                                view.setUpdate(responseErrorValue.getRepositorioFileUi());
-                        }
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                }
-        );
 
     }
 

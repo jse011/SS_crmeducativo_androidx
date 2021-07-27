@@ -41,6 +41,7 @@ import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosTarea
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosTipoNota;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDatosUnidades;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDimensionDesarrollo;
+import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEDrive;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEEventos;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BEMatrizResultadoDocente;
 import com.consultoraestrategia.ss_crmeducativo.model.docentementor.BETransResultResponse;
@@ -800,6 +801,22 @@ public class ApiRetrofit {
         final String representacionJSON = gson.toJson(apiRequestBody);
         Log.d(TAG, "apiRequestBody : " + representacionJSON);
         return service.flst_RegistroEvaluacion(apiRequestBody);
+    }
+
+    public Call<RestApiResponse<BEDrive>> getUrlDriveRecursoId(String recursoId){
+        JSONObject o = new JSONObject();
+        JSONObject p = new JSONObject();
+        try {
+            o.put("interface","RestAPI");
+            o.put("method", "getUrlDriveRecursoId");
+            p.put("vstr_RecursoId", recursoId);
+            o.put("parameters", p);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Log.d(TAG, "apiRequestBody : " +  o.toString());
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), o.toString());
+        return service.getUrlDriveArchivo(body);
     }
 
     ///******   Notificaciones    *****//

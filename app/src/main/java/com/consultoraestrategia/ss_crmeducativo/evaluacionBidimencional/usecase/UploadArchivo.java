@@ -28,6 +28,8 @@ import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoC
 import com.consultoraestrategia.ss_crmeducativo.entities.RubroEvaluacionProcesoComentario;
 import com.consultoraestrategia.ss_crmeducativo.entities.Rutas;
 import com.consultoraestrategia.ss_crmeducativo.entities.Rutas_Table;
+import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig;
+import com.consultoraestrategia.ss_crmeducativo.entities.WebConfig_Table;
 import com.consultoraestrategia.ss_crmeducativo.evaluacionBidimencional.entity.ArchivoUi;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.RepositorioDataSource;
 import com.consultoraestrategia.ss_crmeducativo.repositorio.data.remote.CountingRequestBody;
@@ -139,7 +141,24 @@ public class UploadArchivo {
 
                     if(!TextUtils.isEmpty(serverResponse)
                             &&!serverResponse.equals("null")){
+                        try {
+                            WebConfig webConfig = SQLite.select()
+                                    .from(WebConfig.class)
+                                    .where(WebConfig_Table.nombre.eq("wstr_ComentarioRubro"))
+                                    .querySingle();
+
+                            if(webConfig!=null){
+                                int p = Math.max(serverResponse.lastIndexOf('/'), serverResponse.lastIndexOf('\\'));
+                                String file = serverResponse.substring(p + 1);
+                                serverResponse = webConfig.getContent() + file;
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                         archivoUi.setUrl(serverResponse);
+
                         archivoUi.setUri(null);
 
                         EvaluacionProcesoC evaluacionProcesoC = SQLite.select()

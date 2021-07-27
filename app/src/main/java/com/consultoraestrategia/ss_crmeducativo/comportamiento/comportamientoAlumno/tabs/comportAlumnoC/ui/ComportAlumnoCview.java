@@ -19,4 +19,6 @@ public interface ComportAlumnoCview extends BaseView<ComportAlumnoCPresenter> {
     void setUpdate(RepositorioFileUi repositorioFileUi);
 
     void leerArchivo(String path);
+
+    void getFileNameDowload(RepositorioFileUi repositorioFileUi);
 }

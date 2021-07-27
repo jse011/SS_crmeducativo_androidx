@@ -145,9 +145,9 @@ public class DownloadHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     private void showProgress(){
-        progressBar2.setVisibility(View.VISIBLE);
-        imgClose.setVisibility(View.VISIBLE);
-        imgFondoprogres.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.GONE);
+        imgClose.setVisibility(View.GONE);
+        imgFondoprogres.setVisibility(View.GONE);
     }
 
     private void hiProgress(){
@@ -157,9 +157,9 @@ public class DownloadHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     private void showProgressSuccess(){
-        progressSucces.setVisibility(View.VISIBLE);
-        imgClose.setVisibility(View.VISIBLE);
-        imgFondoprogres.setVisibility(View.VISIBLE);
+        progressSucces.setVisibility(View.GONE);
+        imgClose.setVisibility(View.GONE);
+        imgFondoprogres.setVisibility(View.GONE);
     }
 
     private void hiProgressSuccess(){
@@ -169,8 +169,8 @@ public class DownloadHolder extends RecyclerView.ViewHolder implements View.OnCl
     }
 
     private void showDowload(){
-        imgFondoprogres.setVisibility(View.VISIBLE);
-        imgDownload.setVisibility(View.VISIBLE);
+        imgFondoprogres.setVisibility(View.GONE);
+        imgDownload.setVisibility(View.GONE);
     }
 
     private void hideDowload(){

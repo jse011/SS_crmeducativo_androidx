@@ -4,6 +4,7 @@ import com.consultoraestrategia.ss_crmeducativo.repositorio.entities.Repositorio
 import com.consultoraestrategia.ss_crmeducativo.services.wrapper.RetrofitCancel;
 import com.consultoraestrategia.ss_crmeducativo.tabsCursoDocente.entities.ParametroDisenioUi;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.data_source.callbacks.GetTareasListCallback;
+import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.DriveFileUi;
 import com.consultoraestrategia.ss_crmeducativo.tareas_mvp.entities.TareasUI;
 
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
 public interface TareasMvpDataSource {
 
     void updateArchivosTarea(List<RepositorioFileUi> repositorioFileUis);
+
+    RetrofitCancel getUrlDriveArchivo(String archivoId, Callback<DriveFileUi> driveFileUiCallback);
 
     interface CallbackTareas{
         void onParametroDisenio(ParametroDisenioUi parametroDisenioUi, int status);

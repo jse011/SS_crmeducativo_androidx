@@ -60,7 +60,7 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
     private String TAG= TabCreateComportPresenterImpl.class.getSimpleName();
     private int infoAlumnoId;
     private ListaComportamientoView listaComportamientoView;
-    private ArrayList<UsuarioUi> destinosIds;
+
 
     private GetUsuarioUiDestinos getUsuarioUiDestinos;
     private List<UsuarioUi> usuarioUiList;
@@ -72,7 +72,7 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
     private boolean selectedPadre;
 
     public TabCreateComportPresenterImpl( UseCaseHandler handler, Resources res, GetAlumnos getAlumnos,  GetTipos getTipos, GetComportamiento getComportamiento, GetUsuarioUiDestinos getUsuarioUiDestinos, GetDestino getDestino,
-            ValidarUsuario validarUsuario) {
+                                          ValidarUsuario validarUsuario) {
         super(handler, res);
         this.getAlumnos=getAlumnos;
         this.getTipos=getTipos;
@@ -120,7 +120,7 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
         comportamientoUi= new ComportamientoUi();
         fechaseleted = System.currentTimeMillis();
 
-        destinosIds=new ArrayList<>();
+
         this.georeferenciaId = crmBundle.getGeoreferenciaId();
 
 
@@ -130,10 +130,8 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
 
 
         if(view!=null)view.setColorParametroDisenio(colorDisenio, fechaseleted);
-        Log.d(TAG, "infoAlumnoId" + infoAlumnoId);
 
         if(!TextUtils.isEmpty(idComportamiento))getComportamientoDestinos();
-        else getUsuarios();
     }
 
 
@@ -179,21 +177,21 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
 
 
     public void getAlumnos() {
-    handler.execute(getAlumnos, new GetAlumnos.RequestValues(cargaCursoId), new UseCase.UseCaseCallback<GetAlumnos.ResponseValue>() {
-        @Override
-        public void onSuccess(GetAlumnos.ResponseValue response) {
-            Log.d(TAG, "onSuccess "+ response.getAlumnoUiList().size());
-            alumnoUiList= response.getAlumnoUiList();
-            if(infoAlumnoId!=0){
-                showAlumno();
-            }else  setAutocompleteList(alumnoUiList);
-        }
+        handler.execute(getAlumnos, new GetAlumnos.RequestValues(cargaCursoId), new UseCase.UseCaseCallback<GetAlumnos.ResponseValue>() {
+            @Override
+            public void onSuccess(GetAlumnos.ResponseValue response) {
+                Log.d(TAG, "onSuccess "+ response.getAlumnoUiList().size());
+                alumnoUiList= response.getAlumnoUiList();
+                if(infoAlumnoId!=0){
+                    showAlumno();
+                }else  setAutocompleteList(alumnoUiList);
+            }
 
-        @Override
-        public void onError() {
-            Log.d(TAG, "Error: No se pudo listar los alumnos ");
-        }
-    });
+            @Override
+            public void onError() {
+                Log.d(TAG, "Error: No se pudo listar los alumnos ");
+            }
+        });
     }
 
     private void showAlumno() {
@@ -215,7 +213,6 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
     public void selectedAlumno(AlumnoUi alumnoUi) {
         alumnoUiselected= alumnoUi;
         if(view!=null)view.setDatosAlumno(alumnoUiselected);
-        getUsuarios();
         selectedTutor = false;
         selectedPadre = false;
         selectedApoderado = false;
@@ -230,19 +227,19 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
     public ComportamientoUi saveComportamiento(String descripcion) {
 
         //comportamientoUi= new ComportamientoUi();
-           // if(alumnoUiselected==null){if(view!=null)view.setError();}
-            comportamientoUi.setTipoConducta(tipoPadreSelected);
-            comportamientoUi.setTipoComportamientoUi(tipoComportamientoSelect);
-            comportamientoUi.setFecha(fechaseleted);
-            comportamientoUi.setDescripcion(descripcion);
-            comportamientoUi.setAlumnoUi(alumnoUiselected);
-            comportamientoUi.setCargaAcademicaId(cargaAcademicaId);
-            comportamientoUi.setIdprogramaEducativo(programaEducativoId);
-            comportamientoUi.setCalendarioPeridoId(calendarioPeriodoId);
-            comportamientoUi.setDocenteId(docenteId);
-            comportamientoUi.setCargaCursoId(cargaCursoId);
+        // if(alumnoUiselected==null){if(view!=null)view.setError();}
+        comportamientoUi.setTipoConducta(tipoPadreSelected);
+        comportamientoUi.setTipoComportamientoUi(tipoComportamientoSelect);
+        comportamientoUi.setFecha(fechaseleted);
+        comportamientoUi.setDescripcion(descripcion);
+        comportamientoUi.setAlumnoUi(alumnoUiselected);
+        comportamientoUi.setCargaAcademicaId(cargaAcademicaId);
+        comportamientoUi.setIdprogramaEducativo(programaEducativoId);
+        comportamientoUi.setCalendarioPeridoId(calendarioPeriodoId);
+        comportamientoUi.setDocenteId(docenteId);
+        comportamientoUi.setCargaCursoId(cargaCursoId);
 
-            return comportamientoUi;
+        return comportamientoUi;
 
     }
 
@@ -284,7 +281,7 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
         tipoPadreSelected = tipoUi;
         tipoPadreSelected.setSelected(true);
         if(view!=null)view.showTiposPadres(tipoUiList);
-       if(view!=null)view.showDialogComportamientoTipo();
+        if(view!=null)view.showDialogComportamientoTipo();
     }
 
     @Override
@@ -306,109 +303,38 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
 
     @Override
     public void seletedUsuario(UsuarioUi usuarioUi) {
-        if(usuarioUi.getUsuarioId()!=0){
 
-            if(!usuarioUi.isSelected()){
-                usuarioUi.setSelected(true);
-                int position = destinosIds.indexOf(usuarioUi);
-                if(position==-1)destinosIds.add(usuarioUi);
-            }else {
-                usuarioUi.setSelected(false);
-                destinosIds.remove(usuarioUi);
-            }
-
-        } else {
-            usuarioUi.setSelected(false);
-            if(view!=null){view.showMessage(res.getString(R.string.msg_usuario_empty_comportamiento));
-                view.updateUsuario(usuarioUi);
-            }
-        }
     }
 
     @Override
     public DestinoUi getDestinatarios() {
-        Set<Integer> destinosIds = new LinkedHashSet<>();
-        for (UsuarioUi usuarioUi : this.destinosIds){
-            destinosIds.add(usuarioUi.getUsuarioId());
-        }
-
-        AlumnoUi alumnoUiSelected= null;
-        if(view!=null)alumnoUiSelected = getAlumnoSelected();
-        if(alumnoUiSelected!=null){
-            if(selectedTutor){
-                ValidarUsuario.Response response= validarUsuario.execute(new ValidarUsuario.Request(DestinoUi.Tipo.TUTOR,alumnoUiSelected.getId(), cargaAcademicaId , georeferenciaId));
-                if(response.getUsuarioIds()!=null){
-                    destinosIds.addAll(response.getUsuarioIds());
-                }
-            }
 
 
-            if(selectedApoderado){
-                ValidarUsuario.Response response= validarUsuario.execute(new ValidarUsuario.Request(DestinoUi.Tipo.ADODERADO,alumnoUiSelected.getId(), cargaAcademicaId, georeferenciaId ));
-                if(response.getUsuarioIds()!=null){
-                    destinosIds.addAll(response.getUsuarioIds());
-                }
-            }
-
-            if(selectedPadre){
-                ValidarUsuario.Response response= validarUsuario.execute(new ValidarUsuario.Request(DestinoUi.Tipo.PADRES,alumnoUiSelected.getId(), cargaAcademicaId, georeferenciaId ));
-                if(response.getUsuarioIds()!=null){
-                    destinosIds.addAll(response.getUsuarioIds());
-                }
-            }
-        }
-
-       /* for (UsuarioUi usuarioUi : this.destinosIdsEstatico){
-            destinosIds.add(usuarioUi.getUsuarioId());
-        }*/
         DestinoUi destinoUi= new DestinoUi();
-        Log.d(TAG, "destinosIds "+ destinosIds.size() );
-        destinoUi.setDestinosIds(new ArrayList<>(destinosIds));
+
+        destinoUi.setTutor(selectedTutor);
+        destinoUi.setPadre(selectedPadre);
+        destinoUi.setApoderado(selectedApoderado);
         destinoUi.setGeoreferenciaId(georeferenciaId);
         return destinoUi;
     }
 
     @Override
-    public void selectedCheck(DestinoUi.Tipo tipoEnum) {
-        List<Integer> usuarioIdList = new ArrayList<>();
-
-        AlumnoUi alumnoUiSelected= null;
-        if(view!=null)alumnoUiSelected = getAlumnoSelected();
-        if(alumnoUiSelected==null){
-            if(view!=null)view.showMessage(res.getString(R.string.msg_alumno_empty_comportamiento));
-        }else {
-            ValidarUsuario.Response response= validarUsuario.execute(new ValidarUsuario.Request(tipoEnum,alumnoUiSelected.getId(), cargaAcademicaId, georeferenciaId ));
-
-            if(response.getUsuarioIds()==null){
-                if(view!=null)view.showMessage("No existe organigrama");
-            }
-            else if(response.getUsuarioIds().isEmpty()){
-                if(view!=null)view.showMessage(res.getString(R.string.msg_usuario_empty_comportamiento));
-            }else {
-                usuarioIdList.addAll(response.getUsuarioIds());
-            }
-
-        }
-
-        switch (tipoEnum){
-            case TUTOR:
-                if(usuarioIdList.isEmpty())selectedTutor = true;
-                selectedTutor = !selectedTutor;
-                break;
-            case PADRES:
-                if(usuarioIdList.isEmpty())selectedPadre = true;
-                selectedPadre = !selectedPadre;
-                break;
-            case ADODERADO:
-                if(usuarioIdList.isEmpty())selectedApoderado = true;
-                selectedApoderado = !selectedApoderado;
-                break;
-        }
-
-        if(view!=null)view.setSelectedTutor(selectedTutor);
-        if(view!=null)view.setSelectedPadre(selectedPadre);
-        if(view!=null)view.setSelectedApoderado(selectedApoderado);
+    public void selectedCheckPadre() {
+        selectedPadre = !selectedPadre;
     }
+
+    @Override
+    public void selectedCheckApoderado() {
+        selectedApoderado = !selectedApoderado;
+    }
+
+    @Override
+    public void selectedCheckTutor() {
+        selectedTutor = !selectedTutor;
+    }
+
+
 
     private void setAutocompleteList(List<AlumnoUi> alumnoUiList) {
         ArrayList<AlumnoUi>alumnos= new ArrayList<>();
@@ -440,32 +366,13 @@ public class TabCreateComportPresenterImpl extends BaseFragmentPresenterImpl<Tab
     private void getComportamientoDestinos() {
         GetDestino.Response response= getDestino.execute(new GetDestino.Requests(idComportamiento, georeferenciaId));
         if(response.getDestinoUi()!=null){
-            List<DestinoUi.Tipo> tipoList = response.getDestinoUi().getTipos();
-            usuarioUiList = response.getDestinoUi().getUsuarioUiList();
-            Log.d(TAG, "usuarioUiList "+ usuarioUiList.size());
-            if(view!=null){
-                view.setTipoList(tipoList);
-                if(usuarioUiList!=null)view.showListUsuarios(usuarioUiList);
-                else view.showListUsuarios(new ArrayList<UsuarioUi>());
-            }
+            selectedTutor = response.getDestinoUi().getTutor();
+            selectedPadre = response.getDestinoUi().getPadre();
+            selectedApoderado = response.getDestinoUi().getApoderado();
+            if(view!=null)view.setSelectedTutor(selectedTutor);
+            if(view!=null)view.setSelectedPadre(selectedPadre);
+            if(view!=null)view.setSelectedApoderado(selectedApoderado);
         }
 
-    }
-
-    private void getUsuarios() {
-        Log.d(TAG, "getUsuarios");
-        handler.execute(getUsuarioUiDestinos, new GetUsuarioUiDestinos.RequestValues(georeferenciaId), new UseCase.UseCaseCallback<GetUsuarioUiDestinos.ResponseValue>() {
-            @Override
-            public void onSuccess(GetUsuarioUiDestinos.ResponseValue response) {
-                Log.d(TAG, "onSuccess "+ response.getUsuarioUiList().size());
-                usuarioUiList=  response.getUsuarioUiList();
-                if(view!=null)view.showListUsuarios(usuarioUiList);
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
     }
 }
