@@ -134,6 +134,10 @@ class EventosPresenterImpl(handler: UseCaseHandler?,
         AdjuntoEventoDownloadView = null;
     }
 
+    override fun itemLinkEncuesta(adjuntoUi: EventoAdjuntoUi) {
+        view?.showVinculo(adjuntoUi.titulo);
+    }
+
     override fun onClikLikeInfoEvento() {
         if (eventosUiSelected != null) {
 

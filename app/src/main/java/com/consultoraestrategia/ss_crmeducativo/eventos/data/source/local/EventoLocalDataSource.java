@@ -353,7 +353,7 @@ public class EventoLocalDataSource implements EventosDataSource {
                 eventosUi.setPublicado(evento.isEstadoPublicacion());
                 eventosUi.setAdjuntoUiPreviewList(new ArrayList<EventoAdjuntoUi>());
                 eventosUi.setAdjuntoUiList(new ArrayList<EventoAdjuntoUi>());
-
+                eventosUi.setAdjuntoUiEncuestaList(new ArrayList<>());
 
                 if(eventosUi.getFechaPublicacion()>912402000000L){
                     String fecha_ = "Publicado " + Utils.getFechaDiaMesAnho(eventosUi.getFechaPublicacion());
@@ -409,6 +409,10 @@ public class EventoLocalDataSource implements EventosDataSource {
                         adjuntoUi.setTipoArchivo(TipoAdjuntoUi.VIDEO);
                         eventosUi.getAdjuntoUiPreviewList().add(adjuntoUi);
                         adjuntoUi.setVideo(true);
+                        break;
+                    case Archivo.TIPO_ENCUESTA:
+                        adjuntoUi.setTipoArchivo(TipoAdjuntoUi.ENCUESTA);
+                        eventosUi.getAdjuntoUiEncuestaList().add(adjuntoUi);
                         break;
                     default:
                         adjuntoUi.setTipoArchivo(TipoAdjuntoUi.OTROS);

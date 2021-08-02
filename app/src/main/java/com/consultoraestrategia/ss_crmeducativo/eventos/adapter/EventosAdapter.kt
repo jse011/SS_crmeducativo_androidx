@@ -32,6 +32,7 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
                      val itemClickInfoEnviar: (EventosUi) -> Unit,
                      val onOpEditarEventoClicked: (EventosUi) -> Unit,
                      val onOpEventoDelteClicked: (EventosUi) -> Unit,
+                     val itemLinkEncuesta: (EventoAdjuntoUi) -> Unit,
                      val itemClickAdjunto: (EventosUi, EventoAdjuntoUi, Boolean) -> Unit): RecyclerView.Adapter<EventosAdapter.ViewHolder>() {
 
     private var eventosUiList:MutableList<EventosUi> = ArrayList()
@@ -43,7 +44,7 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
     override fun getItemCount(): Int = eventosUiList.size
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int){
-        viewHolder.bind(eventosUiList[position],itemClickLike,itemClickEventos, itemRenderEvento,itemClickEnviar, itemClickInfoEnviar,onOpEditarEventoClicked, onOpEventoDelteClicked, itemClickAdjunto)
+        viewHolder.bind(eventosUiList[position],itemClickLike,itemClickEventos, itemRenderEvento,itemClickEnviar, itemClickInfoEnviar,onOpEditarEventoClicked, onOpEventoDelteClicked, itemLinkEncuesta, itemClickAdjunto)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), LinkUtils.OnClickListener{
@@ -61,6 +62,7 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
                  itemClickInfoEnviar: (EventosUi) -> Unit,
                  onOpEditarEventoClicked: (EventosUi)-> Unit,
                  onOpEventoDelteClicked: (EventosUi)-> Unit,
+                 itemLinkEncuesta: (EventoAdjuntoUi)-> Unit,
                  itemClickAdjunto: (EventosUi, EventoAdjuntoUi, Boolean)->Unit) = with(itemView) {
 
 
@@ -289,6 +291,8 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
                 eventoUi, adjuntoUi, more -> itemClickAdjunto(eventoUi, adjuntoUi, more)
             })
 
+            val adjuntoEventoLink = AdjuntoEventoEncuesta(eventosUi.adjuntoUiEncuestaList, AdjuntoEventoEncuesta.Listener { itemLinkEncuesta(it) })
+
             rc_recursos.adapter = adjuntoEventoAdapter
             rc_recursos.layoutManager = GridLayoutManager(rc_recursos.context, count)
 
@@ -316,6 +320,10 @@ class EventosAdapter(val itemClickLike: (EventosUi) -> Unit,
                 cont_me_gusta.visibility = View.INVISIBLE
                 spinne.visibility = View.VISIBLE
             }
+
+            rc_encuesta.adapter = adjuntoEventoLink
+            rc_encuesta.layoutManager = LinearLayoutManager(rc_encuesta.context)
+            rc_encuesta.visibility = if(eventosUi.adjuntoUiEncuestaList.isEmpty())  View.GONE else View.VISIBLE
 
             setEnviar(eventosUi)
             setProgresEnviar(eventosUi)

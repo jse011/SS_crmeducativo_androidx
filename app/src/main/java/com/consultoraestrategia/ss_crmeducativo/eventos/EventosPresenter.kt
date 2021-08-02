@@ -34,5 +34,6 @@ interface EventosPresenter : BasePresenter<EventosView> {
     fun onClickDialogAdjunto(adjuntoUi: EventoAdjuntoUi)
     fun onAdjuntoEventoDownloadDestroy()
     fun attachView(adjuntoEventoDownload: AdjuntoEventoDownload?)
+    fun itemLinkEncuesta(adjuntoUi: EventoAdjuntoUi)
 
 }

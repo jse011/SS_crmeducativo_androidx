@@ -8,6 +8,7 @@ class EventosUi {
 
     var nombreFechaPublicion: String? = null
     var fechaPublicacion: Long = 0;
+    var adjuntoUiEncuestaList: List<EventoAdjuntoUi> = ArrayList()
     var adjuntoUiList: List<EventoAdjuntoUi> = ArrayList()
     var adjuntoUiPreviewList: List<EventoAdjuntoUi> = ArrayList()
     var nombreCalendario: String? = null

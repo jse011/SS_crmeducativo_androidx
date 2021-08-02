@@ -38,6 +38,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.consultoraestrategia.ss_crmeducativo.R;
 import com.consultoraestrategia.ss_crmeducativo.eventos.EventosPresenter;
 import com.consultoraestrategia.ss_crmeducativo.eventos.adapter.AdjuntoEventoAdapterMore;
+import com.consultoraestrategia.ss_crmeducativo.eventos.adapter.AdjuntoEventoEncuesta;
 import com.consultoraestrategia.ss_crmeducativo.eventos.adapter.AdjuntoPreviewAdapter;
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventoAdjuntoUi;
 import com.consultoraestrategia.ss_crmeducativo.eventos.entities.EventosUi;
@@ -55,7 +56,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class DialogListaBannerEvento extends DialogFragment implements InformacionListaEventosView, LinkUtils.OnClickListener, AdjuntoPreviewAdapter.Listener, AdjuntoEventoAdapterMore.Listener {
+public class DialogListaBannerEvento extends DialogFragment implements InformacionListaEventosView, LinkUtils.OnClickListener, AdjuntoPreviewAdapter.Listener, AdjuntoEventoAdapterMore.Listener, AdjuntoEventoEncuesta.Listener {
 
     @BindView(R.id.nombrePersonaEvento)
     TextView textNombre;
@@ -90,6 +91,8 @@ public class DialogListaBannerEvento extends DialogFragment implements Informaci
     RecyclerView rc_recursos;
     @BindView(R.id.content_recurso)
     View content_recurso;
+    @BindView(R.id.rc_encuesta)
+    RecyclerView rcEncuesta;
 
     private Unbinder bind;
     private EventosPresenter presenter;
@@ -259,8 +262,14 @@ public class DialogListaBannerEvento extends DialogFragment implements Informaci
             content_recurso.setVisibility(View.GONE);
         }
 
-
-
+        AdjuntoEventoEncuesta adjuntoEventoEncuesta = new AdjuntoEventoEncuesta(eventosUi.getAdjuntoUiEncuestaList(), this);
+        rcEncuesta.setAdapter(adjuntoEventoEncuesta);
+        rcEncuesta.setLayoutManager(new LinearLayoutManager(rcEncuesta.getContext()));
+        if(eventosUi.getAdjuntoUiEncuestaList().isEmpty()){
+            rcEncuesta.setVisibility(View.GONE);
+        }else {
+            rcEncuesta.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -342,4 +351,8 @@ public class DialogListaBannerEvento extends DialogFragment implements Informaci
     }
 
 
+    @Override
+    public void onLinkEncuesta(EventoAdjuntoUi adjuntoUi) {
+        presenter.itemLinkEncuesta(adjuntoUi);
+    }
 }

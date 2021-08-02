@@ -37,7 +37,7 @@ app:cardCornerRadius="10dp">
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_contenido">
+        app:layout_constraintTop_toBottomOf="@+id/rc_encuesta">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -557,6 +557,18 @@ app:cardCornerRadius="10dp">
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_encuesta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_contenido"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_evento_encuesta_link" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -125,9 +125,13 @@ class EventosActivty : BaseActivity<EventosView, EventosPresenter>(), EventosVie
         layoutManager.orientation = RecyclerView.VERTICAL
         eventosRv.layoutManager = layoutManager
         eventosAdapter = EventosAdapter({onClickLike(it)}, { eventosUi, eventoAdjuntoUi -> itemClickEventos(eventosUi, eventoAdjuntoUi) }, { eventosUi, viewHolder -> itemRenderEvento(eventosUi, viewHolder) } ,{itemClickEnviar(it)} ,{itemClickInfoEnviar(it)},{ onOpEditarEventoClicked(it)},{onOpEventoDelteClicked(it)},
-                { eventosUi, eventoAdjuntoUi, more -> itemClickAdjunto(eventosUi, eventoAdjuntoUi, more) })
+                {itemLinkEncuesta(it)}, { eventosUi, eventoAdjuntoUi, more -> itemClickAdjunto(eventosUi, eventoAdjuntoUi, more) })
         eventosAdapter.recyclerView = eventosRv
         eventosRv.adapter = eventosAdapter
+    }
+
+    private fun itemLinkEncuesta(adjuntoUi: EventoAdjuntoUi) {
+        presenter.itemLinkEncuesta(adjuntoUi)
     }
 
     private fun itemClickInfoEnviar(eventosUi: EventosUi) {
