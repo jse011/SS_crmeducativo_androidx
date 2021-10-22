@@ -9,10 +9,10 @@ android {
         //applicationId "com.consultoraestrategia.ss_crmeducativo"//UPS Educar Teacher
         minSdkVersion 19
         targetSdkVersion 30
-        //versionCode 72//UPS Educar Teacher
-        versionCode 60//CATA DocenteMentor3.0
-        //versionName "1.7" //EDUCAR
-        versionName "1.8" //CATA
+        //versionCode 73//UPS Educar Teacher
+        versionCode 62//CATA DocenteMentor3.0
+        //versionName "1.8" //EDUCAR
+        versionName "2.0" //CATA
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -495,7 +495,7 @@ app:cardCornerRadius="10dp">
             <ImageView
                 android:id="@+id/img_tipo_ico"
                 android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_rocket"
                 app:tint="@color/white"
